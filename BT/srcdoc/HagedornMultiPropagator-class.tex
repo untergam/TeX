@@ -1,0 +1,264 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{HagedornMultiPropagator \textit{(module)}!HagedornMultiPropagator \textit{(class)}|(}
+\section{Class HagedornMultiPropagator}
+
+    \label{HagedornMultiPropagator:HagedornMultiPropagator}
+\begin{tabular}{cccccc}
+% Line for Propagator, linespec=[False]
+\multicolumn{2}{r}{\settowidth{\BCL}{Propagator}\multirow{2}{\BCL}{Propagator}}
+&&
+  \\\cline{3-3}
+  &&\multicolumn{1}{c|}{}
+&&
+  \\
+&&\multicolumn{2}{l}{\textbf{HagedornMultiPropagator}}
+\end{tabular}
+
+This class can numerically propagate given initial values
+$\Ket{\Psi}$ in a potential
+$V\ofs{x}$. The propagation is done for a given
+inhomogeneous Hagedorn wavepacket.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self}, \textit{potential}, \textit{packet})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Initialize a new \textit{HagedornMultiPropagator} instance.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[potential]
+
+          The potential the wavepacket
+          $\Ket{\Psi}$ feels during the
+          time propagation.
+
+          \item[packet]
+
+          The initial inhomogeneous Hagedorn wavepacket we propagate in
+          time.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          If the number of components of
+          $\Ket{\Psi}$ does not match the
+          number of energy levels $\lambda_i$ of the
+          potential.
+
+        \end{description}
+
+      \end{quote}
+
+      Overrides: Propagator.\_\_init\_\_
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Prepare a printable string representing the
+    \textit{HagedornMultiPropagator} instance.
+
+\setlength{\parskip}{1ex}
+
+      Overrides: Propagator.\_\_str\_\_
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_components}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number $N$ of components $\Phi_i$ of
+      $\Ket{\Psi}$.
+
+      \end{quote}
+
+      Overrides: Propagator.get\_number\_components
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_potential}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The \textit{MatrixPotential} instance used for time propagation.
+
+      \end{quote}
+
+      Overrides: Propagator.get\_potential
+
+    \end{boxedminipage}
+
+    \label{HagedornMultiPropagator:HagedornMultiPropagator:get_wavepacket}
+    \index{HagedornMultiPropagator \textit{(module)}!HagedornMultiPropagator \textit{(class)}!HagedornMultiPropagator.get\_wavepacket \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_wavepacket}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The \textit{HagedornMultiWavepacket} instance that represents the
+      current wavepacket $\Ket{\Psi}$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_wavefunction}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Construct a \textit{WaveFunction} object which contains the components
+    $\Phi_i$ of the Hagedorn wavepacket evaluated at the
+    given nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The nodes $\gamma$ on which the Hagedorn
+          wavepacket is evaluated.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A \textit{WaveFunction} instance representing the values of the
+      current $\Ket{\Psi}$.
+
+      \end{quote}
+
+\textbf{Note:} This method is quite expensive.
+
+      Overrides: Propagator.get\_wavefunction
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{propagate}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Given the wavepacket $\Psi$ at time $t$, calculate a
+    new wavepacket at time $t + \tau$. We perform exactly one timestep
+    $\tau$ here.
+
+\setlength{\parskip}{1ex}
+
+      Overrides: Propagator.propagate
+
+    \end{boxedminipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Instance Variables                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Instance Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright p\-o\-t\-e\-n\-t\-i\-a\-l\- & The potential $V\ofs{x}$ the packet feels.&\\
+\cline{1-2}
+\raggedright number\_components & Number $N$ of components the wavepacket
+          $\Ket{\Psi}$ has got.&\\
+\cline{1-2}
+\raggedright p\-a\-c\-k\-e\-t\- & The Hagedorn wavepacket.&\\
+\cline{1-2}
+\end{longtable}
+
+    \index{HagedornMultiPropagator \textit{(module)}!HagedornMultiPropagator \textit{(class)}|)}

@@ -1,0 +1,1079 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}|(}
+\section{Class MatrixPotential}
+
+    \label{MatrixPotential:MatrixPotential}
+\textbf{Subclasses:}
+MatrixPotential1S,
+MatrixPotential2S,
+MatrixPotentialMS
+
+This class represents a potential $V\ofs{x}$. The
+potential is given as an analytical expression. Some calculations with the
+potential are supported. For example calculation of eigenvalues and
+exponentials and numerical evaluation. Further, there are methods for
+splitting the potential into a Taylor expansion and for basis
+transformations between canonical and eigenbasis.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{MatrixPotential:MatrixPotential:__init__}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Create a new \textit{MatrixPotential} instance for a given potential
+    matrix $V\ofs{x}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:__str__}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.\_\_str\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Put the number of components and the analytical expression (the matrix)
+    into a printable string.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:get_number_components}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.get\_number\_components \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_components}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number $N$ of components the potential supports.
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the potential matrix elementwise at some given grid nodes
+    $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          potential at.
+
+          \item[component]
+
+          The component $V_{i,j}$ that gets evaluated or \textit{None} to
+          evaluate all.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_eigenvalues}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_eigenvalues \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_eigenvalues}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the eigenvalues
+    $\lambda_i\ofs{x}$ of the potential
+    $V\ofs{x}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_eigenvalues_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_eigenvalues\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_eigenvalues\_at}(\textit{self}, \textit{nodes}, \textit{diagonal\_component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the eigenvalues
+    $\lambda_i\ofs{x}$ at some grid
+    nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          eigenvalues at.
+
+          \item[diagonal\_component]
+
+          The index $i$ of the eigenvalue $\lambda_i$
+          that gets evaluated or \textit{None} to evaluate all.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_eigenvectors}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_eigenvectors \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_eigenvectors}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the eigenvectors $\nu_i\ofs{x}$ of the
+    potential $V\ofs{x}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_eigenvectors_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_eigenvectors\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_eigenvectors\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the eigenvectors $\nu_i\ofs{x}$ at some
+    grid nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          eigenvectors at.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:project_to_eigen}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.project\_to\_eigen \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{project\_to\_eigen}(\textit{self}, \textit{nodes}, \textit{values}, \textit{basis}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Project a given vector from the canonical basis to the eigenbasis of
+    the potential.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ for the pointwise
+          transformation.
+
+          \item[values]
+
+          The list of vectors $\varphi_i$ containing the
+          values we want to transform.
+
+          \item[basis]
+
+          A list of basisvectors $\nu_i$. Allows to use this function for
+          external data, similar to a static function.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:project_to_canonical}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.project\_to\_canonical \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{project\_to\_canonical}(\textit{self}, \textit{nodes}, \textit{values}, \textit{basis}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Project a given vector from the potential's eigenbasis to the canonical
+    basis.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ for the pointwise
+          transformation.
+
+          \item[values]
+
+          The list of vectors $\varphi_i$ containing the values we want
+          to transform.
+
+          \item[basis]
+
+          A list of basis vectors $\nu_i$. Allows to use this function
+          for external data, similar to a static function.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_exponential}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_exponential \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_exponential}(\textit{self}, \textit{factor}={\tt 1})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the matrix exponential $E =
+    \exp\ofs{\alpha M}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[factor]
+
+          A prefactor $\alpha$ in the exponential.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_exponential_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_exponential\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_exponential\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the exponential of the potential matrix $V$ at some grid
+    nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          exponential at.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_jacobian}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_jacobian \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_jacobian}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the Jacobian matrix for each component $V_{i,j}$ of the
+    potential. For potentials which depend only one variable $x$, this
+    equals the first derivative.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_jacobian_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_jacobian\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_jacobian\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the Jacobian at some grid nodes $\gamma$ for
+    each component $V_{i,j}$ of the potential.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ the Jacobian gets
+          evaluated at.
+
+          \item[component]
+
+          The index tuple $\left(i,j \right)$ that specifies
+          the potential's entry of which the Jacobian is evaluated.
+          (Defaults to \textit{None} to evaluate all)
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_hessian}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_hessian \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_hessian}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the Hessian matrix for each component $V_{i,j}$ of the
+    potential. For potentials which depend only one variable $x$, this
+    equals the second derivative.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_hessian_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_hessian\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_hessian\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the Hessian at some grid nodes $\gamma$ for
+    each component $V_{i,j}$ of the potential.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ the Hessian gets
+          evaluated at.
+
+          \item[component]
+
+          The index tuple $\left(i,j \right)$ that specifies
+          the potential's entry of which the Hessian is evaluated. (Or
+          \textit{None} to evaluate all)
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_local_quadratic}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_local\_quadratic \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_quadratic}(\textit{self}, \textit{diagonal\_component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the local quadratic approximation matrix $U$ of the
+    potential's eigenvalues in $\Lambda$. This function is
+    used for the homogeneous case and takes into account the leading
+    component $\chi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxx}
+
+          \item[diagonal\_component]
+
+          Specifies the index $i$ of the eigenvalue
+          $\lambda_i$ that gets expanded into a Taylor
+          series $u_i$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_local_quadratic_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_local\_quadratic\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_local\_quadratic\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Numerically evaluate the local quadratic approximation matrix $U$ of
+    the potential's eigenvalues in $\Lambda$ at the given
+    grid nodes $\gamma$. This function is used for the
+    homogeneous case and takes into account the leading component
+    $\chi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          quadratic approximation at.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_local_remainder}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_local\_remainder \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_remainder}(\textit{self}, \textit{diagonal\_component}={\tt 0})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the non-quadratic remainder matrix $W$ of the quadratic
+    approximation matrix $U$ of the potential's eigenvalue matrix
+    $\Lambda$. This function is used for the homogeneous
+    case and takes into account the leading component
+    $\chi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxx}
+
+          \item[diagonal\_component]
+
+          Specifies the index $\chi$ of the leading
+          component $\lambda_\chi$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_local_remainder_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_local\_remainder\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_local\_remainder\_at}(\textit{self}, \textit{position}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Numerically evaluate the non-quadratic remainder matrix $W$ of the
+    quadratic approximation matrix $U$ of the potential's eigenvalues in
+    $\Lambda$ at the given nodes
+    $\gamma$. This function is used for the homogeneous
+    and the inhomogeneous case and just evaluates the remainder matrix
+    $W$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[position]
+
+          The point $q$ where the Taylor series is computed.
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          potential at.
+
+          \item[component]
+
+          The component $\left(i,j \right)$ of the remainder
+          matrix $W$ that is evaluated.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_local_quadratic_multi}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_local\_quadratic\_multi \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_quadratic\_multi}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the local quadratic approximation matrix $U$ of all the
+    potential's eigenvalues in $\Lambda$. This function is
+    used for the inhomogeneous case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:evaluate_local_quadratic_multi_at}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.evaluate\_local\_quadratic\_multi\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_local\_quadratic\_multi\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Numerically evaluate the local quadratic approximation matrix $U$ of
+    the potential's eigenvalues in $\Lambda$ at the given
+    grid nodes $\gamma$. This function is used for the
+    inhomogeneous case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          quadratic approximation at.
+
+          \item[component]
+
+          The component $\left(i,j \right)$ of the quadratic
+          approximation matrix $U$ that is evaluated.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{MatrixPotential:MatrixPotential:calculate_local_remainder_multi}
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}!MatrixPotential.calculate\_local\_remainder\_multi \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_remainder\_multi}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the non-quadratic remainder matrix $W$ of the quadratic
+    approximation matrix $U$ of the potential's eigenvalue matrix
+    $\Lambda$. This function is used for the inhomogeneous
+    case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \index{MatrixPotential \textit{(module)}!MatrixPotential \textit{(class)}|)}

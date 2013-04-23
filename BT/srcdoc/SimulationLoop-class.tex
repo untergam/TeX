@@ -1,0 +1,234 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}|(}
+\section{Class SimulationLoop}
+
+    \label{SimulationLoop:SimulationLoop}
+This class acts as the main simulation loop. It owns a propagator that
+propagates a set of initial values during a time evolution. All values are
+read from the \textit{Parameters.py} file.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{SimulationLoop:SimulationLoop:__init__}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Create a new simulation loop instance.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:add_fourier_propagator}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.add\_fourier\_propagator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{add\_fourier\_propagator}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set up a Fourier propagator for the simulation loop. Set the potential
+    and initial values according to the configuration.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          For invalid or missing input data.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:add_hagedorn_propagator}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.add\_hagedorn\_propagator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{add\_hagedorn\_propagator}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set up a Hagedorn propagator for the simulation loop. Set the potential
+    and initial values according to the configuration.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          For invalid or missing input data.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:add_multi_hagedorn_propagator}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.add\_multi\_hagedorn\_propagator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{add\_multi\_hagedorn\_propagator}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set up a multi Hagedorn propagator for the simulation loop. Set the
+    potential and initial values according to the configuration.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          For invalid or missing input data.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:run_fourier_propagator}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.run\_fourier\_propagator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{run\_fourier\_propagator}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Run the simulation loop for a number of time steps. The number of steps
+    is calculated in the \textit{initialize} function.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:run_hagedorn_propagator}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.run\_hagedorn\_propagator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{run\_hagedorn\_propagator}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Run the simulation loop for a number of time steps. The number of steps
+    is calculated in the \textit{initialize} function.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:run_multi_hagedorn_propagator}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.run\_multi\_hagedorn\_propagator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{run\_multi\_hagedorn\_propagator}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Run the simulation loop for a number of time steps. The number of steps
+    is calculated in the \textit{initialize} function.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{SimulationLoop:SimulationLoop:end_simulation}
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}!SimulationLoop.end\_simulation \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{end\_simulation}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Do the necessary cleanup after a simulation. For example request the
+    serializer to write the data and close the output files.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Instance Variables                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Instance Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright p\-r\-o\-p\-a\-g\-a\-t\-o\-r\- & The time propagator instance driving the simulation.&\\
+\cline{1-2}
+\raggedright s\-e\-r\-i\-a\-l\-i\-z\-e\-r\- & A \textit{Serializer} instance for saving simulation results.&\\
+\cline{1-2}
+\raggedright n\-s\-t\-e\-p\-s\- & The number of time steps we will perform.&\\
+\cline{1-2}
+\end{longtable}
+
+    \index{SimulationLoop \textit{(module)}!SimulationLoop \textit{(class)}|)}

@@ -1,0 +1,899 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{MatrixPotential1S \textit{(module)}!MatrixPotential1S \textit{(class)}|(}
+\section{Class MatrixPotential1S}
+
+    \label{MatrixPotential1S:MatrixPotential1S}
+\begin{tabular}{cccccc}
+% Line for MatrixPotential, linespec=[False]
+\multicolumn{2}{r}{\settowidth{\BCL}{MatrixPotential}\multirow{2}{\BCL}{MatrixPotential}}
+&&
+  \\\cline{3-3}
+  &&\multicolumn{1}{c|}{}
+&&
+  \\
+&&\multicolumn{2}{l}{\textbf{MatrixPotential1S}}
+\end{tabular}
+
+This class represents a scalar potential $V\ofs{x}$. The
+potential is given as an analytical $1 \times 1$ matrix expression.
+Some symbolic calculations with the potential are supported. For example
+calculation of eigenvalues and exponentials and numerical evaluation.
+Further, there are methods for splitting the potential into a Taylor
+expansion and for basis transformations between canonical and eigenbasis.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self}, \textit{expression})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Create a new \textit{MatrixPotential1S} instance for a given potential
+    matrix $V\ofs{x}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxx}
+
+          \item[expression]
+
+          An expression representing the potential.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.\_\_init\_\_
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Put the number of components and the analytical expression (the matrix)
+    into a printable string.
+
+\setlength{\parskip}{1ex}
+
+      Overrides: MatrixPotential.\_\_str\_\_
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_components}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number $N$ of components the potential supports. In the one
+      dimensional case, it's just 1.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.get\_number\_components
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt 0})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the potential matrix elementwise at some given grid nodes
+    $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          potential at.
+
+          \item[component]
+
+          The component $V_{i,j}$ that gets evaluated or \textit{None} to
+          evaluate all.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with the single entry evaluated at the nodes.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_eigenvalues}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the eigenvalue
+    $\lambda_0\ofs{x}$ of the potential
+    $V\ofs{x}$. In the scalar case this is just the
+    matrix entry $V_{0,0}$.
+
+\setlength{\parskip}{1ex}
+
+\textbf{Note:} Note: the eigenvalues are memoized for later reuse.
+
+      Overrides: MatrixPotential.calculate\_eigenvalues
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_eigenvalues\_at}(\textit{self}, \textit{nodes}, \textit{diagonal\_component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the eigenvalue
+    $\lambda_0\ofs{x}$ at some grid
+    nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          eigenvalue at.
+
+          \item[diagonal\_component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with the single eigenvalue evaluated at the nodes.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_eigenvalues\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_eigenvectors}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the eigenvector $\nu_0\ofs{x}$ of the
+    potential $V\ofs{x}$. In the scalar case this is
+    just the value $1$.
+
+\setlength{\parskip}{1ex}
+
+\textbf{Note:} The eigenvectors are memoized for later reuse.
+
+
+      Overrides: MatrixPotential.calculate\_eigenvectors
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_eigenvectors\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the eigenvector $\nu_0\ofs{x}$ at some grid
+    nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          eigenvector at.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with the eigenvector evaluated at the given nodes.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_eigenvectors\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{project\_to\_eigen}(\textit{self}, \textit{nodes}, \textit{values}, \textit{basis}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Project a given vector from the canonical basis to the eigenbasis of
+    the potential.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ for the pointwise
+          transformation.
+
+          \item[values]
+
+          The list of vectors $\varphi_i$ containing the
+          values we want to transform.
+
+          \item[basis]
+
+          A list of basisvectors $\nu_i$. Allows to use this function for
+          external data, similar to a static function.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      This method does nothing and returns the values.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.project\_to\_eigen
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{project\_to\_canonical}(\textit{self}, \textit{nodes}, \textit{values}, \textit{basis}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Project a given vector from the potential's eigenbasis to the canonical
+    basis.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ for the pointwise
+          transformation.
+
+          \item[values]
+
+          The list of vectors $\varphi_i$ containing the values we want
+          to transform.
+
+          \item[basis]
+
+          A list of basis vectors $\nu_i$. Allows to use this function
+          for external data, similar to a static function.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      This method does nothing and returns the values.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.project\_to\_canonical
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_exponential}(\textit{self}, \textit{factor}={\tt 1})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the matrix exponential $E =
+    \exp\ofs{\alpha M}$. In this case the
+    matrix is of size $1 \times 1$ thus the exponential simplifies
+    to the scalar exponential function.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[factor]
+
+          A prefactor $\alpha$ in the exponential.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.calculate\_exponential
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_exponential\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the exponential of the potential matrix $V$ at some grid
+    nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          exponential at.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The numerical approximation of the matrix exponential at the given
+      grid nodes.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_exponential\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_jacobian}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the Jacobian matrix for the component $V_{0,0}$ of the
+    potential. For potentials which depend only on one variable $x$, this
+    equals the first derivative.
+
+\setlength{\parskip}{1ex}
+
+      Overrides: MatrixPotential.calculate\_jacobian
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_jacobian\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the potential's Jacobian at some grid nodes
+    $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ the Jacobian gets
+          evaluated at.
+
+          \item[component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The value of the potential's Jacobian at the given nodes.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_jacobian\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_hessian}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the Hessian matrix for component $V_{0,0}$ of the
+    potential. For potentials which depend only on one variable $x$, this
+    equals the second derivative.
+
+\setlength{\parskip}{1ex}
+
+      Overrides: MatrixPotential.calculate\_hessian
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_hessian\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the potential's Hessian at some grid nodes
+    $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ the Hessian gets
+          evaluated at.
+
+          \item[component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The value of the potential's Hessian at the given nodes.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_hessian\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_quadratic}(\textit{self}, \textit{diagonal\_component}={\tt 0})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the local quadratic approximation $U$ of the potential's
+    eigenvalue $\lambda$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxx}
+
+          \item[diagonal\_component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.calculate\_local\_quadratic
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_local\_quadratic\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Numerically evaluate the local quadratic approximation $U$ of the
+    potential's eigenvalue $\lambda$ at the given grid
+    nodes $\gamma$. This function is used for the
+    homogeneous case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          quadratic approximation at.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      An array containing the values of $U$ at the nodes
+      $\gamma$.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_local\_quadratic\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_remainder}(\textit{self}, \textit{diagonal\_component}={\tt 0})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the non-quadratic remainder $W$ of the quadratic
+    approximation $U$ of the potential's eigenvalue
+    $\lambda$. This function is used for the homogeneous
+    case and takes into account the leading component
+    $\chi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxx}
+
+          \item[diagonal\_component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.calculate\_local\_remainder
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_local\_remainder\_at}(\textit{self}, \textit{position}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Numerically evaluate the non-quadratic remainder $W$ of the quadratic
+    approximation $U$ of the potential's eigenvalue
+    $\lambda$ at the given nodes
+    $\gamma$. This function is used for the homogeneous
+    and the inhomogeneous case and just evaluates the remainder $W$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[position]
+
+          The point $q$ where the Taylor series is computed.
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          potential at.
+
+          \item[component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with a single entry consisting of an array containing the
+      values of $W$ at the nodes $\gamma$.
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_local\_remainder\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_quadratic\_multi}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the local quadratic approximation $U$ of the potential's
+    eigenvalue $\lambda$. This function is used for the
+    inhomogeneous case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          There are no inhomogeneous wavepackets with a single component.
+
+        \end{description}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.calculate\_local\_quadratic\_multi
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_local\_quadratic\_multi\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Numerically evaluate the local quadratic approximation $U$ of the
+    potential's eigenvalue $\lambda$ at the given grid
+    nodes $\gamma$. This function is used for the
+    inhomogeneous case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The grid nodes $\gamma$ we want to evaluate the
+          quadratic approximation at.
+
+          \item[component]
+
+          Dummy parameter that has no effect here.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          There are no inhomogeneous wavepackets with a single component.
+
+        \end{description}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.evaluate\_local\_quadratic\_multi\_at
+
+    \end{boxedminipage}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{calculate\_local\_remainder\_multi}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the non-quadratic remainder $W$ of the quadratic
+    approximation $U$ of the potential's eigenvalue
+    $\lambda$. This function is used for the inhomogeneous
+    case.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          There are no inhomogeneous wavepackets with a single component.
+
+        \end{description}
+
+      \end{quote}
+
+      Overrides: MatrixPotential.calculate\_local\_remainder\_multi
+
+    \end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Instance Variables                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Instance Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright x\- & The variable $x$ that represents position space.&\\
+\cline{1-2}
+\raggedright p\-o\-t\-e\-n\-t\-i\-a\-l\- & The matrix of the potential $V\ofs{x}$.&\\
+\cline{1-2}
+\end{longtable}
+
+    \index{MatrixPotential1S \textit{(module)}!MatrixPotential1S \textit{(class)}|)}

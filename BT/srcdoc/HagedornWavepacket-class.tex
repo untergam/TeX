@@ -1,0 +1,917 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}|(}
+\section{Class HagedornWavepacket}
+
+    \label{HagedornWavepacket:HagedornWavepacket}
+This class represents homogeneous vector valued wavepackets
+$\Ket{\Psi}$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{HagedornWavepacket:HagedornWavepacket:__init__}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self}, \textit{number\_components}, \textit{basis\_size})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Initialize the \textit{HagedornWavepacket} object that represents
+    $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxx}
+
+          \item[number\_components]
+
+          The number $N$ of components $\Phi_0,
+          \ldots , \Phi_{N-1}$ the vector
+          $\Psi$ has got.
+
+          \item[basis\_size]
+
+          The number $K$ of basis functions $\phi_0,
+          \ldots , \phi_{K-1}$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          For $N < 1$ or $K < 2$.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:__str__}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.\_\_str\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A string describing the Hagedorn wavepacket.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:get_number_components}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.get\_number\_components \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_components}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number $N$ of components the wavepacket $\Psi$
+      has.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:set_coefficients}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.set\_coefficients \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_coefficients}(\textit{self}, \textit{values}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Update the coefficients $c$ of $\Psi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[values]
+
+          The new values of the coefficients $c^i$ of
+          $\Phi_i$.
+
+          \item[component]
+
+          The index $i$ of the component we want to update with new
+          coefficients.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          For invalid indices $i$.
+
+        \end{description}
+
+      \end{quote}
+
+\textbf{Note:} This function can either set new coefficients for a single component
+$\Phi_i$ only if the \textit{component} attribute is set
+or for all components simultaneously if \textit{values} is a list of
+arrays.
+
+
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:set_coefficient}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.set\_coefficient \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_coefficient}(\textit{self}, \textit{component}, \textit{index}, \textit{value})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set a single coefficient $c^i_k$ of the specified
+    component $\Phi_i$ of
+    $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[component]
+
+          The index $i$ of the component $\Phi_i$ we
+          want to update.
+
+          \item[index]
+
+          The index $k$ of the coefficient $c^i_k$ we
+          want to update.
+
+          \item[value]
+
+          The new value of the coefficient $c^i_k$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          For invalid indices $i$ or $k$.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:get_coefficients}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.get\_coefficients \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_coefficients}(\textit{self}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Returns the coefficients $c^i$ for some components
+    $\Phi_i$ of
+    $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[component]
+
+          The index $i$ of the coefficients $c^i$ we
+          want to get.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The coefficients $c^i$ either for all components
+      $\Phi_i$ or for a specified one.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:get_coefficient_vector}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.get\_coefficient\_vector \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_coefficient\_vector}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The coefficients $c^i$ of all components
+      $\Phi_i$ as a single long column vector.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:set_coefficient_vector}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.set\_coefficient\_vector \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_coefficient\_vector}(\textit{self}, \textit{vector})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set the coefficients for all components $\Phi_i$
+    simultaneously.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[vector]
+
+          The coefficients of all components as a single long column
+          vector.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:get_parameters}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.get\_parameters \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_parameters}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Get the Hagedorn parameters $\Pi$ of the wavepacket
+    $\Psi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The Hagedorn parameters $P$, $Q$, $S$, $p$, $q$ of
+      $\Psi$ in this order.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:set_parameters}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.set\_parameters \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_parameters}(\textit{self}, \textit{parameters})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set the Hagedorn parameters $\Pi$ of the wavepacket
+    $\Psi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxx}
+
+          \item[parameters]
+
+          The Hagedorn parameters $P$, $Q$, $S$, $p$, $q$ of
+          $\Psi$ in this order.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:set_quadrator}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.set\_quadrator \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_quadrator}(\textit{self}, \textit{quadrator})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set the \textit{Quadrator} instance used for quadrature.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[quadrator]
+
+          The new \textit{Quadrator} instance. May be \textit{None} to use
+          a dafault one of order $K+4$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:evaluate_base_at}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.evaluate\_base\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_base\_at}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the Hagedorn functions $\phi_k$ recursively
+    at the given nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The nodes $\gamma$ at which the Hagedorn
+          functions are evaluated.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      Returns a two dimensional array $H$ where the entry $H[k,i]$ is
+      the value of the $k$-th Hagedorn function evaluated at the node
+      $i$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:evaluate_at}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.evaluate\_at \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{evaluate\_at}(\textit{self}, \textit{nodes}, \textit{component}={\tt None}, \textit{prefactor}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the Hagedorn wavepacket $\Psi$ at the given
+    nodes $\gamma$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[nodes]
+
+          The nodes $\gamma$ at which the Hagedorn
+          wavepacket gets evaluated.
+
+          \item[component]
+
+          The index $i$ of a single component $\Phi_i$
+          to evaluate. (Defaults to  for evaluating all components.)
+
+          \item[prefactor]
+
+          Whether to include a factor of
+          $\det\ofs{Q}^{-\frac{1}{2}}$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list of arrays or a single array containing the values of the
+      $\Phi_i$ at the nodes $\gamma$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:quadrate}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.quadrate \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{quadrate}(\textit{self}, \textit{function}, \textit{summed}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Performs the quadrature of
+    $\Braket{\Psi|f|\Psi}$
+    for a general $f$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxx}
+
+          \item[function]
+
+          A real-valued function $f(x):R \rightarrow R^{N
+          \times N}$
+
+          \item[summed]
+
+          Whether to sum up the individual integrals
+          $\Braket{\Phi_i|f_{i,j}|\Phi_j}$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The value of
+      $\Braket{\Psi|f|\Psi}$.
+      This is either a scalar value or a list of $N^2$
+      scalar elements.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:matrix}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.matrix \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{matrix}(\textit{self}, \textit{function})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the matrix representation of
+    $\Braket{\Psi|f|\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxx}
+
+          \item[function]
+
+          A function with two arguments $f:(q, x) \rightarrow
+          \mathbb{R}$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A square matrix of size $NK \times NK$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:get_norm}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.get\_norm \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_norm}(\textit{self}, \textit{component}={\tt None}, \textit{summed}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the $L^2$ norm of the wavepacket
+    $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[component]
+
+          The component $\Phi_i$ of which the norm is
+          calculated.
+
+          \item[summed]
+
+          Whether to sum up the norms of the individual components
+          $\Phi_i$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list containing the norms of all components
+      $\Phi_i$ or the overall norm of
+      $\Psi$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:potential_energy}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.potential\_energy \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{potential\_energy}(\textit{self}, \textit{potential}, \textit{summed}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the potential energy
+    $\Braket{\Psi|V|\Psi}$
+    of the wavepacket componentwise.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[potential]
+
+          The potential energy operator $V$ as function.
+
+          \item[summed]
+
+          Whether to sum up the individual integrals
+          $\Braket{\Phi_i|V_{i,j}|\Phi_j}$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The potential energy of the wavepacket's components
+      $\Phi_i$ or the overall potential energy of
+      $\Psi$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:kinetic_energy}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.kinetic\_energy \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{kinetic\_energy}(\textit{self}, \textit{summed}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the kinetic energy
+    $\Braket{\Psi|T|\Psi}$
+    of the wavepacket componentwise.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[summed]
+
+          Whether to sum up the individual integrals
+          $\Braket{\Phi_i|T_{i,j}|\Phi_j}$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The kinetic energy of the wavepacket's components
+      $\Phi_i$ or the overall kinetic energy of
+      $\Psi$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:grady}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.grady \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{grady}(\textit{self}, \textit{component})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the effect of $-i \varepsilon^2
+    \frac{\partial}{\partial x}$ on a
+    component $\Phi_i$ of the Hagedorn wavepacket
+    $\Psi$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[component]
+
+          The index $i$ of the component $\Phi_i$ on
+          which we apply the above operator.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The modified coefficients.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:project_to_canonical}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.project\_to\_canonical \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{project\_to\_canonical}(\textit{self}, \textit{potential})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Project the Hagedorn wavepacket into the canonical basis.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[potential]
+
+          The potential $V$ whose eigenvectors $\nu_l$ are used for the
+          transformation.
+
+        \end{Ventry}
+
+      \end{quote}
+
+\textbf{Note:} This function is expensive and destructive! It modifies the coefficients of
+the \textit{self} instance.
+
+
+
+    \end{boxedminipage}
+
+    \label{HagedornWavepacket:HagedornWavepacket:project_to_eigen}
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}!HagedornWavepacket.project\_to\_eigen \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{project\_to\_eigen}(\textit{self}, \textit{potential})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Project the Hagedorn wavepacket into the eigenbasis of a given
+    potential $V$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[potential]
+
+          The potential $V$ whose eigenvectors $\nu_l$ are used for the
+          transformation.
+
+        \end{Ventry}
+
+      \end{quote}
+
+\textbf{Note:} This function is expensive and destructive! It modifies the coefficients of
+the \textit{self} instance.
+
+
+
+    \end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Instance Variables                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Instance Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright n\-u\-m\-b\-e\-r\-\_\-c\-o\-m\-p\-o\-n\-e\-n\-t\-s\- & Number of components $\Phi_i$ the wavepacket
+          $\Ket{\Psi}$ has got.&\\
+\cline{1-2}
+\raggedright b\-a\-s\-i\-s\-\_\-s\-i\-z\-e\- & Size of the basis from which we construct the wavepacket.&\\
+\cline{1-2}
+\raggedright c\-o\-e\-f\-f\-i\-c\-i\-e\-n\-t\-s\- & The coefficients $c^i$ of the linear
+          combination for each component $\Phi_k$.&\\
+\cline{1-2}
+\raggedright q\-u\-a\-d\-r\-a\-t\-o\-r\- & An object that provides nodes $\gamma$ and
+          weights $\omega$ for Gauss-Hermite quadrature.&\\
+\cline{1-2}
+\end{longtable}
+
+    \index{HagedornWavepacket \textit{(module)}!HagedornWavepacket \textit{(class)}|)}

@@ -1,0 +1,238 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}|(}
+\section{Class Quadrator}
+
+    \label{Quadrator:Quadrator}
+This class is an abstract interface to a Gauss-Hermite quadrature rule
+tailored at the needs of Hagedorn wavepackets.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{Quadrator:Quadrator:__init__}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self}, \textit{order})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Initialize a new quadrature rule.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[order]
+
+          The order $R$ of the Gauss-Hermite quadrature.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          If the order is less then 2.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Quadrator:Quadrator:__str__}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.\_\_str\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{Quadrator:Quadrator:get_order}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.get\_order \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_order}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The order $R$ of the quadrature.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Quadrator:Quadrator:get_number_nodes}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.get\_number\_nodes \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_nodes}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number of quadrature nodes.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Quadrator:Quadrator:get_nodes}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.get\_nodes \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_nodes}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      An array containing the quadrature nodes $\gamma_i$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Quadrator:Quadrator:get_weights}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.get\_weights \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_weights}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      An array containing the quadrature weights $\omega_i$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Quadrator:Quadrator:hermite_recursion}
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}!Quadrator.hermite\_recursion \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{hermite\_recursion}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Evaluate the Hermite functions recursively up to the order $R$ on the
+    given nodes.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[nodes]
+
+          The points at which the Hermite functions are evaluated.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      Returns a twodimensional array $H$ where the entry $H[k,i]$ is
+      the value of the $k$-th Hermite function evaluated at the node
+      $i$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Instance Variables                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Instance Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright o\-r\-d\-e\-r\- & The order $R$ of the Gauss-Hermite quadrature.&\\
+\cline{1-2}
+\raggedright n\-o\-d\-e\-s\- & The quadrature nodes $\gamma_i$.&\\
+\cline{1-2}
+\raggedright w\-e\-i\-g\-h\-t\-s\- & The quadrature weights $\omega_i$.&\\
+\cline{1-2}
+\end{longtable}
+
+    \index{Quadrator \textit{(module)}!Quadrator \textit{(class)}|)}

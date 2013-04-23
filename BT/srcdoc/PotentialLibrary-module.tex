@@ -1,0 +1,258 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Module Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{PotentialLibrary \textit{(module)}|(}
+\section{Module PotentialLibrary}
+
+    \label{PotentialLibrary}
+This file contains some ready made potentials. They are stored as tupels of
+variables and expressions. The expression need to be a sympy 'Matrix'
+object, even if it's only a $1 \times 1$ matrix.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               Variables                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright x\- & \raggedright Position space variables. Currently only one space dimension is
+          supported.
+
+\textbf{Value:}
+$x$&\\
+\cline{1-2}
+\raggedright q\-u\-a\-d\-r\-a\-t\-i\-c\- & \raggedright Simple harmonic potential.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sigma x^2
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\raggedright p\-e\-r\-t\-\_\-q\-u\-a\-d\-r\-a\-t\-i\-c\- & \raggedright Perturbed harmonic potential.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sigma x^2 + \frac{1}{2} \varepsilon^2 x^2
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\raggedright q\-u\-a\-r\-t\-i\-c\- & \raggedright A simple fourth order anharmonic potential.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{4} \sigma x^4
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\raggedright c\-o\-s\-\_\-w\-a\-v\-e\-s\- & \raggedright A potential consisting of a cosine wave.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \alpha (1 - \cos(\gamma x))
+  \end{pmatrix}
+\end{equation}
+
+where $\alpha = 1.0$ and $\gamma = 1.0$.
+&\\
+\cline{1-2}
+\raggedright d\-o\-u\-b\-l\-e\-\_\-w\-e\-l\-l\- & \raggedright A double well potential.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \sigma (x^2-1)^2
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 1.0$.
+&\\
+\cline{1-2}
+\raggedright e\-c\-k\-a\-r\-t\- & \raggedright The Eckart potential.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \sigma \frac{1}{\cosh\ofs{\frac{x}{a}}^2}
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 100 \cdot 3.8088e^{-4}$ and $a = 1.0 / (2.0 \cdot 0.52917721018)$.
+&\\
+
+
+\cline{1-2}
+\raggedright w\-a\-l\-l\- & \raggedright A smooth unitstep like wall.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \arctan(\sigma x) + \frac{\pi}{2}
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 10.0$.
+&\\
+\cline{1-2}
+\raggedright v\-\_\-s\-h\-a\-p\-e\- & \raggedright A narrow 'V'-like potential.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sqrt{\frac{9}{16} \varepsilon^2 + \tanh(x)^2}
+  \end{pmatrix} \,.
+\end{equation}
+&\\
+\cline{1-2}
+\raggedright t\-w\-o\-\_\-q\-u\-a\-d\-r\-a\-t\-i\-c\- & \raggedright Double harmonic potential for two components.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sigma x^2 & 0 \\
+    0                      & \frac{1}{2} \sigma x^2
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\raggedright t\-w\-o\-\_\-q\-u\-a\-r\-t\-i\-c\- & \raggedright Double quartic anharmonic potential for two components.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{4} \sigma x^4 & 0 \\
+    0                      & \frac{1}{8} \sigma x^4
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 1.0$.
+&\\
+\cline{1-2}
+\raggedright m\-a\-t\-r\-i\-x\-1\-\_\-d\-i\-a\-g\- & \raggedright Diagonalized single avoided crossing.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \sqrt{\frac{9}{16} \varepsilon^2 + \tanh(x)^2} & 0 \\
+    0                                              & -\sqrt{\frac{9}{16} \varepsilon^2 + \tanh(x)^2}
+  \end{pmatrix} \,.
+\end{equation}
+&\\
+\cline{1-2}
+\raggedright d\-e\-l\-t\-a\-\_\-g\-a\-p\- & \raggedright A potential with a single avoided crossing.
+
+\textbf{Potential:}
+\begin{equation}
+  \frac{1}{2}
+  \begin{pmatrix}
+    \tanh(x) & \delta \\
+    \delta   & -\tanh(x)
+  \end{pmatrix} \,.
+\end{equation}
+&\\
+\cline{1-2}
+\raggedright t\-w\-o\-\_\-c\-r\-o\-s\-s\-i\-n\-g\-s\- & \raggedright A potential with two avoided crossings in series.
+
+\textbf{Potential:}
+\begin{equation}
+  \frac{1}{2}
+  \begin{pmatrix}
+    \Theta & \delta \\
+    \delta & -\Theta
+  \end{pmatrix}
+\end{equation}
+
+where $\Theta \assign \tanh(x-\rho) \tanh(x+\rho)$ and $\rho = 3.0$.
+&\\
+\cline{1-2}
+\raggedright t\-h\-r\-e\-e\-\_\-q\-u\-a\-d\-r\-a\-t\-i\-c\- & \raggedright Decoupled harmonic potentials for three components.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sigma x^2 & 0                      & 0 \\
+    0                      & \frac{1}{2} \sigma x^2 & 0 \\
+    0                      & 0                      & \frac{1}{2} \sigma x^2 \\
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\raggedright t\-h\-r\-e\-e\-\_\-s\-t\-a\-t\-e\-s\- & \raggedright A potential with three energy levels and multiple crossings.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \Theta + \Xi & \delta_1 & \delta_2 \\
+    \delta_1     & -\Theta  & 0 \\
+    \delta_2     & 0        & 1 - \Xi
+  \end{pmatrix}
+\end{equation}
+
+where
+\begin{equation*}
+  \Theta \assign \tanh(x + \rho) \quad \text{and} \quad
+  \Xi \assign \tanh(x-\rho)
+\end{equation*}
+
+and $\rho = 3.0$.
+&\\
+\cline{1-2}
+\raggedright f\-o\-u\-r\-\_\-p\-o\-w\-e\-r\-s\- & \raggedright Harmonic and higher order anharmonic potentials for four
+          components.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sigma x^2 & 0                      & 0                      & 0 \\
+    0                      & \frac{1}{4} \sigma x^4 & 0                      & 0 \\
+    0                      & 0                      & \frac{1}{6} \sigma x^6 & 0 \\
+    0                      & 0                      & 0                      & \frac{1}{8} \sigma x^8
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\raggedright f\-i\-v\-e\-\_\-q\-u\-a\-d\-r\-a\-t\-i\-c\- & \raggedright Decoupled harmonic potentials for five components.
+
+\textbf{Potential:}
+\begin{equation}
+  \begin{pmatrix}
+    \frac{1}{2} \sigma x^2 & 0                      & 0                      & 0                      & 0 \\
+    0                      & \frac{1}{2} \sigma x^2 & 0                      & 0                      & 0 \\
+    0                      & 0                      & \frac{1}{2} \sigma x^2 & 0                      & 0 \\
+    0                      & 0                      & 0                      & \frac{1}{2} \sigma x^2 & 0 \\
+    0                      & 0                      & 0                      & 0                      & \frac{1}{2} \sigma x^2
+  \end{pmatrix}
+\end{equation}
+
+where $\sigma = 0.05$.
+&\\
+\cline{1-2}
+\end{longtable}
+
+    \index{PotentialLibrary \textit{(module)}|)}

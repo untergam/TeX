@@ -1,0 +1,242 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}|(}
+\section{Class Propagator}
+
+    \label{Propagator:Propagator}
+\textbf{Subclasses:}
+FourierPropagator,
+HagedornPropagator,
+HagedornMultiPropagator
+
+Propagators can numerically simulate the time evolution of quantum states
+as described by the time-dependent Schrödinger equation.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{Propagator:Propagator:__init__}
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}!Propagator.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Initialize a new \textit{Propagator} instance.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Propagator:Propagator:__str__}
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}!Propagator.\_\_str\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Prepare a printable string representing the \textit{Propagator}
+    instance.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Propagator:Propagator:get_number_components}
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}!Propagator.get\_number\_components \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_components}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number of components of
+      $\Ket{\Psi}$.
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Propagator:Propagator:get_potential}
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}!Propagator.get\_potential \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_potential}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The embedded \textit{MatrixPotential} instance.
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+
+    \label{Propagator:Propagator:get_wavefunction}
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}!Propagator.get\_wavefunction \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_wavefunction}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      Create a \textit{WaveFunction} instance representing the wave function
+      evaluated on a given grid.
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+\textbf{Note:} This function can have an additional parameter for providing the grid.
+
+
+
+    \end{boxedminipage}
+
+    \label{Propagator:Propagator:propagate}
+    \index{Propagator \textit{(module)}!Propagator \textit{(class)}!Propagator.propagate \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{propagate}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Given the wave function $\Psi$ at time $t$, calculate
+    the new $\Psi$ at time $t + \tau$. We do exactly
+    one timestep $\tau$ here.
+
+\setlength{\parskip}{1ex}
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{NotImplementedError}]
+
+          This is an abstract base class.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}

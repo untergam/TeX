@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                          Module Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{Parameters \textit{(module)}|(}
+\section{Module Parameters}
+
+    \label{Parameters}
+This is the configuration file for the multistate simulation code. All
+available configuration parameters can be set here. This file is imported
+from the simulation code. For configuring the code, just modifiy the values
+here.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               Variables                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Variables}
+
+    \vspace{-1cm}
+\hspace{\varindent}\begin{longtable}{|p{\varnamewidth}|p{\vardescrwidth}|l}
+\cline{1-2}
+\cline{1-2} \centering \textbf{Name} & \centering \textbf{Description}& \\
+\cline{1-2}
+\endhead\cline{1-2}\multicolumn{3}{r}{\small\textit{continued on next page}}\\\endfoot\cline{1-2}
+\endlastfoot\raggedright a\-l\-g\-o\-r\-i\-t\-h\-m\- & \raggedright The algorithm used for time propagation, can be one of: \texttt{fourier}
+          {\textbar} \texttt{hagedorn} {\textbar} \texttt{multihagedorn}.
+
+&\\
+\cline{1-2}
+\raggedright p\-o\-t\-e\-n\-t\-i\-a\-l\- & \raggedright The potential $V\ofs{x}$ used in the simulation. See the
+          \textit{PotentialLibrary} for available potentials.
+
+&\\
+\cline{1-2}
+\raggedright T\- & \raggedright Perform a simulation in the time interval $[0, T]$.
+
+&\\
+\cline{1-2}
+\raggedright d\-t\- & \raggedright Duration of a single time step $\tau$.
+
+&\\
+\cline{1-2}
+\raggedright e\-p\-s\- & \raggedright The parameter $\varepsilon$ in the semiclassical
+          scaling.
+
+&\\
+\cline{1-2}
+\raggedright d\-e\-l\-t\-a\- & \raggedright A variable that is used in the definition of some potentials.
+
+&\\
+\cline{1-2}
+
+\raggedright c\-o\-e\-f\-f\-i\-c\-i\-e\-n\-t\-s\- & \raggedright A list of $N$ lists of $(k,c_k)$ tuples that set the
+          coefficient $c_k$ of the basis function
+          $\phi_k$. The $i$-th list contains the
+          coefficients $c^i$ of the component
+          $\Phi_i$ of the initial wavepacket
+          $\Psi$.
+
+&\\
+\cline{1-2}
+\raggedright p\-a\-r\-a\-m\-e\-t\-e\-r\-s\- & \raggedright A list of the Hagedorn parameter sets $\Pi_i$
+          of component $\Phi_i$ of the initial wavepacket
+          $\Psi$.
+
+&\\
+\cline{1-2}
+\raggedright n\-g\-n\- & \raggedright The Number of grid nodes $\gamma_i$ in position
+          space.
+
+\textbf{Value:}
+{\tt 4096}&\\
+\cline{1-2}
+\raggedright f\- & \raggedright Scaling factor $f$ for the computational domain
+          $\Omega$ in position space. The interval in the
+          position space is given by $[-f\pi, f\pi]$.
+
+\textbf{Value:}
+{\tt 5.0}&\\
+\cline{1-2}
+\raggedright b\-a\-s\-i\-s\-\_\-s\-i\-z\-e\- & \raggedright The number $K$ of basis functions $\phi_k$
+          used for Hagedorn wavepackets $\Phi$.
+
+\textbf{Value:}
+{\tt 64}&\\
+\cline{1-2}
+\raggedright l\-e\-a\-d\-i\-n\-g\-\_\-c\-o\-m\-p\-o\-n\-e\-n\-t\- & \raggedright The leading component index $\chi$ of the
+          eigenvalue $\lambda_\chi$ that
+          governs the propagation of the Hagedorn parameters
+          $\Pi$ for homogeneous wavepackets.
+
+\textbf{Value:}
+{\tt 0}&\\
+\cline{1-2}
+\raggedright o\-u\-t\-f\-i\-l\-e\-\_\-n\-o\-d\-e\-s\- & \raggedright Filename of the output file that contains the grid nodes
+          $\gamma_i$.
+
+\textbf{Value:}
+{\tt \texttt{'}\texttt{nodes.dat}\texttt{'}}&\\
+\cline{1-2}
+\raggedright o\-u\-t\-f\-i\-l\-e\-\_\-w\-a\-v\-e\-f\-u\-n\-c\-t\-i\-o\-n\- & \raggedright Filename of the output file that contains the wavefunction
+          $\psi_i$.
+
+\textbf{Value:}
+{\tt \texttt{'}\texttt{wavefunction.dat}\texttt{'}}&\\
+\cline{1-2}
+\raggedright o\-u\-t\-f\-i\-l\-e\-\_\-e\-n\-e\-r\-g\-i\-e\-s\- & \raggedright Filename of the output file that contains the energies $E$.
+
+\textbf{Value:}
+{\tt \texttt{'}\texttt{energies.dat}\texttt{'}}&\\
+\cline{1-2}
+\raggedright o\-u\-t\-f\-i\-l\-e\-\_\-o\-p\-e\-r\-a\-t\-o\-r\-s\- & \raggedright Filename of the output file that contains the operators $T$
+          and $V$.
+
+\textbf{Value:}
+{\tt \texttt{'}\texttt{operators.dat}\texttt{'}}&\\
+\cline{1-2}
+\raggedright o\-u\-t\-f\-i\-l\-e\-\_\-p\-a\-r\-a\-m\-e\-t\-e\-r\-s\- & \raggedright Filename of the output file that contains the Hagedorn
+          parameters $\Pi_i$.
+
+\textbf{Value:}
+{\tt \texttt{'}\texttt{parameters.dat}\texttt{'}}&\\
+\cline{1-2}
+\raggedright o\-u\-t\-f\-i\-l\-e\-\_\-c\-o\-e\-f\-f\-i\-c\-i\-e\-n\-t\-s\- & \raggedright Filename of the output file that contains the Hagedorn
+          coefficients $c^i$.
+
+\textbf{Value:}
+{\tt \texttt{'}\texttt{coefficients.dat}\texttt{'}}&\\
+\cline{1-2}
+\raggedright w\-r\-i\-t\-e\-\_\-n\-t\-h\- & \raggedright Write data to disk only each $n$-th timestep.
+
+\textbf{Value:}
+{\tt 1}&\\
+
+\cline{1-2}
+\end{longtable}
+
+    \index{Parameters \textit{(module)}|)}

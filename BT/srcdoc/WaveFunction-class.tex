@@ -1,0 +1,367 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}|(}
+\section{Class WaveFunction}
+
+    \label{WaveFunction:WaveFunction}
+This class represents a vector valued quantum state
+$\Ket{\Psi}$ as used in the vector valued
+time-dependent Schroedinger equation. The state
+$\Ket{\Psi}$ is composed of
+$\psi_0, \ldots,
+\psi_{N-1}$ where $\psi_i$ is a single
+wavefunction component.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{WaveFunction:WaveFunction:__init__}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self}, \textit{nodes}, \textit{values})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Initialize the \textit{WaveFunction} object that represents the vector
+    of states $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[nodes]
+
+          The grid nodes to which the numerical values of
+          $\psi_i$ belong to.
+
+          \item[values]
+
+          A list with the numerical values of each component
+          $\psi_i$ sampled at the given nodes.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:__str__}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.\_\_str\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_str\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A string that describes the wavefunction
+      $\Ket{\Psi}$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:get_number_components}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.get\_number\_components \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_number\_components}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The number of components $\psi_i$ the vector
+      $\Ket{\Psi}$ consists of.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:get_nodes}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.get\_nodes \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_nodes}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The grid nodes $\gamma$ the wave function values
+      belong to.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:get_values}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.get\_values \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_values}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Return the wave function values for each component of
+    $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with the values of all components $\psi_i$
+      evaluated on the grid nodes $\gamma$.
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:set_values}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.set\_values \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_values}(\textit{self}, \textit{values})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Assign new function values for each component of
+    $\Ket{\Psi}$.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxx}
+
+          \item[values]
+
+          A list with the new values of all the $\psi_i$.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          If the list \textit{values} has the wrong number of entries.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:get_norm}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.get\_norm \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{get\_norm}(\textit{self}, \textit{values}={\tt None}, \textit{summed}={\tt False}, \textit{component}={\tt None})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the $L^2$ norm of the whole vector
+    $\Ket{\Psi}$ or some individual
+    components $\psi_i$. The calculation is done in
+    momentum space.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[values]
+
+          Allows to use this function for external data, similar to a
+          static function.
+
+          \item[summed]
+
+          Whether to sum up the norms of the individual components.
+
+          \item[component]
+
+          The component $\psi_i$ of which the norm is
+          calculated.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      The $L^2$ norm of
+      $\Ket{\Psi}$ or a list of the
+      $L^2$ norms of all components $\psi_i$. (Depending on the
+      optional arguments.)
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:kinetic_energy}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.kinetic\_energy \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{kinetic\_energy}(\textit{self}, \textit{kinetic}, \textit{summed}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the kinetic energy $E_{\text{kin}} \assign
+    \Braket{\Psi|T|\Psi}$
+    of the different components.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxx}
+
+          \item[kinetic]
+
+          The kinetic energy operator $T$.
+
+          \item[summed]
+
+          Whether to sum up the kinetic energies of the individual
+          components.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with the kinetic energies of the individual components or the
+      overall kinetic energy of the wavefunction. (Depending on the
+      optional arguments.)
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{WaveFunction:WaveFunction:potential_energy}
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}!WaveFunction.potential\_energy \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{potential\_energy}(\textit{self}, \textit{potential}, \textit{summed}={\tt False})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Calculate the potential energy $E_{\text{pot}} \assign
+    \Braket{\Psi|V|\Psi}$
+    of the different components.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[potential]
+
+          The potential energy operator $V$.
+
+          \item[summed]
+
+          Whether to sum up the potential energies of the individual
+          components.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      A list with the potential energies of the individual components or
+      the overall potential energy of the wavefunction. (Depending on the
+      optional arguments.)
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \index{WaveFunction \textit{(module)}!WaveFunction \textit{(class)}|)}

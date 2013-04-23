@@ -1,0 +1,82 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{PotentialFactory \textit{(module)}!PotentialFactory \textit{(class)}|(}
+\section{Class PotentialFactory}
+
+    \label{PotentialFactory:PotentialFactory}
+A factory for \textit{MatrixPotential} instances. We decide which subclass
+of the abstract base class \textit{MatrixPotential} to instantiate
+according to the size of the potential's matrix. For a $1 \times 1$
+matrix we can use the class \textit{MatrixPotential1S} which implements
+simplified scalar symbolic calculations. In the case of a $2 \times
+2$ matrix we use the class \textit{MatrixPotential2S} that implements the
+full symbolic calculations for matrices. And for matrices of size bigger
+than $2 \times 2$ symbolic calculations are unfeasible and we have to fall
+back to pure numerical methods implemented in \textit{MatrixPotentialMS}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{PotentialFactory:PotentialFactory:create_potential}
+    \index{PotentialFactory \textit{(module)}!PotentialFactory \textit{(class)}!PotentialFactory.create\_potential \textit{(static method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{create\_potential}(\textit{potential\_expression})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Static method that creates a \textit{MatrixPotential} instance and
+    decides which subclass to instantiate depending on the given potential
+    expression.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxxxxxxxxxx}
+
+          \item[potential\_expression]
+
+          The symbolic potential matrix given.
+
+        \end{Ventry}
+
+      \end{quote}
+
+      \textbf{Return Value}
+    \vspace{-1ex}
+
+      \begin{quote}
+      An adequate \textit{MatrixPotential} instance.
+
+      \end{quote}
+
+      \textbf{Raises}
+    \vspace{-1ex}
+
+      \begin{quote}
+        \begin{description}
+
+          \item[\texttt{ValueError}]
+
+          If the potential matrix is not square.
+
+        \end{description}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \index{PotentialFactory \textit{(module)}!PotentialFactory \textit{(class)}|)}

@@ -1,0 +1,268 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                           Class Description                           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}|(}
+\section{Class Serializer}
+
+    \label{Serializer:Serializer}
+A serializer class that can save various simulation results into data
+files. The output files can be processed further for producing e.g. plots.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                Methods                                %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \subsection{Methods}
+
+    \label{Serializer:Serializer:__init__}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.\_\_init\_\_ \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{\_\_init\_\_}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set up a new \textit{Serializer} instance. The output files are created
+    and opened.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:set_interval}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.set\_interval \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{set\_interval}(\textit{self}, \textit{value})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Set the interval (time steps) at which the data gets written to the
+    disk.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxx}
+
+          \item[value]
+
+          Skip that number of time steps before writing data again.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:finalize}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.finalize \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{finalize}(\textit{self})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Close the open output files.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:save_nodes}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.save\_nodes \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{save\_nodes}(\textit{self}, \textit{nodes})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Save the grid nodes to a file.
+
+\setlength{\parskip}{1ex}
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:save_wavefunction}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.save\_wavefunction \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{save\_wavefunction}(\textit{self}, \textit{wavefunction})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Save a \textit{WaveFunction} instance. The output is suitable for the
+    plotting routines.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxx}
+
+          \item[wavefunction]
+
+          The \textit{WaveFunction} instance to save.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:save_energies}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.save\_energies \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{save\_energies}(\textit{self}, \textit{energies})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Save the kinetic and potential energies to a file.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxx}
+
+          \item[energies]
+
+          A tuple \texttt{(ekin, epot)} containing the energies.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:save_operators}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.save\_operators \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{save\_operators}(\textit{self}, \textit{operators})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Save the kinetic and potential operator to a file.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxx}
+
+          \item[operators]
+
+          The operators to save.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:save_coefficients}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.save\_coefficients \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{save\_coefficients}(\textit{self}, \textit{coefficients})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Save the coefficients of the Hagedorn wavepacket to a file.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxxxx}
+
+          \item[coefficients]
+
+          The coefficients of the Hagedorn wavepacket.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \label{Serializer:Serializer:save_parameters}
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}!Serializer.save\_parameters \textit{(method)}}
+
+    \vspace{0.5ex}
+
+\hspace{.8\funcindent}\begin{boxedminipage}{\funcwidth}
+
+    \raggedright \textbf{save\_parameters}(\textit{self}, \textit{parameters})
+
+    \vspace{-1.5ex}
+
+    \rule{\textwidth}{0.5\fboxrule}
+\setlength{\parskip}{2ex}
+    Save the parameters of the Hagedorn wavepacket to a file.
+
+\setlength{\parskip}{1ex}
+      \textbf{Parameters}
+      \vspace{-1ex}
+
+      \begin{quote}
+        \begin{Ventry}{xxxxxxxxxx}
+
+          \item[parameters]
+
+          The parameters of the Hagedorn wavepacket.
+
+        \end{Ventry}
+
+      \end{quote}
+
+    \end{boxedminipage}
+
+    \index{Serializer \textit{(module)}!Serializer \textit{(class)}|)}

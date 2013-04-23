@@ -1,0 +1,686 @@
+\chapter{Time propagation by operator splitting}
+\label{ch_operator_splitting}
+
+In this chapter we will present an algorithm based on an analytical approximation
+of the matrix exponential in the time propagation operator.
+
+The analytic explicit time propagation for an initial value of the time-dependent
+Schrödinger equation \eqref{eq:basics_tdse_semi} can be written as
+
+\begin{equation} \label{eq:analytic_time_propagation}
+  \Ket{\psi\ofs{x,t}} = \exp\ofs{-\frac{i}{\varepsilon^2}H t} \Ket{\psi\ofs{x,0}}
+\end{equation}
+
+In our case the Hamiltonian $H$ is a square matrix of small size. Let's write this
+expression in a more detailed fashion
+
+\begin{equation}
+  \exp\ofs{-\frac{i}{\varepsilon^2}H t}
+  = \exp\ofs{-\frac{i}{\varepsilon^2}\left(T+V\right) t}
+  = \exp\ofs{\frac{-i}{\varepsilon^2}T t + \frac{-i}{\varepsilon^2}V t}
+\end{equation}
+
+where the kinetic and potential operators $T$ and $V$ are given by \eqref{eq:basics_def_ops}.
+
+
+\section{Operator splitting}
+
+Given a linear ordinary differential equation
+
+\begin{equation}
+\begin{split}
+  \dot{u} & = \left(A + B\right) u \\
+ u\ofs{0} & = u_0 \\
+\end{split}
+\end{equation}
+
+with explicit solution
+
+\begin{equation}
+  u\ofs{t} = e^{\left(A+B\right)t} \cdot u_0
+\end{equation}
+
+If $A$ and $B$ were matrices it's not possible to calculate the exponential in general.
+Only if $A$ and $B$ commute we can apply the Baker-Campbell-Hausdorff formula
+and write $e^{\left(A+B\right)}$ as $e^{A}e^{B}$. However in our application the two
+operators $T$ and $V$ do never commute.
+
+A possible approximation is an operator splitting. See reference \cite{J_C_operator_splitting}
+and \cite{Gradinaru_strangsplitting} for the details of this ansatz. A time-stepping
+scheme for small but finite time steps $\tau$ is:
+
+\begin{equation} \label{eq:general_operator_splitting}
+  u\ofs{t+\tau} \approx e^{\frac{1}{2}\tau B} e^{\tau A} e^{\frac{1}{2}\tau B} u\ofs{t} \,.
+\end{equation}
+
+This is called a symmetric Lie-Trotter splitting. Now we apply this scheme to the
+equation \eqref{eq:analytic_time_propagation} with $A \assign -\frac{i}{\varepsilon^2} T$
+and $B \assign -\frac{i}{\varepsilon^2} V$. This yields for the propagation operator
+
+\begin{equation}
+  e^{\frac{1}{2} \tau \frac{-i}{\varepsilon^2} V}
+  e^{\tau \frac{-i}{\varepsilon^2} T}
+  e^{\frac{1}{2} \tau \frac{-i}{\varepsilon^2} V}
+  + \bigO{\tau^3}
+\end{equation}
+
+which is of locally third order. The approximative time propagation of the Schrödinger
+equation reads then
+
+\begin{equation} \label{eq:operator:splitting_propagation}
+  \Ket{\psi\ofs{t + \tau}}
+  =
+  e^{-\frac{i}{2\varepsilon^2} \tau V}
+  e^{-\frac{i}{\varepsilon^2} \tau T}
+  e^{-\frac{i}{2\varepsilon^2} \tau V}
+  \Ket{\psi\ofs{t}}
+\end{equation}
+
+
+\section{The propagation algorithm}
+
+With the operator splitting we gained the chance to perform each of these three propagation
+steps individually. This comes in handy, we can utilize the fact that the kinetic
+operator $T$ is diagonal in momentum space while the potential $V$ is diagonal in
+position space. Thus we switch to momentum space for the propagation by $e^{-\frac{i}{\varepsilon^2} \tau T}$
+and back to position space afterwards. This change of basis is done by a Fourier
+transformation and can be performed efficiently by a fast Fourier transform
+algorithm. With all these parts put together the time propagation now reads
+
+\begin{equation} \label{eq:Fourier_propagation_simple}
+  \Ket{\psi\ofs{x,t+\tau}}
+  =
+  e^{-\frac{i}{2\varepsilon^2} \tau V\ofs{x}}
+  \ift{
+  e^{-\frac{i}{\varepsilon^2} \tau T\ofs{\omega}}
+  \ft{
+  e^{-\frac{i}{2\varepsilon^2} \tau V\ofs{x}}
+  \Ket{\psi\ofs{x,t}}}}
+\end{equation}
+
+where $\ft{\cdot}$ denotes a formal Fourier transformation. This formula describes
+how to advance a single time step of duration $\tau$. The whole algorithm consists
+of as many iterations of this formula as desired.
+
+A further simplification of \eqref{eq:Fourier_propagation_simple} is possible when
+we take into account the exact expression for $T$ given by equation \eqref{eq:basics_def_ops}
+with the mass $m$ set to $1$. The result is $e^{-\frac{i}{\varepsilon^2} \tau T\ofs{\omega}}
+= e^{-i\varepsilon^2 \tau \widetilde{T}\ofs{\omega}}$ with $\widetilde{T} \assign -\frac{1}{2}\frac{\partial^2}{\partial x^2}$.
+
+Both the kinetic as well as the potential operator are time-independent and we can
+precalculate their exponentials. This reduces the per iteration cost of the time-
+stepping algorithm by a big amount.
+
+The expression $-\frac{i}{2\varepsilon^2} \tau V\ofs{x}$ easily evaluates
+to a scalar for any given $x$. This won't cause any troubles in the exponential.
+For the kinetic operator we need to go to Fourier space. Using the linearity of $\mathcal{F}$
+and the above definition for $\widetilde{T}$:
+
+\begin{equation*}
+  \ft{-i \varepsilon^2 \tau \widetilde{T}}
+  = -i \varepsilon^2 \tau \ft{\widetilde{T}}
+  = -i \varepsilon^2 \tau \ft{-\frac{1}{2}\frac{\partial^2}{\partial x^2}}
+\end{equation*}
+
+As known from Fourier theory it holds that $\ft{f^{\left(n\right)}\ofs{x}} = \left(i\omega\right)^n \ft{f\ofs{x}}$
+for the $n$\textsuperscript{th} derivatives of a suitable function $f$ and with $\omega$ being the
+Fourier variable. Use of this identity gives
+
+\begin{equation*}
+\begin{split}
+  \ft{-\frac{1}{2}\frac{\partial^2}{\partial x^2} f\ofs{x}}
+%   & = -\frac{1}{2} \ft{\frac{\partial^2}{\partial x^2} f\ofs{x}} \\
+  & = -\frac{1}{2} \left(i\omega\right)^2 \ft{f\ofs{x}}
+\end{split}
+\end{equation*}
+
+If we now simplify this result further, we get $\ft{\widetilde{T}} = -\frac{1}{2} \left(i\omega\right)^2$
+and thus
+
+\begin{equation}
+\begin{split}
+  \ft{-i \varepsilon^2 \tau \widetilde{T}}
+%   & = -i \varepsilon^2 \tau \left(-\frac{1}{2}\right) \left(i\omega\right)^2 \\
+  & = -\frac{i}{2} \varepsilon^2 \tau \omega^2
+\end{split}
+\end{equation}
+
+We got rid of the partial derivatives in the exponent at the cost of an additional
+real scalar $\omega$. Finally we introduce the following notation
+
+\begin{equation} \label{eq:def_Fourier_operator_exponentials}
+\begin{split}
+  T_e\ofs{\omega} & \assign \exp\ofs{-\frac{1}{2}i\varepsilon^2\tau\omega^2} \\
+  V_e\ofs{x}      & \assign \exp\ofs{-\frac{i}{2\varepsilon^2}\tau V\ofs{x}}
+\end{split}
+\end{equation}
+
+for the precalculated propagation operators. Both exponentials only contain numbers.
+With these definitions the algorithm given by equation \eqref{eq:Fourier_propagation_simple} becomes
+
+\begin{equation} \label{eq:Fourier_propagation_alg}
+  \psi_{n+1}\ofs{x} =
+  V_e\ofs{x} \mathcal{F}^{-1} \Bigl(
+    T_e\ofs{\omega} \underbrace{ \mathcal{F}\bigl(
+      V_e\ofs{x} \cdot \psi_n\ofs{x}
+    \bigr)}_{\widehat{\psi}_n\ofs{\omega}}
+  \Bigr)
+\end{equation}
+
+where $\psi_n$ is a short notation for $\psi\ofs{x, t = n\tau}$ with $n$
+denoting the number of the current time step.
+
+
+\subsection{The discretized space}
+
+For the numerical simulation we first define the computational
+domain $\Omega \in \mathbb{R}^d$. In our case where we deal with only one space
+dimension and $d=1$, this domain is simply an interval on the real line. Without
+loss of generality we can assume $\Omega$ to be centred around the origin and bounded
+by $\alpha$. To simplify further, also with respect to the Fourier transformation,
+we write the constant $\alpha$ as a multiple of $\pi$ and denote the scaling factor
+by $f \in \mathbb{R}$.
+
+\begin{equation} \label{eq:comp_domain}
+  \Omega \assign \left[ -f \pi, f \pi \right]
+\end{equation}
+
+The domain is still part of the continuum. For the numerical computation we need
+to discretize the space and introduce a grid on $\Omega$. Denote the number of grid
+nodes by $n$ and the grid spacing by $h$. Then a grid $\Gamma$ is given by
+
+\begin{gather} \label{eq:comp_domain_grid}
+  \Gamma \assign \{ \gamma_0 < \gamma_1 < \ldots < \gamma_{N-1} \} \\
+  \gamma_0 \equiv -f \pi \quad \text{and} \quad \gamma_{N-1} \equiv f \pi
+\end{gather}
+
+with equidistant grid nodes $\gamma_i \in \Omega$. Additionally to the grid in position space
+we need a grid in the Fourier space for computing $T_e\ofs{\omega}$. Suppose the
+number $n$ of grid nodes is given as a power of $2$, then we have $n = 2^{k}$. Now
+the grid $\widehat{\Gamma}$ in Fourier space is given as
+
+\begin{gather} \label{eq:comp_domain_grid_fourier}
+  \widehat{\Gamma} \assign \{ \omega_0 < \omega_1 < \ldots < \omega_{N-1} \} \\
+  \omega_0 \assign 1-2^{k-1} \quad \text{and} \quad \omega_{N-1} \assign 2^{k-1}
+\end{gather}
+
+Depending on the implementation of the discrete Fourier transform we want to use
+we have to shift the nodes with negative sign and reorder the set $\widehat{\Gamma}$.
+
+\subsection{Discretized time evolution operators}
+
+The time propagation operator exponentials $T_e$ and $V_e$ given by equation \eqref{eq:def_Fourier_operator_exponentials}
+become
+
+\begin{equation}
+\begin{split}
+  \widetilde{T}_e\ofs{\widetilde{\omega}} & \assign \exp\ofs{-\frac{1}{2}i\varepsilon^2\tau\widetilde{\omega}^2} \\
+  \widetilde{V}_e\ofs{\gamma}             & \assign \exp\ofs{-\frac{i}{2\varepsilon^2}\tau V\ofs{\gamma}}
+\end{split}
+\end{equation}
+
+where $\widetilde{\omega} \assign \frac{\omega}{n}$ and $\omega \in \widehat{\Gamma}$
+when transformed to discretized space.
+
+\subsection{Pseudo code}
+
+With the results from the last sections we are ready to write down a pseudo code for the time
+propagation of a $\Ket{\psi}$ which solves the scalar semiclassical Schrödinger
+equation \eqref{eq:basics_tdse_semi}. The algorithm \ref{al:Fourier_propagation_single}
+shows a straight forward implementation of \eqref{eq:Fourier_propagation_alg}. The
+exponentials of the operators are evaluated and stored in a vectorized fashion
+simultaneously for all grid nodes $\gamma_i$.
+
+\begin{algorithm}
+\caption{Time propagation with operator splitting of $H$ for $\Ket{\psi}$}
+\label{al:Fourier_propagation_single}
+\begin{algorithmic}
+  \REQUIRE The precalculated operator exponentials from \eqref{eq:def_Fourier_operator_exponentials}
+  \STATE // Propagate with the potential $V$
+  \STATE $\psi^{\prime} \assign V_e \cdot \psi$
+  \STATE // Fourier transform
+  \STATE $\widehat{\psi}^{\prime} \assign \ft{\psi^{\prime}}$
+  \STATE // Propagate with the kinetic operator $T$
+  \STATE $\widehat{\psi}^{\prime\prime} \assign T_e \cdot \widehat{\psi}^{\prime}$
+  \STATE // Apply inverse Fourier transform
+  \STATE $\psi^{\prime\prime} \assign \ift{\widehat{\psi}^{\prime\prime}}$
+  \STATE // Propagate again with the potential $V$
+  \STATE $\psi^{\left(k+1\right)} \assign V_e \cdot \psi^{\prime\prime}$
+  \RETURN $\psi^{\left(k+1\right)}$
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Vector valued states}
+
+In the last section we only considered the simpler case with a potential function
+and a scalar state $\Ket{\psi}$. Now we want to extend the theory to matrix
+valued potentials like \eqref{eq:general_potential_matrix} together with vector
+valued states $\Ket{\Psi}$ defined by \eqref{eq:basics_tdse_vector}. The goal of
+this effort is to get an extended version of algorithm \ref{al:Fourier_propagation_single}
+that handles this more general case.
+
+The question is now which parts we have to generalize. Because we defined the
+Lie-Trotter splitting in an abstract context, the formula \eqref{eq:operator:splitting_propagation}
+stays the same. The only things that change are the exponentials therein that become
+now matrix exponentials. Hence we have to derive new formulae analogous to the ones
+of definition \eqref{eq:def_Fourier_operator_exponentials}.
+
+With the generalized definitions of $T_e$ and $V_e$ the core of the time propagation
+algorithm as given in \eqref{eq:Fourier_propagation_alg} is still valid and can be reused.
+
+
+\subsection{Propagation operator exponentials}
+
+Assume our state $\Ket{\Psi}$ consists of $N$ components $\varphi_0, \ldots, \varphi_{N-1}$.
+Thus the Hamiltonian operator $\mathbf{H}$ has to be a $N \times N$ matrix
+\footnote{Don't confuse this with the matrix representation $H_{i,j} \assign \Braket{\phi_i | H | \phi_j}$
+of a Hamiltonian operator $H$ for a given set of basis functions $\phi_0, \ldots, \phi_k$.}.
+We may split $\mathbf{H} = \mathbf{T} + \mathbf{V}$ and write
+
+\begin{equation}
+  \mathbf{H} =
+  \left(
+  \begin{array}{ccc}
+    T_0  & {}     & {} \\
+    {}   & \ddots & {} \\
+    {}   & {}     & T_{N-1} \\
+  \end{array} \right)
+  +
+  \left(
+  \begin{array}{ccc}
+    v_{0,0}\ofs{x} & \cdots & v_{0,N-1}\ofs{x} \\
+    \vdots         &        & \vdots \\
+    v_{N-1,0}\ofs{x} & \cdots & v_{N-1,N-1}\ofs{x}
+  \end{array} \right)
+\end{equation}
+
+where we used the definition of $T$ given by \eqref{eq:basics_def_ops} and the
+potential matrix introduced in \eqref{eq:general_potential_matrix}. We can simplify
+the first matrix by assuming that all the $T_i$ are identical operators.
+
+With this last step, the exponential $e^{-\frac{i}{\varepsilon^2} \tau \mathbf{T}}$
+of the diagonal kinetic operator matrix $\mathbf{T}$ becomes rather easy and the
+problem reduces to what we did in the last section. The solution for a single
+component is given by $T_e$ of \eqref{eq:def_Fourier_operator_exponentials}.
+Therefore we get
+
+\begin{equation} \label{eq:def_Fourier_operator_exponentials_multi_T}
+  \mathbf{T_e} \assign
+  \exp \ofs{ -\frac{i}{\varepsilon^2} \tau \mathbf{T} }
+  =
+  \left(
+  \begin{array}{ccc}
+    T_e  & {}     & {} \\
+    {}   & \ddots & {} \\
+    {}   & {}     & T_e \\
+  \end{array} \right)
+\end{equation}
+
+For the potential operator matrix the process is much more difficult as $V\ofs{x}$
+is in general not diagonal. Here we really need full-fledged matrix exponentials for
+$e^{-\frac{i}{2\varepsilon^2} \tau V\ofs{x}}$ without any possibilities for simplification.
+For the special case where $N = 2$ we can use the analytical formula for the
+matrix exponential given by \eqref{eq:symbolic_matrix_exp} and adapt it for symmetric
+matrices. Otherwise where $N > 2$ numerical techniques have to be used. For the
+sake of completeness we note:
+
+\begin{equation} \label{eq:def_Fourier_operator_exponentials_multi_V}
+  \mathbf{V_e} \assign
+  \exp \ofs{ -\frac{i}{2\varepsilon^2} \tau V\ofs{x} }
+  =
+  \exp \ofs{ -\frac{i}{2\varepsilon^2} \tau
+  \left(
+  \begin{array}{ccc}
+    {} & {} & {} \\
+    {} & V\ofs{x}  & {} \\
+    {} & {} & {}
+  \end{array} \right)
+  }
+\end{equation}
+
+Both, $\mathbf{T_e}$ and $\mathbf{V_e}$ are again matrices of the same dimension
+as $\mathbf{H}$. Putting all the parts together we arrive at
+
+\begin{equation} \label{eq:Fourier_propagation_alg_multi}
+  \Psi_{n+1}\ofs{x} =
+  \mathbf{V_e}\ofs{x} \mathcal{F}^{-1} \Bigl(
+    \mathbf{T_e}\ofs{\omega} \underbrace{ \mathcal{F}\bigl(
+      \mathbf{V_e}\ofs{x} \cdot \Psi_n\ofs{x}
+    \bigr)}_{\widehat{\Psi}_n\ofs{\omega}}
+  \Bigr)
+\end{equation}
+
+which is a time-stepping scheme analogous to \eqref{eq:Fourier_propagation_alg}
+but applicable to the Schrödinger equation \eqref{eq:basics_tdse_vector} with
+vectorial states $\Ket{\Psi}$.
+
+
+\subsection{Pseudo code}
+
+With the last result we can start to write down a pseudo code for the time
+propagation of a $\Ket{\Psi}$. The algorithm \ref{al:Fourier_propagation_multi}
+shows a straight forward implementation of \eqref{eq:Fourier_propagation_alg_multi}.
+The values for $\mathbf{T_e}$ and $\mathbf{V_e}$ are precomputed for all
+grid nodes $\gamma_i$. We need to be careful with the formal matrix multiplications
+this time. Of course we do not build the matrix for $\mathbf{T_e}$ but rather
+multiply by the same $T_e$ all the time. This is equivalent to the redefinition
+$\mathbf{T_e} \assign T_e$.
+
+\begin{algorithm}
+\caption{Time propagation with operator splitting of $H$ for $\Ket{\Psi}$}
+\label{al:Fourier_propagation_multi}
+\begin{algorithmic}
+  \REQUIRE The precalculated operator exponentials from \eqref{eq:def_Fourier_operator_exponentials_multi_T} and \eqref{eq:def_Fourier_operator_exponentials_multi_V}
+  \STATE $\Psi^{\left(k\right)} = \{ \varphi_0, \ldots, \varphi_{N-1} \}$
+
+  \STATE // Propagate with the potential $V$
+  \STATE $\Psi^{\prime} \assign \{0, \ldots, 0\}$
+  \FOR{ $r \assign 0$ \TO $N-1$}
+    \FOR{ $c \assign 0$ \TO $N-1$}
+      \STATE $\Psi^{\prime}_r \assign \Psi^{\prime}_r + \mathbf{Ve}_{r,c} \cdot \Psi^{\left(k\right)}_c$
+    \ENDFOR
+  \ENDFOR
+
+  \STATE // Fourier transform the components
+  \STATE $\widehat{\Psi}^{\prime}  \assign \{0, \ldots, 0\}$
+  \FOR{ $r \assign 0$ \TO $N-1$}
+    \STATE $\widehat{\Psi}^{\prime}_r \assign \ft{\Psi^{\prime}_r}$
+  \ENDFOR
+
+  \STATE // Propagate with the kinetic operator $T$
+  \FOR{ $r \assign 0$ \TO $N-1$}
+    \STATE $\widehat{\Psi}^{\prime\prime}_r \assign \mathbf{T_e} \cdot \widehat{\Psi}^{\prime}_r$
+  \ENDFOR
+
+  \STATE // Apply inverse Fourier transform to the components
+  \STATE $\Psi^{\prime\prime}  \assign \{0, \ldots, 0\}$
+  \FOR{ $r \assign 0$ \TO $N-1$}
+    \STATE $\Psi^{\prime\prime}_r \assign \ift{\widehat{\Psi}^{\prime\prime}_r}$
+  \ENDFOR
+
+  \STATE // Propagate again with the potential $V$
+  \STATE $\Psi^{\left(k+1\right)} \assign \{0, \ldots, 0\}$
+  \FOR{ $r \assign 0$ \TO $N-1$}
+    \FOR{ $c \assign 0$ \TO $N-1$}
+      \STATE $\Psi^{\left(k+1\right)}_r \assign \Psi^{\left(k+1\right)}_r + \mathbf{Ve}_{r,c} \cdot \Psi^{\prime\prime}_c$
+    \ENDFOR
+  \ENDFOR
+  \RETURN $\Psi^{\left(k+1\right)}$
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Initial values}
+
+We just finished building an algorithm that can perform the time evolution of any
+given initial state. It's time to pay attention to these initial values and elaborate
+how we have to define them properly.
+
+In the case of multiple energy levels $\lambda_i$ we need to specify the initial
+values with extra care. In most cases we want to start with a single Gaussian
+wavepacket on only one energy level and nothing on the others. This Gaussian
+wavepacket we start with is localized around position $q$ and may have a momentum
+that is localized in momentum space around $p$. For an example how this
+could look like see figure \ref{fig:initial_values_fourier} where we start with
+a right travelling packet on the left side of the avoided crossing.
+
+\begin{figure}
+  \centering
+  \input{./figures/iv_fourier.tex}
+  \caption{Example of Gaussian initial values on the upper energy level.}
+  \label{fig:initial_values_fourier}
+\end{figure}
+
+It's apparent that the initial values are given in the eigenbasis of the potential
+$V$. But the simulation takes place in the canonical basis thus the initial values
+have to be transformed. This happens with a simple linear basis transformation
+from the eigenbasis into the canonical basis. The orthogonal matrix $M$ that performs
+this task is given by the eigenvectors of our potential. We defined this
+transformation together with the inverse in the section \ref{sec:basis_transformations_of_states}.
+
+As starting point of the time-stepping algorithm \eqref{al:Fourier_propagation_multi}
+we write now for the values $\Psi_0\ofs{x}$ just before our iteration first takes place
+
+\begin{equation}
+  \Psi_0\ofs{x} \assign M \Ket{\Psi_{\text{IV}}}
+\end{equation}
+
+where $\Ket{\Psi_{\text{IV}}}$ are the given initial values in the eigenbasis. Even if
+we start in most situations with a single Gaussian packet, the initial values can be
+arbitrary and different on each energy surface. In general they don't have to be
+localized wavepackets at all.
+
+
+\section{Observables}
+
+In this section we will look into the calculation of observables like the different
+energies and norms. Note that we always use the complex scalar product $\dotp{\cdot}{\cdot}$
+here.
+
+\subsection{The norm of a wavepacket}
+
+The norm of a wavepacket is particularly interesting because it can be interpreted
+as the probability density for finding the particle in a specified infinitesimal volume
+element.
+
+To calculate the norm of a wavepacket $\Ket{\varPhi}$ we start from the definition
+and use again a transformation to Fourier space and Parseval's identity. This gives us
+
+\begin{equation}
+  \| \Psi\ofs{x} \|_{L^2}^2 \assign \Braket{\Psi | \Psi}
+  = \Braket{\widehat{\Psi} | \widehat{\Psi}}
+  = \| \widehat{\Psi}\ofs{\omega} \|_{L^2}^2
+\end{equation}
+
+In the discretized space we evaluate $\Psi$ at the grid nodes $\Gamma$ and get a vector with
+$n$ entries.
+
+\begin{equation}
+\begin{split}
+  \| \Psi\ofs{\Gamma} \|_{2}^2 & = \dotp{\Psi\ofs{\Gamma}}{\Psi\ofs{\Gamma}} \\
+                               & = \sum_i^n \conj{\Psi\ofs{\gamma_i}} \Psi\ofs{\gamma_i} \\
+                               & = \frac{2 \pi f}{n^2} \sum_k^n \conj{\widehat{\Psi}\ofs{\omega_k}} \widehat{\Psi}\ofs{\omega_k} \\
+                               & = \frac{2 \pi f}{n^2} \dotp{\widehat{\Psi}\ofs{\omega_k}}{\widehat{\Psi}\ofs{\omega_k}} \\
+                               & = \| \widehat{\Psi}(\widehat{\Gamma}) \|_{2}^2
+\end{split}
+\end{equation}
+
+where we used a discrete Fourier transformation.
+Further, with the square removed by taking the root, we get
+
+\begin{equation}
+  \| \widehat{\Psi}(\widehat{\Gamma}) \|_{2}
+  = \frac{\sqrt{2 \pi f}}{n} \| \widehat{\Psi}\ofs{\omega} \|_{2}
+\end{equation}
+
+This is the formula we use in the code because it's much cheaper to calculate the
+norm in Fourier space.
+
+Notice that for the case of vector valued wave functions the norm of a single component $\varphi_i$
+is exactly the probability for finding the particle on the corresponding energy level $E_i$.
+
+
+\subsection{Energy of a wavepacket}
+
+The energy of a quantum wavepacket $\Ket{\Psi}$ is given by the following integral
+
+\begin{equation}
+  E = \Braket{\Psi | H | \Psi}
+\end{equation}
+
+Hence we investigate the detailed structure of this expression with the aim to easily
+calculate it's value. First we explicitly split the expression into the parts
+for potential and kinetic energy
+
+\begin{equation} \label{eq:energy_split_Fourier}
+  \Braket{\Psi | H | \Psi} = \Braket{\Psi | T | \Psi} + \Braket{\Psi | V | \Psi}
+\end{equation}
+
+and then we plug in the operators' definitions given by \eqref{eq:basics_def_ops}.
+This yields
+
+\begin{equation}
+  \Braket{\Psi | H | \Psi} = \Braket{\Psi | -\frac{1}{2} \varepsilon^4 \frac{\partial^2}{\partial x^2} | \Psi}
+                           + \Braket{\Psi | V\ofs{x} | \Psi}
+\end{equation}
+
+The first summand which represents the kinetic energy $E_{\text{kin}}$ can be simplified
+using linearity
+
+\begin{align*}
+  E_{\text{kin}} & = -\frac{1}{2} \varepsilon^4 \Braket{\Psi | \frac{\partial^2}{\partial x^2} | \Psi} \\
+  \intertext{and by transformation to Fourier space}
+                 & = -\frac{1}{2} \varepsilon^4 \Braket{\ft{\Psi} | \left(i \omega\right)^2 | \ft{\Psi}} \\
+                 & = \frac{1}{2} \varepsilon^4 \Braket{\Psi\ofs{\omega} | \omega^2 | \Psi\ofs{\omega}}
+\end{align*}
+
+Finally we get the following formula for the kinetic energy of a wavepacket $\Ket{\Psi}$
+
+\begin{equation} \label{eq:Fourier_ekin_scalar}
+  E_{\text{kin}} = \frac{1}{2} \varepsilon^4 \int_\omega \conj{\widehat{\Psi}\ofs{\omega}} \cdot \omega^2 \cdot \widehat{\Psi}\ofs{\omega} d\omega
+\end{equation}
+
+While we were able to simplify the expression for the kinetic energy quite a lot
+this is not possible in the same manner for a general potential $V\ofs{x}$.Thus
+we just apply Parseval's equality and write
+
+\begin{align} \label{eq:Fourier_epot_scalar}
+  E_{\text{pot}} & = \Braket{\Psi | V\ofs{x} | \Psi} \nonumber \\
+                 & = \Braket{\ft{\Psi\ofs{x}} | \ft{V\ofs{x} \Psi\ofs{x}}} \nonumber \\
+                 & = \int_\omega \ft{\Psi\ofs{x}} \ft{V\ofs{x} \Psi\ofs{x}} d\omega
+\end{align}
+
+
+\subsection{Energy of a vector valued wavepacket}
+
+In the case of vector valued wavepackets $\Ket{\Psi}$
+we have to think carefully what to compute. The basic equation \eqref{eq:energy_split_Fourier}
+is still valid but we have to use the matrix valued operators $\mathbf{T}$ and $\mathbf{V}$
+
+\begin{equation}
+  E =  \Braket{\Psi | \mathbf{T} | \Psi } + \Braket{\Psi | \mathbf{V} | \Psi }
+\end{equation}
+
+The computation of both energies has to be carried out in the canonical basis because
+we need the operators $\mathbf{T}$ and $\mathbf{V}$ whose representations we only
+know there. On the other hand we are interested in the energy of the wavepacket $\Ket{\Psi}$
+and its components $\varphi_i$ measured in the eigenbasis. Thus there is an additional
+basis transformation $M$ involved which drops out in the scalar case.
+Of course the overall energy is independent of any particular basis, but the energy
+of a component $\varphi_i$ is not. In analogy to \eqref{eq:Fourier_ekin_scalar} and
+\eqref{eq:Fourier_epot_scalar} we can write
+
+\begin{equation}
+  E_{\text{kin}} =
+  \Braket{
+    \begin{pmatrix}
+      \varphi_0 \\
+      \vdots \\
+      \varphi_{N-1}
+    \end{pmatrix}
+    |
+    M\T
+    \begin{pmatrix}
+      T  & {}     & {} \\
+      {} & \ddots & {} \\
+      {} & {}     & T  \\
+    \end{pmatrix}
+    M
+    |
+    \begin{pmatrix}
+      \varphi_0 \\
+      \vdots \\
+      \varphi_{N-1}
+    \end{pmatrix}
+  }
+\end{equation}
+
+and
+
+\begin{equation}
+  E_{\text{pot}} =
+  \Braket{
+    \begin{pmatrix}
+      \varphi_0 \\
+      \vdots \\
+      \varphi_{N-1}
+    \end{pmatrix}
+    |
+    M\T
+    \begin{pmatrix}
+      {} & {}       & {} \\
+      {} & V\ofs{x} & {} \\
+      {} & {}       & {} \\
+    \end{pmatrix}
+    M
+    |
+    \begin{pmatrix}
+      \varphi_0 \\
+      \vdots \\
+      \varphi_{N-1}
+    \end{pmatrix}
+  }
+\end{equation}
+
+For the calculation of the energy of a single component $\varphi_i$
+of $\Ket{\Psi}$ we transform and measure according to this formula
+
+\begin{equation}
+  E_{\text{pot}}^i =
+  \Braket{
+    \begin{pmatrix}
+      0 \\
+      \varphi_i \\
+      0
+    \end{pmatrix}
+    |
+    M\T
+    \mathbf{V}
+    M
+    |
+    \begin{pmatrix}
+      0 \\
+      \varphi_i \\
+      0
+    \end{pmatrix}
+  }
+\end{equation}
+
+for the potential energy or its identical counterpart with the operator $\mathbf{V}$ replaced
+by $\mathbf{T}$ for kinetic energy. In any case it holds that
+
+\begin{equation}
+\begin{split}
+  E_{\text{total}} & = E_{\text{kin}} + E_{\text{pot}} \\
+                   & = \sum_{i=0}^{N-1} E_{\text{kin}}^i + \sum_{i=0}^{N-1} E_{\text{pot}}^i \\
+                   & = \text{constant}
+\end{split}
+\end{equation}
+
+We have conservation of energy as the system is self-contained.
+
+\subsection{Energy computations in discretized space}
+
+For the energies we get within discretized space the following formulae where we
+again build a vector from evaluating the function $\psi$ on the grid nodes $\Gamma$:
+
+\begin{align} \label{eq:dicrete_energies}
+  E_{\text{kin}} & = \frac{2 \pi f}{n^2} \frac{1}{2} \varepsilon^4 \dotp{\conj{\ft{\psi(\Gamma)}}}{{\omega^2 \ft{\psi(\Gamma)}}} \\
+  \intertext{and}
+  E_{\text{pot}} & = \frac{2 \pi f}{n^2} \dotp{\conj{\ft{\psi(\Gamma)}}}{{V\ofs{x} \ft{\psi(\Gamma)}}}
+\end{align}
+
+For a vectorial wavepacket $\Ket{\Psi}$ we have
+
+\begin{equation}
+  E_{\text{pot}} = \frac{2 \pi f}{n^2} \dotp{\ft{\varphi_i}}{\ft{\widetilde{\varphi_i}}}
+\end{equation}
+
+where $\left(\widetilde{\varphi}_0, \ldots, \widetilde{\varphi}_{N-1} \right)\T \assign \widetilde{\Psi} = \mathbf{V} \Psi$
+for the potential energy. To calculate the kinetic energy we apply the above formula \eqref{eq:dicrete_energies}
+to each component $\psi_i$ of $\Psi$ separately.
+
+Of course the Fourier transformation $\ft{\cdot}$ has to be interpreted as a discrete
+Fourier transformation. The discrete Fourier transformation is then implemented as
+an \texttt{FFT} algorithm.
