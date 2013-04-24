@@ -1,0 +1,14 @@
+\begin{tikzpicture}[%
+  wnode/.style={circle,fill=white,draw},
+  bnode/.style={circle,fill=black,draw},
+  thickline/.style={line width=1pt}]
+  \node[wnode] (O) {};
+  \node[wnode] (O1) [left of=O]  {};
+  \node[wnode] (O2) [above of=O]  {};
+  \node[bnode] (N1) [right of=O] {};
+  \node[bnode] (N2) [below of=O] {};
+  \path[thickline, >-] (O1) edge (O);
+  \path[thickline, >-] (O2) edge (O);
+  \draw[thickline,->] (O) to node {} (N1);
+  \draw[thickline,->] (O) to node {} (N2);
+\end{tikzpicture}

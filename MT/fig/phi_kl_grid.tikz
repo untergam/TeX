@@ -1,0 +1,41 @@
+\begin{tikzpicture}[node distance=1.5cm, auto]
+  \node (phi00) {$\phi_{0,0}$};
+  \node (phi01) [right of=phi00] {$\phi_{0,1}$};
+  \node (phi02) [right of=phi01] {$\phi_{0,2}$};
+  \node (phi03) [right of=phi02, node distance=1cm] {$ $};
+
+  \node (phi10) [below of=phi00] {$\phi_{1,0}$};
+  \node (phi11) [right of=phi10] {$\phi_{1,1}$};
+  \node (phi12) [right of=phi11] {$\phi_{1,2}$};
+  \node (phi13) [right of=phi12, node distance=1cm] {$ $};
+
+  \node (phi20) [below of=phi10] {$\phi_{2,0}$};
+  \node (phi21) [right of=phi20] {$\phi_{2,1}$};
+  \node (phi22a) [right of=phi21, node distance=1cm] {$ $};
+  \node (phi22b) [below of=phi12, node distance=1cm] {$ $};
+
+  \node (phi30) [below of=phi20, node distance=1cm] {$ $};
+  \node (phi31) [below of=phi21, node distance=1cm] {$ $};
+
+  \draw[->] (phi00) to node {$\mathcal{R}_a$} (phi01);
+  \draw[->] (phi01) to node {$\mathcal{R}_a$} (phi02);
+  \draw[->] (phi02) to node {$ $} (phi03);
+
+  \draw[->] (phi10) to node {$\mathcal{R}_a$} (phi11);
+  \draw[->] (phi11) to node {$\mathcal{R}_a$} (phi12);
+  \draw[->] (phi12) to node {$ $} (phi13);
+
+  \draw[->] (phi20) to node {$\mathcal{R}_a$} (phi21);
+  \draw[->] (phi21) to node {$ $} (phi22a);
+
+  \draw[->] (phi00) to node {$\mathcal{R}_b$} (phi10);
+  \draw[->] (phi10) to node {$\mathcal{R}_b$} (phi20);
+  \draw[->] (phi20) to node {$ $} (phi30);
+
+  \draw[->] (phi01) to node {$\mathcal{R}_b$} (phi11);
+  \draw[->] (phi11) to node {$\mathcal{R}_b$} (phi21);
+  \draw[->] (phi21) to node {$ $} (phi31);
+
+  \draw[->] (phi02) to node {$\mathcal{R}_b$} (phi12);
+  \draw[->] (phi12) to node {$ $} (phi22b);
+\end{tikzpicture}

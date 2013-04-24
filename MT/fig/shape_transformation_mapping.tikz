@@ -1,0 +1,64 @@
+\begin{tikzpicture}[%
+    node distance=0.5cm, auto,
+    func/.style={scale=0.8,color=gray},
+    zero/.style={scale=0.8,color=gray}]
+
+    \node (ko) {$\vec{k} \in \mathfrak{K}$};
+    \node (io) [right of=ko, node distance=1.5cm] {$i$};
+    \draw[->] (ko) to node {$\mu$} (io);
+
+    \node (ko0) [below of=ko] {$\vec{k}^a$};
+    \node (ko1) [below of=ko0] {$\vec{k}^b$};
+    \node (ko2) [below of=ko1] {$\vec{k}^c$};
+    \node (ko3) [below of=ko2] {$\vec{k}^d$};
+    \node (ko4) [below of=ko3] {$\vec{k}^e$};
+    \node (ko5) [below of=ko4, node distance=4mm] {$\vdots$};
+    \node (ko6) [below of=ko5, node distance=6mm] {$\vec{k}^h$};
+
+    \node (io0) [below of=io] {$0$};
+    \node (io1) [below of=io0] {$1$};
+    \node (io2) [below of=io1] {$2$};
+    \node (io3) [below of=io2] {$3$};
+    \node (io4) [below of=io3] {$4$};
+    \node (io5) [below of=io4, node distance=4mm] {$\vdots$};
+    \node (io6) [below of=io5, node distance=6mm] {$|\mathfrak{K}|$};
+
+    \draw[->] (ko0) to[out=0,in=180] node {} (io3);
+    \draw[->] (ko1) to[out=0,in=180] node {} (io0);
+    \draw[->] (ko2) to[out=0,in=180] node {} (io1);
+    \draw[->] (ko3) to[out=0,in=180] node {} (io4);
+    \draw[->] (ko4) to[out=0,in=180] node {} (io6);
+    \draw[->] (ko6) to[out=0,in=180] node {} (io2);
+
+    \node (ip) [right of=io, node distance=3cm] {$i^\prime$};
+    \node (kp) [right of=ip, node distance=1.5cm] {$\vec{k}^\prime \in \mathfrak{K}^\prime$};
+    \draw[<-] (ip) to node {$\mu^\prime$} (kp);
+
+    \node (kp0) [below of=kp] {$\vec{k}^a$};
+    \node (kp1) [below of=kp0] {$\vec{k}^b$};
+    \node (kp2) [below of=kp1] {$\vec{k}^c$};
+    \node (kp3) [below of=kp2] {$\vec{k}^d$};
+    \node (kp4) [below of=kp3, node distance=4mm] {$\vdots$};
+    \node (kp5) [below of=kp4, node distance=6mm] {$\vec{k}^f$};
+    \node (kp6) [below of=kp5] {$\vec{k}^g$};
+
+    \node (ip0) [below of=ip] {$0$};
+    \node (ip1) [below of=ip0] {$1$};
+    \node (ip2) [below of=ip1] {$2$};
+    \node (ip3) [below of=ip2] {$3$};
+    \node (ip4) [below of=ip3] {$4$};
+    \node (ip5) [below of=ip4, node distance=4mm] {$\vdots$};
+    \node (ip6) [below of=ip5, node distance=6mm] {$|\mathfrak{K}^\prime|$};
+
+    \draw[->] (kp0) to[out=180,in=0] node {} (ip1);
+    \draw[->] (kp1) to[out=180,in=0] node {} (ip0);
+    \draw[->] (kp2) to[out=180,in=0] node {} (ip4);
+    \draw[->] (kp3) to[out=180,in=0] node {} (ip2);
+    \draw[->] (kp5) to[out=180,in=0] node {} (ip3);
+    \draw[->] (kp6) to[out=180,in=0] node {} (ip6);
+
+    \draw[thick, <->, color=orange] (io0) to[out=0,in=180] node {} (ip0);
+    \draw[thick, <->, color=orange] (io1) to[out=0,in=180] node {} (ip4);
+    \draw[thick, <->, color=orange] (io3) to[out=0,in=180] node {} (ip1);
+    \draw[thick, <->, color=orange] (io4) to[out=0,in=180] node {} (ip2);
+\end{tikzpicture}

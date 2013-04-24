@@ -1,0 +1,55 @@
+\chapter{Derivatives of Eigenvalues}
+\label{ch:deriv_ew}
+
+
+In this small appendix we show the computation of derivatives of the eigenvalues.
+Although these formulae are well known for example in structural mechanics
+and similar areas of applied mathematics, we think that it is a good idea to show
+them here. For more detailed comments and proofs see the references given below.
+
+We start with a real and symmetric $N \times N$ matrix $\mat{A}$. Each
+of its entries is a function $a_{r,c}$ dependent on some parameters.
+In our case these are the position space variables $x_0, \ldots x_{D-1}$.
+Hence we write $\mat{A}(\vec{x})$. Next we assume that the matrix is
+diagonalisable:
+
+\begin{equation}
+  \mat{A} = \mat{M} \mat{\Lambda} \mat{M}\T
+\end{equation}
+
+also compare to \eqref{eq:eigentransformation}. The eigenvectors are orthogonal
+by theory and we take them normalised, which we can write as:
+
+\begin{equation}
+  \mat{M}\T \mat{M} = \id \,.
+\end{equation}
+
+And finally we require the eigenvalues $\lambda(\vec{x})$ to be all distinct
+for all values of the parameters $\vec{x}$. Then we can write the first derivatives
+as:
+
+\begin{equation}
+  \pdiff{\lambda_i(\vec{x})}{x_j} = \vec{\nu_i}\T \, \pdiff{\mat{A}(\vec{x})}{x_j} \, \vec{\nu_i}
+\end{equation}
+
+for all $i, j \in 0, \ldots N-1$. With this formula we can compute gradients
+and Jacobians for all eigenvalues. The important point is that we know the
+analytic closed-form expressions for $a_{r,c}(\vec{x})$ and computing their
+derivatives thus is trivial.
+
+For the second derivatives we have a similar formula:
+
+\begin{equation}
+  \frac{\partial^2 \lambda_i(\vec{x})}{\partial x_j \partial x_k} =
+  \vec{\nu_i}\T \, \frac{\partial^2 \mat{A}(\vec{x})}{\partial x_j \partial x_k} \, \vec{\nu_i}
+  + 2 \sum_{l \neq i} \frac{
+    \left(\vec{\nu_i}\T \, \pdiff{\mat{A}(\vec{x})}{x_j} \, \vec{\nu_l}\right)
+    \left(\vec{\nu_i}\T \, \pdiff{\mat{A}(\vec{x})}{x_k} \, \vec{\nu_l}\right)
+  }{\lambda_i - \lambda_l} \,.
+\end{equation}
+
+With the help of this formula we can compute Hessian matrices for all eigenvalues easily.
+These formulae provide us with the tools to compute the quadratic approximation
+in algorithms \ref{al:tp_wave_packets_homog} and \ref{al:tp_wave_packets_inhomog}.
+
+For more comprehensive information on this topic see for example \cite{L_eigenvalues, MH_eigenvalues, OW_eigenvalues}.

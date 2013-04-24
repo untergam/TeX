@@ -1,0 +1,18 @@
+\begin{tikzpicture}[%
+  node distance=1.5cm, auto,
+  wnode/.style={circle,fill=white,draw},
+  bnode/.style={circle,fill=black,draw},
+  gnode/.style={circle,fill=black!10,draw},
+  thickline/.style={line width=1pt}]
+  \node[wnode] (O) {};
+  \node[wnode] [left of=O] (O1) {};
+  \node[wnode] [right of=O, above of=O, node distance=0.75cm] (O2) {};
+  \node[wnode] [below of=O] (O3) {};
+  \node[gnode] (N1) [right of=O] {};
+  \node[bnode] (N2) [left of=O, below of=O, node distance=0.75cm] {};
+  \node[gnode] (N3) [above of=O] {};
+  \path[thickline, >-] (O1) edge (O);
+  \path[thickline, >-] (O2) edge (O);
+  \path[thickline, >-] (O3) edge (O);
+  \draw[thickline,->] (O) to node {} (N2);
+\end{tikzpicture}

@@ -1,0 +1,6 @@
+\begin{tikzpicture}[node distance=2.5cm, auto]
+  \node (phikl) {$\phi_{k,l}$};
+  \node (phikll) [right of=phikl] {$\phi_{k,l+1}$};
+  \draw[->] (phikl) to [bend left] node {$\mathcal{R}_1$} (phikll);
+  \draw[->] (phikll) to [bend left] node {$\mathcal{L}_1$} (phikl);
+\end{tikzpicture}

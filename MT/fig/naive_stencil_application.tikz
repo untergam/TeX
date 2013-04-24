@@ -1,0 +1,77 @@
+\begin{tikzpicture}[%
+    func/.style={scale=0.8,color=gray},
+    zero/.style={scale=0.8,color=black}]
+
+    \node[zero] (v0m1) at (1,0) {$0$};
+    \node[zero] (v1m1) at (2,0) {$0$};
+    \node[zero] (v2m1) at (3,0) {$0$};
+    \node[zero] (v3m1) at (4,0) {$0$};
+
+    \node[zero] (vm10) at (0,1) {$0$};
+    \node[zero] (vm11) at (0,2) {$0$};
+    \node[zero] (vm12) at (0,3) {$0$};
+    \node[zero] (vm13) at (0,4) {$0$};
+
+    \node[func,color=black] (v00) at (1,1) {$\phi_{0,0}$};
+
+    \node[func,color=blue] (v01) at (1,2) {$\phi_{0,1}$};
+    \node[func,color=green] (v02) at (1,3) {$\phi_{0,2}$};
+    \node[func] (v03) at (1,4) {$\phi_{0,3}$};
+
+    \node[func,color=blue] (v10) at (2,1) {$\phi_{1,0}$};
+    \node[func,color=green] (v11) at (2,2) {$\phi_{1,1}$};
+    \node[func] (v12) at (2,3) {$\phi_{1,2}$};
+    \node[func] (v13) at (2,4) {$\phi_{1,3}$};
+
+    \node[func,color=green] (v20) at (3,1) {$\phi_{2,0}$};
+    \node[func] (v21) at (3,2) {$\phi_{2,1}$};
+    \node[func] (v22) at (3,3) {$\phi_{2,2}$};
+    \node[func] (v23) at (3,4) {$\phi_{2,3}$};
+
+    \node[func] (v30) at (4,1) {$\phi_{3,0}$};
+    \node[func] (v31) at (4,2) {$\phi_{3,1}$};
+    \node[func] (v32) at (4,3) {$\phi_{3,2}$};
+    \node[func] (v33) at (4,4) {$\phi_{3,3}$};
+
+    \begin{scope}
+    \draw[draw=green!80,line width=0.8pt] ($(v10)+(0.0,0.3)$)
+        to[out=190,in=350] ($(v00)+(0.0,0.3)$)
+        to[out=170,in=90] ($(v00)+(-0.3,0.0)$)
+        to[out=270,in=190] ($(v00)+(0.0,-0.3)$)
+        to[out=10,in=80] ($(v1m1)+(-0.2,0.0)$)
+        to[out=260,in=180] ($(v1m1)+(0.0,-0.2)$)
+        to[out=0,in=280] ($(v1m1)+(0.2,0.0)$)
+        to[out=100,in=260] ($(v10)+(0.3,0.0)$)
+        to[out=80,in=10] ($(v10)+(0.0,0.3)$);
+    \draw[draw=green!80,->,line width=0.8pt] ($(v10)+(0.0,0.3)$) -- (v11);
+    \draw[draw=green!80,->,line width=0.8pt] ($(v10)+(0.3,0.0)$) -- (v20);
+    \end{scope}
+
+    \begin{scope}
+    \draw[draw=green!80,line width=0.8pt] ($(v01)+(0.0,0.3)$)
+        to[out=190,in=350] ($(vm11)+(0.0,0.2)$)
+        to[out=170,in=90] ($(vm11)+(-0.2,0.0)$)
+        to[out=270,in=190] ($(vm11)+(0.0,-0.2)$)
+        to[out=10,in=80] ($(v00)+(-0.3,0.0)$)
+        to[out=260,in=180] ($(v00)+(0.0,-0.3)$)
+        to[out=0,in=280] ($(v00)+(0.3,0.0)$)
+        to[out=100,in=260] ($(v01)+(0.3,0.0)$)
+        to[out=80,in=10] ($(v01)+(0.0,0.3)$);
+    \draw[draw=green!80,->,line width=0.8pt] ($(v01)+(0.0,0.3)$) -- (v02);
+    \draw[draw=green!80,->,line width=0.8pt] ($(v01)+(0.3,0.0)$) -- (v11);
+    \end{scope}
+
+    \begin{scope}
+    \draw[draw=blue!100,line width=0.8pt] ($(v00)+(0.0,0.3)$)
+        to[out=190,in=350] ($(vm10)+(0.0,0.2)$)
+        to[out=170,in=90] ($(vm10)+(-0.2,0.0)$)
+        to[out=270,in=190] ($(vm10)+(0.0,-0.2)$)
+        to[out=10,in=80] ($(v0m1)+(-0.2,0.0)$)
+        to[out=260,in=180] ($(v0m1)+(0.0,-0.2)$)
+        to[out=0,in=280] ($(v0m1)+(0.2,0.0)$)
+        to[out=100,in=260] ($(v00)+(0.3,0.0)$)
+        to[out=80,in=10] ($(v00)+(0.0,0.3)$);
+    \draw[draw=blue,->,line width=0.8pt] ($(v00)+(0.0,0.3)$) -- (v01);
+    \draw[draw=blue,->,line width=0.8pt] ($(v00)+(0.3,0.0)$) -- (v10);
+    \end{scope}
+\end{tikzpicture}

@@ -1,0 +1,581 @@
+\chapter{Wavepacket Propagation}
+\label{ch:wavepacket_propagation}
+
+
+This last theoretical chapter is about time propagation of semi-classical
+wavepackets. The last remaining missing piece of this puzzle is a good scheme
+for time propagation of semi-classical Hagedorn wavepackets. Such an algorithm was
+first described in \cite{FGL_semiclassical_dynamics} for the adiabatic one-level
+case. The generalisation to multiple energy levels was done in \cite{B_bachelor_thesis}
+but for one space dimension only. These results were published in \cite{BGH_nonadibatic_algorithms}.
+
+In this chapter we review this algorithm once more and show a generalisation
+to several energy levels in an arbitrary dimensional space.
+
+
+\section{Time propagation of Hagedorn wavepackets}
+
+
+The first step is to consider the free particle Schrödinger equation which
+contains only the kinetic operator $T$ and $V \equiv 0$:
+
+\begin{equation*}
+  i \varepsilon^2  \pdiff{\Psi}{t} = -\frac{1}{2} \varepsilon^4 \Delta \Psi \,.
+\end{equation*}
+
+The proposition 2.1 of \cite{FGL_semiclassical_dynamics} tells us that a Hagedorn wavepacket
+$\Phi[\Pi]$ of the form \eqref{eq:scalar_wavepacket} solves the free Schrödinger
+equation with the following time evolution of its parameter set $\Pi(t)$:
+
+\begin{equation} \label{eq:update_scheme_kin}
+\begin{split}
+  \vec{q}(t) & = \vec{q}(0) + t \, \mat{M}\inv \vec{p}(0) \\
+  \mat{Q}(t) & = \mat{Q}(0) + t \, \mat{M}\inv \mat{P}(0) \\
+  S(t) & = S(0) + \frac{1}{2}t \, \vec{p}(0)\T \mat{M}\inv \vec{p}(0)
+\end{split}
+\end{equation}
+
+where $\vec{p}(t) = \vec{p}(0)$ and $\mat{P}(t) = \mat{P}(0)$ remain unchanged.
+Also unchanged are the coefficients $\{c_{\vec{k}}\}_{\vec{k} \in \mathfrak{K}}$
+of $\Phi$. The matrix $\mat{M}$ is the mass scaling matrix. It is set to the
+identity if nothing else is written. For details see \cite[equation 2.8]{FGL_semiclassical_dynamics}.
+A free particle is not that interesting. The important point is that we can
+solve its quantum equation of motion by only evolving the parameters $\Pi(t)$
+using the simple update scheme above.
+
+Next we consider the potential equation lacking the kinetic part:
+
+\begin{equation*}
+  i \varepsilon^2  \pdiff{\Psi}{t} = U(\vec{x}) \Psi \,.
+\end{equation*}
+
+For a first approach we assume $U(\vec{x})$ to be quadratic at most. The
+proposition 2.2 of \cite{FGL_semiclassical_dynamics} gives us another set of update rules
+for $\Pi(t)$:
+
+\begin{equation} \label{eq:update_scheme_pot}
+\begin{split}
+  \vec{p}(t) & = \vec{p}(0) - t \, \nabla U(\vec{q}(0)) \\
+  \mat{P}(t) & = \mat{P}(0) - t \, \nabla^2 U(\vec{q}(0)) \mat{Q}(0) \\
+  S(t) & = S(0) - t \, U(\vec{q}(0))
+\end{split}
+\end{equation}
+
+and $\vec{q}(t) = \vec{q}(0)$ and $\mat{Q}(t) = \mat{Q}(0)$. In this case the
+coefficients $\{c_{\vec{k}}\}_{\vec{k} \in \mathfrak{K}}$ are left alone. Using
+the formulae from both sets \eqref{eq:update_scheme_kin} and \eqref{eq:update_scheme_pot}
+together we can solve the time dependent harmonic oscillator. All we have to do is to
+propagate in time the parameter set $\Pi(t)$ of $\Phi[\Pi]$. In the whole
+process we never touch or change the coefficients $\{c_{\vec{k}}\}_{\vec{k} \in \mathfrak{K}}$.
+This is the reason that makes this time propagation scheme extraordinarily
+efficient. But this is not really astonishing given that the basis functions
+$\phi_{\vec{k}}$ are just generalised eigenstates of the harmonic oscillator.
+(For more details see the paper \cite{H_ladder_operators}).
+
+Our next step aims for handling almost arbitrary potentials. But dropping the
+restriction of $U$ being quadratic provides us with several new hurdles.
+Assume the potential $V(\vec{x})$ is not quadratic anymore. We can always split
+$V$ into a quadratic part $U$ and the non-quadratic remainder $W$:
+
+\begin{equation*}
+  V(\vec{x}) = U(\vec{x}) + W(\vec{x}) \,.
+\end{equation*}
+
+This is done by a simple Taylor expansion of $V(\vec{x})$ around a point
+\footnote{It's not a coincidence that we call the expansion point $\vec{q}$ here.}
+$\vec{q}$ giving:
+
+\begin{align*}
+  U(\vec{x}) & = V(\vec{q}) + \nabla V(\vec{q}) (\vec{x}-\vec{q})
+                 + \frac{1}{2} (\vec{x}-\vec{q})\T \nabla^2 V(\vec{q}) (\vec{x}-\vec{q}) \\
+  W(\vec{x}) & = V(\vec{x}) - U(\vec{x}) \,.
+\end{align*}
+
+This expansion allows us to focus on $W(\vec{x})$ solely while assuming that
+$U(\vec{x})$ is perfectly handled by \eqref{eq:update_scheme_pot}. We look at
+the potential equation:
+
+\begin{equation*}
+  i \varepsilon^2  \pdiff{\Psi}{t} = W(\vec{x}) \Psi
+\end{equation*}
+
+once more but this time using the non-quadratic remainder part $W(\vec{x})$.
+Since $W$ can be arbitrarily complicated there is no hope to solve this
+equation analytically by a simple scheme as we did before. The trick is to
+perform a Galerkin approximation to solve this equation. To do this we need
+a Hilbert space of test functions $v(\vec{x})$ defined by:
+
+\begin{equation}
+  \mathcal{M} \assign \left\{ v \in \mathrm{L}^2(\mathbb{R}^D) \colon
+                              v(\vec{x}) \assign \sum_{\vec{k}\in\mathfrak{K}}
+                                                 c_{\vec{k}} \phi_{\vec{k}}[\Pi](\vec{x})
+                         \,, c_{\vec{k}} \in \mathbb{C}
+                      \right\} \,.
+\end{equation}
+
+At this point we may repeat that $\phi_{\vec{k}}$ constitutes a (complete) basis
+for $\mathrm{L}^2(\mathbb{R}^D)$. The Galerkin approximation (see section 2.4 of
+\cite{FGL_semiclassical_dynamics}) can then be written as:
+
+\begin{quotation}
+  \noindent
+  At every time $t$ determine $\partial_t u \in \mathcal{M}$ such that
+  \begin{equation*}
+    \forall \vec{k} \in \mathfrak{K} \quad \langle \phi_{\vec{k}}, (i\varepsilon^2\partial_t -W) u \rangle = 0
+  \end{equation*}
+  with $u \in \mathcal{M}$.
+\end{quotation}
+
+This integral can now be split like:
+
+\begin{align*}
+  0 & = \langle \phi_{\vec{k}}, (i\varepsilon^2\partial_t -W) u \rangle \\
+    & = \langle \phi_{\vec{k}}, i\varepsilon^2\partial_t u \rangle - \langle \phi_{\vec{k}}, W u \rangle
+\end{align*}
+
+and the solution $u$ can in turn be replaced by its basis expansion:
+
+\begin{equation*}
+  \langle \phi_{\vec{k}}, i\varepsilon^2 \partial_t
+                          \sum_{\vec{l}\in\mathfrak{K}} c_{\vec{l}} \phi_{\vec{l}}
+  \rangle -
+  \langle \phi_{\vec{k}}, W
+                          \sum_{\vec{l}\in\mathfrak{K}} c_{\vec{l}} \phi_{\vec{l}}
+  \rangle = 0 \,.
+\end{equation*}
+
+Next we carry out the differentiation $\partial_t c_{\vec{l}} \phi_{\vec{l}}$.
+We know that $c_{\vec{l}}(t)$ depends only on time and $\phi_{\vec{l}}[\Pi](\vec{x})$
+depends only on space (ignoring the time dependence of $\Pi$) and whence we get:
+
+\begin{equation*}
+  \partial_t c_{\vec{l}} \phi_{\vec{l}} = \dot{c_{\vec{l}}} \phi_{\vec{l}} \,.
+\end{equation*}
+
+Plugging this into the integrals above we obtain:
+
+\begin{equation*}
+  \langle \phi_{\vec{k}}, i\varepsilon^2
+                          \sum_{\vec{l}\in\mathfrak{K}} \dot{c_{\vec{l}}} \phi_{\vec{l}}
+  \rangle -
+  \langle \phi_{\vec{k}}, W
+                          \sum_{\vec{l}\in\mathfrak{K}} c_{\vec{l}} \phi_{\vec{l}}
+  \rangle = 0
+\end{equation*}
+
+and pulling out the summations and constants yields:
+
+\begin{equation*}
+  i\varepsilon^2 \sum_{\vec{l}\in\mathfrak{K}} \dot{c_{\vec{l}}}
+  \langle \phi_{\vec{k}}, \phi_{\vec{l}} \rangle
+  -
+  \sum_{\vec{l}\in\mathfrak{K}} c_{\vec{l}}
+  \langle \phi_{\vec{k}}, W \phi_{\vec{l}} \rangle
+  = 0 \,.
+\end{equation*}
+
+The first integral vanishes by orthonormality of the basis functions and what
+remains is:
+
+\begin{equation*}
+  i\varepsilon^2 \dot{c_{\vec{k}}}
+  =
+  \sum_{\vec{l}\in\mathfrak{K}} c_{\vec{l}}
+  \langle \phi_{\vec{k}}, W \phi_{\vec{l}} \rangle
+  \quad \forall \vec{k} \in \mathfrak{K} \,.
+\end{equation*}
+
+We can stack all the $|\mathfrak{K}|$ equations and get the following system
+of coupled ordinary differential equations:
+
+\begin{equation*}
+  i\varepsilon^2
+  \begin{pmatrix}
+    \vdots \\
+    \dot{c_{\vec{k}}} \\
+    \vdots
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    {}     & \vdots                                  & {} \\
+    \cdots & \dotp{\phi_{\vec{k}}}{W \phi_{\vec{l}}} & \cdots \\
+    {}     & \vdots                                  & {}
+  \end{pmatrix}
+  \begin{pmatrix}
+    \vdots \\
+    c_{\vec{l}} \\
+    \vdots
+  \end{pmatrix}
+\end{equation*}
+
+or in more compact matrix notation:
+
+\begin{equation}
+  \dot{\vec{c}} = -\frac{i}{\varepsilon^2} \mat{F} \vec{c} \,.
+\end{equation}
+
+The solution of this system is trivially given by:
+
+\begin{equation} \label{eq:update_scheme_coeff}
+  \vec{c}(t) = \exp\left(-\frac{i}{\varepsilon^2} t \mat{F}\right) \vec{c}(0) \,.
+\end{equation}
+
+This was the last missing bit for the time propagation of scalar wavepackets
+$\Ket{\Phi}$ inside arbitrarily shaped potentials $V(\vec{x})$. In algorithm
+\ref{al:tp_wave_packets_scalar} we assembled all the pieces and provide a pseudo
+code of the implementation.
+
+\begin{algorithm}
+\caption{Time propagation of scalar wavepackets $\Ket{\Phi}$}
+\label{al:tp_wave_packets_scalar}
+\begin{algorithmic}
+  \REQUIRE A semi-classical wavepacket $\Ket{\Phi\ofs{\vec{x},t}}$
+  \REQUIRE The Hagedorn parameter set $\Pi$ and the coefficients $\{c_{\vec{k}}\}_{\vec{k}\in\mathfrak{K}}$
+  \REQUIRE The basis shape $\mathfrak{K}$ and the mapping $\mu_{\mathfrak{K}}$
+  \REQUIRE The time step $\tau$
+  \STATE // Propagate with the kinetic operator
+  \STATE $\vec{q} \assign \vec{q} + \frac{\tau}{2} \mat{M}\inv \vec{p}$
+  \STATE $\mat{Q} \assign \mat{Q} + \frac{\tau}{2} \mat{M}\inv \mat{P}$
+  \STATE $S \assign S + \frac{\tau}{4} \vec{p}\T \mat{M}\inv \vec{p}$
+  \STATE // Propagate with the local quadratic potential
+  \STATE $\vec{p} \assign \vec{p} - \tau \, \nabla V\ofs{\vec{q}}$
+  \STATE $\mat{P} \assign \mat{P} - \tau \, \nabla^2 V\ofs{\vec{q}} \mat{Q}$
+  \STATE $S \assign S - \tau \, V\ofs{\vec{q}}$
+  \STATE // Propagate with the non-quadratic remainder $W$
+  \STATE // Assemble the matrix $\mat{F}$
+  \STATE $\mat{F}_{\mu(\vec{k}),\mu(\vec{l})} \assign
+          \Braket{\phi_{\vec{k}} | W\ofs{\vec{x}} | \phi_{\vec{l}}} \quad \forall \vec{k}, \vec{l} \in \mathfrak{K}$
+  \STATE // And propagate the coefficients
+  \STATE $\vec{c} \assign \exp\ofs{-\tau \frac{i}{\varepsilon^2} \mat{F}} \vec{c}$
+  \STATE // Propagate with the kinetic operator again
+  \STATE $\vec{q} \assign \vec{q} + \frac{\tau}{2} \mat{M}\inv \vec{p}$
+  \STATE $\mat{Q} \assign \mat{Q} + \frac{\tau}{2} \mat{M}\inv \mat{P}$
+  \STATE $S \assign S + \frac{\tau}{4} \vec{p}\T \mat{M}\inv \vec{p}$
+  \RETURN $\Ket{\Phi\ofs{\vec{x},t+\tau}}$
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Vector valued wavepackets}
+
+
+In the last section we reviewed the time propagation algorithm for scalar semi-classical
+wavepackets $\Ket{\Phi}$ or equivalently for potentials with a single energy level only.
+For simulations in the non-adiabatic case we need an extended version that handles
+vectorial wavepackets $\Ket{\Psi}$ as defined in \eqref{eq:vectorial_wavepacket_hom}
+and \eqref{eq:vectorial_wavepacket_inhom}. We examine the case of homogeneous
+wavepackets first. This has mainly two reasons, namely homogeneous wavepackets
+play a more important role in practical simulations and we can show the important
+concepts easier while the inhomogeneous case can be treated by simple generalisation
+later.
+
+
+\subsection{Homogeneous wavepacket propagation}
+
+
+As we defined in \eqref{eq:vectorial_wavepacket_hom} a homogeneous wavepacket
+$\Psi$ consists of $N$ components $\Phi_i$ all sharing the same parameter set
+$\Pi$. This set of parameters is propagated by the same rules as in the scalar
+case. The propagation of $\Pi$ has to take place in the eigenbasis of $\mat{V}$
+where the energy levels $\lambda_i$ decouple. We need to choose one of these
+levels $\lambda_i(\vec{x})$ which then governs the propagation of $\Pi$ and
+plays the role of $V$ in the scalar case. We denote this particular level
+by $\lambda_{\chi}$ and call $\chi \in [0, \ldots, N-1]$ the \emph{characteristic
+component index}. Then we apply the usual splitting into quadratic part
+and non-quadratic remainder. Formally we write:
+
+\begin{align*}
+  u_\chi(\vec{x}) & = \lambda_\chi(\vec{x}) + \nabla \lambda_\chi(\vec{q}) (\vec{x}-\vec{q})
+                      + \frac{1}{2} (\vec{x}-\vec{q})\T \nabla^2 \lambda_\chi(\vec{q}) (\vec{x}-\vec{q}) \\
+  w_\chi(\vec{x}) & = \lambda_\chi(\vec{x}) - u_\chi(\vec{x}) \,.
+\end{align*}
+
+This is sufficient for time propagation of $\Pi$ but not for the Galerkin step
+where we propagate the coefficients $\{c_{\vec{k}}\}_{\vec{k} \in \mathfrak{K}}$.
+There we need a splitting of the full matrix $\mat{V}(\vec{x}) = \mat{U}(\vec{x}) + \mat{W}(\vec{x})$
+into quadratic part $\mat{U}(\vec{x})$ and remainder $\mat{W}(\vec{x})$ such that:
+
+\begin{equation*}
+  \mat{V} =
+  \begin{pmatrix}
+    u_\chi & {}     & {} \\
+    {}     & \ddots & {} \\
+    {}     &        & u_\chi
+  \end{pmatrix}
+  +
+    \begin{pmatrix}
+    v_{0,0} - u_\chi & \cdots & v_{0,N-1} \\
+    \vdots           & \ddots & \vdots \\
+    v_{N-1,0}        & \cdots & v_{N-1,N-1} - u_\chi
+  \end{pmatrix} \,.
+\end{equation*}
+
+We will need $\mat{W}$ for building the matrix $\mat{F}$ later. Notice that up
+to now we did not mix the different components $\Phi_i$. This only happens
+during propagation of the coefficients. For this we stack the coefficients
+$\{c_{\vec{k}}^i\}_{\vec{k} \in \mathfrak{K}_i}$ of all components $\Phi_i$
+into a long column vector $\vec{c}$:
+
+\begin{equation*}
+  \vec{c} \assign
+  \begin{pmatrix}
+    \cdots & c_{\vec{k}}^0 & \cdots & | & \cdots & | & \cdots & c_{\vec{k}}^{N-1} & \cdots
+  \end{pmatrix}
+  \T
+\end{equation*}
+
+of length $\sum_{i=0}^{N-1} |\mathfrak{K}_i|$ or $N |\mathfrak{K}|$ if all
+components have a basis shape of same size. Then we build the $\mat{F}$ matrix
+for use in equation \eqref{eq:update_scheme_coeff}. Obviously it must have the
+following block structure:
+
+\begin{equation*}
+  \mat{F} \assign
+  \begin{pmatrix}
+    \mat{F_{0,0}}   & \cdots        & \mat{F_{0, N-1}} \\
+    \vdots          & \mat{F_{i,j}} & \vdots \\
+    \mat{F_{N-1,0}} & \cdots        & \mat{F_{N-1, N-1}} \\
+  \end{pmatrix}
+\end{equation*}
+
+and each block is of the form:
+
+\begin{equation*}
+  \mat{F_{i,j}} \assign
+    \begin{pmatrix}
+    {}     & \vdots                                               & {} \\
+    \cdots & \Braket{ \phi_{\vec{k}} | \mat{W}_{i,j} | \phi_{\vec{l}} } & \cdots \\
+    {}     & \vdots                                               & {}
+  \end{pmatrix}
+\end{equation*}
+
+for $\vec{k} \in \mathfrak{K}_i$ and $\vec{l} \in \mathfrak{K}_j$. These blocks
+are not necessarily square but the matrix $\mat{F}$ always is. (Compare this
+to the matrices used for the basis transformation of wavepackets.)
+
+Algorithm \ref{al:build_block_matrix_homog} gives pseudo code for the computation
+of $\mat{F}$ given a quadrature rule, the remainder $\mat{W}$ and the homogeneous
+wavepacket $\Psi[\Pi]$. The time propagation then is summarised in algorithm
+\ref{al:tp_wave_packets_homog}.
+
+
+\begin{algorithm}
+\caption{Build the homogeneous block matrix $\mat{F} \assign \left(\mat{F_{r,c}}\right)_{r,c}$}
+\label{al:build_block_matrix_homog}
+\begin{algorithmic}
+  \REQUIRE A homogeneous wavepacket $\Psi$ with parameter set $\Pi$
+  \REQUIRE The basis shape $\mathfrak{K}_i$ of each component $\Phi_i$ of $\Psi$, $i = 0,\ldots, N-1$
+  \REQUIRE A $N \times N$ matrix $\mat{W}(\vec{x})$ of scalar functions $w_{r,c}(\vec{x})$
+  \REQUIRE A quadrature rule $(\vec{\gamma}_j, \omega_j)$ with $R$ node-weight pairs
+  \STATE // Initialise $\mat{F}$ as the zero-matrix
+  \STATE $\eta \assign \sum_{i=0}^{N-1} |\mathfrak{K}_i|$
+  \STATE $\mat{F} \in \mathbb{C}^{\eta \times \eta}, \quad \mathbf{F} \assign \mathbf{0}$
+  \STATE // Transform the quadrature nodes according to \eqref{eq:transformed_qr_nodes}
+  \STATE $\vec{\gamma}_j^\prime = \vec{q} + \varepsilon \, \mat{Q} \, \vec{\gamma}_j \quad j = 0, \ldots R-1$
+  \STATE // Evaluate the basis functions of each component $\Phi_i$ with algorithm \ref{al:eval_phi_basis}
+  \FOR{$i = 0$ \TO $i = N-1$}
+    \STATE $\mat{B_i} \assign \mathbf{evaluate\_basis\_at}[\Phi_i]\left(\left(\vec{\gamma}_0^\prime, \ldots, \vec{\gamma}_{R-1}^\prime\right)\right)$
+  \ENDFOR
+  \STATE // Iterate over all row and column blocks of this matrix
+  \FOR{$r = 0$ \TO $r = N-1$}
+    \FOR{$c = 0$ \TO $c = N-1$}
+      \STATE // Evaluate the function $w_{r,c}$ for all quadrature nodes $\vec{\gamma}_j$
+      \STATE $\left(v_0, \ldots, v_{R-1}\right) \assign w_{r,c}\ofs{\left(\vec{\gamma}_0^\prime, \ldots, \vec{\gamma}_{R-1}^\prime\right)}$
+      \STATE // Set up a zero matrix
+      \STATE $\mat{F_{r,c}} \in \mathbb{C}^{|\mathfrak{K}_r| \times |\mathfrak{K}_c|}, \quad \mat{F_{r,c}} \assign \mat{0}$
+      \STATE // Iterate over all $R$ quadrature pairs $\left(\vec{\gamma}^\prime_j, \omega_j\right)$
+      \FOR{$j = 0$ \TO $j = R-1$}
+        \STATE $\mat{F_{r,c}} \assign \mat{F_{r,c}} + \varepsilon^D \, v_{j} \, \omega_j \, \conj{\mat{B_r}[:,j]} \mat{B_c}[:,j]\T$
+      \ENDFOR
+      \STATE // Insert the block $\mat{F_{r,c}}$ into the block matrix $\mat{F}$
+      \STATE $\mat{F}_{r,c} \assign \mat{F_{r,c}}$
+    \ENDFOR
+  \ENDFOR
+  \RETURN $\mat{F}$
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Time propagation of a homogeneous wavepacket $\Ket{\Psi}$}
+\label{al:tp_wave_packets_homog}
+\begin{algorithmic}
+  \REQUIRE A semi-classical wavepacket $\Ket{\Psi\ofs{\vec{x},t}}$
+  \REQUIRE The corresponding Hagedorn parameter set $\Pi$
+  \REQUIRE For all components $n \in [0, \ldots, N-1]$: the coefficients $\{c^n_{\vec{k}}\}_{\vec{k}\in\mathfrak{K}_n}$,
+  \REQUIRE the basis shapes $\mathfrak{K}_n$ and the mappings $\mu_{\mathfrak{K}_n}$
+  \REQUIRE The leading component index $\chi$
+  \REQUIRE The time step $\tau$
+  \STATE // Propagate with the kinetic operator
+  \STATE $\vec{q} \assign \vec{q} + \frac{\tau}{2} \mat{M}\inv \vec{p}$
+  \STATE $\mat{Q} \assign \mat{Q} + \frac{\tau}{2} \mat{M}\inv \mat{P}$
+  \STATE $S \assign S + \frac{\tau}{4} \vec{p}\T \mat{M}\inv \vec{p}$
+  \STATE // Propagate with the local quadratic potential
+  \STATE $\vec{p} \assign \vec{p} - \tau \, \nabla \lambda_\chi\ofs{\vec{q}}$
+  \STATE $\mat{P} \assign \mat{P} - \tau \, \nabla^2 \lambda_\chi\ofs{\vec{q}} \mat{Q}$
+  \STATE $S \assign S - \tau \, \lambda_\chi\ofs{\vec{q}}$
+  \STATE // Propagate with the non-quadratic remainder $\mat{W}$
+  \STATE // Stack the coefficient vectors $\vec{c}^n$ of all components
+  \STATE $\vec{C} \assign \left(\vec{c}^0 | \hdots | \vec{c}^{N-1}\right)\T$
+  \STATE // Assemble the block matrix $\mat{F}$ using algorithm \ref{al:build_block_matrix_homog}
+  \STATE $\Pi^\prime \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}, S\}$
+  \STATE $\mat{F} \assign \mathbf{build\_homogeneous\_block\_matrix}(\mat{W}, \Psi[\Pi^\prime])$
+  \STATE // Propagate the coefficients
+  \STATE $\vec{C} \assign \exp\ofs{-\tau \frac{i}{\varepsilon^2} \mat{F}} \vec{C}$
+  \STATE // Split the coefficients
+  \STATE $\left(\vec{c}^0 | \ldots | \vec{c}^{N-1}\right) \assign \vec{C}$
+  \STATE // Propagate with the kinetic operator again
+  \STATE $\vec{q} \assign \vec{q} + \frac{\tau}{2} \mat{M}\inv \vec{p}$
+  \STATE $\mat{Q} \assign \mat{Q} + \frac{\tau}{2} \mat{M}\inv \mat{P}$
+  \STATE $S \assign S + \frac{\tau}{4} \vec{p}\T \mat{M}\inv \vec{p}$
+  \RETURN $\Ket{\Psi\ofs{\vec{x}, t+\tau}}$
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Inhomogeneous wavepacket propagation}
+
+
+The case of inhomogeneous wavepacket propagation is very similar to the homogeneous
+one presented in the last section. Here we only describe the differences that
+are necessary. An inhomogeneous wavepacket $\Psi$ consists of $N$ components
+$\Phi_i$ each having its own parameter set $\Pi_i$. It is self-evident that now
+each energy level $\lambda_i(\vec{x})$ is used to propagate the corresponding
+parameter set $\Pi_i$ of the component $\Phi_i$ that resides on this level.
+Whence we have to apply the splitting to each eigenvalue:
+
+\begin{align*}
+  u_i(\vec{x}) & = \lambda_i(\vec{x}) + \nabla \lambda_i(\vec{q}^i) (\vec{x}-\vec{q}^i)
+                      + \frac{1}{2} (\vec{x}-\vec{q}^i)\T \nabla^2 \lambda_i(\vec{q}^i) (\vec{x}-\vec{q}^i) \\
+  w_i(\vec{x}) & = \lambda_i(\vec{x}) - u_i(\vec{x}) \,.
+\end{align*}
+
+for all $i \in [0, \ldots, N-1]$ and $\vec{q}^i \in \Pi_i$. This covers all we
+need to propagate the parameter sets $\{ \Pi_i \}_{i=0}^{N-1}$. The splitting of
+the whole potential matrix $\mat{V}$ into $\mat{U}$ and $\mat{W}$ is straight forward:
+
+\begin{equation*}
+  \mat{V} =
+  \begin{pmatrix}
+    u_0 & {}     & {} \\
+    {}  & \ddots & {} \\
+    {}  &        & u_{N-1}
+  \end{pmatrix}
+  +
+    \begin{pmatrix}
+    v_{0,0} - u_0 & \cdots & v_{0,N-1} \\
+    \vdots        & \ddots & \vdots \\
+    v_{N-1,0}     & \cdots & v_{N-1,N-1} - u_{N-1}
+  \end{pmatrix} \,.
+\end{equation*}
+
+Again we use the non-quadratic remainder $\mat{W}(\vec{x})$ to compute the block
+matrix $\mat{F}$. The main difference here lies inside the off-diagonal blocks. While
+building $\mat{F_{i,j}}$ with $i \neq j$ the functions $\phi_{\vec{k}}$
+and $\phi_{\vec{l}}$ appearing there belong to different families with in general
+different parameter sets $\Pi_i$ and $\Pi_j$. Therefore the correct formula for
+these blocks reads:
+
+\begin{equation*}
+  \mat{F_{i,j}} \assign
+    \begin{pmatrix}
+    {}     & \vdots                                                                  & {} \\
+    \cdots & \Braket{ \phi_{\vec{k}}[\Pi_i] | \mat{W}_{i,j} | \phi_{\vec{l}}[\Pi_j] } & \cdots \\
+    {}     & \vdots                                                                  & {}
+  \end{pmatrix}
+\end{equation*}
+
+where $\vec{k} \in \mathfrak{K}_i$ and $\vec{l} \in \mathfrak{K}_j$. The block is
+of size $|\mathfrak{K}_i| \times |\mathfrak{K}_j|$. To compute the entries we are
+required to use an inhomogeneous quadrature rule.
+
+Everything else works exactly the same as in the homogeneous case. Pseudo code
+for building the block matrix \ref{al:build_block_matrix_inhomog} and for the
+time propagation \ref{al:tp_wave_packets_inhomog} is presented below for explicit
+reference.
+
+
+\begin{algorithm}
+\caption{Build the inhomogeneous block matrix $\mat{F} \assign \left(\mat{F_{r,c}}\right)_{r,c}$}
+\label{al:build_block_matrix_inhomog}
+\begin{algorithmic}
+  \REQUIRE An inhomogeneous wavepacket $\Psi$ with $N$ parameter sets $\Pi_i$
+  \REQUIRE The basis shape $\mathfrak{K}_i$ of each component $\Phi_i$ of $\Psi$, $i = 0,\ldots, N-1$
+  \REQUIRE A $N \times N$ matrix $\mat{W}(\vec{x})$ of scalar functions $w_{r,c}(\vec{x})$
+  \REQUIRE A quadrature rule $(\vec{\gamma}_j, \omega_j)$ with $R$ node-weight pairs
+  \STATE // Initialise $\mat{F}$ as the zero-matrix
+  \STATE $\eta \assign \sum_{i=0}^{N-1} |\mathfrak{K}_i|$
+  \STATE $\mat{F} \in \mathbb{C}^{\eta \times \eta}, \quad \mathbf{F} \assign \mathbf{0}$
+  \STATE // Iterate over all row and column blocks of this matrix
+  \FOR{$r = 0$ \TO $r = N-1$}
+    \FOR{$c = 0$ \TO $c = N-1$}
+      \STATE // Apply the mixing formula from procedure \ref{al:mixing_hagedorn_parameters} to the parameters
+      \STATE $\vec{q_0}, \mat{Q_S} \assign \mathbf{mix\_parameters}(\Pi_r, \Pi_c)$
+      \STATE // Transform the quadrature nodes according to \eqref{eq:transform_qr_nodes}
+      \STATE $\vec{\gamma}_j^\prime = \vec{q_0} + \varepsilon \, \mat{Q_S} \, \vec{\gamma}_j \quad j = 0, \ldots R-1$
+      \STATE // Evaluate the function $w_{r,c}$ for all quadrature nodes $\vec{\gamma}^\prime$
+      \STATE $\left(v_0, \ldots, v_{R-1}\right) \assign w_{r,c}\ofs{\left(\vec{\gamma}^\prime_0, \ldots, \vec{\gamma}^\prime_{R-1}\right)}$
+      \STATE // Evaluate the basis functions for all quadrature nodes $\vec{\gamma}^\prime$
+      \STATE // Apply algorithm \ref{al:eval_phi_basis} to evaluate the basis of $\Phi_r$ and $\Phi_c$
+      \STATE $\mat{B_r} \assign \mathbf{evaluate\_basis\_at}[\Phi_r]\left(\left(\vec{\gamma}_0^\prime, \ldots, \vec{\gamma}_{R-1}^\prime\right)\right)$
+      \STATE $\mat{B_c} \assign \mathbf{evaluate\_basis\_at}[\Phi_c]\left(\left(\vec{\gamma}_0^\prime, \ldots, \vec{\gamma}_{R-1}^\prime\right)\right)$
+      \STATE // Do not forget the non-vanishing phase
+      \STATE $\pi_{r,c} \assign \exp\ofs{\frac{i}{\varepsilon^2}\left(S_c - \conj{S_r}\right)}$
+      \STATE // Set up a zero matrix
+      \STATE $\mat{F_{r,c}} \in \mathbb{C}^{|\mathfrak{K}_r| \times |\mathfrak{K}_c|}, \quad \mat{F_{r,c}} \assign \mat{0}$
+      \STATE // Iterate over all $R$ quadrature pairs $\left(\vec{\gamma}^\prime_j, \omega_j\right)$
+      \FOR{$j = 0$ \TO $j = R-1$}
+        \STATE $\mat{F_{r,c}} \assign \mat{F_{r,c}} + \varepsilon^D \, v_j \, \omega_j \, \det\left(\mat{Q_S}\right) \, \conj{\mat{B_r}[:,j]} \mat{B_c}[:,j]\T$
+      \ENDFOR
+      \STATE // Insert the block $\mat{F_{r,c}}$ into the block matrix $\mat{F}$
+      \STATE $\mat{F}_{r,c} \assign \pi_{r,c} \, \mat{F_{r,c}}$
+    \ENDFOR
+  \ENDFOR
+  \RETURN $\mat{F}$
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Time propagation of an inhomogeneous wavepacket $\Ket{\Psi}$}
+\label{al:tp_wave_packets_inhomog}
+\begin{algorithmic}
+  \REQUIRE A semi-classical wavepacket $\Ket{\Psi\ofs{\vec{x},t}}$
+  \REQUIRE For all components $n \in [0, \ldots, N-1]$:
+  \REQUIRE the Hagedorn parameter sets $\Pi_n$, the coefficients $\{c^n_{\vec{k}}\}_{\vec{k}\in\mathfrak{K}_n}$
+  \REQUIRE the basis shapes $\mathfrak{K}_n$ and the mappings $\mu_{\mathfrak{K}_n}$
+  \REQUIRE The time step $\tau$
+  \STATE // Propagate with the kinetic operator
+  \FOR{$n = 0$ \TO $n = N-1$}
+    \STATE $\vec{q}_n \assign \vec{q}_n + \frac{\tau}{2} \mat{M}\inv \vec{p}_n$
+    \STATE $\mat{Q}_n \assign \mat{Q}_n + \frac{\tau}{2} \mat{M}\inv \mat{P}_n$
+    \STATE $S_n \assign S_n + \frac{\tau}{4} \vec{p}_n\T \mat{M}\inv \vec{p}_n$
+  \ENDFOR
+  \STATE // Propagate with the local quadratic potential
+  \FOR{$n = 0$ \TO $n = N-1$}
+    \STATE $\vec{p}_n \assign \vec{p}_n - \tau \, \nabla \lambda_n\ofs{\vec{q}_n}$
+    \STATE $\mat{P}_n \assign \mat{P}_n - \tau \, \nabla^2 \lambda_n\ofs{\vec{q}_n} \mat{Q}_n$
+    \STATE $S_n \assign S_n - \tau \, \lambda_n\ofs{\vec{q}_n}$
+  \ENDFOR
+  \STATE // Propagate with the non-quadratic remainder
+  \STATE // Stack the coefficient vectors $\vec{c}^n$ of all components
+  \STATE $\vec{C} \assign \left(\vec{c}^0 | \hdots | \vec{c}^{N-1}\right)\T$
+
+  \STATE // Assemble the matrix $\mat{F}$ using algorithm \ref{al:build_block_matrix_inhomog}
+  \STATE $\Pi_i^\prime \assign \{\vec{q}_n, \vec{p}_n, \mat{Q}_n, \mat{P}_n, S_n\} \quad \forall n = 0, \ldots ,N-1$
+  \STATE $\mat{F} \assign \mathbf{build\_inhomogeneous\_block\_matrix}(\mat{W}, \Psi[\Pi^\prime_0, \ldots ,\Pi^\prime_{N-1}])$
+
+  \STATE // Propagate the coefficients
+  \STATE $\vec{C} \assign \exp\ofs{-\tau \frac{i}{\varepsilon^2} \mat{F}} \vec{C}$
+  \STATE // Split the coefficients
+  \STATE $\left(\vec{c}^0 | \ldots | \vec{c}^{N-1}\right) \assign \vec{C}$
+
+  \STATE // Propagate with the kinetic operator again
+  \FOR{$n = 0$ \TO $n = N-1$}
+    \STATE $\vec{q}_n \assign \vec{q}_n + \frac{\tau}{2} \mat{M}\inv \vec{p}_n$
+    \STATE $\mat{Q}_n \assign \mat{Q}_n + \frac{\tau}{2} \mat{M}\inv \mat{P}_n$
+    \STATE $S_n \assign S_n + \frac{\tau}{4} \vec{p}_n\T \mat{M}\inv \vec{p}_n$
+  \ENDFOR
+  \RETURN $\Ket{\Psi\ofs{\vec{x}, t+\tau}}$
+\end{algorithmic}
+\end{algorithm}

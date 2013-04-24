@@ -1,0 +1,881 @@
+\chapter{Wavefunction Propagation}
+\label{ch:fourier}
+
+
+In this chapter we take the first steps towards a numerical solution of the
+time-dependent Schrödinger equation. The techniques presented in this chapter
+are not new but can serve as reference point for other algorithms.
+
+
+\section{Evolution operator splitting}
+
+
+The time-evolution of a wavefunction $\Ket{\psi}$ is given by the following
+formula which can be obtained from the full time-dependent equation by
+separation of variables:
+
+\begin{equation}
+  \Ket{\psi(t)} = \exp\left(-\frac{i}{\varepsilon^2} H t\right) \Ket{\psi} \,.
+\end{equation}
+
+The exponential of the Hamiltonian operator is known as the time evolution
+operator. Computing its action is the main difficulty now. It is not feasible
+to compute the exponential straight away. We rewrite the operator as follows
+by inserting the definition of $H$:
+
+\begin{equation*}
+  \exp\left(-\frac{i}{\varepsilon^2} H t\right)
+  = \exp\left(-\frac{i}{\varepsilon^2} \left(T + V\right) t\right)
+  = \exp\left(\left(-\frac{i}{\varepsilon^2} T -\frac{i}{\varepsilon^2} V\right) t\right) \,.
+\end{equation*}
+
+The last term can be put into the form $\exp\left(\left(A + B\right) t\right)$ for
+which we now can apply the Baker-Campbell-Hausdorff formula to compute a splitting
+into a product of commuting simpler exponentials:
+
+\begin{equation*}
+  \exp\left(\left(A + B\right) t\right)
+  = \exp\left(At\right) \exp\left(Bt\right)
+    \exp\left(-\frac{t^2}{2}[A,B]\right)
+%     \exp\left(\frac{t^3}{6}(2[B,[A,B]]+[A,[A,B]])\right)
+\end{equation*}
+
+where we truncated the series after the $\bigO{t^2}$ term. Applying this idea
+to the time evolution of an arbitrary function $u(t)$ by a time step $\tau$ we get:
+
+\begin{align*}
+  u(t+\tau) & = \exp\left((A+B)\tau\right) u(t) \\
+            & \approx \exp\left(\frac{1}{2}B\tau\right)
+                      \exp\left(A\tau\right)
+                      \exp\left(\frac{1}{2}B\tau\right) u(t)
+\end{align*}
+
+which is the so called symmetric Lie-Trotter splitting. Going back to the
+time-dependent Schrödinger equation and its solution we obtain:
+
+\begin{align*}
+  \psi(t+\tau) & = \exp\left(\left(-\frac{i}{\varepsilon^2} T -\frac{i}{\varepsilon^2} V\right) \tau\right) \psi(t) \\
+               & \approx \exp\left(\frac{1}{2}\left(-\frac{i}{\varepsilon^2} V\right) \tau\right)
+                         \exp\left(\left(-\frac{i}{\varepsilon^2} T\right) \tau\right)
+                         \exp\left(\frac{1}{2}\left(-\frac{i}{\varepsilon^2} V\right) \tau\right)
+                         \psi(t)
+\end{align*}
+
+and are left with the much easier problem of computing the three simpler applications
+above. We work in position space and the wavefunction is given as $\psi(\vec{x}, t)$.
+The potential $V(\vec{x})$ is given in position space too. The computation of the
+following exponential is therefore trivial:
+
+\begin{equation}
+  \exp\left(-\frac{i}{2\varepsilon^2} V \tau\right) = \exp\left(-\frac{i}{2\varepsilon^2} V(\vec{x}) \tau\right) \,.
+\end{equation}
+
+In the non-adiabatic case where the potential is matrix-valued this becomes
+a matrix exponential. But as $V \in \mathbb{R}^{N \times N}$ and $N$ really
+small this is not a big issue. Compare to \cite{B_bachelor_thesis} for the
+details on how to compute this efficiently.
+
+The other exponential involving the kinetic operator $T$ is more of a problem
+since it includes a differential operator:
+
+\begin{equation}
+\begin{split}
+  \exp\left(-\frac{i}{\varepsilon^2} T \tau\right)
+  & = \exp\left(-\frac{i}{\varepsilon^2} \left(-\frac{\varepsilon^4}{2m}\Delta\right) \tau\right) \\
+  & = \exp\left(\frac{i\varepsilon^2}{2m}\Delta\tau\right) \\
+  & = \exp\left(\frac{i\varepsilon^2}{2}\Delta\tau\right)
+\end{split}
+\end{equation}
+
+where we set the mass $m=1$. The nasty point here is the Laplace operator
+inside the exponential. Luckily going to momentum space by a simple
+Fourier transform solves all our problems.
+
+
+\section{Fourier transformations}
+
+
+Since there are several closely related Fourier transforms we first write
+down what we use as notation.
+
+\begin{definition}[Fourier transformation in one dimension]
+  The Fourier transformation for ordinary and angular frequency are given by:
+  \begin{align*}
+    \mathcal{F}_x & : f(x) \rightarrow \hat{f}(k)
+    & \mathcal{F}_x \assign \int_{-\infty}^{\infty} f(x) \exp(- 2\pi i k x) \mathrm{d}x \\
+    \mathcal{F}_x & : f(x) \rightarrow \hat{f}(\omega)
+    & \mathcal{F}_x \assign \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} f(x) \exp(-i \omega x) \mathrm{d}x
+  \end{align*}
+  and the respective inverse transformations are:
+  \begin{align*}
+    \mathcal{F}_k\inv      & : \hat{f}(k)      \rightarrow f(x)
+    & \mathcal{F}_k\inv \assign \int_{-\infty}^{\infty} \hat{f}(k) \exp(2\pi i k x) \mathrm{d}k \\
+    \mathcal{F}_\omega\inv & : \hat{f}(\omega) \rightarrow f(x)
+    & \mathcal{F}_\omega\inv \assign \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} \hat{f}(\omega) \exp(i \omega x) \mathrm{d}\omega
+  \end{align*}
+  with $\omega = 2\pi k$.
+\end{definition}
+
+In higher dimensions the transformations are of course similar. It is advantageous
+to use vector notation for their definition.
+
+\begin{definition}[Fourier transformation in $D$ dimensions]
+  Define the vectors $\vec{x} = (x_0, \ldots, x_{D-1})$, $\vec{k} = (k_0, \ldots, k_{D-1})$
+  and $\vec{\omega} = (\omega_0, \ldots, \omega_{D-1})$. Then the Fourier
+  transformation for angular frequency is given by:
+  \begin{align*}
+    \mathcal{F}_{\vec{x}} & : f(\vec{x}) \rightarrow \hat{f}(\vec{\omega})
+    & \mathcal{F}_{\vec{x}} \assign \frac{1}{(2\pi)^{\frac{D}{2}}}
+      \int_{\mathbb{R}^D} f(\vec{x}) \exp(-i \vec{\omega}\cdot\vec{x}) \mathrm{d}\vec{x}
+  \end{align*}
+  and the respective inverse transformation is:
+  \begin{align*}
+    \mathcal{F}_{\vec{\omega}}\inv & : \hat{f}(\vec{\omega}) \rightarrow f(\vec{x})
+    & \mathcal{F}_{\vec{\omega}} \assign \frac{1}{(2\pi)^{\frac{D}{2}}}
+      \int_{\mathbb{R}^D} f(\vec{\omega}) \exp(i \vec{\omega}\cdot\vec{x}) \mathrm{d}\vec{\omega} \,.
+  \end{align*}
+\end{definition}
+
+Now we can use the following well-known theorem to simplify the exponential of $T$.
+The differential operator transforms under the Fourier transformation as follows:
+
+\begin{equation*}
+  \diff[n]{}{x} f(x) \rightarrow (i\omega)^n \hat{f}(\omega) = (2\pi i k)^n \hat{f}(k) \,.
+\end{equation*}
+
+First we do the computation in one space dimension because it is easier
+to get the idea there. As known from the introduction the operator $T$
+is of the form:
+
+\begin{equation}
+  T = -\frac{\varepsilon^4}{2} \pdiff[2]{}{x}
+\end{equation}
+
+and we compute now its Fourier transform as:
+
+\begin{align*}
+  \mathcal{F}_x\left(T\right)
+  = \mathcal{F}_x\left(-\frac{\varepsilon^4}{2} \pdiff[2]{}{x}\right)
+  = -\frac{\varepsilon^4}{2} \mathcal{F}_x\left(\pdiff[2]{}{x}\right)
+  = -\frac{\varepsilon^4}{2} (i\omega)^2
+  = \frac{\varepsilon^4}{2} \omega^2
+\end{align*}
+
+by using the fundamental properties of the Fourier transform. Plugging this into
+the exponential where we compute $\exp\left(-\frac{i}{\varepsilon^2}T\tau\right)$
+we get:
+
+\begin{equation} \label{eq:expt_1D}
+  \exp\left(-\frac{i\varepsilon^2}{2} \omega^2\tau\right)
+\end{equation}
+
+which is easy to evaluate. Doing the same computations in $D$ dimensions is
+much more grinding. First we get for the operator $T$:
+
+\begin{equation}
+  T = -\frac{\varepsilon^4}{2} \Delta
+    = -\frac{\varepsilon^4}{2} \left(\pdiff[2]{}{x_0} + \pdiff[2]{}{x_1} + \cdots + \pdiff[2]{}{x_{D-1}}\right)
+    = -\frac{\varepsilon^4}{2} \sum_{d=0}^{D-1} \pdiff[2]{}{x_d}
+\end{equation}
+
+by replacing the Laplace through its definition in the current coordinate system.
+The principle now is to recursively compute Fourier transforms for a single variable
+$x_d$ only. For the first iteration by $\mathcal{F}_{x_0}$ we get:
+
+\begin{align*}
+  \mathcal{F}_{x_0}\left(T\right)
+  & = \mathcal{F}_{x_0}\left( -\frac{\varepsilon^4}{2} \left(\pdiff[2]{}{x_0} + \sum_{d=1}^{D-1} \pdiff[2]{}{x_d}\right) \right) \\
+  & = -\frac{\varepsilon^4}{2} \mathcal{F}_{x_0}\left(\pdiff[2]{}{x_0} + \sum_{d=1}^{D-1} \pdiff[2]{}{x_d}\right) \\
+  & = -\frac{\varepsilon^4}{2} \left(\mathcal{F}_{x_0}\left(\pdiff[2]{}{x_0}\right) + \sum_{d=1}^{D-1} \pdiff[2]{}{x_d}\right) \\
+  & = -\frac{\varepsilon^4}{2} \left(\left(i\omega_0\right)^2 + \sum_{d=1}^{D-1} \pdiff[2]{}{x_d}\right)
+\end{align*}
+
+where the terms in the sum are constant with respect to $x_0$. Performing the next
+iteration and computing $\mathcal{F}_{x_1}$ we get:
+
+\begin{align*}
+    & \mathcal{F}_{x_1}\left(-\frac{\varepsilon^4}{2} \left(\left(i\omega_0\right)^2 + \sum_{d=1}^{D-1} \pdiff[2]{}{x_d}\right)\right) \\
+  = & -\frac{\varepsilon^4}{2} \mathcal{F}_{x_1}\left(\left(\left(i\omega_0\right)^2 + \pdiff[2]{}{x_1} + \sum_{d=2}^{D-1} \pdiff[2]{}{x_d}\right)\right) \\
+  = & -\frac{\varepsilon^4}{2} \left(\left(i\omega_0\right)^2 + \mathcal{F}_{x_1}\left(\pdiff[2]{}{x_1}\right) + \sum_{d=2}^{D-1} \pdiff[2]{}{x_d}\right) \\
+  = & -\frac{\varepsilon^4}{2} \left(\left(i\omega_0\right)^2 + \left(i\omega_1\right)^2 + \sum_{d=2}^{D-1} \pdiff[2]{}{x_d}\right)
+\end{align*}
+
+and we can see the pattern. Finally following this path we will get the result:
+
+\begin{align*}
+  \mathcal{F}_{\vec{x}}\left(T\right)
+  & = \mathcal{F}_{x_{D-1}}\cdots\mathcal{F}_{x_0}\left(-\frac{\varepsilon^4}{2} \Delta\right) \\
+  & = -\frac{\varepsilon^4}{2} \sum_{d=0}^{D-1} \left(i\omega_d\right)^2 \\
+  & = \frac{\varepsilon^4}{2} \vec{\omega} \cdot \vec{\omega} \,.
+\end{align*}
+
+For the exponential $\exp\left(-\frac{i}{\varepsilon^2}T\tau\right)$ we get
+the expression:
+
+\begin{equation}
+  \exp\left(-\frac{i\varepsilon^2}{2} \vec{\omega} \cdot \vec{\omega} \tau\right)
+\end{equation}
+
+which simplifies to \eqref{eq:expt_1D} above if we set $D=1$. At this point we
+have all parts together to compute the time evaluation of a wavefunction $\psi(\vec{x}, t)$.
+
+
+\section{Time propagation of wavefunctions}
+
+
+Using the operator splitting shown earlier we can write the approximative time
+propagation of a wavefunction $\psi$ by small time steps $\tau$ as:
+
+\begin{equation*}
+  \psi(\vec{x}, t+\tau)
+  =
+  \exp\left(-\frac{i}{2\varepsilon^2} \tau V\right)
+  \exp\left(-\frac{i}{\varepsilon^2} \tau T\right)
+  \exp\left(-\frac{i}{2\varepsilon^2} \tau V\right)
+  \psi(\vec{x},t)
+\end{equation*}
+
+or better with three separate steps as:
+
+\begin{equation}
+\begin{split}
+  \psi(\vec{x}, t+\tau)^{\prime} & = \exp\left(-\frac{i}{2\varepsilon^2} \tau \, V(\vec{x})\right) \psi(\vec{x},t) \\
+  \psi(\vec{x}, t+\tau)^{\prime\prime} & = \exp\left(-\frac{i}{\varepsilon^2} \tau \, T(\vec{x})\right) \psi(\vec{x}, t+\tau)^{\prime} \\
+  \psi(\vec{x}, t+\tau) & = \exp\left(-\frac{i}{2\varepsilon^2} \tau \, V(\vec{x})\right) \psi(\vec{x}, t+\tau)^{\prime\prime} \,.
+\end{split}
+\end{equation}
+
+The first and third step are easy, they only involve the potential operator.
+In contrast the second step is problematic because it includes a differential
+operator. This is now the point where we use the Fourier transformation to
+get rid of the differential operator. We compute the angular-frequency
+Fourier transform in the spatial coordinates only
+$\hat{\psi}(\vec{\omega}, t) = \mathcal{F}_{\vec{x}}\left(\psi(\vec{x},t)\right)$
+and then the second step becomes:
+
+\begin{equation}
+  \psi(\vec{x}, t+\tau)^{\prime\prime} =
+  \mathcal{F}_{\vec{\omega}}\inv \left[
+    \exp\left(-\frac{i}{\varepsilon^2} \tau \, \hat{T}(\vec{\omega})\right)
+    \mathcal{F}_{\vec{x}} \left[
+      \psi(\vec{x}, t+\tau)^{\prime}
+    \right]
+  \right] \,.
+\end{equation}
+
+For the sake of completeness we can write out the whole procedure as:
+
+\begin{equation} \label{eq:fourier_propagator}
+\begin{split}
+  \psi(\vec{x}, t+\tau)^{\prime} & = \exp\left(-\frac{i}{2\varepsilon^2} \tau \, V(\vec{x})\right) \psi(\vec{x},t) \\
+  \psi(\vec{x}, t+\tau)^{\prime\prime} & =
+  \mathcal{F}_{\vec{\omega}}\inv \left[
+    \exp\left(-\frac{i}{\varepsilon^2} \tau \, \hat{T}(\vec{\omega})\right)
+    \mathcal{F}_{\vec{x}} \left[
+      \psi(\vec{x}, t+\tau)^{\prime}
+    \right]
+  \right] \\
+  \psi(\vec{x}, t+\tau) & = \exp\left(-\frac{i}{2\varepsilon^2} \tau \, V(\vec{x})\right) \psi(\vec{x}, t+\tau)^{\prime\prime} \,.
+\end{split}
+\end{equation}
+
+% \begin{equation*}
+%   \psi(\vec{x}, t+\tau)
+%   =
+%   \exp\left(-\frac{i}{2\varepsilon^2} \tau V(\vec{x})\right)
+%   \mathcal{F}_{\vec{\omega}}\inv \left[
+%     \exp\left(-\frac{i}{\varepsilon^2} \tau \hat{T}(\vec{\omega})\right)
+%     \mathcal{F}_{\vec{x}} \left[
+%       \exp\left(-\frac{i}{2\varepsilon^2} \tau V(\vec{x})\right)
+%       \psi(\vec{x},t)
+%     \right]
+%   \right]
+% \end{equation*}
+
+This is the full formula for the time propagation of wavefunctions with discrete
+timesteps $\tau$ but still continuous space $\vec{x}$.
+
+To get shorter notation we define the following propagation operators:
+
+\begin{equation}
+  V_e(\vec{x}) \assign \exp\left(-\frac{i}{2\varepsilon^2} \tau V(\vec{x})\right)
+\end{equation}
+
+for the potential part in steps 1 and 3 and:
+
+\begin{equation}
+  T_e(\vec{\omega}) \assign \exp\left(-\frac{i\varepsilon^2}{2} \tau \vec{\omega} \cdot \vec{\omega}\right)
+\end{equation}
+
+for the kinetic part in step 2. In case of vector-valued wavefunctions we get
+matrix-valued operators here. If we write them out we obtain:
+
+\begin{equation}
+  V_e(\vec{x}) \assign \exp\left(
+    -\frac{i}{2\varepsilon^2} \tau
+    \begin{pmatrix}
+      v_{0,0}\ofs{\vec{x}} & \cdots & v_{0,N-1}\ofs{\vec{x}} \\
+      \vdots         &        & \vdots \\
+      v_{N-1,0}\ofs{\vec{x}} & \cdots & v_{N-1,N-1}\ofs{\vec{x}}
+    \end{pmatrix}
+  \right)
+\end{equation}
+
+which is another $N \times N$ matrix that is in general non-diagonal. For the
+other operator we get a similar matrix:
+
+\begin{equation}
+  T_e(\vec{\omega}) \assign \exp\left(
+    -\frac{i\varepsilon^2}{2} \tau \vec{\omega}\cdot\vec{\omega}
+  \right) \id_{N\times N}
+  =
+ \exp\left(
+    -\frac{i\varepsilon^2}{2} \tau
+    \begin{pmatrix}
+      \vec{\omega}\cdot\vec{\omega} & {}     & {} \\
+      {}                            & \ddots & {} \\
+      {}                            & {}     & \vec{\omega}\cdot\vec{\omega}
+    \end{pmatrix}
+  \right)
+\end{equation}
+
+but this time the matrix is diagonal and therefore the exponential of it is diagonal
+too. If we write the operator in the following form:
+
+\begin{equation}
+    T_e(\vec{\omega}) \assign
+    \begin{pmatrix}
+      \exp\left(-\frac{i\varepsilon^2}{2} \tau\vec{\omega}\cdot\vec{\omega}\right) & {} & {} \\
+      {} & \ddots & {} \\
+      {} & {} & \exp\left(-\frac{i\varepsilon^2}{2} \tau\vec{\omega}\cdot\vec{\omega}\right)
+    \end{pmatrix}
+\end{equation}
+
+this even allows for different vectors $\vec{\omega}^j$ for each component
+$\hat{\psi}_j\left(\vec{\omega}^j,t\right)$ of $\psi$. The advantage is that
+we can take different position space grids $\Gamma_j$ for each component.
+
+
+\section{Discretised position and momentum space}
+
+
+The final goal is to perform numerical simulations on a computer. Therefore
+we need not only to discretise time by taking small steps forward, but
+to discretise space as well. This is done by introducing a fine grid of nodes
+on the whole computational domain. We show the process in one space dimension
+first. The domain is just the interval $[a,b[ \in \mathbb{R}$ with a size
+of $\Delta \assign |b-a|$. We assume $x$ to be periodic with respect to this
+interval. Now we place $N$ nodes on $[a,b[$ where we take care not to put a
+node at $b$. The grid mesh size $\delta$ is then defined by
+$\delta \assign \frac{\Delta}{N} = \frac{|b-a|}{N}$. Hence single grid nodes
+$\gamma_j \in \mathbb{R}$ can be constructed as:
+
+\begin{equation}
+  \gamma_j \assign a + j \frac{\Delta}{N} = a + j \delta \quad j \in 0, \ldots, N-1
+\end{equation}
+
+and the whole position space grid $\Gamma$ is:
+
+\begin{equation}
+  \Gamma \assign \{\gamma_j\}_{j=0}^{N-1} \,.
+\end{equation}
+
+In $D$ dimensions the computational domain is the hypercubic tensor product
+$[a_0, b_0[ \times \cdots \times [a_{D-1},b_{D-1}[$. Along each axis $x_d$
+we place $N_d$ grid nodes in the interval $[a_d, b_d[$. We can construct the
+full grid by taking the following tensor product over one-dimensional grids:
+
+\begin{equation}
+  \Gamma \assign \bigotimes_{d=0}^{D-1} \Gamma_d \,.
+\end{equation}
+
+Notice that $\prod_{d=0}^{D-1} \Delta_d$ is the volume of the computational domain.
+Further $\prod_{d=0}^{D-1} N_d$ is the total number of grid  nodes $|\Gamma|$
+of $\Gamma$ since we are dealing with tensor product grids. Finally the value
+$\prod_{d=0}^{D-1} \frac{\Delta_d}{N_d}$ is kind of an inverse grid node density.
+
+If we shift the arbitrary interval $[a, b[$ to $[0, \Delta[$ then the position
+space grid nodes are given by $\Gamma = \{\frac{\Delta j}{N}\}_{j=0}^{N-1}$.
+Hence the momentum space grid $\Omega$ consists of the following nodes:
+
+\begin{equation}
+  \Omega \assign \left\{ \omega_j \right\}_{j=0}^{N-1} =
+  \left\{ \frac{1}{\Delta} \left(j-\frac{N}{2}\right) \right\}_{j=0}^{N-1}
+\end{equation}
+
+with fundamental frequency $\frac{1}{\Delta}$. The Fourier space grid for
+a $D$ dimensional space is obtained by a tensor product of $D$ one-dimensional
+grids:
+
+\begin{equation}
+  \Omega \assign \bigotimes_{d=0}^{D-1} \Omega_d \,.
+\end{equation}
+
+A grid node $\vec{\omega} \in \Omega$ is then of the form $\vec{\omega} = (\omega_0, \ldots, \omega_{D-1})$
+with $\omega_d$ the frequency index along the axis $d$.
+
+
+\section{Discrete Fourier transformations}
+
+
+Of course we have to replace the Fourier transformations in the propagator \eqref{eq:fourier_propagator}
+by a discrete analogue. We use the following definitions for the one-dimensional
+discrete Fourier transformations.
+
+\begin{definition}[Discrete Fourier transformation in one dimension]
+  Let $\vec{x}$ be a vector having $N$ entries $\vec{x}_n$. Then the discrete
+  Fourier transformation in unitary scaling is given by:
+  \begin{equation*}
+    \hat{\vec{x}}_k \assign \frac{1}{\sqrt{N}} \sum_{n=0}^{N-1} \vec{x}_n \exp\left(-2\pi i \, \frac{k n}{N}\right)
+  \end{equation*}
+  while the inverse is:
+  \begin{equation*}
+    \vec{x}_n \assign \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} \hat{\vec{x}}_k \exp\left(2\pi i \, \frac{k n}{N}\right) \,.
+  \end{equation*}
+\end{definition}
+
+For our implementation we use the fast Fourier transform algorithm to compute
+these vectors efficiently.
+
+Next we work out the discrete Fourier transform in the multi-dimensional case.
+Start with a $D$ dimensional data tensor $x_{n_0, \ldots, n_{D-1}}$. Then we
+do the discrete Fourier transform along the first axis only:
+
+\begin{equation*}
+  x_{k_0, n_1, \ldots, n_{D-1}} = \frac{1}{\sqrt{N_0}}
+                                  \sum_{n_0 = 0}^{N_0-1} x_{n_0, n_1, \ldots, n_{D-1}}
+                                  \exp\left(-2\pi i \, \frac{k_0 n_0}{N_0}\right) \,.
+\end{equation*}
+
+In the next step we do the transform along the second axis only:
+
+\begin{align*}
+  x_{k_0, k_1, n_2 \ldots, n_{D-1}}
+  & = \frac{1}{\sqrt{N_0}} \frac{1}{\sqrt{N_1}}
+      \sum_{n_1 = 0}^{N_1-1} x_{k_0, n_1, \ldots, n_{D-1}} \exp\left(-2\pi i \, \frac{k_1 n_1}{N_1}\right) \\
+  & = \frac{1}{\sqrt{N_0 N_1}}
+      \sum_{n_1 = 0}^{N_1-1} \sum_{n_0 = 0}^{N_0-1} x_{n_0, n_1, \ldots, n_{D-1}}
+                             \exp\left(-2\pi i \, \frac{k_0 n_0}{N_0}\right)
+                             \exp\left(-2\pi i \, \frac{k_1 n_1}{N_1}\right) \\
+  & = \frac{1}{\sqrt{N_0 N_1}}
+      \sum_{n_1 = 0}^{N_1-1} \sum_{n_0 = 0}^{N_0-1} x_{n_0, n_1, \ldots, n_{D-1}}
+                             \exp\left(-2\pi i \left(\frac{k_0 n_0}{N_0}+\frac{k_1 n_1}{N_1}\right) \right) \,.
+\end{align*}
+
+Going on in the same way evaluating the transformations for all remaining axes we
+get:
+
+\begin{equation*}
+  x_{k_0, \ldots, k_{D-1}}
+  = \frac{1}{\prod_{d=0}^{D-1} \sqrt{N_d} }
+    \sum_{n_{D-1} = 0}^{N_{D-1}-1} \cdots \sum_{n_0 = 0}^{N_0-1} x_{n_0, n_1, \ldots, n_{D-1}}
+                             \exp\left(-2\pi i \sum_{d=0}^{D-1} \frac{k_d n_d}{N_d} \right) \,.
+\end{equation*}
+
+% In the multi-dimensional case the discrete Fourier transformation
+%
+% \begin{equation*}
+%   \hat{x}_{k_0, \ldots, k_{D-1}} =
+%   \sum_{k_0 = 0}^{N_0-1} \sum_{k_1 = 0}^{N_1-1} \cdots \sum_{k_{D-1} = 0}^{N_{D-1}-1}
+%   \omega_{N_0}^{k_0 n_0} \omega_{N_1}^{k_1 n_1} \cdots \omega_{N_{D-1}}^{k_{D-1} n_{D-1}}
+%   \cdot x_{n_0, \ldots, n_{D-1}}
+% \end{equation*}
+%
+% for $n_l = 0, 1, \ldots N_l-1$ and $k_l = 0, 1, \ldots N_l-1$ and $l = 0, 1, \ldots, D-1$.
+% The $\omega_{N_l}$ are defined as $\omega_{N_l} = \exp\left(-\frac{2\pi i}{N_l}\right)$.
+
+To get a more compact notation we may introduce the following vectors
+$\vec{n} \assign (n_0, \ldots, n_{D-1})$, $\vec{k} \assign (k_0, \ldots, k_{D-1})$
+and $\vec{N} \assign (N_0, \ldots, N_{D-1})$. Then we have:
+
+\begin{equation*}
+  \hat{x}_{\vec{k}} \assign \frac{1}{\prod_{d=0}^{D-1} \sqrt{\vec{N}_d}}
+                            \sum_{\vec{n} = \vec{0}}^{\vec{N} - \vec{1}}
+                            x_{\vec{n}} \exp\left( -2 \pi i \, \frac{\vec{k} \cdot \vec{n}}{\vec{N}} \right)
+\end{equation*}
+
+and for the inverse:
+
+\begin{equation*}
+  x_{\vec{n}} \assign \frac{1}{\prod_{d=0}^{D-1} \sqrt{\vec{N}_d}}
+                      \sum_{\vec{k} = \vec{0}}^{\vec{N} - \vec{1}}
+                      \hat{x}_{\vec{k}} \exp\left( 2 \pi i \, \frac{\vec{k} \cdot \vec{n}}{\vec{N}} \right)
+\end{equation*}
+
+where all operations on vectors are understood as element-wise. If we only use the
+angular frequency $\vec{\omega} = 2\pi \vec{k}$ we arrive at our final transformation
+formulae.
+
+\begin{definition}[Discrete Fourier transformation in $D$ dimensions]
+  Let $x$ be a $D$ dimensional data tensor $x_{n_0, \ldots, n_{D-1}}$
+  with $N_d$ entries along the direction $d$. Then the discrete
+  Fourier transformation and its inverse both in unitary scaling are given by:
+  \begin{align*}
+  \hat{x}_{\vec{\omega}}
+  & \assign \frac{1}{\prod_{d=0}^{D-1} \sqrt{\vec{N}_d}}
+            \sum_{\vec{n} = \vec{0}}^{\vec{N} - \vec{1}}
+            x_{\vec{n}} \exp\left( -i \frac{\vec{\omega} \cdot \vec{n}}{\vec{N}} \right) \\
+  x_{\vec{n}}
+  & \assign \frac{1}{\prod_{d=0}^{D-1} \sqrt{\vec{N}_d}}
+            \sum_{\vec{\omega} = \vec{0}}^{\vec{N} - \vec{1}}
+            \hat{x}_{\vec{\omega}} \exp\left( i \frac{\vec{\omega} \cdot \vec{n}}{\vec{N}} \right) \,.
+  \end{align*}
+\end{definition}
+
+
+\section{Basis transformations}
+
+
+Using the formula \eqref{eq:eigentransformation} from the introduction we can
+write the basis transformation of a wavefunction $\Ket{\psi}$ as:
+
+\begin{equation} \label{eq:basis_trafos_wf}
+\begin{split}
+  \Ket{\psi_\text{canonical}} & = \mat{M}(\vec{x}) \Ket{\psi_\text{eigen}} \\
+  \Ket{\psi_\text{eigen}}     & = \mat{M}\inv(\vec{x}) \Ket{\psi_\text{canonical}} = \mat{M}\H(\vec{x}) \Ket{\psi_\text{canonical}}
+\end{split}
+\end{equation}
+
+where we used that the transformation matrix $\mat{M}$ is unitary.
+
+The time propagation of wavefunctions $\Ket{\psi}$ has to happen in the canonical
+basis because we know the operators only there. On the other hand we are interested
+in the behaviour of $\Ket{\psi}$ on the different energy levels. Therefore the
+computation of observables must be done in the eigenbasis. Only the overall norm
+of wavefunctions as well as the total energy are basis independent.
+
+Assume the wavefunction $\Ket{\psi}$ is vector-valued with $N$ components
+$\psi_i$. The explicit transformation to the eigenbasis is then:
+
+\begin{equation*}
+  \psi^{e} =
+  \begin{pmatrix}
+    \psi^{e}_0 \\
+    \vdots \\
+    \psi^{e}_{N-1}
+  \end{pmatrix}
+  =
+  \mat{M}\H
+  \begin{pmatrix}
+    \psi^{c}_0 \\
+    \vdots \\
+    \psi^{c}_{N-1}
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+    \sum_{i=0}^{N-1} \mat{M}\H_{0,i} \, \psi^{e}_0 \\
+    \vdots \\
+    \sum_{i=0}^{N-1} \mat{M}\H_{N-1,i} \, \psi^{e}_{N-1}
+  \end{pmatrix} \,.
+\end{equation*}
+
+
+\section{Observables}
+
+\subsection{Norm of a scalar wavefunction}
+\label{sec:norm_wf}
+
+
+Given the scalar wavefunction $\Ket{\psi}$ we want to compute the norm $\Braket{\psi|\psi}$.
+The norm is interesting because it gives us the probability density function
+according to the Kopenhagen interpretation. In one space dimension the norm is
+defined as:
+
+\begin{equation*}
+  \Braket{\psi|\psi} = \int_{\mathbb{R}} \conj{\psi(x)} \psi(x) \mathrm{d}x \,.
+\end{equation*}
+
+In discretised space we evaluate $\psi$ on the nodes of a grid $\Gamma$ and get:
+
+\begin{align*}
+  \Braket{\psi(\Gamma)|\psi(\Gamma)} & = \|\psi(\Gamma)\|^2_2 \\
+                                     & = \sum_{\gamma \in \Gamma}  \conj{\psi(\gamma)} \psi(\gamma) \\
+                                     & = \sum_{i=1}^{N} \conj{\psi(\gamma_i)} \psi(\gamma_i) \\
+\intertext{where we employ Parseval's identity and go to momentum space:}
+                                     & = \frac{T}{N^2} \sum_{i=1}^{N} \conj{\hat{\psi}(\omega_i)} \hat{\psi}(\omega_i) \\
+                                     & = \frac{T}{N^2} \|\hat{\psi}(\Omega)\|^2_2
+\end{align*}
+
+where $N = |\Gamma|$ the number of grid nodes and $T = |b-a|$ the extension of
+our grid (the length of the interval) \footnote{A possible derivation of the prefactors
+goes as follows:
+
+\begin{align*}
+  \|\psi\|_{L^2(T)}^2 & = \int_{T} \conj{\psi(x)} \psi(x) \mathrm{d}x
+                        \approx \frac{T}{N} \sum_{i=1}^{N} \conj{\psi(\gamma_i)} \psi(\gamma_i) \\
+                      & = \frac{T}{N} \sum_{i=1}^{N} \frac{1}{\sqrt{N}} \conj{\hat{\psi}(\omega_i)} \frac{1}{\sqrt{N}} \psi(\omega_i)
+                        = \frac{T}{N^2} \sum_{i=1}^{N} \conj{\hat{\psi}(\omega_i)} \psi(\omega_i) \\
+                      & = \frac{T}{N^2} \|\hat{\psi}\|_2^2
+\end{align*}
+
+where we have used Riemann sum approximation and the unitary discrete Fourier transform.}.
+The final result for the norm of a wavefunction in one space dimension is therefore:
+
+\begin{equation*}
+  \|\psi(\Gamma)\|_2 = \frac{\sqrt{T}}{N} \|\hat{\psi}(\Omega)\|_2 \,.
+\end{equation*}
+
+In an arbitrary number $D$ of space dimensions the grid $\Gamma$ has an extension
+$T_d$ in each direction $d$ and is subdivided into $N_d$ nodes along this axis.
+Define the vector $\vec{N} \assign (N_0,\ldots,N_{D-1})$ used for $D$-dimensional
+summation. Following the same route we get:
+
+\begin{align*}
+  \int_{T_0} \cdots \int_{T_{D-1}} \conj{\psi\left(\vec{x}\right)} \psi\left(\vec{x}\right) \mathrm{d} \vec{x}
+  & \approx
+ \prod_{d=0}^{D-1} \frac{T_d}{N_d} \sum_{\vec{j}=0}^{\vec{N}-1}
+                              \conj{\psi\left(\vec{\gamma}_{\vec{j}}\right)} \psi\left(\vec{\gamma}_{\vec{j}}\right) \\
+  & = \prod_{d=0}^{D-1} \frac{T_d}{N_d^2} \sum_{\vec{j}=0}^{\vec{N}-1}
+                              \conj{\hat{\psi}\left(\vec{\omega}_{\vec{j}}\right)} \hat{\psi}\left(\vec{\omega}_{\vec{j}}\right) \,.
+\end{align*}
+
+At the end of the day we find that:
+
+\begin{equation} \label{eq:norm_wf_scalar}
+  \|\psi(\Gamma)\|_2 = \prod_{d=0}^{D-1} \frac{\sqrt{T_d}}{N_d} \|\hat{\psi}(\Omega)\|_2
+\end{equation}
+
+holds for the norm of a $D$-dimensional scalar wavefunction $\Ket{\psi}$
+evaluated on an appropriate grid $\Gamma \subset \mathbb{R}^D$.
+
+
+\subsection{Norm of a vectorial wavefunction}
+
+
+We do not stop at the scalar case but want to find norms of
+vectorial wavefunctions $\Ket{\psi}$ with $N$ components.
+This computation is done in the eigenbasis and therefore we
+need to transform $\Ket{\psi}$. Computing the total norm of
+$\Ket{\psi^{e}}$ we find that:
+
+\begin{align*}
+  \Braket{\psi^{e}|\psi^{e}}
+  & = \Braket{\psi^{e}_0|\psi^{e}_0} + \cdots + \Braket{\psi^{e}_{N-1}|\psi^{e}_{N-1}} \\
+  & = \sum_{i=0}^{N-1} \Braket{\psi^{e}_i|\psi^{e}_i}
+\end{align*}
+
+where $\Braket{\psi^{e}_i|\psi^{e}_i}$ is the norm of the part $\psi_i$ of the
+wavefunction $\psi$ that resides on the energy level $\lambda_i(\vec{x})$. For
+each of these brakets we can now apply the formula \eqref{eq:norm_wf_scalar}
+from section \ref{sec:norm_wf}. This was easy because there is no operator in
+the middle of the braket which could mix up the components $\psi_i$.
+
+
+\subsection{Energy of a scalar wavefunction}
+\label{sec:energy_wf}
+
+
+The energy of a scalar wavefunction $\Ket{\psi}$ is given by the expectation value:
+
+\begin{equation}
+  E = \Braket{\psi | H | \psi}
+\end{equation}
+
+of the Hamiltonian operator $H = T + V$. We can split this into an expression
+for the kinetic and one for the potential energy:
+
+\begin{equation}
+  E = E_{kin} + E_{pot} = \Braket{\psi | T+V | \psi} = \Braket{\psi | T | \psi} + \Braket{\psi | V | \psi} \,.
+\end{equation}
+
+In the following short sections we will compute both parts starting with the
+potential energy.
+
+
+\subsubsection{Potential energy}
+
+
+Write down the following expression for a fixed time $t$:
+
+\begin{align*}
+  E_{pot} & = \Braket{\psi | V | \psi} = \Braket{\psi(\vec{x}) | V(\vec{x}) | \psi(\vec{x})} \\
+          & = \idotsint_{\mathbb{R}^D} \conj{\psi(\vec{x})} V(\vec{x}) \psi(\vec{x}) \mathrm{d}\vec{x} \\
+\intertext{then transforming to Fourier space:}
+          & = \idotsint_{\mathbb{R}^D} \ft{\conj{\psi(\vec{x})}} \ft{V(\vec{x}) \psi(\vec{x})} \mathrm{d}\vec{\omega} \,.
+\end{align*}
+
+Computing separately the subexpression $\varphi(\vec{x}) \assign V(\vec{x}) \psi(\vec{x})$
+we obtain:
+
+\begin{align*}
+  E_{pot} = \idotsint_{\mathbb{R}^D} \conj{\hat{\psi}(\vec{\omega})} \hat{\varphi}(\vec{\omega}) \mathrm{d}\vec{\omega} \,.
+\end{align*}
+
+But this is still assuming a continuous space representation. Switching to the
+discretised space by introducing the grid $\Gamma$ we get:
+
+\begin{equation*}
+  \idotsint_{\mathbb{R}^D} \conj{\psi(\vec{x})} \varphi(\vec{x}) \mathrm{d}\vec{x}
+  \approx
+  \prod_{d=0}^{D-1} \frac{T_d}{N_d} \sum_{\vec{j}=0}^{\vec{N}-1}
+                                    \conj{\psi\left(\vec{\gamma}_{\vec{j}}\right)}
+                                    \varphi\left(\vec{\gamma}_{\vec{j}}\right) \,.
+\end{equation*}
+
+Applying the unitary discrete Fourier transform next gives the final result:
+
+\begin{equation} \label{eq:epot_wf_scalar}
+  E_{pot} = \prod_{d=0}^{D-1} \frac{T_d}{N_d^2} \sum_{\vec{j}=0}^{\vec{N}-1}
+            \conj{\hat{\psi}\left(\vec{\omega}_{\vec{j}}\right)}
+            \hat{\varphi}\left(\vec{\omega}_{\vec{j}}\right) \,.
+\end{equation}
+
+
+\subsubsection{Kinetic energy}
+
+
+The kinetic energy is given from theory by:
+
+\begin{align*}
+  E_{kin} & = \Braket{\psi | T | \psi} = \Braket{\psi(\vec{x}) | -\frac{1}{2}\varepsilon^4 \Delta | \psi(\vec{x})} \,.
+\end{align*}
+
+The Laplace operator in this expression is bad because we have difficulties to
+compute its action. However we can circumvent these issues by going to Fourier
+space. We already know that $\ft{-\frac{\varepsilon^4}{2} \Delta} = \frac{\varepsilon^4}{2} \vec{\omega} \cdot \vec{\omega}$
+and for this reason we can get:
+
+\begin{align*}
+  \Braket{\psi(\vec{x}) | -\frac{\varepsilon^4}{2} \Delta | \psi(\vec{x})}
+  & = \Braket{\hat{\psi}(\vec{\omega}) | \frac{\varepsilon^4}{2} \vec{\omega} \cdot \vec{\omega} | \hat{\psi}(\vec{\omega})} \\
+  & = \frac{\varepsilon^4}{2} \idotsint_{\mathbb{R}^D}
+                              \conj{\hat{\psi}(\vec{\omega})} \, \vec{\omega} \cdot \vec{\omega} \, \hat{\psi}(\vec{\omega})
+                              \mathrm{d}\vec{\omega} \,.
+\end{align*}
+
+In discretised space we avoid computing the Fourier transform at first. Instead
+we take this formula from the continuous space representation:
+
+\begin{equation*}
+  \Braket{\ft{\psi(\vec{\gamma})} | \frac{\varepsilon^4}{2} \vec{\omega} \cdot \vec{\omega} | \ft{\psi(\vec{\gamma})}}
+\end{equation*}
+
+and discretise the integral first giving approximately:
+
+\begin{equation*}
+  \frac{\varepsilon^4}{2} \prod_{d=0}^{D-1} \frac{T_d}{N_d}
+                          \sum_{\vec{j}=0}^{\vec{N}-1}
+                            \ft{\conj{\psi\left(\vec{\gamma}_{\vec{j}}\right)}}
+                            \vec{\omega}_{\vec{j}} \cdot \vec{\omega}_{\vec{j}}
+                            \ft{\psi\left(\vec{\gamma}_{\vec{j}}\right)} \,.
+\end{equation*}
+
+Now we can easily apply the discrete Fourier transformation and get our
+final result for the kinetic energy:
+
+\begin{equation} \label{eq:ekin_wf_scalar}
+  E_{kin} =   \frac{\varepsilon^4}{2} \prod_{d=0}^{D-1} \frac{T_d}{N_d^2}
+                          \sum_{\vec{j}=0}^{\vec{N}-1}
+                            \conj{\hat{\psi}\left(\vec{\omega}_{\vec{j}}\right)}
+                            \left(\vec{\omega}_{\vec{j}} \cdot \vec{\omega}_{\vec{j}}\right)
+                            \hat{\psi}\left(\vec{\omega}_{\vec{j}}\right) \,.
+\end{equation}
+
+This is all we need to compute energies of scalar wavefunctions $\Ket{\psi}$.
+In an efficient implementation all the multi-sums over the grid nodes are fully
+vectorised and drop out. Also we can precompute the inner product of the
+$\vec{\omega}$ vectors.
+
+% For vector-valued wavefunctions the kinetic energy can be computed
+% component-wise. In contrast to the potential energy where the matrix
+% $V$ is involved, resulting in mixing the components.
+
+
+\subsection{Energy of a vectorial wavefunction}
+
+
+Now we consider vectorial wavefunctions having $N$ components and try to
+compute their energies. Again we want to find the energies given in the
+eigenbasis. For the kinetic energy of $\Ket{\psi^{e}}$ we have to compute:
+
+\begin{equation*}
+  E_{kin} = \Braket{\psi^{e} | \mat{T}^{e} | \psi^{e}}
+\end{equation*}
+
+where $\mat{T}^{e}$ is the kinetic operator in the eigenbasis. The problem is
+that we do not know what $\mat{T}^{e}$ looks like. Therefore we take each single
+component $\psi^{e}_i$, put it into a wavefunction vector like:
+
+\begin{equation*}
+  \psi^{\prime e} \assign
+  \begin{pmatrix}
+    0 \\ \vdots \\ \psi^{e}_i \\ \vdots \\ 0
+  \end{pmatrix}
+\end{equation*}
+
+and transform this object back to the canonical basis to avoid picture change
+errors. We obtain in general:
+
+\begin{equation*}
+  \mat{M} \psi^{\prime e} = \psi^{\prime c} =
+  \begin{pmatrix}
+    \psi^{\prime c}_0 \\ \vdots \\ \psi^{\prime c}_{N-1}
+  \end{pmatrix} \,.
+\end{equation*}
+
+From this we can easily compute:
+
+\begin{equation*}
+  E^i_{kin} = \Braket{\psi^{\prime c} | \mat{T} | \psi^{\prime c}}
+\end{equation*}
+
+where $\mat{T}$ is block-diagonal of size $N \times N$:
+
+\begin{equation*}
+  \mat{T} =
+  \begin{pmatrix}
+    T_i & {}     & {} \\
+    {}  & \ddots & {} \\
+    {}  & {}     & T_i
+  \end{pmatrix}
+\end{equation*}
+
+with all $T_i$ being identical. Therefore we get for the kinetic energy
+of $\psi^{e}_i$:
+
+\begin{equation}
+    E^i_{kin} = \sum_{i=0}^{N-1} \Braket{\psi^{\prime c}_i | T_i | \psi^{\prime c}_i} \,.
+\end{equation}
+
+For each braket we apply \eqref{eq:ekin_wf_scalar} and the techniques of
+section \ref{sec:energy_wf}. The total kinetic energy of $\Ket{\psi^{e}}$ is
+then of course:
+
+\begin{equation}
+  E_{kin} = \sum_{i=0}^{N-1} E^i_{kin} \,.
+\end{equation}
+
+Computing the potential energy of $\Ket{\psi^{e}}$ is easier. We can do this in the
+eigenbasis where we need to compute:
+
+\begin{equation*}
+  E_{pot} = \Braket{\psi^{e} | \mat{\Lambda} | \psi^{e}} \,.
+\end{equation*}
+
+Because $\mat{\Lambda}$ is a diagonal matrix we can decompose this into:
+
+\begin{equation*}
+  E_{pot} = \sum_{i=0}^{N-1} \Braket{\psi^{e}_i | \lambda_i | \psi^{e}_i}
+\end{equation*}
+
+and the potential energy of $\psi^{e}_i$ is:
+
+\begin{equation}
+  E_{pot}^i = \Braket{\psi^{e}_i | \lambda_i | \psi^{e}_i} \,.
+\end{equation}
+
+The brakets here can in turn be computed by the formula \eqref{eq:epot_wf_scalar}
+from \ref{sec:energy_wf}. To conclude this chapter we show that the total energy
+is basis independent:
+
+\begin{align*}
+  \Braket{\psi^{e} | \mat{\Lambda} | \psi^{e}}
+  & =
+  \Braket{\psi^{e} | \mat{M}\inv \mat{M} \mat{\Lambda} \mat{M}\inv \mat{M} | \psi^{e}}
+  =
+  \Braket{\psi^{e} \mat{M} | \mat{M} \mat{\Lambda} \mat{M}\inv | \mat{M} \psi^{e}} \\
+  & =
+  \Braket{\psi^{c} | \mat{M} \mat{\Lambda} \mat{M}\inv | \psi^{c}}
+  =
+  \Braket{\psi^{c} | \mat{V} | \psi^{c}} \,.
+\end{align*}
