@@ -1,0 +1,438 @@
+\begin{chapter}{Inner products, integrals and quadrature}
+\label{ch:quadrature}
+
+\section{A hierarchy of brakets}
+
+In this chapter we will develop and summarize all necessary tools related to
+inner products of wavepackets. We will follow a top down approach and start with
+the braket of a full vector valued wavepacket $\Ket{\Psi}$ which may be homogeneous
+or inhomogeneous at the moment. The primes indicate that the bra and the ket can
+have different parameter sets $\Pi$. This is obvious when $\Ket{\Psi}$ is an
+inhomogeneous wavepacket. Also we include an operator $F$ which may be the identity.
+
+\begin{equation}
+\begin{split}
+  \Braket{\Psi | F | \Psi^\prime} & =
+    \Bra{
+    \begin{pmatrix}
+    \Phi_0     \\
+    \vdots     \\
+    \Phi_{N-1}
+    \end{pmatrix}
+    }
+    \begin{pmatrix}
+    {}     & \vdots  & {} \\
+    \hdots & F_{r,c} & {} \\
+    {}     &         & {}
+    \end{pmatrix}
+    \Ket{
+    \begin{pmatrix}
+    \Phi_0^\prime     \\
+    \vdots     \\
+    \Phi_{N-1}^\prime
+    \end{pmatrix}
+    } \\
+  & = \sum_{r=0}^{N-1} \sum_{c=0}^{N-1} \Braket{\Phi_r | F_{r,c} | \Phi_c^\prime}
+\end{split}
+\end{equation}
+
+where $F$ is a $N \times N$ block matrix consisting of $K \times K$ blocks
+denoted by $F_{i,j} \rassign f$. We then consider a single term out of this
+double sum
+
+\begin{equation}
+\begin{split}
+  \Braket{\Phi_i | f | \Phi_j^\prime} & =
+    \Bra{
+    \begin{pmatrix}
+    \phi_0     \\
+    \vdots     \\
+    \phi_{K-1}
+    \end{pmatrix}
+    }
+    \begin{pmatrix}
+    {}     & \vdots  & {} \\
+    \hdots & f_{k,l} & {} \\
+    {}     &         & {}
+    \end{pmatrix}
+    \Ket{
+    \begin{pmatrix}
+    \phi_0^\prime     \\
+    \vdots     \\
+    \phi_{K-1}^\prime
+    \end{pmatrix}
+    } \\
+  & = \sum_{k=0}^{K-1} \sum_{l=0}^{K-1} \Braket{\phi_k | f_{k,l} | \phi_l^\prime}
+\end{split}
+\end{equation}
+
+where $\phi_i$ are the basis functions from \eqref{eq:hagedorn_kstate_1d}. Now we
+pick again a single entry out of the double sum only and find the following
+integral at the bottom of this hierarchy
+
+\begin{equation} \label{eq:single_entry_braket}
+  \Braket{\phi_k | f_{k,l} | \phi_l^\prime} = \int f_{k,l}\ofs{x} \conj{\phi_k\ofs{x}} \phi_l^\prime\ofs{x} \,.
+\end{equation}
+
+We now want to find an efficient way to calculate this integral for all $i$, $j$, $k$ and $l$
+or, in other words, set up the matrix $F$. This integral can almost never be solved
+analytically thus the integral is approximated by high order quadrature.
+
+
+\section{Inner products of basis functions}
+
+We speak of inhomogeneous inner products if the part in the bra and the part in
+the ket of \eqref{eq:single_entry_braket} have different Hagedorn parameters sets $\Pi$.
+In this case, all formulae become much more complicated.
+
+\subsection{An analytical ansatz to inner products}
+
+The inner product of two basis functions which have different sets of
+parameters denoted by $\Pi_k \assign \{P_k, Q_k, S_k, p_k, q_k\}$ and
+$\Pi_l \assign \{P_l, Q_l, S_l, p_l, q_l\}$ respectively is written as usual as
+$\Braket{ \phi^k | \phi^l }$. This is the expression we want to evaluate now and
+we can even write down a closed form solution based on induction and the recursion
+relation for Hermite polynomials. The expression for the ground states $\phi_0$
+acts as induction base and is given by
+
+% \begin{multline} \label{eq:multifamily_innerp_ground}
+%   \Braket{ \phi_0^k | \phi_0^l } =
+%   \sqrt{\frac{2}{B_2 \conj{A_1} + A_2 \conj{B_1}}} \cdot
+%     \exp \Biggl(
+%       -\frac{A_2 \conj{A_1} \left(\eta_2-\eta_1\right)^2 + B_2 \conj{B_1} \left(a_2-a_1\right)^2}
+%             {2 \hbar \left(B_2 \conj{A_1} + A_2 \conj{B_1}\right)}
+%     \\
+%     -i \frac{\left(a_2-a_1\right)\left(B_2\conj{A_1}\eta_1 + A_2 \conj{B_1}\eta_2\right)}
+%               {\hbar \left(B_2 \conj{A_1} + A_2 \conj{B_1}\right)}
+%     \Biggr)
+% \end{multline}
+
+\begin{multline} \label{eq:multifamily_innerp_ground}
+  \Braket{ \phi_0^k | \phi_0^l } =
+  \sqrt{\frac{-2 i}{Q_2 \conj{P_1} - P_2 \conj{Q_1}}} \cdot
+    \exp \Biggl(
+      \frac{i}{2 \varepsilon^2}
+      \frac{Q_2 \conj{Q_1} \left(p_2-p_1\right)^2 + P_2 \conj{P_1} \left(q_2-q_1\right)^2}
+            {\left(Q_2 \conj{P_1} - P_2 \conj{Q_1}\right)}
+    \\
+    -\frac{i}{\varepsilon^2}
+    \frac{\left(q_2-q_1\right) \left( Q_2 \conj{P_1} p_2 - P_2 \conj{Q_1} p_1\right)}
+         {\left(Q_2 \conj{P_1} - P_2 \conj{Q_1}\right)}
+    \Biggr) \,.
+\end{multline}
+
+For the inner product of higher level functions $\phi_i$ the whole thing gets much
+more complicated
+
+% \begin{multline}
+%   \Braket{ \phi_k^k | \phi_l^l } =
+%   \frac{1}{\sqrt{l!k!}} 2^{-\frac{l+k}{2}} \Braket{ \phi_0^k | \phi_0^l } \cdot
+%   \left(\conj{B_1} A_2 + \conj{A_1} B_2\right)^{-\frac{l+k}{2}} \cdot \\
+%   \sum_{j=0}^{\min\left(l,k\right)}
+%     \Biggl(
+%       \binom{l}{j} \binom{k}{j} j! 4^j \left(\conj{A_2 B_1}-\conj{A_1 B_2}\right)^{\frac{k-j}{2}}
+%       \left(A_1 B_2 - A_2 B_1\right)^{\frac{l-j}{2}} \cdot
+%       \\
+%       H_{k-j}\left(\hbar^{-1/2}\frac{\conj{B_1}\left(a_1-a_2\right)+i \conj{A_1}\left(\eta_1-\eta_2\right)}
+%                                     {\sqrt{\conj{A_2 B_1}-\conj{A_1 B_2}}\sqrt{\conj{B_1}A_2+\conj{A_1}B_2}}\right) \cdot
+%       \\
+%       H_{l-j}\left(-\hbar^{-1/2}\frac{B_2\left(a_1-a_2\right)+i A_2\left(\eta_1-\eta_2\right)}
+%                                     {\sqrt{A_1 B_2 - A_2 B_1}\sqrt{\conj{B_1}A_2+\conj{A_1}B_2}}\right)
+%     \Biggr)
+% \end{multline}
+
+\begin{multline} \label{eq:mixing_braket}
+  \Braket{ \phi_k^k | \phi_l^l } =
+  \frac{1}{\sqrt{l!k!}} 2^{-\frac{l+k}{2}} \Braket{ \phi_0^k | \phi_0^l } \cdot
+  \left(i \conj{ P_1} Q_2 - i \conj{Q_1} P_2\right)^{-\frac{l+k}{2}} \cdot \\
+  \sum_{j=0}^{\min\left(l,k\right)}
+    \Biggl(
+      \binom{l}{j} \binom{k}{j} j! 4^j \left(i \conj{Q_2 P_1}-i\conj{Q_1 P_2}\right)^{\frac{k-j}{2}}
+      \left(i Q_2  P_1 - i Q_1  P_2\right)^{\frac{l-j}{2}}
+      \\
+      \cdot H_{k-j}\left(\frac{1}{\varepsilon^2}
+                   \frac{\conj{ P_1}\left(q_1-q_2\right)+\conj{Q_1}\left(p_1-p_2\right)}
+                        {\sqrt{\conj{Q_2 P_1}-\conj{Q_1 P_2}}\sqrt{\conj{ P_1}Q_2-\conj{Q_1} P_2}}\right)
+      \\
+      \cdot H_{l-j}\left(-\frac{1}{\varepsilon^2}
+                    \frac{-P_2\left(q_1-q_2\right)+Q_2\left(p_1-p_2\right)}
+                         {\sqrt{Q_2 P_1 - Q_1 P_2}\sqrt{\conj{P_1}Q_2-\conj{Q_1} P_2}}\right)
+    \Biggr) \,.
+\end{multline}
+
+For the proofs of these formulae see reference \cite{H_R_quantization_rules}.
+
+Despite we can evaluate the inner product and have a closed form solution for arbitrary
+wavefunctions, these formulae are unsuitable for numerical calculation. There are
+several reasons but for example the factorials and binomial coefficients lead to
+overflow even for relatively small $k$ and $l$. Further the sum may be numerically
+unstable. Thus we need to find a better way to perform these calculations.
+
+
+\subsection{Inhomogeneous or mixing quadrature rule}
+\label{sec:mixing_quadrature}
+
+In this section we will develop a quadrature rule to evaluate the brakets in \eqref{eq:mixing_braket}.
+First we notice that each $\phi$ which is given by \eqref{eq:hagedorn_kstate_1d}
+is represented through a mathematical expression of the general form
+
+\begin{equation} \label{eq:expression_format}
+  C \cdot P^n\ofs{\xi} \cdot \exp \ofs{\theta}
+\end{equation}
+
+consisting of an arbitrary constant $C \in \mathbb{C}$, a polynomial $P^n\ofs{\cdot}$
+of degree $n$ and an exponential $\exp\ofs{\cdot}$. We try a new ansatz for calculating
+the inner product. Evaluating the braket $\Braket{\phi^k | \phi^l}$ results in a
+multiplication of two expressions of the form \eqref{eq:expression_format}. The
+parts in this expression can be grouped by same type
+
+\begin{equation} \label{eq:expression_reformat}
+\begin{split}
+  \Braket{\phi^k | \phi^l} & =
+  \int_\mathbb{R} \conj{C_k P^n_k\ofs{\xi_k} \exp \ofs{\theta_k}} C_l P^n_l\ofs{\xi_l} \exp \ofs{\theta_l} \,dx \\
+  & =   \int_\mathbb{R} \conj{C_k} C_l P^n_k\ofs{\conj{\xi_k}} P^n_l\ofs{\xi_l} \exp \ofs{\conj{\theta_k}} \exp \ofs{\theta_l} \,dx \,.
+\end{split}
+\end{equation}
+
+Let's take a closer look at the integrand of this expression now. With Gauss Hermite
+quadrature in mind we are especially interested in the exponential parts. They have
+a general form like
+
+\begin{equation} \label{eq:expression_format_exponential}
+  \exp\ofs{\theta} = \exp\left(s \cdot \left(x-m\right)^2 + \cdots \right) \,.
+\end{equation}
+
+We concentrate on the exponentials of \eqref{eq:expression_reformat} only. We combine
+them and distribute the complex conjugate onto the variables affected
+
+\begin{equation*}
+\begin{split}
+    & \conj{\exp\left(\frac{i}{2\varepsilon^2} P_k Q_k^{-1} \left(x-q_k\right)^2 + \frac{i}{\varepsilon^2} p_k \left( x-q_k \right)\right)}
+      \cdot \exp\left(\frac{i}{2\varepsilon^2} P_l Q_l^{-1} \left(x-q_l\right)^2 + \frac{i}{\varepsilon^2} p_l \left( x-q_l \right)\right) \\
+  = & \exp\left(\conj{\frac{i}{2\varepsilon^2} P_k Q_k^{-1} \left(x-q_k\right)^2 + \frac{i}{\varepsilon^2} p_k \left( x-q_k \right)}
+              + \frac{i}{2\varepsilon^2} P_l Q_l^{-1} \left(x-q_l\right)^2 + \frac{i}{\varepsilon^2} p_l \left( x-q_l \right) \right) \\
+  = & \exp\left( -\frac{i}{2\varepsilon^2} \conj{P_k} \conj{Q_k^{-1}} \left(x-q_k\right)^2 - \frac{i}{\varepsilon^2} p_k \left( x-q_k \right)
+              + \frac{i}{2\varepsilon^2} P_l Q_l^{-1} \left(x-q_l\right)^2 + \frac{i}{\varepsilon^2} p_l \left( x-q_l \right) \right) \,.
+\end{split}
+\end{equation*}
+
+For the sake of readability we define the following variables
+
+\begin{equation}
+\begin{split}
+  r_k & \assign P_k Q_k^{-1} \\
+  r_l & \assign P_l Q_l^{-1} \,.
+\end{split}
+\end{equation}
+
+Plugging these into the equation above and expanding the squares we get for the
+exponent
+
+\begin{equation*}
+  \frac{i}{\varepsilon^2} \left( - \frac{1}{2}\underbrace{\left(\conj{r_k}-r_l\right)}_{\alpha + i \beta} x^2
+                                 + \underbrace{\left(\conj{r_k}q_k-r_l q_l\right)}_{\gamma + i \delta} x
+                                 - \underbrace{\frac{1}{2}\left(\conj{r_k}q_k^2 + r_l q_l^2\right)
+                                 + \left(p_l-p_k\right) x
+                                 + p_k q_k - p_l q_l}_{\text{junk}}
+                          \right)
+\end{equation*}
+
+where we introduced two new complex variables $\alpha + i \beta$ and $\gamma + i \delta$
+and sorted out some unimportant expressions. We now carry out the multiplication
+with respect to the real parts of these complex numbers. This yields
+
+\begin{equation}
+  -\frac{1}{\varepsilon^2} \left( -\frac{\beta}{2}x^2 + i \left(\cdots\right)
+                                  + \delta x -i \left(\cdots\right)
+                                  + \cdots
+                          \right)
+\end{equation}
+
+where the dots indicate more junk. To get back to a form along the lines of
+\eqref{eq:expression_format_exponential} we have to complete the square, first
+divide out a factor of $-\frac{\beta}{2}$ and then complete by a factor of
+$\left(\frac{\delta}{\beta}\right)^2$
+
+\begin{equation}
+\begin{split}
+    & -\frac{1}{\varepsilon^2} \left( x^2 -\frac{2\delta}{\beta} x + \ldots \right) \left(-\frac{\beta}{2}\right) \\
+%   = & -\frac{1}{\varepsilon^2} \left( x^2 -\frac{2\delta}{\beta} x + \left(\frac{\delta}{\beta}\right)^2 - \left(\frac{\delta}{\beta}\right)^2 \right) \left(-\frac{\beta}{2}\right) \\
+%   = & -\frac{1}{\varepsilon^2} \left( \left(-\frac{\beta}{2}\right) \left(x-\frac{\delta}{\beta}\right)^2 - \left(-\frac{\beta}{2}\right)\left(\frac{\delta}{\beta}\right)^2 \right) \\
+  = & -\frac{1}{\varepsilon^2} \left( \left(-\frac{\beta}{2}\right) \left(x-\frac{\delta}{\beta}\right)^2 + \frac{\delta^2}{2\beta} \right) \,.
+\end{split}
+\end{equation}
+
+From this last expression we get the quadrature rule components $s \assign Q_0$
+and $m \assign q_0$ of expression \eqref{eq:expression_format_exponential} as
+
+\begin{equation} \label{eq:inhomog_quad_params}
+\begin{split}
+  q_0 & \assign \frac{\delta}{\beta} = \frac{\Im \left(\conj{r_k}q_k-r_l q_l\right)}{\Im \left(\conj{r_k}-r_l\right)} \\
+  Q_0 & \assign -\frac{\beta}{2} = -\frac{\Im \left(\conj{r_k}-r_l\right)}{2} \\
+  Q_S & \assign \frac{1}{\sqrt{Q_0}} \,.
+\end{split}
+\end{equation}
+
+Now we transform the nodes $\gamma_i$ according to the weighted position mean $q_0$
+and the parameter $Q_S$ which changes the spread of the nodes. This yields
+
+\begin{equation} \label{eq:inhomog_transformed_nodes}
+  \gamma^{\prime}_i \assign q_0 + \varepsilon \cdot Q_S \cdot \gamma_i
+\end{equation}
+
+for the mixing quadrature nodes which are located in the space around where
+the product of $\phi_k$ and $\phi_l$ is maximal. A procedure that calculates
+$q_0$, $Q_S$ and the adapted quadrature nodes is given by algorithm \ref{al:mixing_hagedorn_parameters}.
+
+\begin{algorithm}
+\caption{Mixing two sets $\Pi_r$ and $\Pi_c$ of Hagedorn parameters}
+\label{al:mixing_hagedorn_parameters}
+\begin{algorithmic}
+  \REQUIRE Two sets $\Pi_r$ and $\Pi_c$ of Hagedorn parameters
+  \REQUIRE A quadrature rule $\left(\gamma_i, \omega_i\right)$
+  \STATE // Apply the mixing formula to the parameters
+  \STATE $r_r \assign \frac{P_r}{Q_r}$
+  \STATE $r_c \assign \frac{P_c}{Q_c}$
+
+  \STATE $q_0 \assign \frac{\Im \left(\conj{r_r}q_r-r_c q_c\right)}{\Im \left(\conj{r_r}-r_c\right)}$
+  \STATE $Q_0 \assign -\frac{\Im \left(\conj{r_r}-r_c\right)}{2}$
+  \STATE $Q_S \assign \frac{1}{\sqrt{Q_0}}$
+
+  \STATE // And shift the quadrature nodes
+  \STATE $\gamma^\prime \assign q_0 + \varepsilon Q_S \gamma$
+  \RETURN $q_0$ and $Q_S$ and $\gamma^\prime$
+\end{algorithmic}
+\end{algorithm}
+
+We get back to the homogeneous case if we choose the sets $\Pi_k$ and
+$\Pi_l$ of Hagedorn parameters identical.
+
+Note that we get issues if at any time it happens that
+
+\begin{equation}
+  \Im \left(\frac{\conj{P_k}}{\conj{Q_k}} -\frac{P_l}{Q_l}\right) > 0 \,.
+\end{equation}
+
+
+\subsection{Homogeneous quadrature rule}
+
+In this section we reduce the mixing quadrature rule of the last section to the
+homogeneous case where everything becomes much simpler.
+We will start from the assumption that the mixing quadrature rule contains the
+homogeneous one as a special case. (This is not just speculation but can be shown
+by direct calculation analogous to what we did in the last section.) Suppose for
+this section that both $\phi_i$ in \eqref{eq:single_entry_braket} belong to the
+same basis and have an identical parameter set $\Pi$ hence $\Pi_k = \Pi_l$ or at
+least $P_k = P_l$, $Q_k = Q_l$ and $p_k = p_l$, $q_k = q_l$. With this assumption
+we simplify the quadrature formulae \eqref{eq:inhomog_quad_params} and
+\eqref{eq:inhomog_transformed_nodes} to the homogeneous case.
+
+Let's start with simplification of the $Q_0$ parameter
+
+\begin{equation}
+\begin{split}
+  Q_0 & \assign -\frac{\Im \left(\conj{r_k}-r_l\right)}{2}
+        = -\frac{1}{2} \Im \left(\conj{r_k}-r_k\right) \\
+      & = - \frac{1}{2} \left( - \frac{2}{\conj{Q}Q}\right) \\
+      & = \frac{1}{|Q|^2} \,.
+\end{split}
+\end{equation}
+
+The parameter $Q_S$ is then as trivial as
+
+\begin{equation}
+  Q_S \assign \frac{1}{\sqrt{Q_0}} = \frac{1}{\sqrt{\frac{1}{|Q|^2}}} = |Q| \,.
+\end{equation}
+
+In the last case we have for the weighted position
+
+\begin{equation}
+\begin{split}
+  q_0 & \assign \frac{\Im \left(\conj{r_k}q_k-r_l q_l\right)}{\Im \left(\conj{r_k}-r_l\right)}
+        = \frac{\Im \left(\conj{r_k}q_k-r_k q_k\right)}{\Im \left(\conj{r_k}-r_k\right)} \\
+%       & = \frac{\Im \left(\left(\conj{r_k}-r_k\right) q\right)}{-\frac{2}{\conj{Q}Q}}
+      & = \frac{q \Im \left(\conj{r_k}-r_k\right)}{-\frac{2}{\conj{Q}Q}}
+        = \frac{-\frac{2}{\conj{Q}Q}q}{-\frac{2}{\conj{Q}Q}} \\
+      & = q
+\end{split}
+\end{equation}
+
+which should be clear also without computation. For the transformed quadrature
+nodes we can write 
+
+\begin{equation}
+  \gamma^{\prime}_i \assign q + \varepsilon \cdot |Q| \cdot \gamma_i
+\end{equation}
+
+which was shown to work in real simulations for homogeneous wavepackets.
+
+
+% \subsubsection{Direct computation}
+% 
+% The above result is consistent with what we get directly from the following computations
+% starting with the already simplified exponentials. Just for comparison here is the
+% direct derivation of the homogeneous quadrature rule.
+% 
+% \begin{align} \label{eq:expression_exponentials_combined}
+%   & \conj{\exp\left(\frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right)\right)}
+%   \cdot \exp\left(\frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right)\right) \nonumber \\
+%   = & \exp\left(\conj{\frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right)}
+%               + \frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right) \right) \nonumber \\
+%   = & \exp\left( -\frac{i}{2\varepsilon^2} \conj{P} \conj{Q^{-1}} \left(x-q\right)^2 - \frac{i}{\varepsilon^2} p \left( x-q \right)
+%               + \frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right) \right) \,.
+% \end{align}
+% 
+% Now we group the terms with an $x^2$ but without expanding the binomals. Thus we get
+% 
+% \begin{align}
+%     & -\frac{i}{2\varepsilon^2} \conj{P} \conj{Q^{-1}} \left(x-q\right)^2 + \frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 - \frac{i}{\varepsilon^2} p \left( x-q \right)
+%                + \frac{i}{\varepsilon^2} p \left( x-q \right) \\
+%   = & -\frac{i}{2\varepsilon^2} \conj{P} \conj{Q^{-1}} \left(x-q\right)^2 + \frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \bigO{x} \\
+%   = & \frac{i}{\varepsilon^2} \left( -\frac{1}{2} \conj{P} \conj{Q^{-1}} \left(x-q\right)^2 + \frac{1}{2} P Q^{-1} \left(x-q\right)^2 \right) + \ldots \\
+%   = & \frac{i}{\varepsilon^2} \left( \left(-\frac{1}{2} \conj{P} \conj{Q^{-1}} + \frac{1}{2} P Q^{-1} \right) \left(x-q\right)^2 \right) + \ldots \\
+%   = & \frac{i}{\varepsilon^2} \left( -\frac{1}{2} \underbrace{\left( \frac{\conj{P}}{\conj{Q}} - \frac{P}{Q} \right)}_{\text{*}} \left(x-q\right)^2 \right) + \ldots \\
+%   = & \frac{i}{\varepsilon^2} \left( -\frac{1}{2} \left( -2i \frac{1}{\conj{Q}Q} \right) \left(x-q\right)^2 \right) + \ldots \\
+%   = & -\frac{1}{\varepsilon^2} \left( \frac{1}{\conj{Q}Q} \left(x-q\right)^2 \right) + \ldots \\
+%   = & -\frac{1}{\varepsilon^2} \left( \underbrace{\frac{1}{|Q|^2}}_{Q_0} \left(x-\underbrace{q}_{q_0}\right)^2 \right) + \ldots \\
+% \end{align}
+% 
+% from which we again get for the quadrature nodes
+% 
+% \begin{equation}
+%   \gamma^{\prime}_i \assign q + \varepsilon \cdot |Q| \cdot \gamma_i
+% \end{equation}
+
+
+\section{Quadrature rules applied}
+
+After we discussed in details the transformation of the quadrature nodes in the
+last section we now look at the final quadrature rule. It's not really difficult,
+but it is good to write down all the details at least once.
+
+Assume we have the transformed quadrature nodes $\gamma_i^\prime$ given by \eqref{eq:inhomog_transformed_nodes}.
+We now carry out the quadrature for resolving equation \eqref{eq:single_entry_braket}
+
+\begin{equation}
+\begin{split}
+  \Braket{\phi_k | f | \phi_l^\prime}
+  \approx
+  \varepsilon \cdot Q_S \cdot \sum_{r=0}^R \conj{\phi_k\ofs{\gamma_r^\prime}} \cdot f\ofs{\gamma_r^\prime} \cdot \phi_l^\prime\ofs{\gamma_r^\prime} \cdot \omega_r
+\end{split}
+\end{equation}
+
+where the two $\phi$ in general belong to the different families. But if they really
+have the same parameter sets $\Pi$ then we can simplify this formula slightly. The
+trick is that we omit a prefactor of $\frac{1}{\sqrt{Q}}$ when evaluating $\phi\ofs{\gamma_r^\prime}$.
+Because we have two times this evaluation, both prefactors accumulate to $\frac{1}{|Q|}$.
+In the homogeneous case we have $Q_S = |Q|$ hence the $Q_S$ outside the sum
+cancels nicely with this prefactors. And the above formula becomes
+
+\begin{equation} \label{eq:homogeneous_quadrature_rule}
+\begin{split}
+  \Braket{\phi_k | f | \phi_l}
+  \approx
+  \varepsilon \cdot \sum_{r=0}^R \conj{\phi_k\ofs{\gamma_r^\prime}} \cdot f\ofs{\gamma_r^\prime} \cdot \phi_l\ofs{\gamma_r^\prime} \cdot \omega_r \,.
+\end{split}
+\end{equation}
+
+\end{chapter}
