@@ -1,10 +1,14 @@
 \documentclass[a4paper,10pt]{report}
 
+% Load ``float'' before ``hyperref`` before ''algorithm``
+% Note: ''algorithm`` would load ''float`` by itself
+\usepackage{float}
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+
 \input{./header_math.tex}
 \input{./header_gfx.tex}
 \input{./header_algs.tex}
 \input{./header_listing.tex}
-
 
 \usepackage[utf8x]{inputenc}
 \usepackage{cancel}
@@ -12,9 +16,38 @@
 \usepackage{placeins}
 \usepackage{microtype}
 
+% Links in pdf
+\usepackage{color}
+\newcommand{\blue}{ \color{blue} }
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+\hypersetup
+{
+colorlinks=true,
+linkcolor=linkcol,
+citecolor=citecol,
+urlcolor=linkcol
+}
+
+% nicer backref links
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+\ifcase #1 %
+(Not cited.)%
+\or
+(Cited on page~#2.)%
+\else
+(Cited on pages~#2.)%
+\fi}
+\renewcommand*{\backrefsep}{, }
+\renewcommand*{\backreftwosep}{ and~}
+\renewcommand*{\backreflastsep}{ and~}
+
 \parindent 0cm
 
 \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
 
 \begin{document}
 
@@ -27,15 +60,15 @@
 \listofalgorithms
 
 \clearemptydoublepage
- 
+
 \input{./ch_introduction.tex}
- 
+
 \clearemptydoublepage
- 
+
 \input{./ch_wavepackets.tex}
 
 \clearemptydoublepage
- 
+
 \input{./ch_quadrature.tex}
 
 \clearemptydoublepage
@@ -47,11 +80,11 @@
 \input{./ch_spawntunnel.tex}
 
 \clearemptydoublepage
- 
+
 \input{./ch_spawncross.tex}
 
 \clearemptydoublepage
- 
+
 \input{./ch_spawnpropagation.tex}
 
 \clearemptydoublepage

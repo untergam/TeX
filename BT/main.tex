@@ -1,5 +1,10 @@
 \documentclass[a4paper,10pt]{report}
 
+% Load ``float'' before ``hyperref`` before ''algorithm``
+% Note: ''algorithm`` would load ''float`` by itself
+\usepackage{float}
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+
 \input{./header_math.tex}
 \input{./header_gfx.tex}
 \input{./header_code_reference.tex}
@@ -7,7 +12,38 @@
 \usepackage{url}
 \usepackage{microtype}
 
+% Links in pdf
+\usepackage{color}
+\newcommand{\blue}{ \color{blue} }
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+\hypersetup
+{
+colorlinks=true,
+linkcolor=linkcol,
+citecolor=citecol,
+urlcolor=linkcol
+}
+
+% nicer backref links
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+\ifcase #1 %
+(Not cited.)%
+\or
+(Cited on page~#2.)%
+\else
+(Cited on pages~#2.)%
+\fi}
+\renewcommand*{\backrefsep}{, }
+\renewcommand*{\backreftwosep}{ and~}
+\renewcommand*{\backreflastsep}{ and~}
+
+\parindent 0cm
+
 \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
 
 \begin{document}
 
