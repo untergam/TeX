@@ -150,11 +150,11 @@ more complicated
       \binom{l}{j} \binom{k}{j} j! 4^j \left(i \conj{Q_2 P_1}-i\conj{Q_1 P_2}\right)^{\frac{k-j}{2}}
       \left(i Q_2  P_1 - i Q_1  P_2\right)^{\frac{l-j}{2}}
       \\
-      \cdot H_{k-j}\left(\frac{1}{\varepsilon^2}
+      \cdot H_{k-j}\left(\frac{1}{\varepsilon}
                    \frac{\conj{ P_1}\left(q_1-q_2\right)+\conj{Q_1}\left(p_1-p_2\right)}
                         {\sqrt{\conj{Q_2 P_1}-\conj{Q_1 P_2}}\sqrt{\conj{ P_1}Q_2-\conj{Q_1} P_2}}\right)
       \\
-      \cdot H_{l-j}\left(-\frac{1}{\varepsilon^2}
+      \cdot H_{l-j}\left(-\frac{1}{\varepsilon}
                     \frac{-P_2\left(q_1-q_2\right)+Q_2\left(p_1-p_2\right)}
                          {\sqrt{Q_2 P_1 - Q_1 P_2}\sqrt{\conj{P_1}Q_2-\conj{Q_1} P_2}}\right)
     \Biggr) \,.
@@ -358,7 +358,7 @@ In the last case we have for the weighted position
 \end{equation}
 
 which should be clear also without computation. For the transformed quadrature
-nodes we can write 
+nodes we can write
 
 \begin{equation}
   \gamma^{\prime}_i \assign q + \varepsilon \cdot |Q| \cdot \gamma_i
@@ -368,11 +368,11 @@ which was shown to work in real simulations for homogeneous wavepackets.
 
 
 % \subsubsection{Direct computation}
-% 
+%
 % The above result is consistent with what we get directly from the following computations
 % starting with the already simplified exponentials. Just for comparison here is the
 % direct derivation of the homogeneous quadrature rule.
-% 
+%
 % \begin{align} \label{eq:expression_exponentials_combined}
 %   & \conj{\exp\left(\frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right)\right)}
 %   \cdot \exp\left(\frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right)\right) \nonumber \\
@@ -381,9 +381,9 @@ which was shown to work in real simulations for homogeneous wavepackets.
 %   = & \exp\left( -\frac{i}{2\varepsilon^2} \conj{P} \conj{Q^{-1}} \left(x-q\right)^2 - \frac{i}{\varepsilon^2} p \left( x-q \right)
 %               + \frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 + \frac{i}{\varepsilon^2} p \left( x-q \right) \right) \,.
 % \end{align}
-% 
+%
 % Now we group the terms with an $x^2$ but without expanding the binomals. Thus we get
-% 
+%
 % \begin{align}
 %     & -\frac{i}{2\varepsilon^2} \conj{P} \conj{Q^{-1}} \left(x-q\right)^2 + \frac{i}{2\varepsilon^2} P Q^{-1} \left(x-q\right)^2 - \frac{i}{\varepsilon^2} p \left( x-q \right)
 %                + \frac{i}{\varepsilon^2} p \left( x-q \right) \\
@@ -395,9 +395,9 @@ which was shown to work in real simulations for homogeneous wavepackets.
 %   = & -\frac{1}{\varepsilon^2} \left( \frac{1}{\conj{Q}Q} \left(x-q\right)^2 \right) + \ldots \\
 %   = & -\frac{1}{\varepsilon^2} \left( \underbrace{\frac{1}{|Q|^2}}_{Q_0} \left(x-\underbrace{q}_{q_0}\right)^2 \right) + \ldots \\
 % \end{align}
-% 
+%
 % from which we again get for the quadrature nodes
-% 
+%
 % \begin{equation}
 %   \gamma^{\prime}_i \assign q + \varepsilon \cdot |Q| \cdot \gamma_i
 % \end{equation}
