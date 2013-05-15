@@ -60,7 +60,7 @@ and get
 
 \begin{align}
   \tilde{q} & \assign \frac{\Braket{w | x | w}}{\Braket{w|w}}
-            = \frac{\sqrt{2 \varepsilon^2}}{\sum_{k=K_0}^{K-1} \conj{c_k} c_k} \Re \left(Q \sum_{k=K_0+1}^{K-1} \conj{c_k} c_{k-1} \sqrt{k} \right) + q 
+            = \frac{\sqrt{2 \varepsilon^2}}{\sum_{k=K_0}^{K-1} \conj{c_k} c_k} \Re \left(Q \sum_{k=K_0+1}^{K-1} \conj{c_k} c_{k-1} \sqrt{k} \right) + q
             \label{eq:estimate_pos_tunnel} \\
   \tilde{p} & \assign \frac{\Braket{w | y | w}}{\Braket{w|w}}
             = \frac{\sqrt{2 \varepsilon^2}}{\sum_{k=K_0}^{K-1} \conj{c_k} c_k} \Re \left(P \sum_{k=K_0+1}^{K-1} \conj{c_k} c_{k-1} \sqrt{k} \right) + p \,.
@@ -75,14 +75,14 @@ and \eqref{eq:est_second_moment_mom_final} which then yields
 \begin{align} \label{eq:est_second_moment_pos_tunnel}
   \frac{\Braket{w|\left(x-\tilde{q}\right)^2|w}}{\Braket{w|w}} & =
   \frac{
-    \varepsilon^2 \Re \left( Q^2 \sum_{k=K_0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right) 
+    \varepsilon^2 \Re \left( Q^2 \sum_{k=K_0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right)
     + \frac{\varepsilon^2}{2} |Q|^2 \sum_{k=K_0}^{K-1} \conj{c_k} c_k \left(2k+1\right)
   }{\sum_{k=K_0}^{K-1} \conj{c_k} c_k}
   - \left(q - \tilde{q}\right)^2 \\
   \label{eq:est_second_moment_mom_tunnel}
   \frac{\Braket{w|\left(x-\tilde{p}\right)^2|w}}{\Braket{w|w}} & =
   \frac{
-    \varepsilon^2 \Re \left( P^2 \sum_{k=K_0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right) 
+    \varepsilon^2 \Re \left( P^2 \sum_{k=K_0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right)
     + \frac{\varepsilon^2}{2} |P|^2 \sum_{k=K_0}^{K-1} \conj{c_k} c_k \left(2k+1\right)
   }{\sum_{k=K_0}^{K-1} \conj{c_k} c_k}
   - \left(p - \tilde{p}\right)^2 \,.
@@ -106,7 +106,7 @@ $\phi_0$ while estimating parameters\footnote{We exploit this fact only for $\ti
 and $\tilde{Q}$ and only in the final step there because of the troubles shown at the
 end of the last chapter. For the second moments we still use the whole $w$ and
 not only $\phi_0$. The same holds for the estimated position and momentum as we
-can obtain exact results using the complete $w$ easily.}. 
+can obtain exact results using the complete $w$ easily.}.
 Plugging in the results from \eqref{eq:est_second_moment_pos_tunnel} and
 \eqref{eq:est_second_moment_mom_tunnel} here replacing the brakets we end up with
 two relations for $|\tilde{Q}|^2$ and $|\tilde{P}|^2$ which are equivalent to the
@@ -141,13 +141,13 @@ overview on how aposteriori spawning works in general.
 \begin{algorithmic}
   \REQUIRE A time series $t$ consisting of timesteps $\{\tau_0, \ldots, \tau_{\text{max}}\}$
   \REQUIRE The wavepackets $\Psi\ofs{t}$ with parameters $\Pi$ and coefficients $\{c^i_k\}_{k=0}^{K-1}$
-  \REQUIRE The component $0 \leq \nu \leq N$ of $\Psi$ examined for spawning 
+  \REQUIRE The component $0 \leq \nu \leq N$ of $\Psi$ examined for spawning
   \REQUIRE Integers $\alpha \geq 0$ and $\beta \leq K-1$
 
   \FORALL{$\tau_i \in t$}
     \STATE // Construct the fragment as subset of $\Phi_\nu$
     \STATE $w \assign \sum_{k=\alpha}^{\beta} c_k^\nu \phi_k$
-  
+
     \STATE // Estimate the parameters of the fragment by algorithm \ref{al:parameter_estimation}
     \STATE $\tilde{\Pi} \assign \textbf{estimate\_parameters}(w)$
     \STATE // Move the fragment $w$ to the new basis by either algorithm \ref{al:lumping_method} or \ref{al:projection_method}
@@ -261,9 +261,9 @@ spawning approaches from the next section.
   The simulation parameters are printed in \ref{cfg:tunneling_phi0}, \ref{cfg:tunneling_phi2} and \ref{cfg:tunneling_phi3}.
   \subref{fig:tunnel_energy_phi0} Kinetic and potential energy for a wavepacket $\phi_0$ tunneling through the Eckart barrier.
   \subref{fig:tunnel_energy_drift_phi0} Energy drift for a wavepacket $\phi_0$ tunneling through the Eckart barrier.
-  \subref{fig:tunnel_energy_phi2} Kinetic and potential energy for a wavepacket $\phi_2$ tunneling through the Eckart barrier. 
+  \subref{fig:tunnel_energy_phi2} Kinetic and potential energy for a wavepacket $\phi_2$ tunneling through the Eckart barrier.
   \subref{fig:tunnel_energy_drift_phi2} Energy drift for a wavepacket $\phi_2$ tunneling through the Eckart barrier.
-  \subref{fig:tunnel_energy_phi3} Kinetic and potential energy for a wavepacket $\phi_3$ tunneling through the Eckart barrier. 
+  \subref{fig:tunnel_energy_phi3} Kinetic and potential energy for a wavepacket $\phi_3$ tunneling through the Eckart barrier.
   \subref{fig:tunnel_energy_drift_phi3} Energy drift for a wavepacket $\phi_3$ tunneling through the Eckart barrier.
   \label{fig:tunnel_energies}
   }
@@ -282,7 +282,7 @@ spawning approaches from the next section.
   \subfloat[][]{
     \label{fig:tunnel_norm_drift_phi3}
     \includegraphics[width=0.5\linewidth]{./figures/tunnel_basic/norms_drift_phi3.png}
-  } 
+  }
   \caption[Norm drift for some tunneling wavepackets]{
   This figure shows the drift of the norm for several tunneling simulations. We have very good
   norm conservation. The reason for this is that we used a huge basis with $K=512$.
@@ -715,7 +715,7 @@ estimated parameter sets $\tilde{\Pi}$.
   }
 \end{figure}
 
- 
+
 \FloatBarrier
 \section{Spawning using the projection method}
 
@@ -755,7 +755,7 @@ if we drop the assumption that the transmitted part is always a Gaussian.
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs6_norms}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs6/norms_compare_components_group0.png}
-  } 
+  }
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs12_norms}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs12/norms_compare_components_group0.png}
@@ -790,7 +790,7 @@ if we drop the assumption that the transmitted part is always a Gaussian.
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs6_norms_drift}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs6/norms_compare_components_diff_group0.png}
-  } 
+  }
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs12_norms_drift}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs12/norms_compare_components_diff_group0.png}
@@ -823,7 +823,7 @@ if we drop the assumption that the transmitted part is always a Gaussian.
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs6_energies}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs6/energies_compare_components_group0.png}
-  } 
+  }
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs12_energies}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs12/energies_compare_components_group0.png}
@@ -856,7 +856,7 @@ if we drop the assumption that the transmitted part is always a Gaussian.
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs6_energies_drift}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs6/energies_compare_components_diff_group0.png}
-  } 
+  }
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs12_energies_drift}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs12/energies_compare_components_diff_group0.png}
@@ -888,7 +888,7 @@ if we drop the assumption that the transmitted part is always a Gaussian.
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs6_spawn_error}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs6/spawn_error_norm.png}
-  } 
+  }
   \subfloat[][]{
     \label{fig:tunnel_spawn_project_K50_bs12_spawn_error}
     \includegraphics[width=0.5\linewidth]{./figures/eckart_phi0_spawn_project_K50_bs12/spawn_error_norm.png}
@@ -1207,7 +1207,7 @@ In difference to the lumping method and the results in the last section we do no
 perfect norm conservation here. The energy conservation is also not perfect but
 gets better with an increasing value of $\mu$. Contrary to the results from last
 section where the spawned wavepacket got more energy than it should, it gets less
-than what is necessary for energy conservation here. 
+than what is necessary for energy conservation here.
 
 \begin{figure}[h!]
   \centering
@@ -1546,7 +1546,7 @@ the derivative of the norm of $w$
 
 and we spawn when this value is sufficiently small e.g. smaller than another
 threshold $\zeta$. In less mathematical terms we spawn when the norm of the transmitted
-part $w$ does not change too much anymore. To avoid spawning to early when hitting 
+part $w$ does not change too much anymore. To avoid spawning to early when hitting
 a local maximum we should extend this and require it to hold at least for a
 minimal time duration $\Delta t$ larger than a few timesteps. This does not
 play a role for tunneling simulations as we said $\Braket{w|w}$ is monotone but

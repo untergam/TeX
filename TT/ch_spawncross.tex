@@ -66,13 +66,13 @@ the parameter estimation is now the whole component $\Phi_\nu$ and we
 write $w \assign \Phi_\nu$ and return to chapter \ref{ch:spawnprocedure} to
 see what this implies. First of course it tells us the values for $\alpha$
 and $\beta$, namely $\alpha=0$ and $\beta=K-1$ where $K$ is the basis size
-of $\Phi_\nu$. This is already enough to simplify the two formulae 
+of $\Phi_\nu$. This is already enough to simplify the two formulae
 \eqref{eq:estimate_pos} and \eqref{eq:estimate_mom} for position and momentum
 estimation. By plugging in the values we get
 
 \begin{align}
   \tilde{q} & \assign \frac{\Braket{w | x | w}}{\Braket{w|w}}
-            = \frac{\sqrt{2 \varepsilon^2}}{\sum_{k=0}^{K-1} \conj{c_k} c_k} \Re \left(Q \sum_{k=1}^{K-1} \conj{c_k} c_{k-1} \sqrt{k} \right) + q 
+            = \frac{\sqrt{2 \varepsilon^2}}{\sum_{k=0}^{K-1} \conj{c_k} c_k} \Re \left(Q \sum_{k=1}^{K-1} \conj{c_k} c_{k-1} \sqrt{k} \right) + q
             \label{eq:estimate_pos_na} \\
   \tilde{p} & \assign \frac{\Braket{w | y | w}}{\Braket{w|w}}
             = \frac{\sqrt{2 \varepsilon^2}}{\sum_{k=0}^{K-1} \conj{c_k} c_k} \Re \left(P \sum_{k=1}^{K-1} \conj{c_k} c_{k-1} \sqrt{k} \right) + p \,.
@@ -85,14 +85,14 @@ and \eqref{eq:est_second_moment_mom_final} and get
 \begin{align} \label{eq:est_second_moment_pos_na}
   \frac{\Braket{w|\left(x-\tilde{q}\right)^2|w}}{\Braket{w|w}} & =
   \frac{
-    \varepsilon^2 \Re \left( Q^2 \sum_{k=0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right) 
+    \varepsilon^2 \Re \left( Q^2 \sum_{k=0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right)
     + \frac{\varepsilon^2}{2} |Q|^2 \sum_{k=0}^{K-1} \conj{c_k} c_k \left(2k+1\right)
   }{\sum_{k=0}^{K-1} \conj{c_k} c_k}
   - \left(q - \tilde{q}\right)^2 \,.
   \\ \label{eq:est_second_moment_mom_na}
   \frac{\Braket{w|\left(x-\tilde{p}\right)^2|w}}{\Braket{w|w}} & =
   \frac{
-    \varepsilon^2 \Re \left( P^2 \sum_{k=0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right) 
+    \varepsilon^2 \Re \left( P^2 \sum_{k=0}^{K-3} \conj{c_{k+2}} c_{k} \sqrt{k^2+3k+2} \right)
     + \frac{\varepsilon^2}{2} |P|^2 \sum_{k=0}^{K-1} \conj{c_k} c_k \left(2k+1\right)
   }{\sum_{k=0}^{K-1} \conj{c_k} c_k}
   - \left(p - \tilde{p}\right)^2 \,.
@@ -103,7 +103,7 @@ $\tilde{P}$ and $\tilde{Q}$ of our fragment $w = \Phi_\nu$. In contrast to the t
 case we can in general \emph{not} set $k=0$ in \eqref{eq:estimate_abssqrPQ} and have
 to keep the variable $k$ as an input parameter of our algorithm. In the simulations later
 in this chapter therefore we also show the same simulation setups with different values
-of $k$. The remainder of the overall spawning process works as described in chapter 
+of $k$. The remainder of the overall spawning process works as described in chapter
 \ref{ch:spawnprocedure} and especially the two algorithms for changing the basis
 from $\Pi$ to $\tilde{\Pi}$ stay the same but take as input $w = \Phi_\nu$. Both
 algorithms are still valid but we will use almost exclusively the basis projection
