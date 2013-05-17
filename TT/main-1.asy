@@ -43,3 +43,4 @@ pair l0 = (1,u);
 label("$\lambda_1(x)$",l1+S);
 label("$\lambda_0(x)$",l0+N);
 size(284.52756pt,0,keepAspect=true);
+viewportsize=(345.0pt,0);
