@@ -95,18 +95,6 @@ we can even write down a closed form solution based on induction and the recursi
 relation for Hermite polynomials. The expression for the ground states $\phi_0$
 acts as induction base and is given by
 
-% \begin{multline} \label{eq:multifamily_innerp_ground}
-%   \Braket{ \phi_0^k | \phi_0^l } =
-%   \sqrt{\frac{2}{B_2 \conj{A_1} + A_2 \conj{B_1}}} \cdot
-%     \exp \Biggl(
-%       -\frac{A_2 \conj{A_1} \left(\eta_2-\eta_1\right)^2 + B_2 \conj{B_1} \left(a_2-a_1\right)^2}
-%             {2 \hbar \left(B_2 \conj{A_1} + A_2 \conj{B_1}\right)}
-%     \\
-%     -i \frac{\left(a_2-a_1\right)\left(B_2\conj{A_1}\eta_1 + A_2 \conj{B_1}\eta_2\right)}
-%               {\hbar \left(B_2 \conj{A_1} + A_2 \conj{B_1}\right)}
-%     \Biggr)
-% \end{multline}
-
 \begin{multline} \label{eq:multifamily_innerp_ground}
   \Braket{ \phi_0^k | \phi_0^l } =
   \sqrt{\frac{-2 i}{Q_2 \conj{P_1} - P_2 \conj{Q_1}}} \cdot
@@ -124,39 +112,23 @@ acts as induction base and is given by
 For the inner product of higher level functions $\phi_i$ the whole thing gets much
 more complicated
 
-% \begin{multline}
-%   \Braket{ \phi_k^k | \phi_l^l } =
-%   \frac{1}{\sqrt{l!k!}} 2^{-\frac{l+k}{2}} \Braket{ \phi_0^k | \phi_0^l } \cdot
-%   \left(\conj{B_1} A_2 + \conj{A_1} B_2\right)^{-\frac{l+k}{2}} \cdot \\
-%   \sum_{j=0}^{\min\left(l,k\right)}
-%     \Biggl(
-%       \binom{l}{j} \binom{k}{j} j! 4^j \left(\conj{A_2 B_1}-\conj{A_1 B_2}\right)^{\frac{k-j}{2}}
-%       \left(A_1 B_2 - A_2 B_1\right)^{\frac{l-j}{2}} \cdot
-%       \\
-%       H_{k-j}\left(\hbar^{-1/2}\frac{\conj{B_1}\left(a_1-a_2\right)+i \conj{A_1}\left(\eta_1-\eta_2\right)}
-%                                     {\sqrt{\conj{A_2 B_1}-\conj{A_1 B_2}}\sqrt{\conj{B_1}A_2+\conj{A_1}B_2}}\right) \cdot
-%       \\
-%       H_{l-j}\left(-\hbar^{-1/2}\frac{B_2\left(a_1-a_2\right)+i A_2\left(\eta_1-\eta_2\right)}
-%                                     {\sqrt{A_1 B_2 - A_2 B_1}\sqrt{\conj{B_1}A_2+\conj{A_1}B_2}}\right)
-%     \Biggr)
-% \end{multline}
-
 \begin{multline} \label{eq:mixing_braket}
   \Braket{ \phi_k^k | \phi_l^l } =
   \frac{1}{\sqrt{l!k!}} 2^{-\frac{l+k}{2}} \Braket{ \phi_0^k | \phi_0^l } \cdot
-  \left(i \conj{ P_1} Q_2 - i \conj{Q_1} P_2\right)^{-\frac{l+k}{2}} \cdot \\
-  \sum_{j=0}^{\min\left(l,k\right)}
+  \left(i \conj{ P_1} Q_2 - i \conj{Q_1} P_2\right)^{-\frac{k+l}{2}} \cdot \\
+  \sum_{j=0}^{\min\left(k,l\right)}
     \Biggl(
-      \binom{l}{j} \binom{k}{j} j! 4^j \left(i \conj{Q_2 P_1}-i\conj{Q_1 P_2}\right)^{\frac{k-j}{2}}
-      \left(i Q_2  P_1 - i Q_1  P_2\right)^{\frac{l-j}{2}}
+      \binom{k}{j} \binom{l}{j} j! 4^j
+      \left(i Q_2  P_1 - i Q_1  P_2\right)^{\frac{k-j}{2}}
+      \left(i \conj{Q_2 P_1} - i\conj{Q_1 P_2}\right)^{\frac{l-j}{2}}
       \\
-      \cdot H_{k-j}\left(\frac{1}{\varepsilon}
-                   \frac{\conj{ P_1}\left(q_1-q_2\right)+\conj{Q_1}\left(p_1-p_2\right)}
-                        {\sqrt{\conj{Q_2 P_1}-\conj{Q_1 P_2}}\sqrt{\conj{ P_1}Q_2-\conj{Q_1} P_2}}\right)
-      \\
-      \cdot H_{l-j}\left(-\frac{1}{\varepsilon}
-                    \frac{-P_2\left(q_1-q_2\right)+Q_2\left(p_1-p_2\right)}
+      \cdot H_{k-j}\left(-\frac{1}{\varepsilon}
+                    \frac{Q_2\left(p_1-p_2\right)-P_2\left(q_1-q_2\right)}
                          {\sqrt{Q_2 P_1 - Q_1 P_2}\sqrt{\conj{P_1}Q_2-\conj{Q_1} P_2}}\right)
+      \\
+      \cdot H_{l-j}\left(\frac{1}{\varepsilon}
+                   \frac{\conj{ P_1}\left(q_1-q_2\right)-\conj{Q_1}\left(p_1-p_2\right)}
+                        {\sqrt{\conj{Q_2 P_1}-\conj{Q_1 P_2}}\sqrt{\conj{ P_1}Q_2-\conj{Q_1} P_2}}\right)
     \Biggr) \,.
 \end{multline}
 
