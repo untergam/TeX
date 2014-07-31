@@ -1,0 +1,600 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{color}
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\include{header_math}
+
+
+\synctex=1
+\parindent 0pt
+
+%opening
+\title{Exhaustive search for higher-order Kronrod-Patterson Extensions}
+\author{R. Bourquin}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Mathematical principles}
+
+The $n$ nodes $\{\gamma_i\}_{i=1}^{n}$ of any Gauss quadrature rule for a
+given density distribution $\omega(t)$ can be found as the roots of a
+polynomial $P_n$ of degree $n$. The existence of corresponding weights
+$\{\omega_i\}_{i=1}^{n}$ is the ensured by the following theorem from
+\cite{mehrotra-papp} originally stated by Kronrod in \cite{kronrod}:
+
+\begin{theorem}
+  \label{th:existence_weights}
+  For every probability density function $\omega(t)$ and every set
+  $\{\gamma_i\}_{i=1}^{n} \subset \mathbb{R}$ of $n$ nodes there exists
+  a set of unique weights $\{\omega_i\}_{i=1}^{n}$ such that the quadrature
+  Formula for integration with respect to $\omega(t)$ has a polynomial
+  degree of exactness of at least $n-1$. These weights are the unique solution
+  of the linear system of equations:
+  \begin{equation}
+    \label{eq:linsys_for_weights}
+    \sum_{i=1}^n \omega_i \gamma_i^k = \int_{\Omega} t^k \omega(t) \di{t}
+  \end{equation}
+  for $k = 0, \ldots, n-1$.
+\end{theorem}
+
+Next we need another theorem giving the conditions under which we can
+extend a given set of nodes by a bunch of new nodes.
+
+\begin{theorem}
+  \label{th:defining_extension}
+  Let $\omega(t)$ be the probability density function of a distribution
+  supported on $\Omega \subseteq \mathbb{R}$ with finite moments. Let $P_n(t)$
+  be a univariate polynomial of degree $n$ with $n$ distinct real roots,
+  and suppose that there exists a polynomial $E_p$ of degree $p$ satisfying:
+  \begin{equation}
+    \label{eq:defining_extension}
+    \int_\Omega P_n(t) E_p(t) t^i \omega(t) \di(t) = 0
+  \end{equation}
+  for all $i = 0, \ldots, p-1$. Assume further that the roots of $E_p$
+  are all real and of multiplicity one, and distinct from
+  those of $P_n$. Then there exists a qudrature formula supported on the
+  roots of $P_n E_p$, whose degree of polynomial exactness is at least
+  $n + 2p -1$.
+\end{theorem}
+
+A simple proof of this theorem is given in the original article \cite{mehrotra-papp}.
+
+\marginpar{
+\cite{genz-keister}
+\cite{laurie}
+\cite{patterson1968}
+\cite{kahaner-monegato}
+\cite{monegato1976}
+}
+
+\section{Algorithmic procedure}
+
+The main algorithm consists of three steps building upon each other.
+
+\begin{itemize}
+  \item Given the polynomial $P_n(t)$ of degree $n$ defining the rule
+    with nodes $\{\gamma_i\}_{i=1}^{n}$ and weights $\{\omega_i\}_{i=1}^{n}$.
+  \item Choose $p \geq 1$.
+    Find a new polynomial $E_p(t)$ with $\deg E_p = p$ such that:
+    \begin{equation}
+      \int_{\Omega} P_n(t) \, E_p(t) \, t^i \, \omega(t) \, \di{t} = 0
+    \end{equation}
+    for all $i = 0, \ldots, p-1$, see theorem \ref{th:defining_extension}.
+    We require that $E_p$ is monic and obtain a square linear system.
+    If this system is solvable, then the extension $E_p$ exists.
+    \marginpar{Go into details with "exists`` and the like}
+    Otherwise we can \emph{not} extend the given $n$ point rule by
+    adding exactly $p$ new nodes to a $n+p$ point rule.
+  \item Compute the roots $\{\gamma^\prime_i\}_{i=1}^{p}$ of $E_p$.
+    If not all roots lie within the region $\Omega$ then this extension
+    does not construct a valid quadrature rule.
+  \item Compute the weights $\{\omega^\prime_i\}_{i=1}^{n+p}$ for the new
+    quadrature rule. It is important to note that the weights of the old
+    unextended rule usually will change too. Hence it is not possible to
+    compute only new weights $\{\omega^\prime_i\}_{i=n+1}^{p}$ but we must
+    recompute all $n+p$ weights at once. For the unified final set of nodes:
+    \begin{equation}
+      \{\gamma_i\}_{i=1}^{n+p} := \{\gamma_i\}_{i=1}^{n} \cup \{\gamma^\prime_i\}_{i=1}^{p}
+    \end{equation}
+    we compute the weights by formula \eqref{eq:linsys_for_weights}:
+    \begin{equation}
+      \sum_{i=1}^{n+p} \omega^\prime_i t_i^k = \int_{\Omega} t^k \omega(t) \di(t)
+    \end{equation}
+    for all $k=0, \ldots, n+p-1$. This is again a linear system
+    of equations. The right hand side we have the moments of the
+    distribution $\omega(t)$. It can happen that some of the weights
+    are negative. This might affect the overall stability on the quadrature
+    rule but is tolerated for now.
+\end{itemize}
+
+The steps for computing a single extension $E_p$ of $P_n$ are shown in pseudo-code
+in algorithm \eqref{alg:find_extension}. Another version computing iteratively
+multiple nested extensions is shown in \eqref{alg:find_multiextension}.
+
+
+\subsection{Finding extensions}
+
+The general degree $p$ monic polynomial $E_p$ with symbolic coefficients is
+written as:
+
+\begin{equation}
+  E_p(t) := t^p + \sum_{k=0}^{p-1} a_k t^k
+\end{equation}
+
+and we need to determine the set of coefficients $\{a_i\}_{i=0}^{p-1}$.
+Applying next the theorem \ref{th:defining_extension} from above and starting
+with the integral formulation \eqref{eq:defining_extension} we find step by step:
+
+\begin{equation}
+\begin{split}
+  \int_\Omega P_n(t) E_p(t) t^i \omega(t) \,\di(t)
+  & = \int_\Omega P_n(t) \left(t^p + \sum_{k=0}^{p-1} a_k t^k\right) t^i \omega(t) \,\di(t) \\
+  & = \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t)
+    + \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k\right) t^i \omega(t) \,\di(t) \\
+  & = \sum_{k=0}^{p-1} a_k \int_\Omega P_n(t) t^k t^i \omega(t) \,\di(t)
+    + \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t) \,.
+\end{split}
+\end{equation}
+
+Now it is time to remember that this integral should equate zero. Hence we find
+from the last line the following linear system $\mat{A} \vec{a} = \vec{r}$
+for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$ as:
+
+\begin{equation}
+  \label{eq:linsys_for_extension}
+  \begin{bmatrix}
+    {}     & \vdots                                        & {} \\
+    \hdots & \int_\Omega P_n(t) t^k t^i \omega(t) \,\di(t) & \hdots \\
+    {}     & \vdots                                        & {} \\
+  \end{bmatrix}
+  \begin{pmatrix}
+    a_0 \\
+    \vdots \\
+    a_k \\
+    \vdots \\
+    a_{p-1}
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+  \vdots \\
+  - \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t) \\
+  \vdots \\
+  \end{pmatrix}
+\end{equation}
+
+where the first index $i = 0, \ldots, p-1$ runs along a column
+and the second index $k = 0, \ldots, p-1$ runs along any row
+of the $p \times p$ matrix. On the right hand side we have essentially
+a bunch of moments of the probability density distribution $\omega(t)$.
+Provided a closed form for the moment generating function exists,
+this vector can be computed very easily.
+
+
+\subsection{Rational moments}
+
+A limitation of our current implementation (see section \ref{sec:implementation_aspects})
+is that we can work only with distributions $\omega(t)$ that have rational moments.
+However, in case of the three most important distributions used as weight functions for
+defining the Legendre, Laguerre and Hermite orthogonal polynomials this is a
+well known truth.
+
+\begin{center}
+  \begin{tabular}{|l|l|l|l|}
+    \hline
+    Distribution & $\omega(t)$  & $t \in \Omega$      & Polynomial $P_n(t)$ \\
+    \hline
+    Uniform      & $1$          & $[-1, 1]$           & Legendre \\
+    Exponential  & $\exp(-t)$   & $[0, \infty]$       & Laguerre \\
+    Normal       & $\exp(-t^2)$ & $[-\infty, \infty]$ & Hermite \\
+    \hline
+  \end{tabular}
+\end{center}
+
+By explicit computation one can easily show that the following closed
+form expressions for the moments hold:
+
+\begin{align}
+  \int_{-1}^{1} t^n \di{t} & = \frac{1 + (-1)^n}{n + 1} =
+  \begin{cases}
+    \frac{2}{n + 1} & \quad n \quad \mathrm{even} \\
+    0               & \quad n \quad \mathrm{odd}
+  \end{cases} \\
+  \int_{0}^{\infty} t^n \exp(-t) \di{t} & = \Gamma\left(n + 1\right) \\
+  \int_{-\infty}^{\infty} t^n \exp(-t^2) \di{t} & =
+  \begin{cases}
+    \Gamma\left(\frac{n + 1}{2}\right) & \quad n \quad \mathrm{even} \\
+    0                                  & \quad n \quad \mathrm{odd}
+  \end{cases}
+\end{align}
+
+In the last case of the Hermite polynomial we find that:
+
+\begin{equation}
+  \Gamma\left(\frac{n + 1}{2}\right) =
+  \frac{\sqrt{\pi}}{2^{\frac{n}{2}}} \prod_{i=1}^{\frac{n}{2}} (2 i - 1)
+\end{equation}
+
+The constant transcendent factor $\sqrt{\pi}$ will luckily drop out in our final equations
+because it is contained in every entry of the matrix $\mat{A}$ as well as the right hand
+side $\vec{r}$.
+
+
+\begin{algorithm}
+  \caption{Compute an extension $E_p$ of degree $p$ over $P_n$}
+  \label{alg:find_extension}
+  \begin{algorithmic}
+    \Procedure{ComputeExtension}{$P_n(x)$, $p$}
+    \State $\mat{A} := \textsc{BuildMatrix}(P_n, p)$
+    \Comment Construct the linear system as in \eqref{eq:linsys_for_extension}
+    \State $\vec{r} := \textsc{BuildRHS}(P_n, p)$
+    \State $\{a_i\}_{i=0}^{p-1} := \textsc{SolveLinear}(\mat{A}, \vec{r})$
+    \If{$\exists i: a_i \neq 0$}
+    \Comment Check if system is solvable
+      \State $E_p = t^p + \sum_{i=0}^{p-1} a_i t^i$
+    \Else
+      \State $E_p \equiv 0$
+    \EndIf \\
+    \Return $E_p$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Compute a tower of $k$ extensions
+           $P_n \subset E_{p_1} \subset E_{p_2} \subset \ldots \subset E_{p_k}$ }
+  \label{alg:find_multiextension}
+  \begin{algorithmic}
+    \Procedure{ComputeExtensionTower}{$P_n(x)$, $[p_1, \ldots, p_k]$}
+    \State $P_0 := P_n$
+    \For{$i = 1, \ldots, k$}
+      \State $E_i := \textsc{ComputeExtension}(P_{i-1}, p_i)$
+      \State $P_i := P_{i-1} \cdot E_i$
+    \EndFor \\
+    \Return $E := \prod_{i=1}^k E_i$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Computing nodes}
+
+Computing the nodes amounts to finding all roots of a possibly high degree
+polynomial. In classical numerics there are various stability issues related
+to this task and a general solution is often not possible. Using arbitrary precision
+ball arithmetic as defined by van der Hoeven in \cite{vdH:ball:greifswald, vdH:ball}
+we can avoid almost all these issues by just increasing the precision
+whenever necessary. By making use of the rigorous error bounds inherent in any ball
+we can easily decide when we have to increase precision to obtain fully accurate
+results in the end.
+
+However it should not be neglected that this comes at a higher cost in computation time
+compared to normal floating point arithmetic. Even though \texttt{arb} is highly optimized,
+computing roots to a high working precision can take a long time.
+
+The following routine is shown here just for the sake of completeness. Internally
+we pass on by calling a suitable function from the \texttt{arb} library. The function
+called uses the Durand-Kerner method according the the library documentation. An
+assumption required is that the polynomial is square-free which is necessary for
+all valid extensions anyway.
+
+\begin{algorithm}
+  \caption{Compute the nodes up to a given precision $b_{\gamma}$}
+  \begin{algorithmic}
+    \Procedure{ComputeNodes}{$P_n(x)$, $b_{\gamma}$}
+    \State $\{\gamma_i\}_{i=1}^{n} := \textsc{FindAllRoots}(P_n(x), b_{\gamma})$ \\
+    \Return $\{\gamma_i\}_{i=1}^{n}$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Computing weights}
+
+In this section we will look at the computation of weights in more detail.
+Although not really complicated a systematic understanding is inevitable for
+a correct implementation.
+
+Given a set of nodes $\{\gamma_i\}_{i=1}^{n} \in \mathbb{R}$ we want
+to find the corresponding weights $\vec{\omega} := \{\omega_i\}_{i=1}^{n} \in \mathbb{R}$.
+We start with the equation \eqref{eq:linsys_for_weights} shown above:
+
+\begin{equation}
+  \sum_{i=1}^{n} \omega_i \gamma_i^k = \int_{\Omega} t^k \omega(t) \di{t} \,,
+  \quad k = 0, \ldots, n-1
+\end{equation}
+
+This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \vec{r}$:
+
+\begin{equation}
+  \begin{bmatrix}
+    \gamma_1^0     & \hdots & \gamma_i^0     & \hdots & \gamma_n^0 \\
+    \vdots         & {}     & \vdots         & {}     & \vdots \\
+    \gamma_1^k     & \hdots & \gamma_i^k     & \hdots & \gamma_n^k \\
+    \vdots         & {}     & \vdots         & {}     & \vdots \\
+    \gamma_1^{n-1} & \hdots & \gamma_i^{n-1} & \hdots & \gamma_n^{n-1}
+  \end{bmatrix}
+  \begin{pmatrix}
+    \omega_1 \\
+    \vdots \\
+    \omega_i \\
+    \vdots \\
+    \omega_n
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+  \int_{\Omega} t^0 \omega(t) \,\di{t} \\
+  \vdots \\
+  \int_{\Omega} t^k \omega(t) \,\di{t} \\
+  \vdots \\
+  \int_{\Omega} t^{n-1} \omega(t) \,\di{t}
+  \end{pmatrix}
+\end{equation}
+
+where $k = 0, \ldots, n-1$ is the row index and $i = 1, \ldots, n$
+is the column index of the matrix $\mat{A}$. This system is square
+and of shape $n \times n$. Theorem \ref{th:existence_weights} assures there is
+a unique solution. Given that the nodes are in general algebraic numbers
+and can not be resolved formally we computed approximations by complex
+balls. Even in case we knew the nodes in closed form, there is obviously
+no way to solve this system within the rationals and we would have to resort
+to the algebraic number field. Therefore we approximate the weights by complex
+balls the same way. Computing the solution vector $\vec{\omega}$ to a target
+precision of $b_{\omega}$ bits is actually not straight forward. The reason is
+that we know the nodes with a precision of $b_{\gamma}$ bits only. It can then
+happen that this is not precise enough to solve the system and retrieve $b_{\omega}$
+bits for the weights.
+
+The way out of this dilemma consist of an iterative ansatz. First we try to
+solve the system and then check the precision $b_{\omega}^{\prime}$ of the
+weights. If $b_{\omega}^{\prime} \geq b_{\omega}$ then the precision goal was
+met and we can stop. Otherwise we double the required precision
+$b_{\gamma}^{\prime} := 2 b_{\gamma}$ and recompute the nodes first. After
+that we can retry solving this system and see if the precision goal is met
+this time. If not we let the algorithm iterate until the goal of $b_{\omega}$ bits
+is eventually fulfilled or an upper bound hit. The procedure is shown in pseudo-code
+in listing \ref{alg:compute_weights}.
+
+\begin{algorithm}
+  \caption{Compute the weights up to a given precision $b_{\omega}$}
+  \label{alg:compute_weights}
+  \begin{algorithmic}
+    \Procedure{ComputeWeights}{$P_n(x)$, $\omega(t)$, $b_{\omega}$}
+      \State $b_{\gamma} := \frac{1}{2} b_{\omega}$
+      \Repeat
+        \State $b_{\gamma} := 2 b_{\gamma}$
+        \State $\{\gamma_i\}_{i=1}^{n} := \textsc{ComputeNodes}(P_n(x), b_{\gamma})$
+        \State $\mat{A} := \textsc{BuildMatrix}(\{\gamma_i\}_{i=1}^{n})$
+        \State $\vec{r} := \textsc{BuildRHS}(\omega(t))$
+        \State $\{\omega_i\}_{i=1}^{n} := \textsc{SolveLinear}(\mat{A}, \vec{r})$
+        \State $b^{\prime}_{\omega} := \textsc{CheckAccuracy}(\{\omega_i\}_{i=1}^{n})$
+      \Until{$b^{\prime}_{\omega} \geq b_{\omega}$} \\
+      \Return $\{\omega_i\}_{i=1}^{n}$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+\section{Implementation aspects}
+\label{sec:implementation_aspects}
+
+The whole algorithm is implemented in \texttt{C} and relies heavily
+on the computational number theory library \texttt{flint} \cite{flint, Hart2010}.
+This library provides among many other things highly efficient exact rational
+numbers with arbitrary large numerator and denominator integers. Therefore we
+have the complete arithmetics of the field $\mathbb{Q}$ available. It also
+implements the polynomial rings $\mathbb{Z}[x]$ and $\mathbb{Q}[x]$ and hence we
+can compute and express the polynomials defining the nodes of our nested extension
+tower. There are at least two reasons we require an efficient implementation of
+$\mathbb{Q}[x]$. First we need to be able to do fast arithmetics with polynomials,
+specifically multiplication and checking whether a given polynomial is indeed square-free.
+Second, the coefficients grow exponentially large and we must use arbitrary precision
+rational numbers for expressing them. Other things we use from \texttt{flint} are
+matrices over $\mathbb{Q}$. The matrices provide us with means to solve linear systems
+by rational arithmetic using a specially adapted fraction free version of Gauss elimination.
+
+Given all that we can check whether an extension $E_p$ to any given rule $P_n$
+exists by using only exact rational arithmetic. The price we pay is that we can
+handle only distributions $\omega(t)$ that have rational moments.
+
+
+\marginpar{How do we solve the things}
+\marginpar{Some words about the arbitrary precision ansatz}
+\marginpar{And a few words about rigorous errors bounds of balls}
+
+\marginpar{
+\cite{flint}
+\cite{Hart2010}
+\cite{arb}
+}
+
+
+\section{Direct single extensions}
+
+In this section we will consider only single Kronrod extensions. Given a polynomial
+$P_n$ of either Legendre or Laguerre or Hermite type and of degree $n$, we compute
+the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of algorithm
+\ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
+the first place. Next we compute nodes and weights. If requested, validity checks
+are performed to ensure that the nodes are within the region of integration:
+\begin{equation}
+  \forall i = 1, \ldots, n+p: \gamma_i \in \Omega \subseteq \mathbb{R}
+\end{equation}
+and that the weights are positive:
+\begin{equation}
+  \forall i = 1, \ldots, n+p: \omega_i > 0 \,.
+\end{equation}
+
+Since the aim of this work is an exhaustive search for valid rules we apply
+this computation for a series of increasing $n$ and test all $p$ up to some
+upper bound. This then guarantees that we have found all extensions of
+some given Gauss type rule $P_n$ up to extension order $p_{\textrm{max}}$.
+To cover as much as possible the range of rules used in practice we set
+$n_{\mathrm{max}} = 100$ and also $p_{\textrm{max}} = 100$. In the extreme case
+there is now a polynomial of degree $200$ defining a rule with the same number
+of node-weight pairs.
+
+\begin{algorithm}
+  \caption{Exhaustive search up to $n_{\textrm{max}}$ and $p_{\textrm{max}}$}
+  \label{alg:compute_weights}
+  \begin{algorithmic}
+    \Procedure{ExhaustiveSearch}{$n_{\textrm{max}}$, $p_{\textrm{max}}$}
+      \State $\mat{M} \in \{0,1\}^{n \times p}$
+      \Comment Bitmap for storing the found rules
+      \For{$n = 1, \ldots, n_{\textrm{max}}$}
+        \State Get $P_n(t)$
+        \Comment Suitable orthogonal polynomial of order $n$
+        \For{$p = n+1, \ldots, p_{\textrm{max}}$}
+          \State $E_p := \textsc{ComputeExtension}(P_n, p)$
+          \If{$E_p \not\equiv 0$}
+            \State $\mat{M}_{n,p} := 1$
+          \Else
+            \State $\mat{M}_{n,p} := 0$
+          \EndIf
+        \EndFor
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+The output of this algorithm applied to the three polynomial classes mentioned
+above is shown in the figures \ref{fig:map_leg_100_100}, \ref{fig:map_lag_20_100}
+and \ref{fig:map_herm_50_100}.
+
+
+\marginpar{Some explanation for each polynomial case}
+\marginpar{todo: replot with negative weights included}
+\marginpar{Consider even larger maps?}
+
+
+\subsection{Existence and non-existence results}
+
+From the rather sparse theory on this subject we know only of very few rigorous
+existence results for Kronrod-Patterson extensions.
+
+In the Legendre case there is a proof saying that for each $n$ there is
+always an extension with $p = n + 1$ \cite{szegoe}. This is recovered by our
+computation and shows up in figure \ref{fig:map_leg_100_100} as the first upper
+diagonal line. Additionally to their existence, these rules also have positive
+weights in all cases as shown in \cite{monegato1978}. The existence theorems can
+be generalized to hold also for Chebycheff, Gegenbauer and ultimatively Jacobi
+polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/map_leg_100_100.png}
+  \caption{Map of the extensions $E_p$ of Gauss-Legendre quadrature rules
+           $P_n$ for $n \leq 100$ and $p$ up to $100$.}
+  \label{fig:map_leg_100_100}
+\end{figure}
+
+For Laguerre polynomials there are no classical Kronrod extensions with $p = n+1$
+at all. Higher order extensions are very sparse too, we could not find extensions
+for any $12 < n \leq 100$ while keeping $p \leq 150$. There is no strong reason to
+believe this would change if allowing for even higher $p$. Apart from that, such
+rules would probably be of no practical use anyway.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/map_lag_20_100.png}
+  \caption{Map of the extensions $E_p$ of Gauss-Laguerre quadrature rules
+           $L_n$ for $n \leq 20$ and $p$ up to $100$. The part from
+           $20 < n \leq 100$ not shown here does not contain any single
+           valid extension.}
+  \label{fig:map_lag_20_100}
+\end{figure}
+
+In the case of Hermite polynomials our computation indeed reveals the three possible
+classical Kronrod rules for $n=1, p=2$ and $n = 2, p = 3$ and $n = 4, p = 5$. This
+can be seen in the very top left corner of figure \ref{fig:map_herm_50_100} and is
+in perfect agreement with the literature \cite{monegato1976, kahaner-monegato, vladislav}.
+In fact if we examine the three rules more closely, we will find that the case
+$n = 4, p = 5$ does not have positive weights and is in turn ruled out by the
+authors of the aforementioned papers.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{./img/map_herm_50_100.png}
+  \caption{Map of the extensions $E_p$ of Gauss-Hermite quadrature rules
+           $H_n$ for $n \leq 50$ and $p$ up to $100$. The part from
+           $50 < n \leq 100$ not shown here does not contain any single
+           valid extension.}
+  \label{fig:map_herm_50_100}
+\end{figure}
+
+
+\section{Recursive enumeration of quadrature rules}
+
+
+In the last section we computed a single extensions $E_p$ over a
+given rule. This is enough in case of adaptive quadrature where all one
+wants is to make an error estimate of the Gaussian quadrature by evaluation
+of another quadrature rule having higher order. In that case the property of
+nested nodes $\{\gamma_i\}_{i=1}^n \subset \{\gamma_i\}_{i=1}^{n+p}$ can reduce
+computation cost.
+
+Another use case however is the construction of quadrature
+rules for higher dimensional integrals. For the number of dimensions in the
+range from $4$ up to some ten this can be done efficiently by the well known
+Smolyak construction.
+
+
+
+
+\marginpar{About extension towers}
+\marginpar{Tree graphs go here}
+\marginpar{Table of some of the most interesting rules}
+
+\marginpar{
+cite smolyak, complexity bound in nesting
+}
+
+\section{Future work}
+
+A question is whether it would be computationally more efficient to compute
+everything with arbitrary precision floating point ball arithmetic. By doing that
+it might be possible to better handle the exponential growth of coefficients.
+On the other hand, computing roots and solving for the weights seems to be
+the most expensive part already.
+
+By having efficient root isolation and counting algorithms in \texttt{flint} we would
+not have to compute all roots of $E_p$ numerically to high precision just for answering
+the question if some of them are complex hence marking the whole extension invalid
+\footnote{This solution is also not fully satisfying since we can only
+decide that a complex root is really complex but not if a candidate is for sure real.}.
+
+Finally, this work is based on empirical studies on the outcome of algorithmic searches.
+It would be desirable to have a rigorous mathematical foundation for the claims made.
+
+
+\marginpar{
+\cite{szegoe}
+\cite{gautschi}
+\cite{gautschi-notaris}
+\cite{monegato1978_2}
+\cite{gautschi-rivlin}
+\cite{monegato1982}
+\cite{monegato1978_3}
+}
+
+\bibliographystyle{plain}
+\bibliography{kes}
+
+\end{document}
