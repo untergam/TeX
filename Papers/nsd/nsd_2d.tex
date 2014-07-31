@@ -1,0 +1,578 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\usepackage{color}
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
+
+\include{header_math}
+
+%opening
+\title{Numerical Steepest Descent for Wavepackets}
+\author{R. Bourquin}
+
+\parindent 0pt
+
+\begin{document}
+
+\maketitle
+
+\section{Primary task}
+
+Given functions $f(x_1, \ldots, x_n):\mathbb{R^N}\rightarrow\mathbb{R}$ and
+$g(x_1, \ldots, x_n):\mathbb{R^N}\rightarrow\mathbb{C}$, compute the integral:
+
+\begin{equation} \label{eq:hoi}
+ I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} f \exp(i \omega g) \, \mathrm{d}x_1 \cdots \mathrm{d}x_n
+\end{equation}
+
+This is a highly oscillatory integral. Usually we call $g$ the \emph{oscillator}
+and $f$ the \emph{amplitude} or \emph{enveloppe}. For more details see the work
+by Huybrechs and some others. The main technique is described in \cite{HV_hoq} for
+the one-dimensional case and in \cite{HV_cub} for multivariate integrands.
+Semi-infinite intervalls are treated in \cite{H_nsd_sii}.
+
+
+\section{Numerical steepest descent}
+
+The goal is to find a transformation $u_i(\cdot)$ of variables $x_i$ into new variables $q_i$
+and rewrite the above integral \eqref{eq:hoi} in the form:
+
+\begin{equation} \label{eq:noi}
+ \begin{split}
+ I^\prime = \exp(i \omega g(\vec{x}^{*}))
+     \int_{0}^{\infty} \cdots \int_{0}^{\infty}
+     f\left(u_1\left(q_1\right), u_2\left(u_1\left(q_1\right), q_2\right), \ldots, u_N\left(\cdot\right)\right) \\
+     \pdiff{u_1\left(q_1\right)}{q1}
+     \pdiff{u_2\left(u_1\left(q_1\right), q_2\right)}{q_2}
+     \cdots
+     \pdiff{u_N\left(\cdot\right)}{q_N}
+     \mathrm{d}q_1 \cdots \mathrm{d}q_N
+ \end{split} \,.
+\end{equation}
+
+The transformed integrand is no longer oscillatory. The integral $I^\prime$
+can then be computed easily by (generalized) Gauss-Laguerre quadrature rules.
+
+Since the nested structure of the functions $u_i$ is rather confusing,
+we would like to find a simpler denested representation:
+
+\begin{equation} \label{eq:noi2}
+ \begin{split}
+ I^{\prime\prime} = \exp(i \omega g(\vec{x}^{*}))
+     \int_{0}^{\infty} \cdots \int_{0}^{\infty}
+     f\left(\tilde{u}_1\left(q_1\right), \tilde{u}_2\left(q_1, q_2\right), \ldots, \tilde{u}_N\left(q_1, \ldots, q_N\right)\right) \\
+     \pdiff{\tilde{u}_1\left(q_1\right)}{q1}
+     \pdiff{\tilde{u}_2\left(q_1, q_2\right)}{q_2}
+     \cdots
+     \pdiff{\tilde{u}_N\left(q_1, \ldots, q_N\right)}{q_N}
+     \mathrm{d}q_1 \cdots \mathrm{d}q_N
+ \end{split} \,.
+\end{equation}
+
+
+\section{Generalized Gauss-Laguerre quadrature rules}
+
+In one dimension the nodes $x_i$ of the (generalized) Gauss-Laguerre quadrature
+rule of order $n$ are given by the roots of the Laguerre polynomial $L^{\alpha}_n(x)$.
+(Non-generalized case is obtained by setting $\alpha = 0$.) The weights are given by:
+
+\begin{equation}
+ w_i := \frac{-\Gamma(\alpha+n)}{n \Gamma(n) L^{\alpha}_{n-1}(x_i) L^{\alpha+1}_{n-1}(x_i)}
+\end{equation}
+
+For multi-dimensional quadrature we can use a tensor product ansatz:
+
+\begin{equation}
+ X_i = \bigotimes_{k=1}^N x_i \quad\quad
+ W_i = \prod_{k=1}^N w_i
+\end{equation}
+
+Given an integral of the form:
+
+\begin{equation}
+ J := \int_{0}^{\infty} \cdots \int_{0}^{\infty} h(t_1, \ldots, t_N) \exp(-\omega t_1) \cdots \exp(-\omega t_N)
+ \, \mathrm{d}t_1 \cdots \mathrm{d}t_N
+\end{equation}
+
+we first transform it to:
+
+\begin{equation}
+ J = \frac{1}{\omega^N}
+ \int_{0}^{\infty} \cdots \int_{0}^{\infty} h\left(\frac{t_1}{\omega}, \ldots, \frac{t_N}{\omega}\right)
+ \exp(-t_1) \cdots \exp(-t_N) \, \mathrm{d}t_1 \cdots \mathrm{d}t_N
+\end{equation}
+
+and then apply the quadrature rule:
+
+\begin{equation}
+ J \approx Q := \frac{1}{\omega^N} \sum_{k_1}^n \cdots \sum_{k_N}^n
+                h\left(\frac{x_{k_1}}{\omega}, \ldots, \frac{x_{k_N}}{\omega}\right)
+                w_{k_1} \cdots w_{k_N}
+\end{equation}
+
+In case $h$ is (weakly) singular for all $t_i \rightarrow 0$ we have to regularize
+the integrand by using \emph{generalized} Gauss-Laguerre quadrature. In our case
+we have:
+
+\begin{equation}
+ h = \frac{\tilde{h}(t_1,\ldots,t_N)}{\sqrt{t_1}\cdots\sqrt{t_N}}
+\end{equation}
+
+and therefore choose $\alpha = -\frac{1}{2}$. The quadrature then looks like:
+
+\begin{equation}
+ Q := \frac{1}{\omega^N} \sum_{k_1}^n \cdots \sum_{k_N}^n
+      h\left(\frac{x_{k_1}}{\omega}, \ldots, \frac{x_{k_N}}{\omega}\right)
+      x_{k_1}^{-\alpha} \cdots x_{k_N}^{-\alpha}
+      w_{k_1} \cdots w_{k_N}
+\end{equation}
+
+In our application $h$ will be the integrand of \eqref{eq:noi2} and because
+of the derivatives therein the singularity appears.
+
+
+\section{The case of a quadratic oscillator}
+
+In our case the oscillator function $g$ is \emph{always} quadratic:
+
+\begin{equation}
+ g(\vec{x}) := \vec{x}\T \mat{M} \vec{x} + \vec{b}\T \vec{x} +c \,.
+\end{equation}
+
+In case $N=2$ we then have:
+
+\begin{equation}
+  \mat{M} :=
+ \begin{pmatrix}
+  a_{1,1} & a_{1,2} \\
+  a_{2,1} & a_{2,2}
+ \end{pmatrix}
+ \quad
+ \vec{b} :=
+ \begin{pmatrix}
+  b_1 \\ b_2
+ \end{pmatrix}
+ \quad \mathrm{and} \quad
+ \vec{x} =
+ \begin{pmatrix}
+  x_1 \\ x_2
+ \end{pmatrix}
+\end{equation}
+
+where in three dimensions:
+
+\begin{equation}
+  \mat{M} :=
+ \begin{pmatrix}
+  a_{1,1} & a_{1,2} & a_{1,3} \\
+  a_{2,1} & a_{2,2} & a_{2,3} \\
+  a_{3,1} & a_{3,2} & a_{3,3} \\
+ \end{pmatrix}
+ \quad
+ \vec{b} :=
+ \begin{pmatrix}
+  b_1 \\ b_2 \\ b_3
+ \end{pmatrix}
+ \quad \mathrm{and} \quad
+ \vec{x} =
+ \begin{pmatrix}
+  x_1 \\ x_2 \\ x_3
+ \end{pmatrix} \,.
+\end{equation}
+
+This special form of $g$ makes the whole process of numerical steepest
+descent much simpler although it still remains rather involved.
+
+
+\section{Stationary points}
+
+The gradient of $g$ is defined as usual:
+
+\begin{equation}
+ \vec{g} := \nabla g =
+ \begin{pmatrix}
+  \pdiff{g}{x_1} \\
+  \vdots \\
+  \pdiff{g}{x_N}
+ \end{pmatrix}
+ =
+  \begin{pmatrix}
+  g_1(x_1, \hdots, x_N) \\
+  \vdots \\
+  g_N(x_1, \hdots, x_N)
+ \end{pmatrix}
+\end{equation}
+
+We can compute every component as:
+
+\begin{equation}
+ \begin{split}
+  \pdiff{g}{x_i}  = \pdiff{\vec{x}\T \mat{M} \vec{x} + \vec{b}\T \vec{x} +c}{x_i}
+                  = \pdiff{\vec{x}\T \mat{M} \vec{x}}{x_i} + \pdiff{\vec{b}\T \vec{x}}{x_i}
+                  = \left[(\mat{M}+\mat{M}\T) \vec{x}\right]_{i} + \vec{b}_i
+ \end{split}
+\end{equation}
+
+which is equivalent to:
+
+\begin{equation}
+ \pdiff{g}{x_i} = \sum_{k=1}^N \left(\mat{M}_{k,i}+\mat{M}_{i,k}\right)\vec{x}_k + \vec{b}_i
+\end{equation}
+
+Solving this for $x_i$ gives us a \emph{function} $x_i^{**}(x_1, \ldots, x_{i-1}, x_{i+1}, \ldots, x_N)$ like:
+
+\begin{equation}
+ x_i^{**} = \frac{\sum_{k=1}^{i-1} \left(\mat{M}_{k,i}+\mat{M}_{i,k}\right)\vec{x}_k
+                  + \sum_{k=i+1}^{N} \left(\mat{M}_{k,i}+\mat{M}_{i,k}\right)\vec{x}_k
+                  + \vec{b}_i  }
+                 {-2 \mat{M}_{i,i}}
+\end{equation}
+
+The whole gradient can be computed at once by:
+
+\begin{equation}
+ \vec{g} = \nabla g = \pdiff{g(\vec{x})}{\vec{x}}
+         = \pdiff{\vec{x}\T \mat{M} \vec{x}}{x} + \pdiff{\vec{b}\T \vec{x}}{x}
+         = \mat{M} \vec{x} + \mat{M}\T \vec{x} + \vec{b}
+\end{equation}
+
+Next, we solve the following system:
+
+\begin{equation}
+ \vec{g} =
+ \begin{pmatrix}
+  g_0 \\ \vdots \\ g_N
+ \end{pmatrix}
+ = \left(\mat{M} + \mat{M}\T\right) \vec{x} + \vec{b}
+ = \vec{0}
+\end{equation}
+
+for $x_i$ and call the solutions $x_i^{*}$ and gather them in a vector $\vec{x}^{*}$.
+Formally:
+
+\begin{equation}
+ \vec{x}^{*} := -\left(\mat{M} + \mat{M}\T\right)\inv \vec{b}
+\end{equation}
+
+The solution is unique and well defined. Especially the $x_i^{*}$ are numbers
+and do not depend on any parameters, in contrast to the $x_i^{**}$.
+We know that the identity:
+
+\begin{equation} \label{eq:denest_sp}
+ x_i^{**}(x_1^{*}, \ldots, x_{i-1}^{*}, x_{i+1}^{*}, \ldots, x_N^{*}) = x_i^{*}
+\end{equation}
+
+holds.
+
+
+\section{Finding the integration paths}
+
+For each \emph{transformation} or \emph{integration path} we have to solve
+a system of equations (called the \emph{path equation}). If we think of the
+original integral \eqref{eq:hoi} as a nested onion like structure it seems
+natural to begin with the last variable $q_N$ and searching for a path $u_N(\cdot)$
+first.
+
+
+\subsection{Two-dimensional case}
+
+In the two-dimensional case the path equation reads:
+
+\begin{equation} \label{eq:pequ2}
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ u_2(x_1, q_2)
+ \end{bmatrix}
+ \right)
+ =
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ x_2^{**}(x_1)
+ \end{bmatrix}
+ \right)
+ + i q_2
+\end{equation}
+
+and we try to solve this for $u_2(x_1, q_2)$. This equation has a \emph{free variable} $x_1$
+and at this point the solution $u_2$ still depends on that free variable\footnote{This is
+one of the main obstacles for an algorithmic and non-symbolic implementation.}.
+Once we solved this system we can proceed with the transformation for $x_1$ and
+write the other path equation as:
+
+\begin{equation}
+ g\left(
+ \begin{bmatrix}
+  u_1(q_1) \\
+  x_2^{**}\left( u_1(q_1) \right)
+ \end{bmatrix}
+ \right)
+ =
+ g\left(
+ \begin{bmatrix}
+  x_1^{*} \\ x_2^{**}(x_1^{*})
+ \end{bmatrix}
+ \right)
+ + i q_1
+\end{equation}
+
+We can simplify this further by applying the identity \eqref{eq:denest_sp} and get:
+
+\begin{equation} \label{eq:pequ1}
+ g\left(
+ \begin{bmatrix}
+  u_1(q_1) \\
+  x_2^{**}\left( u_1(q_1) \right)
+ \end{bmatrix}
+ \right)
+ =
+ g\left(
+ \begin{bmatrix}
+  x_1^{*} \\ x_2^{*}
+ \end{bmatrix}
+ \right)
+ + i q_1
+\end{equation}
+
+Solving this we obtain a transformation $u_1(q_1)$, This function
+does not depend on any parameters beside $q_1$.
+
+Now we can use the solution $u_1(q_1)$ of this system for replacing
+$x_1$ in the solution $u_2$ above:
+
+\begin{equation}
+ \tilde{u}_2\left(q_1, q_2\right) := u_2\left( u_1\left(q_1\right), q_2 \right)
+\end{equation}
+
+Trivially we have $\tilde{u}_1 \equiv u_1$. In the end this gives us the
+\emph{steepest descent manifold} $\mathcal{M}$ as:
+
+\begin{equation}
+\mathcal{M}(q_1, q_2) :=
+ \begin{cases}
+  \tilde{u}_1(q_1) \\
+  \tilde{u}_2(q_1, q_2)
+ \end{cases}
+\end{equation}
+
+from the defining equation \eqref{eq:pequ1} and \eqref{eq:pequ2}.
+
+Note that the solution of these equations is usually not unique. In the case of $g$ beeing
+quadratic we obtain two solutions $u_1^a$ and $u_1^b$ and two solutions $u_2^a$ and $u_2^b$.
+We can use both, $u_1^a$ and $u_1^b$, for constructing $\tilde{u}_2$ and get four paths
+$\tilde{u}_2^{a,a}$, $\tilde{u}_2^{a,b}$, $\tilde{u}_2^{b,a}$ and $\tilde{u}_2^{b,b}$.
+In general we get $2^N$ steepest descent manifolds. This may make the method unsuitable
+for larger $N$. (We drop the tilde from now on again.)
+
+
+\subsection{Three-dimensional case}
+
+When working in 3 space dimensions we have to solve three path equations.
+The first one reads:
+
+\begin{equation} \label{eq:pequ2}
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ u_2(x_1, q_2)
+ \end{bmatrix}
+ \right)
+ =
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ x_2^{**}(x_1)
+ \end{bmatrix}
+ \right)
+ + i q_2
+\end{equation}
+
+
+\subsection{Arbitrary dimensional case}
+
+\marginpar{I'm really NOT sure if this section is at all correct!!}
+
+In the general case of $N>2$ we solve iteratively $N$ different path equations
+to get in turn $u_N$, $u_{N-1}$ up to $u_1$. First we start with:
+
+\begin{equation} \nonumber
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-1} \\ u_N(x_1, \ldots, x_{N-1}, q_N)
+ \end{bmatrix}
+ \right)
+ = g\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-1} \\ x_N^{**}(x_1, \ldots, x_{N-1})
+ \end{bmatrix}
+ \right)
+ +i q_N
+\end{equation}
+
+this gives us $u_N:\mathbb{R}^{N} \rightarrow \mathbb{C}$ as:
+
+\begin{equation} \nonumber
+ u_N\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-1} \\ q_N
+ \end{bmatrix}
+ \right) = \cdots \,.
+\end{equation}
+
+Second we solve:
+
+\begin{equation} \nonumber
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-2} \\ u_{N-1}(x_1, \ldots, x_{N-2}, q_{N-1}) \\ x_N^{**}(x_1, \ldots, x_{N-2}, u_{N-1}(\cdot))
+ \end{bmatrix}
+ \right)
+ = g\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-2} \\ x_{N-1}^{**}(x_1, \ldots, x_{N-2}, x_N^{*}) \\ x_{N}^{**}(x_1, \ldots, x_{N-2}, x_{N-1}^{*})
+ \end{bmatrix}
+ \right)
+ +i q_{N-1}
+\end{equation}
+
+which gives us $u_{N-1}:\mathbb{R}^{N-1} \rightarrow \mathbb{C}$ as
+
+\begin{equation} \nonumber
+ u_{N-1}\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-2} \\ q_{N-1}
+ \end{bmatrix}
+ \right) = \cdots \,.
+\end{equation}
+
+Third we solve:
+
+\begin{equation} \nonumber
+ g\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-3} \\
+  u_{N-2}(x_1, \ldots, x_{N-3}, q_{N-2}) \\
+  x_{N-1}^{**}(x_1, \ldots, x_{N-3}, u_{N-2}(\cdot), u_{N}(\cdot)) \\
+  x_N^{**}(x_1, \ldots, u_{N-2}(\cdot), u_{N-1}(\cdot))
+ \end{bmatrix}
+ \right)
+ = g\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-3} \\
+  x_{N-2}^{**}(x_1, \ldots, x_{N-3}, x_{N-1}^{*}, x_N^{*}) \\
+  x_{N-1}^{**}(x_1, \ldots, x_{N-3}, x_{N-2}^{*}, x_N^{*}) \\
+  x_{N}^{**}  (x_1, \ldots, x_{N-3}, x_{N-2}^{*}, x_{N-1}^{*})
+ \end{bmatrix}
+ \right)
+ +i q_{N-2}
+\end{equation}
+
+which gives us $u_{N-2}:\mathbb{R}^{N-2} \rightarrow \mathbb{C}$ as:
+
+\begin{equation} \nonumber
+ u_{N-2}\left(
+ \begin{bmatrix}
+  x_1 \\ \vdots \\ x_{N-3} \\ q_{N-2}
+ \end{bmatrix}
+ \right) = \cdots \,.
+\end{equation}
+
+This continues the same way until we arrive at the last equation:
+
+\begin{equation} \nonumber
+ g\left(
+ \begin{bmatrix}
+  u_1(q_1) \\
+  x_2^{**}(u_1(\cdot), u_3(\cdot), \ldots, u_{N}(\cdot)) \\
+  \vdots\\
+  x_N^{**}(u_1(\cdot), \ldots, u_{N-1}(\cdot))
+ \end{bmatrix}
+ \right)
+ = g\left(
+ \begin{bmatrix}
+  x_1^{**}(x_2^{*}, \ldots, x_{N}^{*}) \\
+  x_2^{**}(x_1^{*}, x_3^{*}, \ldots, x_{N}^{*}) \\
+  \vdots
+  \\ x_{N}^{**}(x_1^{*}, \ldots, x_{N-1}^{*})
+ \end{bmatrix}
+ \right)
+ +i q_1
+\end{equation}
+
+from where finally we obtain $u_1:\mathbb{R} \rightarrow \mathbb{C}$:
+
+\begin{equation} \nonumber
+ u_1\left(
+ \begin{bmatrix}
+  q_1
+ \end{bmatrix}
+ \right) = \cdots \,.
+\end{equation}
+
+\marginpar{Work out a 3D example to see if it fits the scheme}
+
+Next we can combine the $u_i$ to obtain one after the other all denested $\tilde{u}_i$:
+
+\begin{equation}
+\begin{split}
+ \tilde{u}_1(q_1)              & := u_1(q_1) \\
+ \tilde{u}_2(q_1, q_2)         & := u_2(u_1(q_1), q_2) \\
+ \tilde{u}_3(q_1, q_2, q_3)    & := u_3(u_1(q_1), u_2(u_1(q_1), q_2), q_3) \\
+                               & \vdots \\
+ \tilde{u}_N(q_1, \ldots, q_N) & := u_N(\cdots)
+\end{split}
+\end{equation}
+
+At the end of the day we write our \emph{steepest descent manifold} $\mathcal{M}$ again as:
+
+\begin{equation}
+\mathcal{M}(q_1, \ldots, q_N) :=
+ \begin{cases}
+  \tilde{u}_1(q_1) \\
+  \tilde{u}_2(q_1, q_2) \\
+  \cdots \\
+  \tilde{u}_N(q_1, q_2, \ldots, q_N) \\
+ \end{cases}
+\end{equation}
+
+Even in case this is correct, the whole procedure is overly complicated and
+it's questionable if it indeed can be applied (efficiently) to our integration problem.
+
+
+\section{Sign issues}
+
+From each tuple $\left(u_1^{j}, u_2^{l}\right)$ we get a contribution $Q_{j,l}$ according
+to \eqref{eq:noi2} to the final value $Q \approx I$. But there is one small problem. We can
+not simply add up all individual contributions $Q_{j,l}$. This would lead to wrong results
+because some paths are incoming and some are outgoing and we must respect this orientation.
+
+As a possible solution(?) we can compute a sign $\sigma_{k}$ for each path $u_1^k$:
+
+\begin{equation}
+ \sigma_1^k := sign( \Re(u_1^k(1) - x_1^{*}))
+\end{equation}
+
+and similarily for $u_2^{k,l}$:
+
+\begin{equation}
+ \sigma_2^{k,l} := sign( \Re(u_2^{k,l}(1,1) - x_2^{*})) \,.
+\end{equation}
+
+In the end we find (for a two-dimensional example again):
+
+\begin{equation}
+ Q = \sigma_1^a \sigma_2^{a,a} Q_{a,a} +
+     \sigma_1^b \sigma_2^{b,a} Q_{b,a} +
+     \sigma_1^a \sigma_2^{a,b} Q_{a,b} +
+     \sigma_1^b \sigma_2^{b,b} Q_{b,b}
+\end{equation}
+
+
+\bibliographystyle{plain}
+\bibliography{nsd}
+
+\end{document}
