@@ -1,0 +1,122 @@
+\documentclass{beamer}
+\usepackage[english]{babel}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[utf8x]{inputenc}
+\usepackage{mhchem}
+\input{./header_math.tex}
+
+\mode<presentation>
+{
+  \usetheme{Montpellier}
+  \setbeamercovered{transparent}
+}
+
+\title[Wavepackets]{Numerical Steepest Descent for\\ Semiclassical Wavepackets}
+\author[]{Raoul Bourquin}
+
+\date{Disentis 2014}
+
+\beamertemplatenavigationsymbolsempty
+%-----------------------------------------------------------------------------------------
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\section{Numerical Steepest Descent for Hagedorn Wavepackets}
+
+\subsection{Introduction}
+\subsubsection{Where is the Problem?}
+
+% Show autocorrelation computation
+
+\section{Highly Oscillatory Integrals}
+\subsubsection{Introductionary Example}
+
+% Example with straight paths int_a^b dx
+
+\subsubsection{More complicated Example}
+
+% Single stationary point
+
+
+\section{The Steepest Descent Method}
+
+% Handle boundaries
+% Handle stationary points
+% Show theorems about exact decomposition (maybe?)
+
+
+
+\section{Hagedorn Wavepackets}
+\subsection{Definition}
+
+% Usual definition of phi_0
+% Ladder Operators
+% Do all in 1D
+
+\subsection{Inner products}
+
+% Will give exactly the necessary form
+
+
+\subsection{Applying NSD to HAWPs}
+\subsubsection{Technical Difficulties}
+
+% Example in 1D
+
+
+\subsection{Examples}
+
+% Testcase with momentum-collision
+
+
+
+\subsection{Higher Dimensions}
+
+% Formal procedure
+% Merging Wavepackets
+% Ugly Properties of the Matrix
+% Schur Decomposition
+% Oscillator Updates
+% Merging Paths
+
+
+\subsection{Smolyak Quadrature Schemes}
+
+% Gauss Nodes not nested
+% Smolyak in this form useless even harmful
+
+
+\subsection{Kronrod Extension Schemes}
+
+% Can we built nested rules?
+
+
+\subsection{Examples}
+
+% Morse going wrong
+% Harmonic Channel
+% Harmonic Tube
+
+
+\subsection{Future Work}
+
+
+
+\section{End}
+
+\begin{frame}{Thanks for your attention}
+  \scriptsize
+  \bibliographystyle{abbrv}
+  \bibliography{mt}
+\end{frame}
+
+\end{document}
