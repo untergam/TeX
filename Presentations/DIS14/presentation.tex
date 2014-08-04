@@ -13,13 +13,18 @@
   \setbeamercovered{transparent}
 }
 
-\title[Wavepackets]{Numerical Steepest Descent for\\ Semiclassical Wavepackets}
+\synctex=1
+\parindent 0pt
+
+\title[Wavepackets]{Application of Numerical Steepest Descent \\
+                    for Overlap Integrals \\
+                    of Semiclassical Wavepackets}
 \author[]{Raoul Bourquin}
 
 \date{Disentis 2014}
 
 \beamertemplatenavigationsymbolsempty
-%-----------------------------------------------------------------------------------------
+% -----------------------------------------------------------------------------------------
 \begin{document}
 
 \begin{frame}
@@ -41,6 +46,15 @@
 \subsubsection{Introductionary Example}
 
 % Example with straight paths int_a^b dx
+
+
+\begin{frame}{Highly Oscillatory Integrals}{Examples}
+  \begin{equation}
+    x
+  \end{equation}
+\end{frame}
+
+
 
 \subsubsection{More complicated Example}
 
@@ -89,26 +103,132 @@
 % Merging Paths
 
 
+
+
+\section{Quadrature Schemes}
+
+\begin{frame}{Quadrature Schemes}
+  \begin{itemize}
+  \item Problem:
+    \begin{itemize}
+    \item still full tensorproduct quadrature
+    \item fewer nodes per direction
+    \item
+    \end{itemize}
+  \end{itemize}
+  \vspace{0.2cm}
+  \begin{itemize}
+  \item Solution:
+    \begin{itemize}
+    \item sparse grid schemes
+    \item Smolyak rule
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+
+
 \subsection{Smolyak Quadrature Schemes}
 
 % Gauss Nodes not nested
 % Smolyak in this form useless even harmful
 
+\begin{frame}{Smolyak construction issues}
+  \begin{itemize}
+    \item Problem:
+    \begin{itemize}
+      \item Gauss-Hermite points not nested
+      \item more points than full tensorproduct
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Smolyak construction issues}
+  Construction with Gauss-Hermite rules
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./fig/smolyak_gauss_ratiomap.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Smolyak construction issues}
+  \begin{itemize}
+    \item Solution:
+    \begin{itemize}
+      \item Search rules with nested nodes
+      \item For interval $(-\infty, \infty)$ with weights $\exp(-x^2)$
+      \item Iterative \emph{Kronrod} extensions
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
 
 \subsection{Kronrod Extension Schemes}
 
-% Can we built nested rules?
+\begin{frame}{Kronrod Extensions}
+  \begin{itemize}
+    \item Goal: Find nested quadrature rules
+    \item How?
+  \end{itemize}
+\end{frame}
 
 
-\subsection{Examples}
+\subsection{Genz-Keister Rules}
+
+
+\begin{frame}{Smolyak construction}{Genz-Keister Nodes}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{./fig/genz_keister_nodes.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Smolyak construction}
+  Construction with Genz-Keister nested rules
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./fig/smolyak_genzkeister_ratiomap.png}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Final Solution for computing overlap Integrals}
+  \begin{itemize}
+    \item Chain of \emph{transformators}
+    \begin{itemize}
+      \item Steepest Descent: remove oscillations
+      \item Sparse Grid: lessen curse of dimensionality
+      \item Genz-Keister rules: nodes are nested
+    \end{itemize}
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{./fig/diagram4.pdf}
+  \end{figure}
+\end{frame}
+
+
+
+\section{Examples}
 
 % Morse going wrong
 % Harmonic Channel
 % Harmonic Tube
 
 
-\subsection{Future Work}
 
+\section{Future Work}
+
+\begin{frame}
+  \begin{itemize}
+    \item Proof the steepest descent technique for unbounded intervals
+    \item Other integrals like $\braket{\phi|V|\phi}$
+    \item Potentials with exponential parts
+    \item Proof for Kronrod Extensions
+    \item Search for optimal rule
+  \end{itemize}
+\end{frame}
 
 
 \section{End}
