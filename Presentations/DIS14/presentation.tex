@@ -111,7 +111,7 @@
       f(x) & = \frac{1}{1 + (x+y)^2} \\
       g(x) & = x^2 - x y - y^2 \\
     \end{align*}
-    and $\omega & = 5$
+    and $\omega = 5$
   \end{minipage}
   \begin{minipage}{0.48\linewidth}
     \begin{figure}
@@ -123,6 +123,249 @@
 
 
 \section{The Numerical Steepest Descent Method}
+
+
+\begin{frame}{Numerical Steepest Descent}{Central observations}
+  Oscillatory part $e^{\imath \omega g(x)}$ of:
+  \begin{equation*}
+    I = \int_a^b f(x) e^{\imath \omega g(x)} \di{x}
+  \end{equation*}
+  does:
+  \begin{itemize}
+    \item decay exponentially fast for increasing $\Im g(z)$
+    \item not oscillate for constant $\Re g(z)$
+  \end{itemize}
+  because:
+  \begin{equation*}
+    e^{\imath \omega g(z)}
+    =
+    e^{\imath \omega (\Re g(z) + \imath \Im g(z))}
+    =
+    e^{\imath \omega \Re g(z)}
+    e^{- \omega \Im g(z)}
+  \end{equation*}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Main Idea and overview}
+  \begin{itemize}
+    \item Transform the integrand such that it is no longer oscillatory but rather exponentially decaying.
+  \end{itemize}
+  \vspace{1cm}
+  \begin{itemize}
+    \item Find a coordinate transformation $z = h(\tau)$ such that the \emph{real} part
+          of $g(z)$ is constant.
+    \item Apply Cauchy's Theorem for contour integrals along $h(\tau)$.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Contributions to the integral}
+  \begin{minipage}{0.6\linewidth}
+    Which parts do contribute?
+    \begin{itemize}
+      \item Endpoints of the interval: $[a, b]$
+      \item \emph{stationary points}: $\nabla g(\vec{x}) = \vec{0}$
+      \item \emph{resonance points}: $\nabla_x \, g(\vec{x}) \perp \partial \Omega$
+    \end{itemize}
+  \end{minipage}
+  \begin{minipage}{0.38\linewidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{./fig/oscillatory_example_2.pdf}
+    \end{figure}
+  \end{minipage}
+  Intuitive explanation:
+  \begin{itemize}
+    \item Oscillations in integrand generally cancel
+    \item Places with locally no oscillations contribute
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{The Path Equation}
+  \begin{minipage}{0.58\linewidth}
+    \begin{itemize}
+      \item Set of contributing points:
+      \begin{equation*}
+        \Xi := \{a, b\} \cup \{x^{*}_j\}_j
+      \end{equation*}
+    \end{itemize}
+    \begin{itemize}
+      \item Path equations:
+      \begin{itemize}
+        \item $\forall \xi \in \Xi$:
+        \begin{equation*}
+          g(h_\xi(\tau)) = g(\xi) + \imath \tau
+        \end{equation*}
+        \item yields path $h_{\xi}(\tau)$ with $\tau \in \mathbb{R}_0^{+}$
+      \end{itemize}
+    \end{itemize}
+  \end{minipage}
+  \begin{minipage}{0.40\linewidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{./fig/nsd_path_figure.pdf}
+    \end{figure}
+  \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Solving the Path Equation}
+  \begin{minipage}{0.58\linewidth}
+    \begin{itemize}
+      \item Endpoints:
+        \begin{itemize}
+          \item unique inverse of $g$
+          \item compute $h_a$ and $h_b$:
+          \begin{equation*}
+            h_a(0) = a \quad \wedge \quad h_b(0) = b
+          \end{equation*}
+        \end{itemize}
+      \item Stationary points:
+        \begin{itemize}
+          \item multivalued inverse of $g$
+          \item paths lead to the same \emph{valley}
+        \end{itemize}
+        % TODO: Go into more details?
+    \end{itemize}
+  \end{minipage}
+  \begin{minipage}{0.40\linewidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{./fig/nsd_path_figure.pdf}
+    \end{figure}
+  \end{minipage}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Assemble the parts}
+  \begin{itemize}
+    \item Perform transformations $x \mapsto h_{\xi}(\tau)$
+    \begin{equation*}
+      J[\xi] :=
+      e^{\imath \omega g(\xi)}
+      \int_{0}^{\infty}
+        f(h_{\xi}(\tau)) \,
+        h_{\xi}^{\prime}(\tau) \,
+        e^{-\omega \tau} \,
+      \mathrm{d}\tau
+    \end{equation*}
+    \item Apply Cauchy's Theorem
+    \begin{equation*}
+      I = e^{\imath\omega g(a)} J[a]
+        + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
+        - e^{\imath\omega g(b)} J[b]
+    \end{equation*}
+    \item Restrictions about poles and branch cuts
+    \item Just transformation of the problem
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Quadrature}
+  \begin{itemize}
+    \item New problem compute:
+    \begin{equation*}
+      J[\xi] :=
+      e^{\imath \omega g(\xi)}
+      \int_{0}^{\infty}
+        f(h_{\xi}(\tau)) \,
+        h_{\xi}^{\prime}(\tau) \,
+        e^{-\omega \tau} \,
+      \mathrm{d}\tau
+    \end{equation*}
+    \item Gauss-Laguerre quadrature $\{\gamma_i, \omega_i\}_i$
+    \begin{equation*}
+    J[\xi] \approx
+    \frac{e^{\imath \omega g(\xi)}}{\omega}
+    \sum_{k=1}^K
+      f\left(h_{\xi}\left(\frac{\gamma_i}{\omega}\right)\right)
+      h_{\xi}^{\prime}\left(\frac{\gamma_i}{\omega}\right)
+      w_i
+    \end{equation*}
+    \item Number of integrals can grow exponentially
+    \item Important improvements possible
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Main decomposition theorem}
+  \begin{theorem}
+    Assume that the functions $f$ and $g$ are analytic in a simply connected and
+    sufficiently (infinitely) large complex region $D$ containing the interval $[a, b]$.
+    Assume further that the equation $g(x) = 0$ has only one solution $x^{*}$ in $D$ and
+    $x^{*} \in (a, b)$. Define $g_1 \assign g|_{[a,x^{*}]}$ and $g_2\assign g|_{[x^{*},b]}$.
+    If the following conditions hold:
+    \begin{align*}
+      \exists m \in \mathbb{N} : |f(z)| & = \mathcal{O}(|z|^m), \\
+      \exists \omega_0 \in \mathbb{R} : |g_1^{-1}(z)| & = \mathcal{O}(e^{\omega_0 |z|}) \\
+                                        |g_2^{-1}(z)| & = \mathcal{O}(e^{\omega_0 |z|})
+    \end{align*}
+    as $|z| \rightarrow \infty$ then
+  \end{theorem}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Main decomposition theorem, continued}
+  \begin{theorem}
+    there exist functions $F_j(\xi), j = 1, 2$ of the form:
+    \begin{equation*}
+      F_j(\xi) \assign \int_{\Gamma_{\xi,j}} f(z) e^{\imath \omega g(z)} \di{z}
+    \end{equation*}
+    with $\Gamma_{\xi,j}$ a path that starts at $\xi$, such that:
+    \begin{equation*}
+      \int_s^t f(z) e^{\imath \omega g(z)} \di{z} =
+      F_1(s) - F_1(x^{*}) + F_2(x^{*}) - F_2(t), \quad \forall \omega > (m+1)\omega_0,
+    \end{equation*}
+    for $s \in [a, x^{*}]$ and $t \in [x^{*}, b]$. A parameterization
+    $h_{\xi,j}(\tau)$, $\tau \in [0, \infty)$, for $\Gamma_{\xi,j}$ exists such that
+    the integrand of $F_{j}$ is $\mathcal{O}(e^{−\omega \tau})$.
+  \end{theorem}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Extensions and Outlook}
+  \begin{itemize}
+    \item This was for closed intervals. What about:
+    \begin{itemize}
+      \item semi-open intervals $[a, \infty)$?
+      \begin{itemize}
+        \item Works the same but no proofs yet
+      \end{itemize}
+      \item infinite intervals $(-\infty, \infty)$?
+      \begin{itemize}
+        \item Decompose into two semi-open intervals
+      \end{itemize}
+    \end{itemize}
+    \item Multiple stationary points?
+    \begin{itemize}
+      \item Apply procedure at each $x^{*}_i$
+    \end{itemize}
+    \item Complex stationary points $x^{*} \in \mathbb{C} \setminus \mathbb{R}$?
+    \begin{itemize}
+      \item Put path through the point
+    \end{itemize}
+    \item Higher dimensions?
+    \begin{itemize}
+      \item Much more involved and complicated theory
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Example $g(x) := x^2$}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Numerical Steepest Descent}{Literature}
+
+\end{frame}
+
+
 
 % Handle boundaries
 % Handle stationary points
