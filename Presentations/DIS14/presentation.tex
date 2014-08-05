@@ -326,17 +326,16 @@
 
 
 \begin{frame}{Numerical Steepest Descent}{Extensions and Outlook}
+  This was for closed intervals. What about:
+  \vspace{0.2cm}
   \begin{itemize}
-    \item This was for closed intervals. What about:
+    \item semi-open intervals $[a, \infty)$?
     \begin{itemize}
-      \item semi-open intervals $[a, \infty)$?
-      \begin{itemize}
-        \item Works the same but no proofs yet
-      \end{itemize}
-      \item infinite intervals $(-\infty, \infty)$?
-      \begin{itemize}
-        \item Decompose into two semi-open intervals
-      \end{itemize}
+      \item Works the same (no proofs yet)
+    \end{itemize}
+    \item infinite intervals $(-\infty, \infty)$?
+    \begin{itemize}
+      \item Decompose into two semi-open intervals
     \end{itemize}
     \item Multiple stationary points?
     \begin{itemize}
@@ -355,22 +354,87 @@
 
 
 \begin{frame}{Numerical Steepest Descent}{Example $g(x) := x^2$}
-
+  \begin{equation*}
+    I = \int_{-1}^{1} 1 e^{\imath \omega x^2} \di{x}
+    \quad \text{with} \quad
+    g(x) \assign x^2
+  \end{equation*}
+  \begin{equation*}
+    g^{\prime}(x) = 0 \quad \Rightarrow \quad x^{*} = 0
+  \end{equation*}
+  \begin{equation*}
+    \begin{split}
+    g(h_{-1}) = g(-1) + \imath \tau   & \Rightarrow
+    h_{-1}(\tau) = -\sqrt{1+\imath\tau}, \quad
+    h_{-1}^{\prime}(\tau) = -\frac{\imath}{2\sqrt{1+\imath\tau}} \\
+    g(h_{1}) = g(1) + \imath \tau   & \Rightarrow
+    h_{1}(\tau) = \sqrt{1+\imath\tau}, \quad
+    h_{-1}^{\prime}(\tau) = \frac{\imath}{2\sqrt{1+\imath\tau}} \\
+    g(h_{0}) = g(0) + \imath \tau   & \Rightarrow
+    h_{0,\pm}(\tau) = \pm\imath\tau, \quad
+    h_{0,\pm}^{\prime}(\tau) = \pm\imath
+        \end{split}
+  \end{equation*}
+  \begin{equation*}
+    \begin{split}
+    I = e^{\imath\omega} \int_0^\infty h_{-1}^{\prime}(\tau) e^{-\omega\tau} \di{\tau}
+    - \int_0^\infty h_{0,-}^{\prime}(\tau) e^{-\omega\tau} \di{\tau} \\
+    + \int_0^\infty h_{0,+}^{\prime}(\tau) e^{+\omega\tau} \di{\tau}
+    - e^{\imath\omega} \int_0^\infty h_{1}^{\prime}(\tau) e^{-\omega\tau} \di{\tau}
+    \end{split}
+  \end{equation*}
 \end{frame}
 
 
+\begin{frame}{Numerical Steepest Descent}{Complex Stationary Points}
+  \vspace{-0.5cm}
+  \begin{equation*}
+    \int_{-2}^{2} \log(2+x^2) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
+  \end{equation*}
+  with $\delta = [10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0]$
+  and $x^{*} = \pm \imath \sqrt{\delta}$
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Numerical Steepest Descent}{Semi-open Intervals}
+  \begin{minipage}{0.5\linewidth}
+    \begin{equation*}
+      I = \int_0^\infty \frac{100}{100 + x^2} \exp(\imath \omega e^{\sqrt{x}}) \di{x}
+    \end{equation*}
+    with $\omega = 2$
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{./fig/oscillatory_example_semiopen.pdf}
+    \end{figure}
+  \end{minipage}
+  \begin{minipage}{0.48\linewidth}
+    \begin{equation*}
+      h_a(\tau) = \log(1 + \imath\tau)^2
+    \end{equation*}
+    \begin{figure}
+      \centering
+      \includegraphics[width=0.6\linewidth]{./fig/nsd_path_semiopen_figure.pdf}
+    \end{figure}
+    \begin{equation*}
+      I = e^{\imath\omega} \int_0^{\infty} \frac{100 e^{-\omega\tau}}{100+\log(1+\imath\tau)} \di{\tau}
+    \end{equation*}
+  \end{minipage}
+\end{frame}
 
 
 \begin{frame}{Numerical Steepest Descent}{Literature}
-
+  \cite{AH_cgq}
+  \cite{HV_hoq}
+  \cite{HV_cub}
+  \cite{H_nsd_sii}
+  \scriptsize
+  \bibliographystyle{abbrv}
+  \bibliography{nsd}
 \end{frame}
-
-
-
-% Handle boundaries
-% Handle stationary points
-% Show theorems about exact decomposition (maybe?)
-
 
 
 \section{Hagedorn Wavepackets}
@@ -564,9 +628,9 @@
 \section{End}
 
 \begin{frame}{Thanks for your attention}
-  \scriptsize
-  \bibliographystyle{abbrv}
-  \bibliography{mt}
+  \begin{center}
+    {\Huge{Questions?}}
+  \end{center}
 \end{frame}
 
 \end{document}
