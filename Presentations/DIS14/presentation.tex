@@ -4,7 +4,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage[utf8x]{inputenc}
-\usepackage{mhchem}
+\usepackage[version=3]{mhchem}
 \input{./header_math.tex}
 
 \mode<presentation>
@@ -16,9 +16,10 @@
 \synctex=1
 \parindent 0pt
 
-\title[Wavepackets]{Application of Numerical Steepest Descent \\
-                    for Overlap Integrals \\
-                    of Semiclassical Wavepackets}
+\title[Numerical Steepest Descent for Hagedorn Wavepackets]
+      {Application of Numerical Steepest Descent \\
+       for Overlap Integrals \\
+       of Semiclassical Wavepackets}
 \author[]{Raoul Bourquin}
 
 \date{Disentis 2014}
@@ -35,12 +36,39 @@
   \tableofcontents
 \end{frame}
 
-\section{Numerical Steepest Descent for Hagedorn Wavepackets}
 
-\subsection{Introduction}
-\subsubsection{Where is the Problem?}
+\section{Motivation}
 
-% Show autocorrelation computation
+\begin{frame}{Motivation}
+  \begin{itemize}
+    \item Simulation of heavy \ce{Hg2}
+    \begin{itemize}
+      \item Initial value $\ket{\Psi_0}$
+      \item Time-propagated value $\ket{\Psi_t}$
+    \end{itemize}
+  \end{itemize}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/hg_morse_wps.png}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Motivation}
+  \begin{itemize}
+    \item Compute autocorrelation $|A(t)|$
+  \end{itemize}
+  \vspace{0.2cm}
+  \begin{equation*}
+    A(t) \assign \Braket{\Psi_0 | \Psi_t}
+         = \idotsint_{\mathbb{R}^D} \conj{\Psi_0(\vec{x})} \Psi_t(\vec{x}) \di{\vec{x}}
+  \end{equation*}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/ac_mercurial_morse.pdf}
+  \end{figure}
+\end{frame}
+
 
 \section{Highly Oscillatory Integrals}
 \subsubsection{Introductionary Example}
@@ -71,6 +99,32 @@
 
 \section{Hagedorn Wavepackets}
 \subsection{Definition}
+
+
+\begin{frame}{Semiclassical Wavepackets}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{./fig/wavepackets.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Semiclassical Wavepackets}
+  \begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{./fig/wavepackets_2d.png}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Semiclassical Wavepackets}{Definition}
+  $\phi_0$
+\end{frame}
+
+
+\begin{frame}{Semiclassical Wavepackets}{Raising and Lowering Operators}
+  $\mathcal{R}$ and $\mathcal{L}$
+\end{frame}
+
+
 
 % Usual definition of phi_0
 % Ladder Operators
