@@ -71,25 +71,58 @@
 
 
 \section{Highly Oscillatory Integrals}
-\subsubsection{Introductionary Example}
-
-% Example with straight paths int_a^b dx
 
 
-\begin{frame}{Highly Oscillatory Integrals}{Examples}
-  \begin{equation}
-    x
-  \end{equation}
+\begin{frame}{Highly Oscillatory Integrals}{Typical Example}
+  \begin{minipage}{0.5\linewidth}
+    \begin{equation*}
+      I = \int_{\Omega} f(\vec{x}) e^{\imath \omega g(\vec{x})} \di{\vec{x}}
+    \end{equation*}
+    \begin{itemize}
+      \item Oscillator $g(\vec{x})$ (non-oscillatory)
+      \item Envelope $f(\vec{x})$ (non-oscillatory)
+      \item Frequency $\omega \in \mathbb{R}^{+}$
+      \item Domain $\Omega \subseteq \mathbb{R}^D$
+    \end{itemize}
+  \end{minipage}
+  \begin{minipage}{0.48\linewidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{./fig/oscillatory_example.pdf}
+    \end{figure}
+    \vspace{-0.6cm}
+    \begin{align*}
+      f(x) & = \frac{1}{1+x^2} \\
+      g(x) & = \left(x - \frac{1}{2}\right)^2 \\
+      \omega & = 100
+    \end{align*}
+  \end{minipage}
 \end{frame}
 
 
+\begin{frame}{Highly Oscillatory Integrals}{Typical Example}
+  \begin{minipage}{0.5\linewidth}
+    Compute:
+    \begin{equation*}
+      \int_{-2}^3 \int_{-2}^3 \frac{e^{5 \imath \left(x^2-x y-y^2\right)}}{1 + (x+y)^2} \di{x} \di{y}
+    \end{equation*}
+    where:
+    \begin{align*}
+      f(x) & = \frac{1}{1 + (x+y)^2} \\
+      g(x) & = x^2 - x y - y^2 \\
+    \end{align*}
+    and $\omega & = 5$
+  \end{minipage}
+  \begin{minipage}{0.48\linewidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\linewidth]{./fig/oscillatory_example_2d.png}
+    \end{figure}
+  \end{minipage}
+\end{frame}
 
-\subsubsection{More complicated Example}
 
-% Single stationary point
-
-
-\section{The Steepest Descent Method}
+\section{The Numerical Steepest Descent Method}
 
 % Handle boundaries
 % Handle stationary points
