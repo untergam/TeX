@@ -393,18 +393,18 @@
 \end{frame}
 
 
-\begin{frame}{Numerical Steepest Descent}{Complex Stationary Points}
-  \vspace{-0.5cm}
-  \begin{equation*}
-    \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
-  \end{equation*}
-  with $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$
-  and $x^{*} = \imath \sqrt{\delta}$
-  \begin{figure}
-    \centering
-    \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
-  \end{figure}
-\end{frame}
+% \begin{frame}{Numerical Steepest Descent}{Complex Stationary Points}
+%   \vspace{-0.5cm}
+%   \begin{equation*}
+%     \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
+%   \end{equation*}
+%   with $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$
+%   and $x^{*} = \imath \sqrt{\delta}$
+%   \begin{figure}
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
+%   \end{figure}
+% \end{frame}
 
 
 \begin{frame}{Numerical Steepest Descent}{Semi-open Intervals}
@@ -454,19 +454,51 @@
 \subsection{Definition}
 
 
-\begin{frame}{Semiclassical Wavepackets}
+\begin{frame}{Semiclassical Wavepackets}{Examples in 1D}
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{./fig/wavepackets.pdf}
   \end{figure}
 \end{frame}
 
-\begin{frame}{Semiclassical Wavepackets}
-  \begin{figure}
+
+\begin{frame}{Semiclassical Wavepackets}{Example in 2D}
+  \vspace{-0.4cm}
+  \scriptsize
+  \begin{equation*}
+    \phi_{\vec{k}}[\Pi](\vec{x}) \quad\quad \vec{k} = (1,3) \quad \varepsilon = \frac{1}{10}
+  \end{equation*}
+  \vspace{-0.4cm}
+  \begin{figure}[h!]
     \centering
-    \includegraphics[width=\linewidth]{./fig/wavepackets_2d.png}
+    \includegraphics[width=0.8\linewidth]{./fig/wavepackets_2d.png}
   \end{figure}
+    \scriptsize
+  \begin{equation*}
+    \vec{q} =
+    \begin{pmatrix}
+      2 \\ \sqrt{3\varepsilon}
+    \end{pmatrix}
+    \quad
+    \vec{p} =
+    \begin{pmatrix}
+      -\frac{2}{5} \\ \sqrt{\frac{4\varepsilon}{12}}
+    \end{pmatrix}
+    \quad
+    \mat{Q} =
+    \begin{pmatrix}
+      1 & 0 \\
+      0 & \frac{1}{\sqrt{\frac{4}{5}}}
+    \end{pmatrix}
+    \quad
+    \mat{P} =
+    \begin{pmatrix}
+      -2+\imath & -3 \\
+      -3\sqrt{\frac{4}{5}} & \imath\sqrt{\frac{4}{5}}
+    \end{pmatrix}
+  \end{equation*}
 \end{frame}
+
 
 \begin{frame}{Semiclassical Wavepackets}{Definition}
   $\phi_0$
