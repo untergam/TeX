@@ -450,8 +450,58 @@
 \end{frame}
 
 
-\section{Hagedorn Wavepackets}
-\subsection{Definition}
+\section{Semicalssical / Hagedorn Wavepackets}
+
+
+\begin{frame}{Semiclassical Wavepackets}
+  % TODO: Really include this frame?
+  \begin{itemize}
+    \item Time-dependent Schr\"odinger Equation (TDSE)
+    \begin{equation*}
+      \imath \varepsilon^2 \pdiff{\Psi}{t} = \left(-\frac{\varepsilon^4}{2}\Delta_x + V(\vec{x})\right) \Psi
+    \end{equation*}
+    \vspace{0.5cm}
+    \item semiclassical scaling: $\varepsilon^2 = \hbar$
+    \begin{itemize}
+      \item $0.001 < \varepsilon < 0.1$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Semiclassical Wavepackets}{Definition}
+  \begin{itemize}
+    \item Diagonalize quadratic Hamiltonian
+      \begin{equation*}
+        \mathcal{H} = \frac{1}{2} \left(\alpha p^2 + \beta (x p + p x) + \gamma x^2\right)
+      \end{equation*}
+    \item Position $x$ and momentum $p$
+    \item Eigenvalues: $k + \frac{1}{2}$
+    \item Eigenfunctions: $\phi_k, \quad k = 0, 1, 2, \ldots$
+    \item Yields wavepackets $\phi_k(x)$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Semiclassical Wavepackets}{Explicit representation in 1D}
+  \begin{itemize}
+    \item Explicit expression
+    {\scriptsize
+    \begin{align*}
+      \phi_0(x) = (\pi\varepsilon^2)^{-\frac{1}{4}} Q^{-\frac{1}{2}}
+                   \exp \left( \frac{\imath}{2\varepsilon^2} PQ\inv (x-q)^2 + \frac{\imath}{\varepsilon^2} p (x-q) \right)
+    \end{align*}}
+    \item Parametrized by $q, p \in \mathbb{R}$ and $Q, P \in \mathbb{C}$
+    \item Raising and Lowering Operators
+    \begin{align*}
+      \phi_{k+1} = \frac{1}{\sqrt{k+1}} \mathcal{R} \phi_k
+      \qquad
+      \phi_{k-1} = \frac{1}{\sqrt{k}} \mathcal{L} \phi_k
+    \end{align*}
+    \item $\mathcal{L} \phi_0 \equiv 0$
+    \item Orthonormal Basis of $L^2(\mathbb{R})$
+  \end{itemize}
+\end{frame}
 
 
 \begin{frame}{Semiclassical Wavepackets}{Examples in 1D}
@@ -459,6 +509,35 @@
     \centering
     \includegraphics[width=\linewidth]{./fig/wavepackets.pdf}
   \end{figure}
+\end{frame}
+
+
+\begin{frame}{Semiclassical Wavepackets}{Explicit representation, higher dimensions}
+  \begin{itemize}
+    \item Groundstate
+    {\scriptsize
+    \begin{align*}
+      \phi_{\vec{0}}\left(\vec{x}\right)
+      =
+      (\pi\varepsilon^2)^{-\frac{D}{4}} (\det\mat{Q})^{-\frac{1}{2}}
+      \exp \left( \frac{i}{2\varepsilon^2}
+      \dotp{(\vec{x}-\vec{q})}{\mat{P}\mat{Q}\inv(\vec{x}-\vec{q})}
+      + \frac{i}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
+      \right)
+    \end{align*}}
+    \item Multiindex $\vec{k} \in \mathbb{N}_0^D$
+    \item Parameters $\vec{q}, \vec{p} \in \mathbb{R}^D$ and $\mat{Q}, \mat{P} \in \mathbb{C}^{D \times D}$
+    \begin{itemize}
+      \item Parameter set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$
+    \end{itemize}
+    \item Compatibility
+    \begin{align*}
+      \mat{Q}\H \mat{P} - \mat{P}\H \mat{Q} = 2i \id
+      \qquad
+      \mat{P}\T \mat{Q} - \mat{Q}\T \mat{P} = \mat{0}
+    \end{align*}
+    \item $\mathcal{R}, \mathcal{L}$ much more complicated
+  \end{itemize}
 \end{frame}
 
 
@@ -500,39 +579,30 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Definition}
-  $\phi_0$
-\end{frame}
-
-
-\begin{frame}{Semiclassical Wavepackets}{Raising and Lowering Operators}
-  $\mathcal{R}$ and $\mathcal{L}$
-\end{frame}
-
-
-
-% Usual definition of phi_0
-% Ladder Operators
-% Do all in 1D
-
-\subsection{Inner products}
+%\subsection{Inner products}
 
 % Will give exactly the necessary form
 
 
-\subsection{Applying NSD to HAWPs}
-\subsubsection{Technical Difficulties}
+
+\begin{frame}{Semiclassical Wavepackets}{Literature}
+
+\end{frame}
+
+
+\section{Applying NSD to HAWPs}
+%\subsection{Technical Difficulties}
 
 % Example in 1D
 
 
-\subsection{Examples}
+%\subsection{Examples}
 
 % Testcase with momentum-collision
 
 
 
-\subsection{Higher Dimensions}
+%\subsection{Higher Dimensions}
 
 % Formal procedure
 % Merging Wavepackets
@@ -544,7 +614,7 @@
 
 
 
-\section{Quadrature Schemes}
+\section{Sparse Quadrature Schemes}
 
 \begin{frame}{Quadrature Schemes}
   \begin{itemize}
@@ -568,7 +638,7 @@
 
 
 
-\subsection{Smolyak Quadrature Schemes}
+%\subsection{Smolyak Quadrature Schemes}
 
 % Gauss Nodes not nested
 % Smolyak in this form useless even harmful
@@ -603,7 +673,7 @@
 \end{frame}
 
 
-\subsection{Kronrod Extension Schemes}
+%\subsection{Kronrod Extension Schemes}
 
 \begin{frame}{Kronrod Extensions}
   \begin{itemize}
@@ -613,7 +683,7 @@
 \end{frame}
 
 
-\subsection{Genz-Keister Rules}
+%\subsection{Genz-Keister Rules}
 
 
 \begin{frame}{Smolyak construction}{Genz-Keister Nodes}
