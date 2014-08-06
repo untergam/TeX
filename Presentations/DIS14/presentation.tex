@@ -214,17 +214,18 @@
 \begin{frame}{Numerical Steepest Descent}{Solving the Path Equation}
   \begin{minipage}{0.58\linewidth}
     \begin{itemize}
+      \item Inverse of $g$ possibly multivalued
       \item Endpoints:
         \begin{itemize}
-          \item unique inverse of $g$
-          \item compute $h_a$ and $h_b$:
+          \item compute $h_a$ and $h_b$
+          \item choose by conditions:
           \begin{equation*}
-            h_a(0) = a \quad \wedge \quad h_b(0) = b
+            h_a(0) = a, \quad h_b(0) = b
           \end{equation*}
         \end{itemize}
       \item Stationary points:
         \begin{itemize}
-          \item multivalued inverse of $g$
+          \item choose two $h_{x^{*}_j,+}$, $h_{x^{*}_j,-}$
           \item paths lead to the same \emph{valley}
         \end{itemize}
         % TODO: Go into more details?
@@ -257,7 +258,7 @@
         + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
         - e^{\imath\omega g(b)} J[b]
     \end{equation*}
-    \item Restrictions about poles and branch cuts
+    \item Restrictions: poles and branch cuts
     \item Just transformation of the problem
   \end{itemize}
 \end{frame}
@@ -275,7 +276,7 @@
         e^{-\omega \tau} \,
       \mathrm{d}\tau
     \end{equation*}
-    \item Gauss-Laguerre quadrature $\{\gamma_i, \omega_i\}_i$
+    \item (Generalized) Gauss-Laguerre quadrature $\{\gamma_i, \omega_i\}_i$
     \begin{equation*}
     J[\xi] \approx
     \frac{e^{\imath \omega g(\xi)}}{\omega}
@@ -284,7 +285,8 @@
       h_{\xi}^{\prime}\left(\frac{\gamma_i}{\omega}\right)
       w_i
     \end{equation*}
-    \item Number of integrals can grow exponentially
+    %\item Number of integrals can grow exponentially
+    \item Integrals (weakly) singular
     \item Important improvements possible
   \end{itemize}
 \end{frame}
@@ -331,31 +333,32 @@
   \begin{itemize}
     \item semi-open intervals $[a, \infty)$?
     \begin{itemize}
-      \item Works the same (no proofs yet)
+      \item works the same (no proofs yet)
     \end{itemize}
     \item infinite intervals $(-\infty, \infty)$?
     \begin{itemize}
-      \item Decompose into two semi-open intervals
+      \item decompose into two semi-open intervals
     \end{itemize}
-    \item Multiple stationary points?
+    \item multiple stationary points?
     \begin{itemize}
-      \item Apply procedure at each $x^{*}_i$
+      \item apply procedure at each $x^{*}_i$
     \end{itemize}
-    \item Complex stationary points $x^{*} \in \mathbb{C} \setminus \mathbb{R}$?
+    \item complex stationary points $x^{*} \in \mathbb{C} \setminus \mathbb{R}$?
     \begin{itemize}
-      \item Put path through the point
+      \item put path through the point
     \end{itemize}
-    \item Higher dimensions?
+    \item higher dimensions?
     \begin{itemize}
-      \item Much more involved and complicated theory
+      \item much more involved and complicated theory
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Numerical Steepest Descent}{Example $g(x) := x^2$}
+  \vspace{-0.5cm}
   \begin{equation*}
-    I = \int_{-1}^{1} 1 e^{\imath \omega x^2} \di{x}
+    I = \int_{-1}^{1} 1\, e^{\imath \omega x^2} \di{x}
     \quad \text{with} \quad
     g(x) \assign x^2
   \end{equation*}
@@ -369,18 +372,22 @@
     h_{-1}^{\prime}(\tau) = -\frac{\imath}{2\sqrt{1+\imath\tau}} \\
     g(h_{1}) = g(1) + \imath \tau   & \Rightarrow
     h_{1}(\tau) = \sqrt{1+\imath\tau}, \quad
-    h_{-1}^{\prime}(\tau) = \frac{\imath}{2\sqrt{1+\imath\tau}} \\
+    h_{1}^{\prime}(\tau) = \frac{\imath}{2\sqrt{1+\imath\tau}} \\
     g(h_{0}) = g(0) + \imath \tau   & \Rightarrow
-    h_{0,\pm}(\tau) = \pm\imath\tau, \quad
-    h_{0,\pm}^{\prime}(\tau) = \pm\imath
-        \end{split}
+    h_{0,\pm}(\tau) = \pm\sqrt{\imath\tau}, \quad
+    h_{0,\pm}^{\prime}(\tau) = \pm\frac{\imath}{2\sqrt{\tau}}
+    \end{split}
   \end{equation*}
   \begin{equation*}
     \begin{split}
-    I = e^{\imath\omega} \int_0^\infty h_{-1}^{\prime}(\tau) e^{-\omega\tau} \di{\tau}
-    - \int_0^\infty h_{0,-}^{\prime}(\tau) e^{-\omega\tau} \di{\tau} \\
-    + \int_0^\infty h_{0,+}^{\prime}(\tau) e^{+\omega\tau} \di{\tau}
-    - e^{\imath\omega} \int_0^\infty h_{1}^{\prime}(\tau) e^{-\omega\tau} \di{\tau}
+%     I = e^{\imath\omega} \int_0^\infty h_{-1}^{\prime}(\tau) e^{-\omega\tau} \di{\tau}
+%     - \int_0^\infty h_{0,-}^{\prime}(\tau) e^{-\omega\tau} \di{\tau} \\
+%     + \int_0^\infty h_{0,+}^{\prime}(\tau) e^{+\omega\tau} \di{\tau}
+%     - e^{\imath\omega} \int_0^\infty h_{1}^{\prime}(\tau) e^{-\omega\tau} \di{\tau}
+      I = e^{\imath\omega} \int_0^\infty -\frac{\imath e^{-\omega\tau}}{2\sqrt{1+\imath\tau}} \di{\tau}
+      - \int_0^\infty -\frac{\imath e^{-\omega\tau}}{2\sqrt{\tau}} \di{\tau} \\
+      + \int_0^\infty  \frac{\imath e^{-\omega\tau}}{2\sqrt{\tau}} \di{\tau}
+    - e^{\imath\omega} \int_0^\infty \frac{\imath e^{-\omega\tau}}{2\sqrt{1+\imath\tau}} \di{\tau}
     \end{split}
   \end{equation*}
 \end{frame}
@@ -389,10 +396,10 @@
 \begin{frame}{Numerical Steepest Descent}{Complex Stationary Points}
   \vspace{-0.5cm}
   \begin{equation*}
-    \int_{-2}^{2} \log(2+x^2) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
+    \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
   \end{equation*}
-  with $\delta = [10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0]$
-  and $x^{*} = \pm \imath \sqrt{\delta}$
+  with $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$
+  and $x^{*} = \imath \sqrt{\delta}$
   \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
@@ -401,9 +408,9 @@
 
 
 \begin{frame}{Numerical Steepest Descent}{Semi-open Intervals}
-  \begin{minipage}{0.5\linewidth}
+  \begin{minipage}{0.49\linewidth}
     \begin{equation*}
-      I = \int_0^\infty \frac{100}{100 + x^2} \exp(\imath \omega e^{\sqrt{x}}) \di{x}
+      I = \int_0^\infty \frac{100}{100 + x^2} \exp\left(\imath \omega e^{\sqrt{x}}\right) \di{x}
     \end{equation*}
     with $\omega = 2$
     \begin{figure}
@@ -411,16 +418,22 @@
       \includegraphics[width=\linewidth]{./fig/oscillatory_example_semiopen.pdf}
     \end{figure}
   \end{minipage}
-  \begin{minipage}{0.48\linewidth}
+  \begin{minipage}{0.49\linewidth}
     \begin{equation*}
       h_a(\tau) = \log(1 + \imath\tau)^2
     \end{equation*}
     \begin{figure}
       \centering
-      \includegraphics[width=0.6\linewidth]{./fig/nsd_path_semiopen_figure.pdf}
+%       \includegraphics[width=0.6\linewidth]{./fig/nsd_path_semiopen_figure.pdf}
+      \includegraphics[width=0.6\linewidth]{./fig/oscillatory_example_semiopen_path.pdf}
     \end{figure}
+    \scriptsize
     \begin{equation*}
-      I = e^{\imath\omega} \int_0^{\infty} \frac{100 e^{-\omega\tau}}{100+\log(1+\imath\tau)} \di{\tau}
+      I = 200 e^{\imath\omega}
+          \int_0^{\infty}
+            \frac{\imath \log(1+\imath\tau) e^{-\omega\tau}}
+                 {(1 + \imath\tau)\left(100+\log^4(1+\imath\tau)\right)}
+          \di{\tau}
     \end{equation*}
   \end{minipage}
 \end{frame}
