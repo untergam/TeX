@@ -496,7 +496,7 @@
       \phi_0(x) = (\pi\varepsilon^2)^{-\frac{1}{4}} Q^{-\frac{1}{2}}
                    \exp \left( \frac{\imath}{2\varepsilon^2} PQ\inv (x-q)^2 + \frac{\imath}{\varepsilon^2} p (x-q) \right)
     \end{align*}}
-    \item Parametrized by $q, p \in \mathbb{R}$ and $Q, P \in \mathbb{C}$
+    \item Parametrized by $q(t), p(t) \in \mathbb{R}$ and $Q(t), P(t) \in \mathbb{C}$
     \item Raising and Lowering Operators
     \begin{align*}
       \phi_{k+1} = \frac{1}{\sqrt{k+1}} \mathcal{R} \phi_k
@@ -525,19 +525,19 @@
       \phi_{\vec{0}}\left(\vec{x}\right)
       =
       (\pi\varepsilon^2)^{-\frac{D}{4}} (\det\mat{Q})^{-\frac{1}{2}}
-      \exp \left( \frac{i}{2\varepsilon^2}
+      \exp \left( \frac{\imath}{2\varepsilon^2}
       \dotp{(\vec{x}-\vec{q})}{\mat{P}\mat{Q}\inv(\vec{x}-\vec{q})}
-      + \frac{i}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
+      + \frac{\imath}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
       \right)
     \end{align*}}
-    \item Multiindex $\vec{k} \in \mathbb{N}_0^D$
+    \item Multi-index $\vec{k} \in \mathbb{N}_0^D$
     \item Parameters $\vec{q}, \vec{p} \in \mathbb{R}^D$ and $\mat{Q}, \mat{P} \in \mathbb{C}^{D \times D}$
     \begin{itemize}
       \item Parameter set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$
     \end{itemize}
     \item Compatibility
     \begin{align*}
-      \mat{Q}\H \mat{P} - \mat{P}\H \mat{Q} = 2i \id
+      \mat{Q}\H \mat{P} - \mat{P}\H \mat{Q} = 2\imath \id
       \qquad
       \mat{P}\T \mat{Q} - \mat{Q}\T \mat{P} = \mat{0}
     \end{align*}
@@ -584,9 +584,41 @@
 \end{frame}
 
 
-%\subsection{Inner products}
+\subsection{Overlap integrals}
 
-% Will give exactly the necessary form
+
+\begin{frame}{Semiclassical Wavepackets}{}
+  \begin{itemize}
+    \item Overlap integrals
+    \begin{equation*}
+      I
+      = \Braket{\psi_k[\Pi] | \psi_l[\Pi^\prime]}
+      \assign \idotsint_{\mathbb{R}^D} \conj{\psi_k[\Pi](\vec{x})} \, \psi_l[\Pi](\vec{x}) \di{\vec{x}}
+    \end{equation*}
+    \item Parameter sets: $\Pi$ and $\Pi^\prime$
+    \item Highly oscillatory
+    \begin{itemize}
+      \item similar position: $\vec{q_k} \approx \vec{q_l}$
+      \item opposite momentum: $\vec{p_k} \approx -\vec{p_l}$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Semiclassical Wavepackets}{Two wavepackets}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./fig/overlap_wavepackets.pdf}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Semiclassical Wavepackets}{The integrand}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./fig/overlap_integrand.pdf}
+  \end{figure}
+\end{frame}
 
 
 \begin{frame}{Semiclassical Wavepackets}{Literature}
