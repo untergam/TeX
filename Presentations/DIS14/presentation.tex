@@ -3,6 +3,7 @@
 \usepackage{color}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{multibbl}
 \usepackage[utf8x]{inputenc}
 \usepackage[version=3]{mhchem}
 \input{./header_math.tex}
@@ -23,6 +24,10 @@
 \author[]{Raoul Bourquin}
 
 \date{Disentis 2014}
+
+
+\newbibliography{nsd}
+\newbibliography{hawp}
 
 \beamertemplatenavigationsymbolsempty
 % -----------------------------------------------------------------------------------------
@@ -440,13 +445,13 @@
 
 
 \begin{frame}{Numerical Steepest Descent}{Literature}
-  \cite{AH_cgq}
-  \cite{HV_hoq}
-  \cite{HV_cub}
-  \cite{H_nsd_sii}
+  \nocite{nsd}{AH_cgq}
+  \nocite{nsd}{HV_hoq}
+  \nocite{nsd}{HV_cub}
+  \nocite{nsd}{H_nsd_sii}
   \scriptsize
-  \bibliographystyle{abbrv}
-  \bibliography{nsd}
+  \bibliographystyle{nsd}{abbrv}
+  \bibliography{nsd}{nsd}{}
 \end{frame}
 
 
@@ -584,9 +589,12 @@
 % Will give exactly the necessary form
 
 
-
 \begin{frame}{Semiclassical Wavepackets}{Literature}
-
+  \nocite{hawp}{B_master_thesis}
+  \nocite{hawp}{H_ladder_operators}
+  \scriptsize
+  \bibliographystyle{hawp}{abbrv}
+  \bibliography{hawp}{mt,own}{}
 \end{frame}
 
 
