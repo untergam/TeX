@@ -28,6 +28,8 @@
 
 \newbibliography{nsd}
 \newbibliography{hawp}
+\newbibliography{sqs}
+\newbibliography{sdwp}
 
 \beamertemplatenavigationsymbolsempty
 % -----------------------------------------------------------------------------------------
@@ -592,8 +594,8 @@
     \item Overlap integrals
     \begin{equation*}
       I
-      = \Braket{\psi_k[\Pi] | \psi_l[\Pi^\prime]}
-      \assign \idotsint_{\mathbb{R}^D} \conj{\psi_k[\Pi](\vec{x})} \, \psi_l[\Pi](\vec{x}) \di{\vec{x}}
+      = \Braket{\phi_k[\Pi] | \phi_l[\Pi^\prime]}
+      \assign \idotsint_{\mathbb{R}^D} \conj{\phi_k[\Pi](\vec{x})} \, \phi_l[\Pi](\vec{x}) \di{\vec{x}}
     \end{equation*}
     \item Parameter sets: $\Pi$ and $\Pi^\prime$
     \item Highly oscillatory
@@ -651,49 +653,57 @@
 % Oscillator Updates
 % Merging Paths
 
-
+\begin{frame}{Steepest Descent for Wavepackets}{Literature}
+  \nocite{sdwp}{B_nsd_hawp}
+  \scriptsize
+  \bibliographystyle{sdwp}{abbrv}
+  \bibliography{sdwp}{own}{}
+\end{frame}
 
 
 \section{Sparse Quadrature Schemes}
 
-\begin{frame}{Quadrature Schemes}
+
+\begin{frame}{Sparse Quadrature Schemes}
   \begin{itemize}
   \item Problem:
     \begin{itemize}
-    \item still full tensorproduct quadrature
-    \item fewer nodes per direction
-    \item
+    \item full tensorproduct quadrature
+    \item less nodes per direction
     \end{itemize}
   \end{itemize}
   \vspace{0.2cm}
   \begin{itemize}
   \item Solution:
     \begin{itemize}
-    \item sparse grid schemes
+    \item Sparse grid schemes
     \item Smolyak rule
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 
-
-
-%\subsection{Smolyak Quadrature Schemes}
-
-% Gauss Nodes not nested
-% Smolyak in this form useless even harmful
-
-\begin{frame}{Smolyak construction issues}
+\begin{frame}{Sparse Quadrature Schemes}{Smolyak construction issues}
   \begin{itemize}
+    \item Smolyak construction:
+    \begin{equation*}
+      S_{D,k} \assign \sum_{q=k-D}^{k-1} (-1)^{k-1-q} \binom{D-1}{k-1-q}
+                      \sum_{\substack{\vec{l} \in \mathbb{N}^D \\
+                                      \|\vec{l}\|_1 = D+q}}
+                        \left(Q_{l_1} \otimes \cdots \otimes Q_{l_D}\right)
+    \end{equation*}
+    \vspace{0.2cm}
+    \item Sum of (smaller) tensor products
     \item Problem:
     \begin{itemize}
       \item Gauss-Hermite points not nested
-      \item more points than full tensorproduct
+      \item more points than full tensorproduct!
     \end{itemize}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Smolyak construction issues}
+
+\begin{frame}{Sparse Quadrature Schemes}
   Construction with Gauss-Hermite rules
   \begin{figure}
     \centering
@@ -701,7 +711,8 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{Smolyak construction issues}
+
+\begin{frame}{Sparse Quadrature Schemes}{Smolyak construction issues}
   \begin{itemize}
     \item Solution:
     \begin{itemize}
@@ -713,9 +724,7 @@
 \end{frame}
 
 
-%\subsection{Kronrod Extension Schemes}
-
-\begin{frame}{Kronrod Extensions}
+\begin{frame}{Sparse Quadrature Schemes}{Kronrod Extensions}
   \begin{itemize}
     \item Goal: Find nested quadrature rules
     \item How?
@@ -723,17 +732,14 @@
 \end{frame}
 
 
-%\subsection{Genz-Keister Rules}
-
-
-\begin{frame}{Smolyak construction}{Genz-Keister Nodes}
+\begin{frame}{Sparse Quadrature Schemes}{Genz-Keister Nodes}
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{./fig/genz_keister_nodes.png}
   \end{figure}
 \end{frame}
 
-\begin{frame}{Smolyak construction}
+\begin{frame}{Sparse Quadrature Schemes}
   Construction with Genz-Keister nested rules
   \begin{figure}
     \centering
@@ -757,6 +763,15 @@
   \end{figure}
 \end{frame}
 
+
+\begin{frame}{Sparse Quadrature Schemes}{Literature}
+  \nocite{sqs}{genz-keister}
+  \nocite{sqs}{mehrotra-papp}
+  \nocite{sqs}{B_kes}
+  \scriptsize
+  \bibliographystyle{sqs}{abbrv}
+  \bibliography{sqs}{sparse,kes,own}{}
+\end{frame}
 
 
 \section{Examples}
