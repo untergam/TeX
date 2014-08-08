@@ -399,18 +399,18 @@
 \end{frame}
 
 
-% \begin{frame}{Numerical Steepest Descent}{Complex Stationary Points}
-%   \vspace{-0.5cm}
-%   \begin{equation*}
-%     \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
-%   \end{equation*}
-%   with $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$
-%   and $x^{*} = \imath \sqrt{\delta}$
-%   \begin{figure}
-%     \centering
-%     \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
-%   \end{figure}
-% \end{frame}
+\begin{frame}{Numerical Steepest Descent}{Complex Stationary Points}
+  \vspace{-0.5cm}
+  \begin{equation*}
+    \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
+  \end{equation*}
+  with $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$
+  and $x^{*} = \imath \sqrt{\delta}$
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
+  \end{figure}
+\end{frame}
 
 
 \begin{frame}{Numerical Steepest Descent}{Semi-open Intervals}
@@ -837,12 +837,13 @@
       -
       I_i^{-}[h_i^{-}]
     \end{equation*}
+    \item Transform $h_i^{-}$ into $h_i^{+}$
     \item Full Gaussian Integral
     \begin{equation*}
       I_i\left(x_{i+1},\ldots,x_N\right) =
       C
       \int_{-\infty}^\infty
-        i_i\left(h_i\left(\tau_i\right)\right)
+        i_i\left(h_i\left(\tau_i\right)\right) \,
         \exp\left(- \omega \tau_i^2\right)
       \mathrm{d}\tau_i
     \end{equation*}
@@ -863,7 +864,7 @@
     \item Apply Gauss-Hermite Quadrature $Q \approx I$
     \begin{equation*}
       Q =
-      \prod_{j=1}^N C_j
+      C_j
       \sum_{k_1}^n \cdots \sum_{k_N}^n
       f\left(h_1\left(x_{k_1}\right),
            \ldots,
@@ -894,7 +895,7 @@
     \item less nodes per direction
     \end{itemize}
   \end{itemize}
-  \vspace{0.2cm}
+  \vspace{0.5cm}
   \begin{itemize}
   \item Solution:
     \begin{itemize}
@@ -936,23 +937,26 @@
       \item Gauss-Hermite points not nested
       \item more points than full tensorproduct!
     \end{itemize}
-    \vspace{0.2cm}
+    \vspace{0.5cm}
     \item Solution:
     \begin{itemize}
       \item Search rules with nested nodes
       \item For interval $(-\infty, \infty)$ with weights $\exp(-x^2)$
-      \item Iterative \emph{Kronrod} extensions
+      \begin{itemize}
+        \item Iterative \emph{Kronrod} extensions
+        \item \emph{Genz-Keister} rules
+      \end{itemize}
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Sparse Quadrature Schemes}{Kronrod Extensions}
-  \begin{itemize}
-    \item Goal: Find nested quadrature rules
-    \item How?
-  \end{itemize}
-\end{frame}
+% \begin{frame}{Sparse Quadrature Schemes}{Kronrod Extensions}
+%   \begin{itemize}
+%     \item Goal: Find nested quadrature rules
+%     \item How?
+%   \end{itemize}
+% \end{frame}
 
 
 \begin{frame}{Sparse Quadrature Schemes}{Genz-Keister Nodes}
@@ -998,28 +1002,66 @@
 \end{frame}
 
 
-\section{Examples}
+\section{Numerical Experiments and Examples}
 
-% Testcase with momentum-collision
-% Morse going wrong
 % Harmonic Channel
 % Harmonic Tube
 
+\begin{frame}{Numerical Experiments}{Convergence}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/conv_momentum.pdf}
+  \end{figure}
+\end{frame}
 
-\section{Future Work}
 
-\begin{frame}
+\begin{frame}{Numerical Experiments}{Convergence}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/conv_eps.pdf}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{Real-world Example \ce{Hg2}}
+  \begin{itemize}
+    \item Compute autocorrelation $|A(t)|$ by improved integrator
+  \end{itemize}
+  \vspace{0.2cm}
+  \begin{equation*}
+    A(t) \assign \Braket{\Psi_0 | \Psi_t}
+         = \idotsint_{\mathbb{R}^D} \conj{\Psi_0(\vec{x})} \Psi_t(\vec{x}) \di{\vec{x}}
+  \end{equation*}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{./fig/ac_mercurial_morse_nsd.pdf}
+  \end{figure}
+\end{frame}
+
+
+\section{Future Work and Open Topics}
+
+
+\begin{frame}{Future Work and Open Topics}
   \begin{itemize}
     \item Proof the steepest descent technique for unbounded intervals
     \item Other integrals like $\braket{\phi|V|\phi}$
-    \item Potentials with exponential parts
+    \begin{itemize}
+      \item Potentials with exponential parts
+    \end{itemize}
+    \item Non-classical Smolyak constructions
+    \begin{itemize}
+      \item Hyperbolic Cut sections
+      \item Adaptive versions
+    \end{itemize}
     \item Proof for Kronrod Extensions
-    \item Search for optimal rule
+    \item Higher-order Genz-Keister rules
   \end{itemize}
 \end{frame}
 
 
 \section{End}
+
 
 \begin{frame}{Thanks for your attention}
   \begin{center}
