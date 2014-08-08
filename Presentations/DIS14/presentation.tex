@@ -631,26 +631,249 @@
 \end{frame}
 
 
-\section{Applying NSD to HAWPs}
-%\subsection{Technical Difficulties}
-
-% Example in 1D
+\section{Steepest Descent for Wavepackets}
 
 
-%\subsection{Examples}
+\begin{frame}{Steepest Descent for Wavepackets}{Wavepackets}
+  \begin{itemize}
+    \item Wavepackets of the form:
+    \begin{equation*}
+      \phi(\vec{x}) \sim p\left(\vec{x}\right)\exp\left(\frac{i}{\varepsilon^2} g\left(\vec{x}\right)\right)
+    \end{equation*}
+    \item Oscillator term:
+    \begin{equation*}
+      g\left(\vec{x}\right)
+      \assign
+      \frac{1}{2} \dotp{\vec{x}-\vec{q}}{\mat{P}\mat{Q}\inv \left(\vec{x}-\vec{q}\right)}
+      +
+      \dotp{\vec{p}}{\vec{x}-\vec{q}}
+    \end{equation*}
+    \item Frequency $\omega = \frac{1}{\varepsilon^2}$
+  \end{itemize}
+\end{frame}
 
-% Testcase with momentum-collision
+
+\begin{frame}{Steepest Descent for Wavepackets}{Overlap Integrals}
+  \begin{itemize}
+    \item Integrals look like
+    \begin{equation*}
+      \dotp{\phi_k}{\phi_l} =
+      \int_{-\infty}^{\infty}
+        \conj{p_k(\vec{x})} p_l(\vec{x})
+        \exp\left(\frac{i}{\varepsilon^2}\left(-\conj{g_k(\vec{x})} + g_l(\vec{x})\right)\right)
+      \mathrm{d}\vec{x}
+    \end{equation*}
+    \item Combine oscillators $-\conj{g_k(\vec{x})} + g_l(\vec{x})$ into $g(\vec{x})$
+  \end{itemize}
+\end{frame}
 
 
+\begin{frame}{Steepest Descent for Wavepackets}{Combined Oscillator}
+  \begin{itemize}
+    \item We can find
+    \begin{equation*}
+      g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\T \vec{x} + c
+    \end{equation*}
+    \item where
+    \begin{equation*}
+      \mat{A} = \frac{1}{2} \left(\mat{P_l}\mat{Q_l}\inv - (\mat{P_k}\mat{Q_k}\inv)\H \right)
+    \end{equation*}
+    \item General quadratic form
+    \item Properties of $A$
+    \begin{itemize}
+      \item $\mat{A}$ not Hermitian
+      \item $\Re \mat{A}$ and $\Im \mat{A}$ symmetric
+    \end{itemize}
+  \end{itemize}
+\end{frame}
 
-%\subsection{Higher Dimensions}
 
-% Formal procedure
-% Merging Wavepackets
-% Ugly Properties of the Matrix
-% Schur Decomposition
-% Oscillator Updates
-% Merging Paths
+\begin{frame}{Steepest Descent for Wavepackets}{Transformation of the Oscillator}
+  \begin{itemize}
+    \item Goal: Decoupling the paths
+    \item Remove linear Term $\vec{b}\T \vec{x}$
+    \begin{itemize}
+      \item Multivariate completion of the square
+      \item $g(x^\prime) = x^\prime\H \mat{A} x^\prime + c$
+    \end{itemize}
+    \item Diagonalization of $\mat{A}$
+    \begin{itemize}
+      \item Optimal, not possible with unitary matrices
+    \end{itemize}
+    \item Upper-triangular form
+    \begin{itemize}
+      \item Schur Decomposition: $\mat{A} = \mat{U}\H \mat{T} \mat{U}$
+      \item $g(x^{\prime\prime}) = x^{\prime\prime}\H \mat{T} x^{\prime\prime} + c\prime$
+    \end{itemize}
+    \item Transformations have unit Jacobi determinants
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Oscillator Decomposition}
+  \begin{itemize}
+    \item Decompose $g(\vec{x}) = \vec{x}\H\mat{T}\vec{x}$
+    \begin{equation*}
+      g\left(x_1, \ldots, x_N\right) = \sum_{i=1}^N g_i(x_i, \ldots, x_N)
+    \end{equation*}
+    \item where
+    \begin{equation*}
+      g_i\left(x_i, x_{i+1}, \ldots, x_N\right)
+      \assign t_{i,i} x_i^2 + \sum_{j=i+1}^{N} t_{i,j} x_i x_j
+    \end{equation*}
+    \item Quadratic in $x_{i}$
+    \item Rows of $\mat{T}$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Stationary Points}
+  \begin{itemize}
+    \item Compute stationary points
+    \begin{equation*}
+      \dot{g}_i \assign \pdiff{g_i}{x_i} \stackrel{!}{=} 0
+    \end{equation*}
+    \item Find
+    \begin{equation*}
+      x_i^{*}\left(x_{i+1}, \ldots, x_N\right)
+      = - \frac{ \sum_{j=i+1}^{N} t_{i,j} x_j }{ 2 t_{i,i} }
+    \end{equation*}
+    \item Depends on $x_{i+1}, \ldots, x_N$
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Path Equations}
+  \begin{itemize}
+    \item For each oscillator $g_i$
+    \begin{equation*}
+      g_i\left(h_i\left(p_i,\ldots\right), \ldots\right)
+      = g_i\left(x_i^{*}(\ldots), \ldots\right) + \imath p_i
+    \end{equation*}
+    \item Each $\ldots$ is $x_{i+1}, \ldots, x_{N}$
+    \item Simple quadratic equations
+    \item Paths:
+    \begin{equation*}
+      h_i^{\pm}(p_i)
+      =
+      \pm \sqrt{\frac{\imath p_i}{t_{i,i}}}
+      -\frac{1}{2 t_{i,i}} \sum_{j=i+1}^{N} t_{i,j} x_j
+    \end{equation*}
+    \item Path derivatives:
+    \begin{equation*}
+      \dot{h}_i^{\pm}(p_i) = \pdiff{h_i\left(p_i\right)}{p_i}
+      = \pm \frac{\sqrt{\imath}}{2 \sqrt{t_{i,i}}\sqrt{p_i}}
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Nested Structure of oscillatory Integrals}
+  \begin{itemize}
+    \item Start with inner-most integrand
+    \begin{equation*}
+      i_1\left(x_1,\ldots,x_N\right) \assign f\left(\vec{x}\right) \exp\left(i\omega g_1\left(x_1,\ldots,x_N\right)\right)
+    \end{equation*}
+    \item Compute integral
+    \begin{equation*}
+      I_1\left(x_2,\ldots,x_N\right) = \int_{-\infty}^\infty i_1\left(x_1,\ldots,x_N\right) \mathrm{d}x_1
+    \end{equation*}
+    \item Iterate until \ldots
+    \begin{equation*}
+      i_N\left(x_N\right) \assign I_{N-1}\left(x_N\right) \exp\left(i\omega g_N\left(x_N\right)\right)
+    \end{equation*}
+    \item outer-most integral
+    \begin{equation*}
+      I = I_N\left(\right) = \int_{-\infty}^\infty i_N\left(x_N\right) \mathrm{d}x_N
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Transformation of the Integrals}
+  \begin{itemize}
+    \item For each oscillatory part
+    \begin{equation*}
+      \exp\left(i\omega g_i\left(x_i,\ldots,x_N\right)\right)
+      =
+      C
+      %\exp\left(i\omega k_i\left(x_{i+1},\ldots,x_N\right)\right)
+      \exp\left(- \omega p_i\right)
+    \end{equation*}
+    \item Variable transformation by paths
+    \begin{equation*}
+        I_i^{\pm}[h_i^{\pm}] =
+        C
+        %\exp\left(i\omega k_i\right)
+        \int_0^\infty
+          i_i\left(h_i^{\pm}\right)
+          \dot{h}_i^{\pm}\left(p_i\right)
+          \exp\left(- \omega p_i\right)
+        \mathrm{d}p_i
+    \end{equation*}
+    \item Singular for $p_i \rightarrow 0$
+    \item Substitute $q_i = \sqrt{p_i}$
+    \begin{equation*}
+        I_i^{\pm}[h_i^{\pm}] =
+        C
+        %\exp\left(i\omega k_i\right)
+        \int_0^\infty
+          i_i\left(h_i^{\pm}\right)
+          \ldots
+          \exp\left(- \omega q_i^2\right)
+        \mathrm{d}q_i
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Gluing paths}
+  \begin{itemize}
+    \item Two times half of a Gaussian integral
+    \item Glue paths:
+    \begin{equation*}
+      I_i[h_i] =
+      I_i^{+}[h_i^{+}]
+      -
+      I_i^{-}[h_i^{-}]
+    \end{equation*}
+    \item Full Gaussian Integral
+    \begin{equation*}
+      I_i\left(x_{i+1},\ldots,x_N\right) =
+      C
+      \int_{-\infty}^\infty
+        i_i\left(h_i\left(\tau_i\right)\right)
+        \exp\left(- \omega \tau_i^2\right)
+      \mathrm{d}\tau_i
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Steepest Descent for Wavepackets}{Final Quadrature}
+  \begin{itemize}
+    \item Resolved nested integral
+    \begin{equation*}
+      I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
+          f\left(\vec{h}(\vec{\tau})\right)
+          \prod_{i=1}^N C_i
+                        \exp\left(-\omega \tau_i^2\right)
+          \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
+    \end{equation*}
+    \item Apply Gauss-Hermite Quadrature $Q \approx I$
+    \begin{equation*}
+      Q =
+      \prod_{j=1}^N C_j
+      \sum_{k_1}^n \cdots \sum_{k_N}^n
+      f\left(h_1\left(x_{k_1}\right),
+           \ldots,
+           h_N\left(x_{k_N}\right)
+    \right)
+    \prod_{i=1}^N w_{k_i}
+    \end{equation*}
+  \end{itemize}
+\end{frame}
+
 
 \begin{frame}{Steepest Descent for Wavepackets}{Literature}
   \nocite{sdwp}{B_nsd_hawp}
@@ -739,6 +962,7 @@
   \end{figure}
 \end{frame}
 
+
 \begin{frame}{Sparse Quadrature Schemes}
   Construction with Genz-Keister nested rules
   \begin{figure}
@@ -776,10 +1000,10 @@
 
 \section{Examples}
 
+% Testcase with momentum-collision
 % Morse going wrong
 % Harmonic Channel
 % Harmonic Tube
-
 
 
 \section{Future Work}
