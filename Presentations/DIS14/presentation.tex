@@ -33,6 +33,8 @@
 \newbibliography{chem}
 
 \beamertemplatenavigationsymbolsempty
+
+\newcommand{\cemph}[1]{\emph{\color{orange} #1}}
 % -----------------------------------------------------------------------------------------
 \begin{document}
 
@@ -72,7 +74,7 @@
       A(t) \assign \Braket{\Psi_0 | \Psi_t}
            = \idotsint_{\mathbb{R}^D} \conj{\Psi_0(\vec{x})} \Psi_t(\vec{x}) \di{\vec{x}}
     \end{equation*}
-    \item Common techniques give \emph{wrong} results
+    \item Common techniques give \cemph{wrong} results
   \end{itemize}
   \begin{figure}
     \centering
@@ -164,7 +166,7 @@
   \end{itemize}
   \vspace{1cm}
   \begin{itemize}
-    \item Find a coordinate transformation $z = h(\tau)$ such that the \emph{real} part
+    \item Find a coordinate transformation $z = h(\tau)$ such that the \cemph{real} part
           of $g(z)$ is constant.
     \item Apply Cauchy's Theorem for contour integrals along $h(\tau)$.
   \end{itemize}
@@ -176,8 +178,8 @@
     Which parts do contribute?
     \begin{itemize}
       \item Endpoints of the interval: $[a, b]$
-      \item \emph{stationary points}: $\nabla g(\vec{x}) = \vec{0}$
-      \item \emph{resonance points}: $\nabla g(\vec{x}) \perp \partial \Omega$
+      \item \cemph{stationary points}: $\nabla g(\vec{x}) = \vec{0}$
+      \item \cemph{resonance points}: $\nabla g(\vec{x}) \perp \partial \Omega$
     \end{itemize}
   \end{minipage}
   \begin{minipage}{0.38\linewidth}
@@ -237,7 +239,7 @@
       \item Stationary points:
         \begin{itemize}
           \item choose two $h_{x^{*}_j,+}$ and $h_{x^{*}_j,-}$
-          \item paths lead to the same \emph{valley}
+          \item paths lead to the same \cemph{valley}
         \end{itemize}
         % TODO: Go into more details?
     \end{itemize}
@@ -693,7 +695,7 @@
     \item General quadratic form
     \item Properties of $A$
     \begin{itemize}
-      \item $\mat{A}$ \emph{not} Hermitian
+      \item $\mat{A}$ \cemph{not} Hermitian
       \item $\Re \mat{A}$ and $\Im \mat{A}$ symmetric
       \\[0.1cm]$\Rightarrow$ Need new, special techniques
     \end{itemize}
@@ -712,7 +714,7 @@
     \end{itemize}
     \item Diagonalization of $\mat{A}$
     \begin{itemize}
-      \item Optimal, \emph{not} possible via unitary matrices ($\mat{A}$ not Hermitian)
+      \item Optimal, \cemph{not} possible via unitary matrices ($\mat{A}$ not Hermitian)
     \end{itemize}
     \item Upper-triangular form
     \begin{itemize}
@@ -964,8 +966,8 @@
       \item Search rules with nested nodes
       \item For interval $(-\infty, \infty)$ with weight $\exp(-x^2)$
       \begin{itemize}
-        \item Iterative \emph{Kronrod} extensions
-        \item \emph{Genz-Keister} rules
+        \item Iterative \cemph{Kronrod} extensions
+        \item \cemph{Genz-Keister} rules
       \end{itemize}
     \end{itemize}
   \end{itemize}
@@ -993,9 +995,9 @@
   \begin{itemize}
     \item Chain of Transformators
     \begin{itemize}
-      \item Steepest Descent: \emph{remove oscillations}
-      \item Sparse Grid: \emph{lessen curse of dimensionality}
-      \item Genz-Keister rules: \emph{make nodes nested}
+      \item Steepest Descent: \cemph{remove oscillations}
+      \item Sparse Grid: \cemph{lessen curse of dimensionality}
+      \item Genz-Keister rules: \cemph{make nodes nested}
     \end{itemize}
   \end{itemize}
   \begin{figure}
