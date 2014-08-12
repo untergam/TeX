@@ -18,9 +18,9 @@
 \parindent 0pt
 
 \title[Numerical Steepest Descent for Hagedorn Wavepackets]
-      {Application of Numerical Steepest Descent \\
+      {Numerical Steepest Descent \\
        for Overlap Integrals \\
-       of Semiclassical Wavepackets}
+       of Hagedorn Wavepackets}
 \author[]{Raoul Bourquin}
 
 \date{Disentis 2014}
@@ -30,6 +30,7 @@
 \newbibliography{hawp}
 \newbibliography{sqs}
 \newbibliography{sdwp}
+\newbibliography{chem}
 
 \beamertemplatenavigationsymbolsempty
 % -----------------------------------------------------------------------------------------
@@ -47,7 +48,7 @@
 \section{Motivation}
 \begin{frame}{Motivation}
   \begin{itemize}
-    \item Simulation of heavy \ce{Hg2}
+    \item Simulation of Photoionization of \ce{Hg2}
     \begin{itemize}
       \item Initial value $\ket{\Psi_0}$
       \item Time-propagated value $\ket{\Psi_t}$
@@ -55,23 +56,27 @@
   \end{itemize}
   \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{./fig/hg_morse_wps.png}
+    \includegraphics[width=0.6\linewidth]{./fig/hg_morse_wps.png}
   \end{figure}
+  \nocite{chem}{SIZ_hg2}
+  \tiny
+  \bibliographystyle{chem}{abbrv}
+  \bibliography{chem}{chem}{}
 \end{frame}
 
 
 \begin{frame}{Motivation}
   \begin{itemize}
     \item Compute autocorrelation $|A(t)|$
+    \begin{equation*}
+      A(t) \assign \Braket{\Psi_0 | \Psi_t}
+           = \idotsint_{\mathbb{R}^D} \conj{\Psi_0(\vec{x})} \Psi_t(\vec{x}) \di{\vec{x}}
+    \end{equation*}
+    \item Common techniques give \emph{wrong} results
   \end{itemize}
-  \vspace{0.2cm}
-  \begin{equation*}
-    A(t) \assign \Braket{\Psi_0 | \Psi_t}
-         = \idotsint_{\mathbb{R}^D} \conj{\Psi_0(\vec{x})} \Psi_t(\vec{x}) \di{\vec{x}}
-  \end{equation*}
   \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{./fig/ac_mercurial_morse.pdf}
+    \includegraphics[width=0.6\linewidth]{./fig/ac_mercurial_morse.pdf}
   \end{figure}
 \end{frame}
 
@@ -131,7 +136,7 @@
 \section{The Numerical Steepest Descent Method}
 
 
-\begin{frame}{Numerical Steepest Descent}{Central observations}
+\begin{frame}{Numerical Steepest Descent}{Central Observations}
   Oscillatory part $e^{\imath \omega g(x)}$ of:
   \begin{equation*}
     I = \int_a^b f(x) e^{\imath \omega g(x)} \di{x}
@@ -153,7 +158,7 @@
 \end{frame}
 
 
-\begin{frame}{Numerical Steepest Descent}{Main Idea and overview}
+\begin{frame}{Numerical Steepest Descent}{Main Idea and Overview}
   \begin{itemize}
     \item Transform the integrand such that it is no longer oscillatory but rather exponentially decaying.
   \end{itemize}
@@ -166,13 +171,13 @@
 \end{frame}
 
 
-\begin{frame}{Numerical Steepest Descent}{Contributions to the integral}
+\begin{frame}{Numerical Steepest Descent}{Contributions to the Integral}
   \begin{minipage}{0.6\linewidth}
     Which parts do contribute?
     \begin{itemize}
       \item Endpoints of the interval: $[a, b]$
       \item \emph{stationary points}: $\nabla g(\vec{x}) = \vec{0}$
-      \item \emph{resonance points}: $\nabla_x \, g(\vec{x}) \perp \partial \Omega$
+      \item \emph{resonance points}: $\nabla g(\vec{x}) \perp \partial \Omega$
     \end{itemize}
   \end{minipage}
   \begin{minipage}{0.38\linewidth}
@@ -194,13 +199,13 @@
     \begin{itemize}
       \item Set of contributing points:
       \begin{equation*}
-        \Xi := \{a, b\} \cup \{x^{*}_j\}_j
+        \Theta := \{a, b\} \cup \{x^{*}_j\}_j
       \end{equation*}
     \end{itemize}
     \begin{itemize}
       \item Path equations:
       \begin{itemize}
-        \item $\forall \xi \in \Xi$:
+        \item $\forall \xi \in \Theta$:
         \begin{equation*}
           g(h_\xi(\tau)) = g(\xi) + \imath \tau
         \end{equation*}
@@ -231,7 +236,7 @@
         \end{itemize}
       \item Stationary points:
         \begin{itemize}
-          \item choose two $h_{x^{*}_j,+}$, $h_{x^{*}_j,-}$
+          \item choose two $h_{x^{*}_j,+}$ and $h_{x^{*}_j,-}$
           \item paths lead to the same \emph{valley}
         \end{itemize}
         % TODO: Go into more details?
@@ -246,7 +251,7 @@
 \end{frame}
 
 
-\begin{frame}{Numerical Steepest Descent}{Assemble the parts}
+\begin{frame}{Numerical Steepest Descent}{Assemble the Parts}
   \begin{itemize}
     \item Perform transformations $x \mapsto h_{\xi}(\tau)$
     \begin{equation*}
@@ -272,7 +277,7 @@
 
 \begin{frame}{Numerical Steepest Descent}{Quadrature}
   \begin{itemize}
-    \item New problem compute:
+    \item New problem to compute:
     \begin{equation*}
       J[\xi] :=
       e^{\imath \omega g(\xi)}
@@ -282,24 +287,24 @@
         e^{-\omega \tau} \,
       \mathrm{d}\tau
     \end{equation*}
-    \item (Generalized) Gauss-Laguerre quadrature $\{\gamma_i, \omega_i\}_i$
+    \item (Generalized) Gauss-Laguerre quadrature $\{\gamma_k, w_k\}_{k=1}^K$
     \begin{equation*}
     J[\xi] \approx
     \frac{e^{\imath \omega g(\xi)}}{\omega}
     \sum_{k=1}^K
-      f\left(h_{\xi}\left(\frac{\gamma_i}{\omega}\right)\right)
-      h_{\xi}^{\prime}\left(\frac{\gamma_i}{\omega}\right)
-      w_i
+      f\left(h_{\xi}\left(\frac{\gamma_k}{\omega}\right)\right)
+      h_{\xi}^{\prime}\left(\frac{\gamma_k}{\omega}\right)
+      w_k
     \end{equation*}
     %\item Number of integrals can grow exponentially
     \item Integrals (weakly) singular
-    \item Important improvements possible
+    \item There can be many paths
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Numerical Steepest Descent}{Main decomposition theorem}
-  \begin{theorem}
+\begin{frame}{Numerical Steepest Descent}{Main Decomposition Theorem}
+  \begin{theorem}[Huybrechs and Vandewalle, 2006]
     Assume that the functions $f$ and $g$ are analytic in a simply connected and
     sufficiently (infinitely) large complex region $D$ containing the interval $[a, b]$.
     Assume further that the equation $g(x) = 0$ has only one solution $x^{*}$ in $D$ and
@@ -315,8 +320,8 @@
 \end{frame}
 
 
-\begin{frame}{Numerical Steepest Descent}{Main decomposition theorem, continued}
-  \begin{theorem}
+\begin{frame}{Numerical Steepest Descent}{Main Decomposition Theorem, continued}
+  \begin{theorem}[Huybrechs and Vandewalle, 2006]
     there exist functions $F_j(\xi), j = 1, 2$ of the form:
     \begin{equation*}
       F_j(\xi) \assign \int_{\Gamma_{\xi,j}} f(z) e^{\imath \omega g(z)} \di{z}
@@ -337,13 +342,13 @@
   This was for closed intervals. What about:
   \vspace{0.2cm}
   \begin{itemize}
-    \item semi-open intervals $[a, \infty)$?
+    \item semi-infinite intervals $[a, \infty)$?
     \begin{itemize}
-      \item works the same (no proofs yet)
+      \item works the same (no correct proof yet)
     \end{itemize}
     \item infinite intervals $(-\infty, \infty)$?
     \begin{itemize}
-      \item decompose into two semi-open intervals
+      \item decompose into two semi-infinite intervals
     \end{itemize}
     \item multiple stationary points?
     \begin{itemize}
@@ -453,21 +458,23 @@
   \scriptsize
   \bibliographystyle{nsd}{abbrv}
   \bibliography{nsd}{nsd}{}
+  \vspace{0.4cm}
+  \footnoterule
+  {\tiny The proof given by Majidian is wrong!}
 \end{frame}
 
 
-\section{Semicalssical / Hagedorn Wavepackets}
+\section{Hagedorn Wavepackets}
 
 
-\begin{frame}{Semiclassical Wavepackets}
-  % TODO: Really include this frame?
+\begin{frame}{Hagedorn Wavepackets}
   \begin{itemize}
     \item Time-dependent Schr\"odinger Equation (TDSE)
     \begin{equation*}
       \imath \varepsilon^2 \pdiff{\Psi}{t} = \left(-\frac{\varepsilon^4}{2}\Delta_x + V(\vec{x})\right) \Psi
     \end{equation*}
-    \vspace{0.5cm}
-    \item semiclassical scaling: $\varepsilon^2 = \hbar$
+    \vspace{0.3cm}
+    \item semiclassical scaling: $\varepsilon^2$ instead of $\hbar$
     \begin{itemize}
       \item $0.001 < \varepsilon < 0.1$
     \end{itemize}
@@ -475,7 +482,7 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Definition}
+\begin{frame}{Hagedorn Wavepackets}{Definition}
   \begin{itemize}
     \item Diagonalize quadratic Hamiltonian
       \begin{equation*}
@@ -489,7 +496,7 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Explicit representation in 1D}
+\begin{frame}{Hagedorn Wavepackets}{Explicit Representation in 1D}
   \begin{itemize}
     \item Explicit expression
     {\scriptsize
@@ -510,7 +517,7 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Examples in 1D}
+\begin{frame}{Hagedorn Wavepackets}{Examples in 1D}
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{./fig/wavepackets.pdf}
@@ -518,7 +525,7 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Explicit representation, higher dimensions}
+\begin{frame}{Hagedorn Wavepackets}{Explicit Representation in Higher Dimensions}
   \begin{itemize}
     \item Groundstate
     {\scriptsize
@@ -531,23 +538,26 @@
       + \frac{\imath}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
       \right)
     \end{align*}}
-    \item Multi-index $\vec{k} \in \mathbb{N}_0^D$
-    \item Parameters $\vec{q}, \vec{p} \in \mathbb{R}^D$ and $\mat{Q}, \mat{P} \in \mathbb{C}^{D \times D}$
+    \item Parameters $\vec{q}(t), \vec{p}(t) \in \mathbb{R}^D$ and $\mat{Q}(t), \mat{P}(t) \in \mathbb{C}^{D \times D}$
     \begin{itemize}
       \item Parameter set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$
     \end{itemize}
-    \item Compatibility
-    \begin{align*}
-      \mat{Q}\H \mat{P} - \mat{P}\H \mat{Q} = 2\imath \id
-      \qquad
-      \mat{P}\T \mat{Q} - \mat{Q}\T \mat{P} = \mat{0}
-    \end{align*}
-    \item $\mathcal{R}, \mathcal{L}$ much more complicated
+%     \item Compatibility
+%     \begin{align*}
+%       \mat{Q}\H \mat{P} - \mat{P}\H \mat{Q} = 2\imath \id
+%       \qquad
+%       \mat{P}\T \mat{Q} - \mat{Q}\T \mat{P} = \mat{0}
+%     \end{align*}
+%    \item $\mathcal{R}, \mathcal{L}$ much more complicated
+    \vspace{0.2cm}
+    \item Multi-index $\vec{k} \in \mathbb{N}_0^D$
+    \item Higher states by raising and lowering operators $\mathcal{R}$, $\mathcal{L}$
+    \item Orthonormal Basis of $L^2(\mathbb{R}^D)$
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Example in 2D}
+\begin{frame}{Hagedorn Wavepackets}{Example in 2D}
   \vspace{-0.4cm}
   \scriptsize
   \begin{equation*}
@@ -588,25 +598,27 @@
 \subsection{Overlap integrals}
 
 
-\begin{frame}{Semiclassical Wavepackets}{}
+\begin{frame}{Hagedorn Wavepackets}{}
   \begin{itemize}
     \item Overlap integrals
     \begin{equation*}
       I
-      = \Braket{\phi_k[\Pi] | \phi_l[\Pi^\prime]}
-      \assign \idotsint_{\mathbb{R}^D} \conj{\phi_k[\Pi](\vec{x})} \, \phi_l[\Pi](\vec{x}) \di{\vec{x}}
+      = \Braket{\phi_\vec{k}[\Pi] | \phi_\vec{l}[\Pi^\prime]}
+      \assign \idotsint_{\mathbb{R}^D} \conj{\phi_\vec{k}[\Pi](\vec{x})}
+                                          \, \phi_\vec{l}[\Pi^\prime](\vec{x}) \di{\vec{x}}
     \end{equation*}
     \item Parameter sets: $\Pi$ and $\Pi^\prime$
     \item Highly oscillatory
     \begin{itemize}
-      \item similar position: $\vec{q_k} \approx \vec{q_l}$
-      \item opposite momentum: $\vec{p_k} \approx -\vec{p_l}$
+      \item similar position: $\vec{q} \approx \vec{q}^\prime$
+      \item opposite momentum: $\vec{p} \approx -\vec{p}^\prime$
+      \item small $\varepsilon$
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Two wavepackets}
+\begin{frame}{Hagedorn Wavepackets}{Two Wavepackets}
   \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{./fig/overlap_wavepackets.pdf}
@@ -614,7 +626,7 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{The integrand}
+\begin{frame}{Hagedorn Wavepackets}{The Integrand}
   \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{./fig/overlap_integrand.pdf}
@@ -622,7 +634,7 @@
 \end{frame}
 
 
-\begin{frame}{Semiclassical Wavepackets}{Literature}
+\begin{frame}{Hagedorn Wavepackets}{Literature}
   \nocite{hawp}{B_master_thesis}
   \nocite{hawp}{H_ladder_operators}
   \scriptsize
@@ -638,7 +650,7 @@
   \begin{itemize}
     \item Wavepackets of the form:
     \begin{equation*}
-      \phi(\vec{x}) \sim p\left(\vec{x}\right)\exp\left(\frac{i}{\varepsilon^2} g\left(\vec{x}\right)\right)
+      \phi(\vec{x}) \sim p\left(\vec{x}\right)\exp\left(\frac{\imath}{\varepsilon^2} g\left(\vec{x}\right)\right)
     \end{equation*}
     \item Oscillator term:
     \begin{equation*}
@@ -660,7 +672,7 @@
       \dotp{\phi_k}{\phi_l} =
       \int_{-\infty}^{\infty}
         \conj{p_k(\vec{x})} p_l(\vec{x})
-        \exp\left(\frac{i}{\varepsilon^2}\left(-\conj{g_k(\vec{x})} + g_l(\vec{x})\right)\right)
+        \exp\left(\frac{\imath}{\varepsilon^2}\left(-\conj{g_k(\vec{x})} + g_l(\vec{x})\right)\right)
       \mathrm{d}\vec{x}
     \end{equation*}
     \item Combine oscillators $-\conj{g_k(\vec{x})} + g_l(\vec{x})$ into $g(\vec{x})$
@@ -681,8 +693,9 @@
     \item General quadratic form
     \item Properties of $A$
     \begin{itemize}
-      \item $\mat{A}$ not Hermitian
+      \item $\mat{A}$ \emph{not} Hermitian
       \item $\Re \mat{A}$ and $\Im \mat{A}$ symmetric
+      \\[0.1cm]$\Rightarrow$ Need new, special techniques
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -691,6 +704,7 @@
 \begin{frame}{Steepest Descent for Wavepackets}{Transformation of the Oscillator}
   \begin{itemize}
     \item Goal: Decoupling the paths
+    \vspace{0.3cm}
     \item Remove linear Term $\vec{b}\T \vec{x}$
     \begin{itemize}
       \item Multivariate completion of the square
@@ -698,14 +712,14 @@
     \end{itemize}
     \item Diagonalization of $\mat{A}$
     \begin{itemize}
-      \item Optimal, not possible with unitary matrices
+      \item Optimal, \emph{not} possible via unitary matrices ($\mat{A}$ not Hermitian)
     \end{itemize}
     \item Upper-triangular form
     \begin{itemize}
       \item Schur Decomposition: $\mat{A} = \mat{U}\H \mat{T} \mat{U}$
-      \item $g(x^{\prime\prime}) = x^{\prime\prime}\H \mat{T} x^{\prime\prime} + c\prime$
+      \item $g(x^{\prime\prime}) = x^{\prime\prime}\H \mat{T} x^{\prime\prime} + c^{\prime}$
     \end{itemize}
-    \item Transformations have unit Jacobi determinants
+%     \item Transformations have unit Jacobi determinants
   \end{itemize}
 \end{frame}
 
@@ -768,7 +782,7 @@
 \end{frame}
 
 
-\begin{frame}{Steepest Descent for Wavepackets}{Nested Structure of oscillatory Integrals}
+\begin{frame}{Steepest Descent for Wavepackets}{Nested Structure of Oscillatory Integrals}
   \begin{itemize}
     \item Start with inner-most integrand
     \begin{equation*}
@@ -806,13 +820,13 @@
         C
         %\exp\left(i\omega k_i\right)
         \int_0^\infty
-          i_i\left(h_i^{\pm}\right)
+          i_i\left(h_i^{\pm}\left(p_i\right)\right)
           \dot{h}_i^{\pm}\left(p_i\right)
           \exp\left(- \omega p_i\right)
         \mathrm{d}p_i
     \end{equation*}
     \item Singular for $p_i \rightarrow 0$
-    \item Substitute $q_i = \sqrt{p_i}$
+    \item Substitute $q_i \assign \sqrt{p_i}$
     \begin{equation*}
         I_i^{\pm}[h_i^{\pm}] =
         C
@@ -827,7 +841,7 @@
 \end{frame}
 
 
-\begin{frame}{Steepest Descent for Wavepackets}{Gluing paths}
+\begin{frame}{Steepest Descent for Wavepackets}{Gluing Paths}
   \begin{itemize}
     \item Two times half of a Gaussian integral
     \item Glue paths:
@@ -837,13 +851,14 @@
       -
       I_i^{-}[h_i^{-}]
     \end{equation*}
-    \item Transform $h_i^{-}$ into $h_i^{+}$
+    \item Transform $h_i^{-}$ into $h_i^{+}$ by $\tau_i \assign -q_i$
     \item Full Gaussian Integral
     \begin{equation*}
       I_i\left(x_{i+1},\ldots,x_N\right) =
       C
       \int_{-\infty}^\infty
-        i_i\left(h_i\left(\tau_i\right)\right) \,
+        i_i\left(h_i\left(\tau_i\right)\right)
+        \ldots
         \exp\left(- \omega \tau_i^2\right)
       \mathrm{d}\tau_i
     \end{equation*}
@@ -864,6 +879,7 @@
     \item Apply Gauss-Hermite Quadrature $Q \approx I$
     \begin{equation*}
       Q =
+      \prod_{j=1}^N
       C_j
       \sum_{k_1}^n \cdots \sum_{k_N}^n
       f\left(h_1\left(x_{k_1}\right),
@@ -891,8 +907,10 @@
   \begin{itemize}
   \item Problem:
     \begin{itemize}
-    \item full tensorproduct quadrature
-    \item less nodes per direction
+    \item full tensor-product quadrature
+    \begin{itemize}
+      \item with less nodes per direction
+    \end{itemize}
     \end{itemize}
   \end{itemize}
   \vspace{0.5cm}
@@ -900,13 +918,15 @@
   \item Solution:
     \begin{itemize}
     \item Sparse grid schemes
-    \item Smolyak rule
+    \begin{itemize}
+      \item Smolyak rule
+    \end{itemize}
     \end{itemize}
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Sparse Quadrature Schemes}{Smolyak construction issues}
+\begin{frame}{Sparse Quadrature Schemes}{Smolyak Construction}
   \begin{itemize}
     \item Smolyak construction:
     \begin{equation*}
@@ -915,8 +935,7 @@
                                       \|\vec{l}\|_1 = D+q}}
                         \left(Q_{l_1} \otimes \cdots \otimes Q_{l_D}\right)
     \end{equation*}
-    \vspace{0.2cm}
-    \item Sum of (smaller) tensor products
+    \item Sum of many (smaller) tensor products
   \end{itemize}
 \end{frame}
 
@@ -930,18 +949,20 @@
 \end{frame}
 
 
-\begin{frame}{Sparse Quadrature Schemes}{Smolyak construction issues}
+\begin{frame}{Sparse Quadrature Schemes}{Smolyak Construction Issues}
   \begin{itemize}
     \item Problem:
     \begin{itemize}
       \item Gauss-Hermite points not nested
-      \item more points than full tensorproduct!
+      \begin{itemize}
+        \item more points than full tensorproduct!
+      \end{itemize}
     \end{itemize}
     \vspace{0.5cm}
     \item Solution:
     \begin{itemize}
       \item Search rules with nested nodes
-      \item For interval $(-\infty, \infty)$ with weights $\exp(-x^2)$
+      \item For interval $(-\infty, \infty)$ with weight $\exp(-x^2)$
       \begin{itemize}
         \item Iterative \emph{Kronrod} extensions
         \item \emph{Genz-Keister} rules
@@ -949,14 +970,6 @@
     \end{itemize}
   \end{itemize}
 \end{frame}
-
-
-% \begin{frame}{Sparse Quadrature Schemes}{Kronrod Extensions}
-%   \begin{itemize}
-%     \item Goal: Find nested quadrature rules
-%     \item How?
-%   \end{itemize}
-% \end{frame}
 
 
 \begin{frame}{Sparse Quadrature Schemes}{Genz-Keister Nodes}
@@ -978,11 +991,11 @@
 
 \begin{frame}{Final Solution for computing overlap Integrals}
   \begin{itemize}
-    \item Chain of \emph{transformators}
+    \item Chain of Transformators
     \begin{itemize}
-      \item Steepest Descent: remove oscillations
-      \item Sparse Grid: lessen curse of dimensionality
-      \item Genz-Keister rules: nodes are nested
+      \item Steepest Descent: \emph{remove oscillations}
+      \item Sparse Grid: \emph{lessen curse of dimensionality}
+      \item Genz-Keister rules: \emph{make nodes nested}
     \end{itemize}
   \end{itemize}
   \begin{figure}
@@ -1010,8 +1023,10 @@
 \begin{frame}{Numerical Experiments}{Convergence}
   \begin{figure}
     \centering
-    \includegraphics[width=0.7\linewidth]{./fig/conv_momentum.pdf}
+    \includegraphics[width=0.65\linewidth]{./fig/conv_momentum.pdf}
   \end{figure}
+  \scriptsize
+  Gauss-Hermite is wrong, Steepest Descent Transformation is perfect
 \end{frame}
 
 
@@ -1020,6 +1035,8 @@
     \centering
     \includegraphics[width=0.7\linewidth]{./fig/conv_eps.pdf}
   \end{figure}
+  \scriptsize
+  Gauss-Hermite is wrong, Steepest Descent Transformation is perfect
 \end{frame}
 
 
@@ -1044,18 +1061,18 @@
 
 \begin{frame}{Future Work and Open Topics}
   \begin{itemize}
-    \item Proof the steepest descent technique for unbounded intervals
+    \item Proof steepest descent technique for (semi-)infinite intervals
     \item Other integrals like $\braket{\phi|V|\phi}$
     \begin{itemize}
-      \item Potentials with exponential parts
+      \item Potentials with non-polynomial or exponential parts
     \end{itemize}
     \item Non-classical Smolyak constructions
     \begin{itemize}
-      \item Hyperbolic Cut sections
+      \item Hyperbolic cut sections
       \item Adaptive versions
     \end{itemize}
-    \item Proof for Kronrod Extensions
-    \item Higher-order Genz-Keister rules
+    \item Proof (non-)existence of higher Kronrod Extensions
+    \item Implement much larger Genz-Keister rules
   \end{itemize}
 \end{frame}
 
@@ -1063,7 +1080,7 @@
 \section{End}
 
 
-\begin{frame}{Thanks for your attention}
+\begin{frame}{Thanks for your Attention}
   \begin{center}
     {\Huge{Questions?}}
   \end{center}
