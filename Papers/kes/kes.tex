@@ -194,9 +194,10 @@ A limitation of our current implementation (see section \ref{sec:implementation_
 is that we can work only with distributions $\omega(t)$ that have rational moments.
 However, in case of the three most important distributions used as weight functions for
 defining the Legendre, Laguerre and Hermite orthogonal polynomials this is a
-well known truth.
+well known truth and summarized in table \eqref{eq:orthogonal_polynomials}.
 
-\begin{center}
+\begin{table}[h!]
+  \centering
   \begin{tabular}{|l|l|l|l|}
     \hline
     Distribution & $\omega(t)$  & $t \in \Omega$      & Polynomial $P_n(t)$ \\
@@ -204,9 +205,13 @@ well known truth.
     Uniform      & $1$          & $[-1, 1]$           & Legendre \\
     Exponential  & $\exp(-t)$   & $[0, \infty]$       & Laguerre \\
     Normal       & $\exp(-t^2)$ & $[-\infty, \infty]$ & Hermite \\
+    Normal       & $\frac{\exp\left(-\frac{t^2}{2}\right)}{\sqrt{2\pi}}$
+                 & $[-\infty, \infty]$ & Hermite \\
     \hline
   \end{tabular}
-\end{center}
+  \caption{\label{eq:orthogonal_polynomials}
+  Domain and weight function of classical orthogonal polynomials.}
+\end{table}
 
 By explicit computation one can easily show that the following closed
 form expressions for the moments hold:
@@ -216,16 +221,21 @@ form expressions for the moments hold:
   \begin{cases}
     \frac{2}{n + 1} & \quad n \quad \mathrm{even} \\
     0               & \quad n \quad \mathrm{odd}
-  \end{cases} \\
-  \int_{0}^{\infty} t^n \exp(-t) \di{t} & = \Gamma\left(n + 1\right) \\
+  \end{cases} \label{eq:moments_legendre} \\
+  \int_{0}^{\infty} t^n \exp(-t) \di{t} & = \Gamma\left(n + 1\right) \label{eq:moments_laguerre} \\
+  \int_{-\infty}^{\infty} t^{n} \exp\left(-\frac{t^{2}}{2}\right) \di{t} & =
+  \begin{cases}
+    2^{\frac{n}{2}} \sqrt{2} \,\Gamma\left(\frac{n+1}{2}\right) & \quad n \quad \mathrm{even} \\
+    0                                               & \quad n \quad \mathrm{odd}
+  \end{cases} \label{eq:moments_hermite_pro} \\
   \int_{-\infty}^{\infty} t^n \exp(-t^2) \di{t} & =
   \begin{cases}
     \Gamma\left(\frac{n + 1}{2}\right) & \quad n \quad \mathrm{even} \\
     0                                  & \quad n \quad \mathrm{odd}
-  \end{cases}
+  \end{cases} \label{eq:moments_hermite_phy} \\
 \end{align}
 
-In the last case of the Hermite polynomial we find that:
+In the last case of the Hermite polynomial we find that for even $n$:
 
 \begin{equation}
   \Gamma\left(\frac{n + 1}{2}\right) =
@@ -565,6 +575,439 @@ Smolyak construction.
 \marginpar{
 cite smolyak, complexity bound in nesting
 }
+
+
+
+\section{Genz-Keister Constructions}
+
+
+Genz found an explicit construction by which
+special quadrature rules for an arbitrary number
+of dimensions can be built. The resulting rules are
+called \emph{fully-symmetric}.
+
+In this section we review this construction of Genz and Keister
+as given in \cite{genz, genz_keister}. We follow mostly their
+notation but focus on the computational aspects.
+
+
+\subsection{The construction}
+
+The quadrature rule $Q^{D,K}$ of \emph{level} $K \geq 0$ and
+for use in $D$ dimensions is defined as:
+\begin{equation} \label{eq:gk_basic_formula}
+  \int_\Omega f(\vec{x}) \di{x} =:
+  I[f] \approx Q^{D,K}[f]
+       := \sum_{\mathbf{p} \in \mathcal{P}}
+            f\left(\Gamma_{\mathbf{p}}\right)
+            \omega_{\mathbf{p}}
+\end{equation}
+where $\mathcal{P}$ is the set of all integer partitions as defined below.
+The node set $\Gamma$ and weights $\omega$ are indexed by partitions
+$\mathbf{p} \in \mathcal{P}$.
+Define the set $\mathcal{P}$ of all admissible integer partitions
+$\mathbf{p} := (\mathbf{p}_{1}, \ldots, \mathbf{p}_{D}) \in \mathbb{N}_{0}^{D}$
+having $D$ parts (some of which can be zero) and $|\mathbf{p}| \leq K$
+with $K \geq 0$ as:
+\begin{equation} \label{eq:partition_set_def}
+  \mathcal{P} :=
+  \left\{
+    \mathbf{p}
+    \middle| K \geq \mathbf{p}_{1} \geq \cdots \geq \mathbf{p}_{D} \geq 0
+    \wedge
+    |\mathbf{p}| \leq K
+  \right\}
+  \,.
+\end{equation}
+An algorithm for computing the set $\mathcal{P}$
+is shown in \eqref{alg:ca_enumerate_integer_partitions}.
+Before we look deeper into the details of this construction,
+we need to introduce the set $\Lambda$ of so called \emph{generators}:
+\begin{equation}
+  \Lambda := \{\lambda_{0}, \lambda_{1}, \ldots, \lambda_{J}\}
+\end{equation}
+where we require that $\lambda_{0} \equiv 0$ and all $\lambda_{i}$ be
+pair-wise distinct. There are obviously $J+1$ real non-negative generators.
+A single quadrature point $\gamma \in \mathbb{R}^D$ is then an ordered
+multiset of size $D$ of elements from $\Lambda$. Note that $\gamma$ is not
+a subset because elements are allowed to appear multiple times. The
+specific items are selected by an integer vector $\mathbf{k} \in \mathbb{N}_0^D$,
+explicitly:
+\begin{equation}
+  \gamma_\mathbf{k} := \Lambda_\mathbf{k} = \left(\lambda_{k_1}, \ldots, \lambda_{k_D}\right) \,.
+\end{equation}
+We define $\delta$ as the number of components of $\gamma_\mathbf{k}$ that are 0.
+Because we require that only $\lambda_0$ is zero, this is equivalent to the number
+of zeros in $\mathbf{k}$.
+Next we define the set $\overline{\gamma_\mathbf{k}}$ containing all
+possible sign flips:
+\begin{equation}
+  \overline{\gamma_\mathbf{k}} \assign
+  \sigma \gamma_\mathbf{k} =
+  \{
+  \left(\sigma_1 \gamma_1, \ldots, \sigma_D \lambda_D\right)
+  \}_{\sigma \in \{-1,0,1\}^D}
+\end{equation}
+where $\sigma_d \in \{-1, 1\}$ or $\sigma_d = 0$ if and only if $\gamma_d = 0$.
+Clearly, this set is of size $2^{D-\delta}$.
+At this point we can go back and understand the notation of equation \eqref{eq:gk_basic_formula}
+where $\Gamma_\mathbf{p}$ stands for a whole set of nodes given by:
+\begin{equation}
+  \Gamma_\mathbf{p} \assign
+  \bigcup_{\mathbf{q} \in \mathcal{S}_\mathbf{p}} \overline{\gamma_\mathbf{q}}
+\end{equation}
+and $\mathcal{S}_\mathbf{p}$ is the set of all permutations of the
+elements of $\mathbf{p} \in \mathcal{P}$. An algorithm for the enumeration
+of all permutations is given in \eqref{alg:ca_enumerate_permutations}.
+Finally we find:
+\begin{equation}
+  f\left(\Gamma_\mathbf{p}\right) \assign
+  \sum_{\mathbf{q} \in \mathcal{S}_p}
+  \sum_{\gamma \in \overline{\gamma_\mathbf{q}}}
+  f\left(\gamma_1, \ldots, \gamma_D\right) \,.
+\end{equation}
+
+What remains is the explanation of $\omega_\mathbf{p}$. The formula looks
+quite easy but the efficient implementation needs some care.
+For every admissible partition $\mathbf{p}$ the corresponding weight
+can be computed by:
+\begin{equation} \label{eq:gk_weight_def}
+  \omega_{\mathbf{p}} := 2^{-(D-\delta)}
+                         \sum_{|\mathbf{k}| \leq K - |\mathbf{p}|}
+                         \prod_{d=1}^{D}
+                           \frac{a_{\mathbf{k}_{d}+\mathbf{p}_{d}}}{P(\mathbf{k}_{d},\mathbf{p}_{d})}
+\end{equation}
+where we define the denominator:
+\begin{equation}
+  P(\mathbf{k}_{d},\mathbf{p}_{d}) :=
+  \prod_{\substack{i=0 \\
+                   i\neq\mathbf{p}_{d}}}
+       ^{\mathbf{k}_{d}+\mathbf{p}_{d}}
+    \left( \lambda_{\mathbf{p}_{d}}^{2}-\lambda_{i}^{2} \right)
+\end{equation}
+and the multi-index $\mathbf{k} \in \mathbb{N}_{0}^{D}$. Algorithm
+\eqref{alg:ca_enumerate_lattice_points} implements a procedure for enumeration
+of all relevant multi-indices.
+This formula presents us several parts we need to compute. Some of these parts
+can even be tabulated once for a maximal value and independent of the dimension $D$.
+Let us start with the numerator. There we need the value $a_i$ which is defined
+as follows:
+\begin{equation}
+  a_{i} := \int_\Omega p_{i}(x) w(x) \di{x}, \quad i = 0, \ldots, J+1
+\end{equation}
+and the domain $\Omega$ and the weight function $w(x)$ are chosen
+appropriately (see next section). The polynomials $p_{i}(x)$ are
+defined as:
+\begin{align}
+  p_{0}(x) & := 1 \\
+  p_{i}(x) & := \prod_{j=0}^{i-1} \left(x^{2} - \lambda_{j}^{2}\right)
+\end{align}
+where the empty product equals 1. It holds that $\deg p_i = 2i$.
+Since all the real numbers $\lambda_{j}$ are known we can indeed
+expand the product and write $p_i$ as $\sum_{j=0}^{2i} c_j x^j$
+for some coefficients $c_j$ and compute this integral term wise
+by using linearity:
+\begin{equation}
+  a_i = \sum_{j=0}^{2i} c_j \int_\Omega x^j w(x) \di{x} = \sum_{j=0}^{2i} c_j M_j
+\end{equation}
+where $M_j$ is the $j$-th moment and chosen according to the table \eqref{eq:orthogonal_polynomials}.
+For the Legendre and the Hermite case, the explicit formulae are
+\eqref{eq:moments_legendre} and \eqref{eq:moments_hermite_pro}.
+Optionally we can replace very small values by zero. As we will see later
+it is important to be able to decide whether $a_{i} = 0$. Because we
+compute with real numbers (either floating point numbers or real ball arithmetic)
+we can however not solve this problem exactly.
+
+\begin{algorithm}[h!]
+  \caption{Compute table $\vec{A}$ of $a_{i}$ factors}
+  \label{alg:gk_compute_weight_factors}
+  \begin{algorithmic}
+    \Procedure{ComputeAValues}{$\Lambda$, $M_{j}$}
+      \State $\vec{A} := \vec{0} \in \mathbb{R}^{J+1}$
+      \State $p := 1$
+      \For{$i=0, \ldots, J+1$}
+        \State $a := 0$
+        \For{$d = 0, \ldots, \deg p$}
+          \State $a := a + \textsc{Coefficient}(p, d) \, M_d$
+        \EndFor
+        \State $\vec{A}_i := a$
+        \State $p := p \left(x^2 - \lambda_i^2\right)$
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+Computing the denominator of \eqref{eq:gk_weight_def} is straight forward.
+Since we required the $\lambda_i$ to be pairwise distinct this value never
+becomes zero.
+
+We notice that the product in formula \eqref{eq:gk_weight_def} only depends on
+$\mathbf{p}_{d} =: \xi$ and the sum $\mathbf{p}_{d}+\mathbf{k}_{d} =: \eta$.
+Therefore we can precompute a table of size $J+1 \times J+1$ indexed by $(\xi, \eta)$
+whose entries are given by:
+\begin{equation}
+  \mat{T}_{\xi, \eta} := \frac{a_{\mathbf{k}_{d}+\mathbf{p}_{d}}}{P(\mathbf{k}_{d},\mathbf{p}_{d})} \,.
+\end{equation}
+In the example below the top left corner is shown and we only need the
+upper right triangular part:
+
+\begin{center}
+\begin{tabular}{|c|cccc|}
+  \hline
+  {}    & $\eta=0$ & $\eta=1$ & $\eta=2$ & $\eta=3$ \\
+  \hline
+  $\xi=0$ & $\frac{a_0}{1}$
+          & $\frac{a_1}{(\lambda_0^2-\lambda_1^2)}$
+          & $\frac{a_2}{(\lambda_0^2-\lambda_1^2)(\lambda_0^2-\lambda_2^2)}$
+          & $\frac{a_3}{(\lambda_0^2-\lambda_1^2)(\lambda_0^2-\lambda_2^2)(\lambda_0^2-\lambda_3^2)}$ \\
+  $\xi=1$ & 0
+          & $\frac{a_1}{(\lambda_1^2-\lambda_0^2)}$
+          & $\frac{a_2}{(\lambda_1^2-\lambda_0^2)(\lambda_1^2-\lambda_2^2)}$
+          & $\frac{a_3}{(\lambda_1^2-\lambda_0^2)(\lambda_1^2-\lambda_2^2)(\lambda_1^2-\lambda_3^2)}$ \\
+  $\xi=2$ & 0
+          & 0
+          & $\frac{a_2}{(\lambda_2^2-\lambda_0^2)(\lambda_2^2-\lambda_1^2)}$
+          & $\frac{a_3}{(\lambda_2^2-\lambda_0^2)(\lambda_2^2-\lambda_1^2)(\lambda_2^2-\lambda_3^2)}$ \\
+  $\xi=2$ & 0
+          & 0
+          & 0
+          & $\frac{a_3}{(\lambda_3^2-\lambda_0^2)(\lambda_3^2-\lambda_1^2)(\lambda_3^2-\lambda_2^2)}$ \\
+  \hline
+\end{tabular}
+\end{center}
+
+Given the list $\Lambda$ of generators and all the values $a_{i}$ we can compute the table $\mat{T}$
+efficiently by algorithm \eqref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
+of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table look-up steps.
+
+\begin{algorithm}[h!]
+  \caption{Compute table $\mat{T}_{\xi,\eta}$ of weight factors}
+  \label{alg:gk_compute_weight_factors}
+  \begin{algorithmic}
+    \Procedure{WeightFactors}{$\Lambda$, $\{a_{0},\ldots,a_{n+1}\}$}
+      \State $n := |\Lambda|$
+      \State $\mat{T} \in \mathbb{R}^{n\times n}$
+      \Comment Compute $T$ row by row
+      \For{$\xi = 0, \ldots, n-1$}
+        \State $t := 1$
+        \For{$\eta = 0, \ldots, n-1$}
+          \If{$\xi \neq \eta$}
+            \State $t := t \left(\lambda_{\xi}^{2} - \lambda_{\eta}^{2}\right)$
+          \EndIf
+          \If{$\eta \geq \xi$}
+            \State $\mat{T}_{\xi,\eta} := \frac{a_{\eta}}{t}$
+          \EndIf
+        \EndFor
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+% Z sequence
+% compute_z_sequence(const ai_t& A) {
+%     /* Precompute the Z-sequence
+%      *
+%      * A: Table with precomputed a_i values
+%      */
+%     int n = arb_mat_ncols(&A);
+%
+%     std::vector<int> Z(0);
+%
+%     int v = 0;
+%     for(int i=0; i < n; i++) {
+%         if(v == 0) {
+%             while( arb_is_zero(arb_mat_entry(&A, 0, i+v)) ) {
+%                 v++;
+%             }
+%         } else {
+%             v--;
+%         }
+%         Z.push_back(v);
+%     }
+%
+%     /* // TODO Based on formula */
+%     /* std::vector<int> Z = {0,0, */
+%     /*                       1,0,0, */
+%     /*                       3,2,1,0,0, */
+%     /*                       5,4,3,2,1,0,0,0, */
+%     /*                       8,7,6,5,4,3,2,1,0}; */
+%
+%     return Z;
+
+
+\subsubsection{Combinatorial Algorithms}
+
+
+In this section we summarize the combinatorial algorithms that
+can be used during the Genz-Keister construction. In the programming
+language \texttt{python} they can be implemented very efficiently by
+the use of \texttt{yield} inside so called \emph{generator expressions}.
+
+The algorithm \eqref{alg:ca_enumerate_integer_partitions} can
+be used for enumeration of the set $\mathcal{P}$ defined in
+\eqref{eq:partition_set_def}. This works for any given value
+of $D \geq 1$ and maximal element size $K \geq 0$. The elements
+$\mathbf{p} \in \mathcal{P}$ will be generated by increasing value
+of $|\mathbf{p}|$ until the boundary $K$ is hit.
+
+\marginpar{Cite partition paper}
+
+\begin{algorithm}[h!]
+  \caption{Enumerate the set $\mathcal{P}$ of all integer partitions}
+  \label{alg:ca_enumerate_integer_partitions}
+  \begin{algorithmic}
+    \Procedure{EnumeratePartitions}{$D$, $K$}
+      \State $\mathcal{P} := \{\}$
+      \State $\mathbf{p} := \vec{0} \in \mathbb{N}_{0}^{D}$
+      \While{$|\mathbf{p}| \leq K$}
+        \State $\tau := \mathrm{false}$
+        \State $p := \mathbf{p}_{0}$
+        \For{i = 1, \ldots D-1}
+          \State $p := p + \mathbf{p}_i$
+          \If{$\mathbf{p}_{0} \leq \mathbf{p}_{i} + 1$}
+            \State $\mathbf{p}_{i} := 0$
+          \Else
+            \State $\mathbf{p}_{0} := p - i (\mathbf{p}_{i} + 1)$
+            \For{j = 1, \ldots, i}
+              \State $\mathbf{p}_{j} := \mathbf{p}_{i} + 1$
+            \EndFor
+            \State $\mathcal{P} := \mathcal{P} \cup \mathbf{p}$
+            \State $\tau := \mathrm{true}$
+            \State \bf{break}
+          \EndIf
+        \EndFor
+        \If{$\tau = \mathrm{false}$}
+          \State{$\mathbf{p}_{0} := p + 1$}
+          \If{$|\mathbf{p}| \leq K$}
+            \State $\mathcal{P} := \mathcal{P} \cup \mathbf{p}$
+          \EndIf
+        \EndIf
+      \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+An algorithm to enumerate the set $\mathcal{S}$ of all entry-wise
+permutations of a given vector $\mathbf{p} \in \mathbb{N}_{0}^{D}$
+is shown next in \eqref{alg:ca_enumerate_permutations}. This algorithm
+will generate the permutations in reverse lexicographic order,
+starting with $\mathbf{p}$.
+
+\begin{algorithm}[h!]
+  \caption{Enumerate the set $\mathcal{S}$ of all permutations
+    of the entries of $\mathbf{p} \in \mathbb{N}_{0}^{D}$}
+  \label{alg:ca_enumerate_permutations}
+  \begin{algorithmic}
+    \Procedure{Permutations}{$D$, $\mathbf{p}$}
+      \State $\mathcal{S} := \{\mathbf{p}\}$
+      \State $\tau := \mathrm{true}$
+      \While{$\tau = \mathrm{true}$}
+        \State $\tau := \mathrm{false}$
+        \For{$i = 1, \ldots, D-1$}
+          \State $p := \mathbf{p}_{i}$
+          \If{$\mathbf{p}_{i-1} > p$}
+            \State $I := i$
+            \If{$i > 1$}
+              \State $J := I$
+              \For{$j = 0, \ldots, \lfloor \frac{I}{2} \rfloor -1 $}
+                \State $q := \mathbf{p}_{j}$
+                \If{$q \leq p$}
+                  \State $I := I - 1$
+                \EndIf
+                \State $\mathbf{p}_{j} := \mathbf{p}_{i-j-1}$
+                \State $\mathbf{p}_{i-j-1} := q$
+                \If{$\mathbf{p}_{j} > p$}
+                  \State $J := j + 1$
+                \EndIf
+              \EndFor
+              \If{$\mathbf{p}_{I-1} \leq p$}
+                \State $I := J$
+              \EndIf
+            \EndIf
+            \State $\mathbf{p}_{i} := \mathbf{p}_{I-1}$
+            \State $\mathbf{p}_{I-1} := p$
+            \State $\mathcal{S} := \mathcal{S} \cup \mathbf{p}$
+            \State $\tau := \mathrm{true}$
+            \State \bf{break}
+          \EndIf
+        \EndFor
+      \EndWhile
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+In the definition of the weights in formula \eqref{eq:gk_weight_def}
+we need to iterate over the set $\mathcal{L} := \{\mathbf{k}_{i}\}_{i}$ of all
+lattice points $\mathbf{k} \in \mathbb{N}_{0}^{D}$ up to some maximal value of
+the $l_{1}$ norm. The algorithm \eqref{alg:ca_enumerate_lattice_points}
+shows an efficient method for the enumeration of all such points. It
+is well known that the cardinality of $\mathcal{L}$ is:
+\begin{equation}
+  |\mathcal{L}| = \left(\frac{K+1}{D}\right) \binom{D+K}{K+1} \,.
+\end{equation}
+For more details see for example \cite{serra-sagrista}.
+
+\begin{algorithm}[h!]
+  \caption{Enumerate lattice points in $\{\mathbf{k_{i}}\}_{i} =: \mathcal{L} \subset \mathbb{N}_{0}^{D}$
+    with $\|\mathbf{k_{i}}\|_{1} \leq N$}
+  \label{alg:ca_enumerate_lattice_points}
+  \begin{algorithmic}
+    \Procedure{EnumerateLatticePoints}{$D$, $N$}
+      \State $\mathcal{L} := \{\} $
+      \For{$n = 0, \ldots, N$}
+        \State $\mathbf{k} := \vec{0} \in \mathbb{N}_{0}^{D}$
+        \State $\mathbf{k}_{0} := n$
+        \State $\mathcal{L} := \mathcal{L} \cup \mathbf{k}$
+        \State $c := 1$
+        \While{$\mathbf{k}_{D-1} < n$}
+          \If{$c = D$}
+            \For{$i = c-1, \ldots, 1$}
+              \State $c := i$
+              \If{$\mathbf{k}_{i-1} \neq 0$}
+                \State \bf{break}
+              \EndIf
+            \EndFor
+            \State $\mathbf{k}_{c-1} := \mathbf{k}_{c-1} - 1$
+            \State $c :+ c +1$
+            \State $\mathbf{k}_{c-1} := n$
+            \For{$i = 0, \ldots, c-2$}
+              \State $\mathbf{k}_{c-1} := \mathbf{k}_{c-1} - \mathbf{k}_{i}$
+            \EndFor
+            \If{$c < D$}
+              \For{$i = c, \ldots, D-1$}
+                \State $\mathbf{k}_{i} := 0$
+              \EndFor
+            \EndIf
+            \State $\mathcal{L} := \mathcal{L} \cup \mathbf{k}$
+          \EndIf
+        \EndWhile
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Results}
+
+
+
+
+
+% Number of nodes
+
+% Gauss-Hermite compare
+
+% Heat-maps
+
+% Point distribution
+
+
+
+
+
+
+
 
 \section{Future work}
 
