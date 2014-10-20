@@ -835,6 +835,60 @@ of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table lo
 %
 %     return Z;
 
+At the end of the day we arrive at the following two algorithms
+\eqref{alg:gk_compute_nodes} and \eqref{alg:gk_compute_weights}
+for computing the node set $\Gamma_\mathbf{p}$ and weights $\omega_\mathbf{p}$
+for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
+
+\begin{algorithm}[h!]
+  \caption{Compute nodes $\Gamma_\mathbf{p}$ for given $\mathbf{p} \in \mathcal{P} \subset \mathbb{N}_0^D$}
+  \label{alg:gk_compute_nodes}
+  \begin{algorithmic}
+    \Procedure{Nodes}{$\mathbf{p}$, $\Lambda$}
+      \State $\Gamma_\mathbf{p} := \{\}$
+      \State $\delta := \textsc{NumberOfZeros}(\mathbf{p})$
+      \State $\mathcal{S} := \textsc{Permutations}(D, \mathbf{p})$
+      \For{$\mathbf{q} \in \mathcal{S}$}
+        \For{$v = 0, \ldots, 2^{(D - \delta)}-1$}
+          \State $u := 0$
+          \For{$d = 0, \ldots, D-1$}
+            \State $\gamma_d := \Lambda_{\mathbf{q}_d}$
+            \If{$\mathbf{q}_d \neq 0$}
+              \Comment Compute sign flip
+              \If{$\lfloor\frac{v}{2^u}\rfloor \mod 2 = 1$}
+                \State $\gamma_d := - \gamma_d$
+              \EndIf
+              \State $u := u + 1$
+            \EndIf
+          \EndFor
+          \State $\Gamma_\mathbf{p} := \Gamma_\mathbf{p} \cup \gamma$
+        \EndFor
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[h!]
+  \caption{Compute weight $\omega_\mathbf{p}$ for given $\mathbf{p} \in \mathcal{P} \subset \mathbb{N}_0^D$}
+  \label{alg:gk_compute_weights}
+  \begin{algorithmic}
+    \Procedure{Weights}{$\mathbf{p}$, $K$, $\mat{T}$}
+      \State $\delta := \textsc{NumberOfZeros}(\mathbf{p})$
+      \State $\omega_\mathbf{p} := 0$
+      \State $\mathcal{L} := \textsc{EnumerateLatticePoints}(D, K - |\mathbf{p}|)$
+      \For{$\mathbf{k} \in \mathcal{L}$}
+        \State $w := 1$
+        \For{$d = 0, \ldots, D-1$}
+          \State $w := w \, \mat{T}_{\mathbf{p}_d, \mathbf{k}_d + \mathbf{p}_d}$
+        \EndFor
+        \State $\omega_\mathbf{p} := \omega_\mathbf{p} + w$
+      \EndFor
+      \State $\omega_\mathbf{p} := 2^{-(D-\delta)} \omega_\mathbf{p}$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
 
 \subsubsection{Combinatorial Algorithms}
 
