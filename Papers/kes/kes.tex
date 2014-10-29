@@ -20,6 +20,7 @@
 
 \include{header_math}
 
+\newtheorem*{theorem*}{Theorem}
 
 \synctex=1
 \parindent 0pt
@@ -829,6 +830,12 @@ the list $\vec{A}$we can compute the table $\mat{T}$ efficiently by algorithm
 of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table
 look-up steps. However, precomputation of $\mat{T}$ is expensive for larger $J$
 but on the other hand needs to be done only once for each $\Lambda$ and $w(x)$.
+The numerator and denominator of the entries in $\mat{T}$ can become really large
+numbers (remember that most moments include gamma functions) while their quotient
+stays within reasonable range for floating point representation. For this reason
+one can compute $\mat{T}$ to high precision with specialized software packages
+like \texttt{flint} \cite{flint, Hart2010} and afterwards use these tabulated
+values during usual floating point computations.
 
 \begin{algorithm}[h!]
   \caption{Compute table $\mat{T}_{\xi,\eta}$ of weight factors}
@@ -852,31 +859,6 @@ but on the other hand needs to be done only once for each $\Lambda$ and $w(x)$.
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
-
-
-% Z sequence
-
-% compute_z_sequence(const ai_t& A) {
-%     /* Precompute the Z-sequence
-%      *
-%      * A: Table with precomputed a_i values
-%      */
-%     int n = arb_mat_ncols(&A);
-%
-%     std::vector<int> Z(0);
-%
-%     int v = 0;
-%     for(int i=0; i < n; i++) {
-%         if(v == 0) {
-%             while( arb_is_zero(arb_mat_entry(&A, 0, i+v)) ) {
-%                 v++;
-%             }
-%         } else {
-%             v--;
-%         }
-%         Z.push_back(v);
-%     }
-%     return Z;
 
 At the end of the day we arrive at the following two algorithms
 \eqref{alg:gk_compute_nodes} and \eqref{alg:gk_compute_weights}
@@ -911,7 +893,6 @@ for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
   \end{algorithmic}
 \end{algorithm}
 
-
 \begin{algorithm}[h!]
   \caption{Compute weight $\omega_\mathbf{p}$ for given $\mathbf{p} \in \mathcal{P} \subset \mathbb{N}_0^D$}
   \label{alg:gk_compute_weights}
@@ -932,6 +913,99 @@ for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
   \end{algorithmic}
 \end{algorithm}
 
+The last ingredient we need is the integer sequence $\vec{z} = (z_0, \ldots, z_J)$ defined as:
+\begin{equation}
+  \begin{split}
+    z_0 & = 0 \\
+    z_i & = l \quad \Leftrightarrow \quad a_{i+k} = 0 \quad \forall \, k = 0, \ldots, l-1 \,.
+  \end{split}
+\end{equation}
+
+The reasoning behind this sequence and the specific definition summarizes to
+the fact that we like to get many summands with $\omega_{\mathbf{p}} = 0$ in
+equation \eqref{eq:gk_basic_formula}. Looking at the definition of the weights
+in equation \eqref{eq:gk_weight_def} we have a sum-product structure. A single
+product becomes zero if the numerator $a_{\mathbf{k}_d+\mathbf{p}_d} = 0$. This
+then must happen for all summands in the sum. A simple algorithm is given in
+\eqref{alg:gk_compute_zsequence} below.
+
+\begin{algorithm}[h!]
+  \caption{Compute the $\vec{z}$ sequence}
+  \label{alg:gk_compute_zsequence}
+  \begin{algorithmic}
+    \Procedure{CompueZSequence}{$\vec{A}$}
+      \State $\vec{z} := \vec{0} \in \mathbb{R}^{J+1}$
+      \State $v := 0$
+      \For{$i = 0, \ldots, J$}
+        \If{$v = 0$}
+          \While{$A_{i+v} = 0$}
+            \State $v := v + 1$
+          \EndWhile
+        \Else
+          \State $v := v - 1$
+        \EndIf
+        \State $\vec{z}_i := v$
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+Finally, we cite theorem 3.1 from \cite{genz} but omit the proof:
+
+\begin{theorem*}
+  \label{th:zero_weights}
+  A fully symmetric rule using a generator set $\Lambda$ has weights $\omega_{\mathbf{p}} = 0$
+  if $|\mathbf{p}| + |\vec{z}(\mathbf{p})| > K$.
+\end{theorem*}
+
+This theorem tells us which partitions $\mathbf{p}$ we can omit when assembling
+the quadrature rule. The full algorithm for the construction of fully symmetric quadrature
+rules in $D$ dimensions and of level $K$ is shown in \eqref{alg:gk_construction}.
+The whole procedure is general in the sense that we can apply it to both the Legendre and
+Hermite cases as it was already done in \cite{genz} and \cite{genz-keister} respectively.
+Further we can repeat the very same computations for both kinds of Gauss-Chebyshev
+quadrature which is new. As we have seen in the last section there exists a plethora
+of nested higher order Kronrod extensions for some orthogonal polynomials. Each of these
+can serve as the basis for the generator set $\Lambda$. Genz and Keister used in the Hermite
+case the extensions $\mathcal{K} = (1, 2, 6, 10, 16)$ and $\mathcal{K} = (1, 2, 8, 20)$.
+One should note that not all rules are well suited. A criterion on the expected \emph{sparsity}
+is the number of zero elements in the $\vec{z}$ sequence. The more non-zero elements the better
+but unfortunately such sequences are rare. Additionally there appear the question of stability
+which was discussed in \cite{genz-keister}.
+
+
+\marginpar{plot number of nodes 1D}
+\marginpar{Note about more rules}
+
+\begin{algorithm}[h!]
+  \caption{Genz-Keister construction}
+  \label{alg:gk_construction}
+  \begin{algorithmic}
+    \Procedure{GenzKeisterConstruction}{$D, K$}
+      \State $\Gamma := \{\}$
+      \State $\Omega := \{\}$
+      \State $ $
+      \Comment Precompute fundamental data
+      \State $\Lambda := \textsc{ComputeGenerators}(\ldots)$
+      \State $M := \textsc{ComputeMoments}()$
+      \State $\vec{A} := \textsc{ComputeAValues}(\Lambda, M)$
+      \State $\mat{T} := \textsc{WeightFactors}(\Lambda, \vec{A})$
+      \State $ $
+      \Comment Construct multi-dimensional rule
+      \State $\mathcal{P} := \textsc{EnumeratePartitions}(D, K)$
+      \For{$\mathbf{p} \in \mathcal{P}$}
+        \If{$|\mathbf{p}| + |\vec{z}(\mathbf{p})| \leq K$}
+          \State $\Gamma_\mathbf{p} := \textsc{Nodes}(\mathbf{p}, \Lambda)$
+          \State $\omega_\mathbf{p} := \textsc{Weights}(\mathbf{p}, K, \mat{T})$
+          \State $\Gamma := \Gamma \cup \Gamma_\mathbf{p}$
+          \State $\Omega := \Omega \cup \omega_\mathbf{p}$
+          \Comment Add $|\Gamma_\mathbf{p}|$ times the weight $\omega_\mathbf{p}$
+        \EndIf
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
 
 \subsubsection{Combinatorial Algorithms}
 
@@ -939,7 +1013,7 @@ for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
 In this section we summarize the combinatorial algorithms that
 can be used during the Genz-Keister construction. In the programming
 language \texttt{python} they can be implemented very efficiently by
-the use of \texttt{yield} inside so called \emph{generator expressions}.
+the use of \texttt{yield} statement inside so called \emph{generator expressions}.
 
 The algorithm \eqref{alg:ca_enumerate_integer_partitions} can
 be used for enumeration of the set $\mathcal{P}$ defined in
