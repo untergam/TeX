@@ -17,6 +17,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{footnote}
+\usepackage{placeins}
 
 \include{header_math}
 
@@ -87,6 +88,8 @@ A simple proof of this theorem is given in the original article \cite{mehrotra-p
 \cite{monegato1976}
 }
 
+
+\FloatBarrier
 \section{Algorithmic procedure}
 
 The main algorithm consists of three steps building upon each other.
@@ -424,6 +427,7 @@ in listing \ref{alg:compute_weights}.
 \end{algorithm}
 
 
+\FloatBarrier
 \section{Implementation aspects}
 \label{sec:implementation_aspects}
 
@@ -458,6 +462,7 @@ handle only distributions $\omega(t)$ that have rational moments.
 }
 
 
+\FloatBarrier
 \section{Direct single extensions}
 
 In this section we will consider only single Kronrod extensions. Given a polynomial
@@ -531,7 +536,7 @@ polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{./img/map_leg_100_100.png}
+  \includegraphics[width=0.6\textwidth]{./img/map_leg_100_100.png}
   \caption{Map of the extensions $E_p$ of Gauss-Legendre quadrature rules
            $P_n$ for $n \leq 100$ and $p$ up to $100$.}
   \label{fig:map_leg_100_100}
@@ -539,15 +544,15 @@ polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{./img/map_chebt_50_50.png}
+  \includegraphics[width=0.6\textwidth]{./img/map_chebt_100_100.png}
   \caption{Map of the extensions $E_p$ of Gauss-Chebyshev quadrature rules
-           $T_n$ for $n \leq 50$ and $p$ up to $50$.}
+           $T_n$ for $n \leq 100$ and $p$ up to $100$.}
   \label{fig:map_chebt_50_50}
 \end{figure}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\textwidth]{./img/map_chebu_50_50.png}
+  \includegraphics[width=0.6\textwidth]{./img/map_chebt_100_100.png}
   \caption{Map of the extensions $E_p$ of Gauss-Chebyshev quadrature rules
            $U_n$ for $n \leq 50$ and $p$ up to $50$.}
   \label{fig:map_leg_100_100}
@@ -588,6 +593,7 @@ authors of the aforementioned papers.
 \end{figure}
 
 
+\FloatBarrier
 \section{Recursive enumeration of quadrature rules}
 
 
@@ -615,7 +621,7 @@ cite smolyak, complexity bound in nesting
 }
 
 
-
+\FloatBarrier
 \section{Genz-Keister Construction}
 
 
@@ -1163,27 +1169,303 @@ For more details see for example \cite{serra-sagrista}.
 \end{algorithm}
 
 
+\FloatBarrier
 \subsection{Results}
 
+In this section we present various results for the classical orthogonal polynomials
+and related Gauss quadrature schemes. For each scheme we could find at least one
+replacement having nested nodes based on the Genz-Keister construction.
+
+\marginpar{$n = K+1$}
+
+\subsubsection{Legendre Quadrature}
+
+For the Legendre polynomials $P_n$ we can find various Kronrod extensions. The
+most suitable one seems to be $\mathcal{K} = (1,2,4,8,16,32)$. The Genz-Keister
+construction built upon this set of generators has the following $\vec{z}$
+sequence:
+\begin{equation*}
+  \vec{z} = (0, 0, 1, 0, 2, 1, 0, 0, 4, 3, 2, 1, 0, 0, 0, 0, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 5, 4, 3, 2, 1)
+\end{equation*}
+where a large number of non-zero elements occur. Also we can in principle
+arbitrarily extend $\mathcal{K}$ by doubling the degree. If we use this
+extension we get the one-dimensional quadrature nodes and weights shown
+in figure \ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$
+the weights behave well but for some they start oscillating and even become
+negative. These special values of $K$ correlate with extra zeros in the
+$\vec{z}$ sequence. Figure \ref{fig:gk_legendre_nodes_2d} shows the sparse
+node distribution in the plane for two-dimensional quadrature rules.
+Notice that for $D < 3$, using the Genz-Keister construction results
+in more quadrature points than the full tensor product Ansatz. This
+fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre_ratio_large}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Legendre nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
+  nicely nested and suited for sparse grids.}
+  \label{fig:gk_legendre_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_1d.pdf}
+  \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_legendre_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_2d.pdf}
+  \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Legendre points form a full tensor
+  product.}
+  \label{fig:gk_legendre_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_legendre_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
+  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1. Notice the tendency
+  of the white boundary to go to the right and eventually reach dimensions $D \geq 3$.}
+  \label{fig:gk_legendre_ratio_large}
+\end{figure}
+
+\FloatBarrier
+\subsubsection{Chebyshev Quadrature}
+
+As in the case of Legendre polynomials, both Chebyshev polynomials $T_n$
+and $U_n$ possess many different Kronrod extensions. For the first kind $T_n$
+we choose $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ with the $\vec{z}$ sequence:
+\begin{equation*}
+  \vec{z} = (0, 0, 1, 0, 2, 1, 0, 5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 1) \,.
+\end{equation*}
+Again we can in principle extend $\mathcal{K}$ by doubling the degree.
+Using this extension we get the one-dimensional quadrature nodes and weights shown
+in figure \ref{fig:gk_chebyshevt_nodes_1d}.
+Figure \ref{fig:gk_chebyshevt_nodes_2d} shows the sparse
+node distribution in the plane for two-dimensional quadrature rules.
+Notice that for $D < 3$, using the Genz-Keister construction results
+in more quadrature points than the full tensor product Ansatz, however there
+are some exceptions. This fact is examined in figures \ref{fig:gk_chebyshevt_ratio}
+and \ref{fig:gk_chebyshevt_ratio_large}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Chebyshev nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ Kronrod extension.
+  The points are nicely nested and suited for sparse grids.}
+  \label{fig:gk_chebyshevt_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_1d.pdf}
+  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_chebyshevt_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_2d.pdf}
+  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Chebyshev points form a full tensor
+  product.}
+  \label{fig:gk_chebyshevt_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevt_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev tensor product
+  points for dimensions 1 to 4 and Level $K \leq 24$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevt_ratio_large}
+\end{figure}
+
+For the second kind $U_n$ of Chebyshev polynomials we use
+$\mathcal{K} = (1, 2, 4, 8, 16, 32)$ with the $\vec{z}$ sequence:
+\begin{equation*}
+  \vec{z} = (0, 0, 1, 0, 3, 2, 1, 0, 7, 6, 5, 4, 3, 2, 1, 0, 15, 14, 13, 12, 11,
+             10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 1)\,.
+\end{equation*}
+Once more we could extend $\mathcal{K}$ by doubling the degree.
+Using this extension we get the one-dimensional quadrature nodes and
+weights shown in figure \ref{fig:gk_chebyshevu_nodes_1d}.
+Figure \ref{fig:gk_chebyshevu_nodes_2d} shows the sparse
+node distribution in the plane for two-dimensional quadrature rules.
+For $D = 2$ there are levels where Genz-Keister is better than
+Gauss-Chebyshev tensor products but there are also levels where
+it behaves the other way round. The details are shown in figures
+\ref{fig:gk_chebyshevu_ratio} and \ref{fig:gk_chebyshevu_ratio_large}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Chebyshev nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
+  nicely nested and suited for sparse grids.}
+  \label{fig:gk_chebyshevu_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_1d.pdf}
+  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. All $(2^i-1)$-point rules are identical.}
+  \label{fig:gk_chebyshevu_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_2d.pdf}
+  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Chebyshev points form a full tensor
+  product.}
+  \label{fig:gk_chebyshevu_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevu_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev tensor product
+  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevu_ratio_large}
+\end{figure}
+
+\FloatBarrier
+\subsubsection{Hermite Quadrature}
+
+Figure \ref{fig:gk_hermitephy_tensor_ratio} shows the comparison of a full tensor
+and a Smolyak construction based on the usual Gauss-Hermite points. Obviously the region
+where Smolyak is disadvantageous extends to higher dimensions and this at even relatively
+low levels. This is clearly an issue and should give some motivation for studying the
+Genz-Keister constructions.
+For Hermite polynomials $H_n$ Kronrod extensions are rare, especially extensions
+having a high nesting degree. One of the best such extensions found so far is
+$\mathcal{K} = (1, 2, 6, 10, 16, 68)$ with the $z$ sequence:
+\begin{equation*}
+  \vec{z} = (0, 0, 1, 0, 0, 3, 2, 1, 0, 0, 5, 4, 3, 2, 1, 0, 0, 0, 8, 7,
+             6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, \ldots)
+             %0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+\end{equation*}
+Using this extension we get the one-dimensional quadrature nodes and weights shown
+in figure \ref{fig:gk_hermitephy_nodes_1d}.
+Figure \ref{fig:gk_hermitephy_nodes_2d} shows the sparse
+node distribution in the plane for two-dimensional quadrature rules.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Hermite nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ Kronrod extension. The points are
+  nicely nested and suited for sparse grids.}
+  \label{fig:gk_hermitephy_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_tensor_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_hermitephy_tensor_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_hermitephy_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
+  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1. Even if not visible here,
+  the white boundary will go more to the right and reach dimension $D = 3$ at level $K = 51$.}
+  \label{fig:gk_hermitephy_ratio_large}
+\end{figure}
+
+Notice that for $D < 3$, using the Genz-Keister construction results
+in more quadrature points than the full tensor product Ansatz. This
+can be read off from figures \ref{fig:gk_hermitephy_ratio}
+and \ref{fig:gk_hermitephy_ratio_large}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_hermitephy_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_2d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Hermite points form a full tensor
+  product.}
+  \label{fig:gk_hermitephy_nodes_2d}
+\end{figure}
 
 
+\FloatBarrier
+\section{Software}
+
+The software used for this project can be downloaded at:
+
+\marginpar{URL}
 
 
-% Number of nodes
-
-% Gauss-Hermite compare
-
-% Heat-maps
-
-% Point distribution
-
-
-
-
-
-
-
-
+\FloatBarrier
 \section{Future work}
 
 A question is whether it would be computationally more efficient to compute
