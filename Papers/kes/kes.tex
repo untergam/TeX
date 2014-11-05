@@ -1176,7 +1176,30 @@ In this section we present various results for the classical orthogonal polynomi
 and related Gauss quadrature schemes. For each scheme we could find at least one
 replacement having nested nodes based on the Genz-Keister construction.
 
-\marginpar{$n = K+1$}
+The generator set $\Lambda$ is in each case obtained by recursive higher order
+Kronrod extensions $\mathcal{K} := (k_1, \ldots, k_p)$. For each extension level $k_i$
+we then get a subset of nodes $\{\lambda_{i_1}, \ldots, \lambda_{i_q}\}$ from the corresponding
+polynomial $E_{k_i}$. The final rule now depends on the ordering of these generators
+and different orderings can lead to a non-negligible difference in overall stability. Permutation of
+the nodes $\lambda_{i_j}$ within each subset does not change the number of function evaluations
+required. The original authors came up with the following heuristic for sorting the
+generators: begin each subset with its largest generator and then alternate the remaining
+generators always using extremal values. They claim that this procedure yields
+rules with a good (but not necessarily optimal) stability factor. In our notation
+this factor reads:
+\begin{equation*}
+  C \assign \sum_{\mathbf{p} \in \mathcal{P}} N_{\mathbf{p}} |\omega_{\mathbf{p}}|
+\end{equation*}
+where for any partition $\mathbf{p}$ with $n$ distinct parts $\mathbf{p}_j$ each
+having multiplicity $m_j$ the value $N_{\mathbf{p}}$ is given by:
+\begin{equation*}
+  N_{\mathbf{p}} = \frac{2^{|m|} D!}
+                        {(D-|m|)! \, m_1! \cdots m_n!} \,.
+\end{equation*}
+In principle one could test all permutations of the generators and search for
+one minimizing this stability constant. We will choose this alternating ordering
+as default.
+
 
 \subsubsection{Legendre Quadrature}
 
