@@ -34,8 +34,9 @@
 
 \maketitle
 
+\section{Kronrod-Patterson Extensions}
 
-\section{Mathematical principles}
+\subsection{Mathematical principles}
 
 The $n$ nodes $\{\gamma_i\}_{i=1}^{n}$ of any Gauss quadrature rule for a
 given density distribution $\omega(t)$ can be found as the roots of a
@@ -90,7 +91,7 @@ A simple proof of this theorem is given in the original article \cite{mehrotra-p
 
 
 \FloatBarrier
-\section{Algorithmic procedure}
+\subsection{Algorithmic procedure}
 
 The main algorithm consists of three steps building upon each other.
 
@@ -428,7 +429,7 @@ in listing \ref{alg:compute_weights}.
 
 
 \FloatBarrier
-\section{Implementation aspects}
+\subsection{Implementation aspects}
 \label{sec:implementation_aspects}
 
 The whole algorithm is implemented in \texttt{C} and relies heavily
@@ -463,7 +464,7 @@ handle only distributions $\omega(t)$ that have rational moments.
 
 
 \FloatBarrier
-\section{Direct single extensions}
+\section{Direct Search for single Extensions}
 
 In this section we will consider only single Kronrod extensions. Given a polynomial
 $P_n$ of either Legendre or Laguerre or Hermite type and of degree $n$, we compute
@@ -594,7 +595,7 @@ authors of the aforementioned papers.
 
 
 \FloatBarrier
-\section{Recursive enumeration of quadrature rules}
+\section{Recursive Enumeration of nested Extensions}
 
 
 In the last section we computed a single extensions $E_p$ over a
@@ -622,7 +623,7 @@ cite smolyak, complexity bound in nesting
 
 
 \FloatBarrier
-\section{Genz-Keister Construction}
+\section{Genz-Keister Multidimensional Construction}
 
 
 Genz and Keister found an explicit construction by which efficient
@@ -1170,7 +1171,7 @@ For more details see for example \cite{serra-sagrista}.
 
 
 \FloatBarrier
-\subsection{Results}
+\section{Nested Rules for Orthogonal Polynomials}
 
 In this section we present various results for the classical orthogonal polynomials
 and related Gauss quadrature schemes. For each scheme we could find at least one
@@ -1201,7 +1202,7 @@ one minimizing this stability constant. We will choose this alternating ordering
 as default.
 
 
-\subsubsection{Legendre Quadrature}
+\subsection{Legendre Quadrature}
 
 For the Legendre polynomials $P_n$ we can find various Kronrod extensions. The
 most suitable one seems to be $\mathcal{K} = (1,2,4,8,16,32)$. The Genz-Keister
@@ -1227,16 +1228,23 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_cmp.pdf}
   \caption{Comparison of Gauss-Legendre nodes (right) and nested Genz-Keister nodes (left)
   based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
-  nicely nested and suited for sparse grids.}
+  nicely nested and well suited for sparse grids.}
   \label{fig:gk_legendre_nodes_cmp}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_legendre.pdf}
-  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
-  once though). The upper plot shows Gauss-Legendre rules as reference while the lower one shows the Genz-Keister rules.}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Legendre rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is: $1$, $3$, $7$, $13$, $15$, $25$, $27$, $29$, $31$, $49$, $51$, $53$,
+  $55$, $57$, $59$, $61$, $63$.
+  Starting with the $31$ point rule, the rules become somewhat unstable
+  and do not reach the machine epsilon error level. This can be explained
+  by growing oscillations in the weights for some of the rules. (Refer to figure
+  \ref{fig:gk_legendre_nodes_1d} though the rules affected are beyond the range
+  of that plot.) The rule having $63$ nodes is very stable again.}
   \label{fig:monomial_errors_legendre}
 \end{figure}
 
@@ -1244,7 +1252,10 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   \centering
   \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_1d.pdf}
   \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.}
+  corresponding weights. The 1- and 3-point rules are identical.
+  Note that a few rules have oscillations in the weights, some of them
+  are almost zero, others become increasingly negative. This affects the
+  stability of the corresponding rules.}
   \label{fig:gk_legendre_nodes_1d}
 \end{figure}
 
@@ -1289,7 +1300,7 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
 \end{figure}
 
 \FloatBarrier
-\subsubsection{Chebyshev Quadrature of the first kind}
+\subsection{Chebyshev Quadrature of the first kind}
 
 As in the case of Legendre polynomials, both Chebyshev polynomials $T_n$
 and $U_n$ possess many different Kronrod extensions. For the first kind $T_n$
@@ -1312,16 +1323,18 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_cmp.pdf}
   \caption{Comparison of Gauss-Chebyshev nodes (right) and nested Genz-Keister nodes (left)
   based on the $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ Kronrod extension.
-  The points are nicely nested and suited for sparse grids.}
+  The points are nicely nested and well suited for sparse grids.}
   \label{fig:gk_chebyshevt_nodes_cmp}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt.pdf}
-  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
-  once though). The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is: $1$, $3$, $7$, $13$, $25$. All rules examined
+  here are very stable up to machine precision.}
   \label{fig:monomial_errors_chebyshevt}
 \end{figure}
 
@@ -1373,7 +1386,7 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
 \end{figure}
 
 \FloatBarrier
-\subsubsection{Chebyshev Quadrature of the second kind}
+\subsection{Chebyshev Quadrature of the second kind}
 
 For the second kind $U_n$ of Chebyshev polynomials we use
 $\mathcal{K} = (1, 2, 4, 8, 16, 32)$ with the $\vec{z}$ sequence:
@@ -1396,16 +1409,19 @@ it behaves the other way round. The details are shown in figures
   \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_cmp.pdf}
   \caption{Comparison of Gauss-Chebyshev nodes (right) and nested Genz-Keister nodes (left)
   based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
-  nicely nested and suited for sparse grids.}
+  nicely nested and well suited for sparse grids.}
   \label{fig:gk_chebyshevu_nodes_cmp}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu.pdf}
-  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
-  once though). The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is: $1$, $3$, $7$, $15$, $31$, $63$. The error is
+  in good agreement with the Gauss-Chebyshev rules which is of course expected because
+  the rules are identical.}
   \label{fig:monomial_errors_chebyshevu}
 \end{figure}
 
@@ -1432,7 +1448,13 @@ it behaves the other way round. The details are shown in figures
   \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
   via tensor product and classical Smolyak construction. White dots are $D,K$
   combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  Genz-Keister is worse and for gray dots the ratio equals 1.
+  Notice that although some of the Gauss rules are already nested, this has
+  (as expected) almost no effect when applying the Smolyak construction.
+  The only difference between this figure and its siblings is the point
+  $D=4$ and $K=8$ which here is white instead of black. Also the boundary
+  will reach $D=5$ a few levels later. However there is obviously still
+  room for improvement.}
   \label{fig:smol_chebyshevu_ratio}
 \end{figure}
 
@@ -1457,7 +1479,7 @@ it behaves the other way round. The details are shown in figures
 \end{figure}
 
 \FloatBarrier
-\subsubsection{Hermite Quadrature}
+\subsection{Hermite Quadrature}
 
 Figure \ref{fig:gk_hermitephy_tensor_ratio} shows the comparison of a full tensor
 and a Smolyak construction based on the usual Gauss-Hermite points. Obviously the region
@@ -1482,16 +1504,19 @@ node distribution in the plane for two-dimensional quadrature rules.
   \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_cmp.pdf}
   \caption{Comparison of Gauss-Hermite nodes (right) and nested Genz-Keister nodes (left)
   based on the $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ Kronrod extension. The points are
-  nicely nested and suited for sparse grids.}
+  nicely nested and well suited for sparse grids.}
   \label{fig:gk_hermitephy_nodes_cmp}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy.pdf}
-  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
-  once though). The upper plot shows Gauss-Hermite rules as reference while the lower one shows the Genz-Keister rules.}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Hermite rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is: $1$, $3$, $7$, $9$, $17$, $19$, $31$, $33$, $35$. Given that none of the higher
+  order rules agree with any Gauss-Hermite rule, the stability and error behavior is excellent. On the other hand,
+  the rule with $35$ points integrates monomials correctly only up to $x^{50}$ instead of up to $n = 2 \cdot 35 - 1 = 69$.}
   \label{fig:conv_monom_hermite}
 \end{figure}
 
