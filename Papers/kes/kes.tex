@@ -1231,6 +1231,15 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   \label{fig:gk_legendre_nodes_cmp}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_legendre.pdf}
+  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
+  once though). The upper plot shows Gauss-Legendre rules as reference while the lower one shows the Genz-Keister rules.}
+  \label{fig:monomial_errors_legendre}
+\end{figure}
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_1d.pdf}
@@ -1246,6 +1255,16 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   two-dimensional rules. The Gauss-Legendre points form a full tensor
   product.}
   \label{fig:gk_legendre_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_legendre_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Legendre quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_legendre_ratio}
 \end{figure}
 
 \begin{figure}[h]
@@ -1270,7 +1289,7 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
 \end{figure}
 
 \FloatBarrier
-\subsubsection{Chebyshev Quadrature}
+\subsubsection{Chebyshev Quadrature of the first kind}
 
 As in the case of Legendre polynomials, both Chebyshev polynomials $T_n$
 and $U_n$ possess many different Kronrod extensions. For the first kind $T_n$
@@ -1297,6 +1316,15 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   \label{fig:gk_chebyshevt_nodes_cmp}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt.pdf}
+  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
+  once though). The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.}
+  \label{fig:monomial_errors_chebyshevt}
+\end{figure}
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_1d.pdf}
@@ -1312,6 +1340,16 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   two-dimensional rules. The Gauss-Chebyshev points form a full tensor
   product.}
   \label{fig:gk_chebyshevt_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_chebyshevt_ratio}
 \end{figure}
 
 \begin{figure}[h]
@@ -1333,6 +1371,9 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   Genz-Keister is worse and for gray dots the ratio equals 1.}
   \label{fig:gk_chebyshevt_ratio_large}
 \end{figure}
+
+\FloatBarrier
+\subsubsection{Chebyshev Quadrature of the second kind}
 
 For the second kind $U_n$ of Chebyshev polynomials we use
 $\mathcal{K} = (1, 2, 4, 8, 16, 32)$ with the $\vec{z}$ sequence:
@@ -1359,6 +1400,15 @@ it behaves the other way round. The details are shown in figures
   \label{fig:gk_chebyshevu_nodes_cmp}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu.pdf}
+  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
+  once though). The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.}
+  \label{fig:monomial_errors_chebyshevu}
+\end{figure}
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_1d.pdf}
@@ -1374,6 +1424,16 @@ it behaves the other way round. The details are shown in figures
   two-dimensional rules. The Gauss-Chebyshev points form a full tensor
   product.}
   \label{fig:gk_chebyshevu_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_chebyshevu_ratio}
 \end{figure}
 
 \begin{figure}[h]
@@ -1426,15 +1486,46 @@ node distribution in the plane for two-dimensional quadrature rules.
   \label{fig:gk_hermitephy_nodes_cmp}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy.pdf}
+  \caption{Relative quadrature error for integrating single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (note that colors wrap around
+  once though). The upper plot shows Gauss-Hermite rules as reference while the lower one shows the Genz-Keister rules.}
+  \label{fig:conv_monom_hermite}
+\end{figure}
+
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_tensor_ratio.pdf}
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_hermitephy_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_2d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Hermite points form a full tensor
+  product.}
+  \label{fig:gk_hermitephy_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
   \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
   via tensor product and classical Smolyak construction. White dots are $D,K$
   combinations where Genz-Keister is advantageous, while for black dots
   Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_hermitephy_tensor_ratio}
+  \label{fig:smol_hermitephy_ratio}
 \end{figure}
+
+Notice that for $D < 3$, using the Genz-Keister construction results
+in more quadrature points than the full tensor product Ansatz. This
+can be read off from figures \ref{fig:gk_hermitephy_ratio}
+and \ref{fig:gk_hermitephy_ratio_large}.
 
 \begin{figure}[h]
   \centering
@@ -1455,28 +1546,6 @@ node distribution in the plane for two-dimensional quadrature rules.
   Genz-Keister is worse and for gray dots the ratio equals 1. Even if not visible here,
   the white boundary will go more to the right and reach dimension $D = 3$ at level $K = 51$.}
   \label{fig:gk_hermitephy_ratio_large}
-\end{figure}
-
-Notice that for $D < 3$, using the Genz-Keister construction results
-in more quadrature points than the full tensor product Ansatz. This
-can be read off from figures \ref{fig:gk_hermitephy_ratio}
-and \ref{fig:gk_hermitephy_ratio_large}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
-  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.}
-  \label{fig:gk_hermitephy_nodes_1d}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_2d.pdf}
-  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes for
-  two-dimensional rules. The Gauss-Hermite points form a full tensor
-  product.}
-  \label{fig:gk_hermitephy_nodes_2d}
 \end{figure}
 
 
@@ -1505,6 +1574,11 @@ decide that a complex root is really complex but not if a candidate is for sure 
 
 Finally, this work is based on empirical studies on the outcome of algorithmic searches.
 It would be desirable to have a rigorous mathematical foundation for the claims made.
+
+Some of the techniques presented here could theoretically be generalized to Gegenbauer
+polynomials $C_n^{(\alpha)}(x)$ and ultimately Jacobi polynomials $P_n^{(\alpha,\beta)}(x)$.
+The parametric nature of these polynomials makes the implementation more complex. Also,
+results will depend on the explicit values of these parameters $\alpha$ and $\beta$,
 
 
 \marginpar{
