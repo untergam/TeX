@@ -82,11 +82,8 @@ extend a given set of nodes by a bunch of new nodes.
 A simple proof of this theorem is given in the original article \cite{mehrotra-papp}.
 
 \marginpar{
-\cite{genz-keister}
 \cite{laurie}
 \cite{patterson1968}
-\cite{kahaner-monegato}
-\cite{monegato1976}
 }
 
 
@@ -316,20 +313,16 @@ Computing the nodes amounts to finding all roots of a possibly high degree
 polynomial. In classical numerics there are various stability issues related
 to this task and a general solution is often not possible. Using arbitrary precision
 ball arithmetic as defined by van der Hoeven in \cite{vdH:ball:greifswald, vdH:ball}
-we can avoid almost all these issues by just increasing the precision
+we can avoid almost all of these issues by just increasing the precision
 whenever necessary. By making use of the rigorous error bounds inherent in any ball
 we can easily decide when we have to increase precision to obtain fully accurate
 results in the end.
 
-However it should not be neglected that this comes at a higher cost in computation time
-compared to normal floating point arithmetic. Even though \texttt{arb} is highly optimized,
-computing roots to a high working precision can take a long time.
-
 The following routine is shown here just for the sake of completeness. Internally
-we pass on by calling a suitable function from the \texttt{arb} library. The function
-called uses the Durand-Kerner method according the the library documentation. An
-assumption required is that the polynomial is square-free which is necessary for
-all valid extensions anyway.
+we pass on by calling a suitable function from the \texttt{arb} library introduced below.
+The function called uses the Durand-Kerner method according to the library documentation.
+An assumption required for this method to work is that the polynomial is square-free
+which is necessary for all valid extensions anyway.
 
 \begin{algorithm}
   \caption{Compute the nodes up to a given precision $b_{\gamma}$}
@@ -444,23 +437,30 @@ $\mathbb{Q}[x]$. First we need to be able to do fast arithmetics with polynomial
 specifically multiplication and checking whether a given polynomial is indeed square-free.
 Second, the coefficients grow exponentially large and we must use arbitrary precision
 rational numbers for expressing them. Other things we use from \texttt{flint} are
-matrices over $\mathbb{Q}$. The matrices provide us with means to solve linear systems
-by rational arithmetic using a specially adapted fraction free version of Gauss elimination.
+matrices over $\mathbb{Z}$ and $\mathbb{Q}$. The matrices module provides us with means
+to solve linear systems by integral or rational arithmetic using a specially adapted
+fraction free version of Gauss elimination.
 
 Given all that we can check whether an extension $E_p$ to any given rule $P_n$
 exists by using only exact rational arithmetic. The price we pay is that we can
 handle only distributions $\omega(t)$ that have rational moments.
 
-
-\marginpar{How do we solve the things}
-\marginpar{Some words about the arbitrary precision ansatz}
-\marginpar{And a few words about rigorous errors bounds of balls}
-
-\marginpar{
-\cite{flint}
-\cite{Hart2010}
-\cite{arb}
-}
+Johansson implemented arbitrary-precision floating point ball arithmetic in a
+library called \texttt{arb} \cite{arb}. This library enables us to compute and
+refine the nodes to any number of bits precision while always obtaining rigorous
+error radii for each floating point ball computed. In detail, the library implements,
+among some more things, real and complex floating point balls, polynomials having
+ball-valued coefficients and matrices with balls as entries. Furthermore this library plays
+very well together with \texttt{flint} making it the ideal choice for our purpose.
+However it should not be neglected that all this comes at a higher cost
+in computation time compared to normal hardware-accelerated floating point arithmetic.
+The comparison has to be made against \emph{software} based arbitrary precision floating
+point arithmetic as for example implemented in the GNU \texttt{MPFR} library \cite{mpfr}.
+In that case the ball arithmetic of \texttt{arb} is claimed to be usually much less than
+a factor of 2 slower than the plain \texttt{MPFR} floating point numbers. This is
+actually very good and a perfectly fair price to pay for the additional confidence put
+into the computed numbers. Even though \texttt{arb} is highly optimized, computing many
+roots to a high working precision can still take some time.
 
 
 \FloatBarrier
@@ -532,7 +532,7 @@ always an extension with $p = n + 1$ \cite{szegoe}. This is recovered by our
 computation and shows up in figure \ref{fig:map_leg_100_100} as the first upper
 diagonal line. Additionally to their existence, these rules also have positive
 weights in all cases as shown in \cite{monegato1978}. The existence theorems can
-be generalized to hold also for Chebycheff, Gegenbauer and ultimatively Jacobi
+be generalized to hold also for Chebyshev, Gegenbauer and ultimatively Jacobi
 polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
 
 \begin{figure}
@@ -1481,7 +1481,7 @@ it behaves the other way round. The details are shown in figures
 \FloatBarrier
 \subsection{Hermite Quadrature}
 
-Figure \ref{fig:gk_hermitephy_tensor_ratio} shows the comparison of a full tensor
+Figure \ref{fig:smol_hermitephy_ratio} shows the comparison of a full tensor
 and a Smolyak construction based on the usual Gauss-Hermite points. Obviously the region
 where Smolyak is disadvantageous extends to higher dimensions and this at even relatively
 low levels. This is clearly an issue and should give some motivation for studying the
@@ -1577,9 +1577,13 @@ and \ref{fig:gk_hermitephy_ratio_large}.
 \FloatBarrier
 \section{Software}
 
-The software used for this project can be downloaded at:
+The complete software used for this project can be downloaded at:
 
-\marginpar{URL}
+\begin{center}
+  \url{https://github.com/raoulbq/kes.git}
+\end{center}
+
+and is released as free software under the GNU General Public License.
 
 
 \FloatBarrier
@@ -1615,6 +1619,177 @@ results will depend on the explicit values of these parameters $\alpha$ and $\be
 \cite{monegato1982}
 \cite{monegato1978_3}
 }
+
+
+\begin{appendix}
+\section{Computed Generators}
+
+The tables in this section contain the generator sets $\Lambda$ for all default
+rules examined in the last sections. The generators are ordered in the above-mentioned
+alternating order.
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|ll|}
+  \hline
+  {}             & Generator                 & Error \\
+  \hline
+  $\lambda_{0}$  & $0$                       &  $\pm 0$ \\
+  $\lambda_{1}$  & $0.77459666924148337704$  &  $\pm 8.9398e-128$ \\
+  $\lambda_{2}$  & $0.96049126870802028342$  &  $\pm 2.9519e-127$ \\
+  $\lambda_{3}$  & $0.434243749346802558$    &  $\pm 1.9264e-127$ \\
+  $\lambda_{4}$  & $0.99383196321275502221$  &  $\pm 1.2033e-125$ \\
+  $\lambda_{5}$  & $0.22338668642896688163$  &  $\pm 2.9048e-127$ \\
+  $\lambda_{6}$  & $0.88845923287225699889$  &  $\pm 1.6417e-125$ \\
+  $\lambda_{7}$  & $0.62110294673722640294$  &  $\pm 3.1186e-126$ \\
+  $\lambda_{8}$  & $0.99909812496766759766$  &  $\pm 4.2615e-122$ \\
+  $\lambda_{9}$  & $0.11248894313318662575$  &  $\pm 2.0256e-127$ \\
+  $\lambda_{10}$ & $0.98153114955374010687$  &  $\pm 6.0247e-122$ \\
+  $\lambda_{11}$ & $0.33113539325797683309$  &  $\pm 5.1636e-126$ \\
+  $\lambda_{12}$ & $0.92965485742974005667$  &  $\pm 2.6398e-122$ \\
+  $\lambda_{13}$ & $0.53131974364437562397$  &  $\pm 1.0295e-124$ \\
+  $\lambda_{14}$ & $0.8367259381688687355$   &  $\pm 7.0227e-123$ \\
+  $\lambda_{15}$ & $0.70249620649152707861$  &  $\pm 9.7952e-124$ \\
+  $\lambda_{16}$ & $0.99987288812035761194$  &  $\pm 9.0618e-115$ \\
+  $\lambda_{17}$ & $0.056344313046592789972$ &  $\pm 2.4195e-127$ \\
+  $\lambda_{18}$ & $0.99720625937222195908$  &  $\pm 1.446e-114$ \\
+  $\lambda_{19}$ & $0.16823525155220746498$  &  $\pm 5.9532e-126$ \\
+  $\lambda_{20}$ & $0.98868475754742947994$  &  $\pm 8.3369e-115$ \\
+  $\lambda_{21}$ & $0.27774982202182431507$  &  $\pm 1.5333e-124$ \\
+  $\lambda_{22}$ & $0.97218287474858179658$  &  $\pm 3.0935e-115$ \\
+  $\lambda_{23}$ & $0.38335932419873034692$  &  $\pm 2.7813e-123$ \\
+  $\lambda_{24}$ & $0.94634285837340290515$  &  $\pm 9.2169e-116$ \\
+  $\lambda_{25}$ & $0.48361802694584102756$  &  $\pm 4.9013e-122$ \\
+  $\lambda_{26}$ & $0.9103711569570042925$   &  $\pm 2.6298e-116$ \\
+  $\lambda_{27}$ & $0.57719571005204581484$  &  $\pm 8.4648e-121$ \\
+  $\lambda_{28}$ & $0.86390793819369047715$  &  $\pm 4.8765e-117$ \\
+  $\lambda_{29}$ & $0.66290966002478059546$  &  $\pm 9.9356e-120$ \\
+  $\lambda_{30}$ & $0.80694053195021761186$  &  $\pm 8.102e-118$ \\
+  $\lambda_{31}$ & $0.73975604435269475868$  &  $\pm 1.0763e-118$ \\
+  \hline
+  \end{tabular}
+  \caption{Generators in the Legendre case $\mathcal{K} = (1,2,4,8,16,32)$
+  computed to 20 decimal digits. Rigorous errors are provided by ball
+  arithmetic.}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|ll|}
+  \hline
+  {}             & Generator                 & Error \\
+  \hline
+  $\lambda_{0}$  & $0$                       &  $\pm 0$ \\
+  $\lambda_{1}$  & $0.86602540378443864676$  &  $\pm 1.8457e-255$ \\
+  $\lambda_{2}$  & $1$                       &  $\pm 0$ \\
+  $\lambda_{3}$  & $0.5$                     &  $\pm 4.44e-255$ \\
+  $\lambda_{4}$  & $0.96592582628906828675$  &  $\pm 1.6752e-254$ \\
+  $\lambda_{5}$  & $0.25881904510252076235$  &  $\pm 2.5144e-255$ \\
+  $\lambda_{6}$  & $0.7071067811865475244$   &  $\pm 2.1372e-254$ \\
+  $\lambda_{7}$  & $0.99144486137381041114$  &  $\pm 1.9027e-252$ \\
+  $\lambda_{8}$  & $0.13052619222005159155$  &  $\pm 3.1477e-255$ \\
+  $\lambda_{9}$  & $0.92387953251128675613$  &  $\pm 3.8807e-252$ \\
+  $\lambda_{10}$ & $0.38268343236508977173$  &  $\pm 5.1667e-254$ \\
+  $\lambda_{11}$ & $0.79335334029123516458$  &  $\pm 1.531e-252$ \\
+  $\lambda_{12}$ & $0.60876142900872063942$  &  $\pm 3.995e-253$ \\
+  $\lambda_{13}$ & $0.99785892323860350674$  &  $\pm 4.8189e-248$ \\
+  $\lambda_{14}$ & $0.065403129230143066815$ &  $\pm 2.1204e-255$ \\
+  $\lambda_{15}$ & $0.98078528040323044913$  &  $\pm 1.0712e-247$ \\
+  $\lambda_{16}$ & $0.19509032201612826785$  &  $\pm 5.0556e-254$ \\
+  $\lambda_{17}$ & $0.94693012949510566426$  &  $\pm 1.0193e-247$ \\
+  $\lambda_{18}$ & $0.3214394653031615807$   &  $\pm 9.8952e-253$ \\
+  $\lambda_{19}$ & $0.89687274153268830389$  &  $\pm 5.1395e-248$ \\
+  $\lambda_{20}$ & $0.442288690219001282$    &  $\pm 1.0802e-251$ \\
+  $\lambda_{21}$ & $0.83146961230254523708$  &  $\pm 2.0304e-248$ \\
+  $\lambda_{22}$ & $0.55557023301960222474$  &  $\pm 1.4191e-250$ \\
+  $\lambda_{23}$ & $0.75183980747897739641$  &  $\pm 5.3441e-249$ \\
+  $\lambda_{24}$ & $0.65934581510006886843$  &  $\pm 9.1351e-250$ \\
+  \hline
+  \end{tabular}
+  \caption{Generators in the Chebyshev (first kind) case $\mathcal{K} = (1, 2, 4, 6, 12, 24)$
+  computed to 20 decimal digits. Rigorous errors are provided by ball
+  arithmetic.}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|ll|}
+  \hline
+  {}             & Generator                 & Error \\
+  \hline
+  $\lambda_{0}$  & $0$                       &  $\pm 0$ \\
+  $\lambda_{1}$  & $0.7071067811865475244$   &  $\pm 1.1302e-255$ \\
+  $\lambda_{2}$  & $0.92387953251128675613$  &  $\pm 3.4002e-255$ \\
+  $\lambda_{3}$  & $0.38268343236508977173$  &  $\pm 2.4588e-255$ \\
+  $\lambda_{4}$  & $0.98078528040323044913$  &  $\pm 1.0265e-253$ \\
+  $\lambda_{5}$  & $0.19509032201612826785$  &  $\pm 3.5259e-255$ \\
+  $\lambda_{6}$  & $0.83146961230254523708$  &  $\pm 1.0815e-253$ \\
+  $\lambda_{7}$  & $0.55557023301960222474$  &  $\pm 2.496e-254$ \\
+  $\lambda_{8}$  & $0.99518472667219688624$  &  $\pm 5.6869e-251$ \\
+  $\lambda_{9}$  & $0.098017140329560601994$ &  $\pm 3.0746e-255$ \\
+  $\lambda_{10}$ & $0.95694033573220886494$  &  $\pm 1.1254e-250$ \\
+  $\lambda_{11}$ & $0.29028467725446236764$  &  $\pm 4.1566e-254$ \\
+  $\lambda_{12}$ & $0.88192126434835502971$  &  $\pm 5.8436e-251$ \\
+  $\lambda_{13}$ & $0.47139673682599764856$  &  $\pm 5.9365e-253$ \\
+  $\lambda_{14}$ & $0.77301045336273696081$  &  $\pm 2.4054e-251$ \\
+  $\lambda_{15}$ & $0.63439328416364549822$  &  $\pm 6.3821e-252$ \\
+  $\lambda_{16}$ & $0.99879545620517239271$  &  $\pm 3.7653e-245$ \\
+  $\lambda_{17}$ & $0.049067674327418014255$ &  $\pm 3.1008e-255$ \\
+  $\lambda_{18}$ & $0.98917650996478097345$  &  $\pm 1.0269e-244$ \\
+  $\lambda_{19}$ & $0.14673047445536175166$  &  $\pm 5.0159e-254$ \\
+  $\lambda_{20}$ & $0.9700312531945439926$   &  $\pm 9.1895e-245$ \\
+  $\lambda_{21}$ & $0.24298017990326388995$  &  $\pm 1.0345e-252$ \\
+  $\lambda_{22}$ & $0.94154406518302077841$  &  $\pm 7.649e-245$ \\
+  $\lambda_{23}$ & $0.33688985339222005069$  &  $\pm 1.6499e-251$ \\
+  $\lambda_{24}$ & $0.90398929312344333159$  &  $\pm 3.3936e-245$ \\
+  $\lambda_{25}$ & $0.42755509343028209432$  &  $\pm 2.5664e-250$ \\
+  $\lambda_{26}$ & $0.8577286100002720699$   &  $\pm 1.4468e-245$ \\
+  $\lambda_{27}$ & $0.51410274419322172659$  &  $\pm 3.7758e-249$ \\
+  $\lambda_{28}$ & $0.80320753148064490981$  &  $\pm 4.3992e-246$ \\
+  $\lambda_{29}$ & $0.59569930449243334347$  &  $\pm 3.0138e-248$ \\
+  $\lambda_{30}$ & $0.74095112535495909118$  &  $\pm 1.1218e-246$ \\
+  $\lambda_{31}$ & $0.67155895484701840063$  &  $\pm 1.8774e-247$ \\
+  \hline
+  \end{tabular}
+  \caption{Generators in the Chebyshev (second kind) case $\mathcal{K} = (1, 2, 4, 8, 16, 32)$
+  computed to 20 decimal digits. Rigorous errors are provided by ball
+  arithmetic.}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|ll|}
+  \hline
+  {}             & Generator                & Error \\
+  \hline
+  $\lambda_{0}$  & $0$                      & $\pm 0$ \\
+  $\lambda_{1}$  & $1.2247448713915890491$  & $\pm 2.6102e-255$ \\
+  $\lambda_{2}$  & $2.9592107790638377223$  & $\pm 3.2633e-254$ \\
+  $\lambda_{3}$  & $0.52403354748695764515$ & $\pm 8.0828e-255$ \\
+  $\lambda_{4}$  & $2.0232301911005156592$  & $\pm 4.6195e-254$ \\
+  $\lambda_{5}$  & $4.4995993983103888029$  & $\pm 7.1244e-253$ \\
+  $\lambda_{6}$  & $0.87004089535290290013$ & $\pm 3.6256e-254$ \\
+  $\lambda_{7}$  & $3.66777421594633786$    & $\pm 1.1448e-252$ \\
+  $\lambda_{8}$  & $1.8357079751751868738$  & $\pm 4.852e-253$ \\
+  $\lambda_{9}$  & $2.2665132620567880275$  & $\pm 8.9175e-253$ \\
+  $\lambda_{10}$ & $6.3759392709822359517$  & $\pm 3.8855e-251$ \\
+  $\lambda_{11}$ & $0.17606414208200893503$ & $\pm 6.8732e-255$ \\
+  $\lambda_{12}$ & $5.6432578578857450628$  & $\pm 1.1977e-250$ \\
+  $\lambda_{13}$ & $1.5794121348467670857$  & $\pm 3.6322e-253$ \\
+  $\lambda_{14}$ & $5.0360899444730939687$  & $\pm 1.2618e-250$ \\
+  $\lambda_{15}$ & $2.5705583765842967091$  & $\pm 5.1481e-252$ \\
+  $\lambda_{16}$ & $4.0292201405043713648$  & $\pm 6.5727e-251$ \\
+  $\lambda_{17}$ & $3.3491639537131949774$  & $\pm 2.7947e-251$ \\
+  \hline
+  \end{tabular}
+  \caption{Generators in the Hermite case $\mathcal{K} = (1, 2, 6, 10, 16, 68)$
+  computed to 20 decimal digits. Rigorous errors are provided by ball
+  arithmetic. We can confirm the claim made in \cite{genz_keister} for their
+  table 4 (both columns) and assure that all digits shown are indeed correct.}
+\end{table}
+
+\end{appendix}
+
 
 \bibliographystyle{plain}
 \bibliography{kes}
