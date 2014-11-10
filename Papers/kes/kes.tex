@@ -1245,14 +1245,22 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
 
 \begin{figure}
   \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_legendre.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Legendre and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_legendre}
+\end{figure}
+
+\begin{figure}
+  \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_legendre.pdf}
   \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
   Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
   The upper plot shows Gauss-Legendre rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is: $1$, $3$, $7$, $13$, $15$, $25$, $27$, $29$, $31$, $49$, $51$, $53$,
-  $55$, $57$, $59$, $61$, $63$
-  and the orders according to \eqref{eq:gk_rul_order} are
-  $1$, $5$, $11$, $13$, $23$, $25$, $27$, $29$, $47$, $49$, $51$, $53$, $55$, $57$, $59$, $61$, $63$
+  The number of nodes for each of these rules is:
+  $1$, $3$,  $7$, $13$, $15$, $25$, $27$, $29$, $31$, $49$, $51$, $53$, $55$, $57$, $59$, $61$, $63$
+  and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $11$, $13$, $23$, $25$, $27$, $29$, $47$, $49$, $51$, $53$, $55$, $57$, $59$, $61$, $95$
   which perfectly agrees with the figure.
   Starting with the $31$ point rule, the rules become somewhat unstable
   and do not reach the machine epsilon error level. This can be explained
@@ -1261,8 +1269,6 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   of that plot.) The rule having $63$ nodes is very stable again.}
   \label{fig:monomial_errors_legendre}
 \end{figure}
-
-\marginpar{Order max rule}
 
 \begin{figure}[h]
   \centering
@@ -1345,12 +1351,21 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
 
 \begin{figure}
   \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_chebyshevt.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Chebyshev and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_chebyshevt}
+\end{figure}
+
+\begin{figure}
+  \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt.pdf}
   \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
   Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
   The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is: $1$, $3$, $7$, $13$, $25$ and the orders according to
-  \eqref{eq:gk_rul_order} are $1$, $5$, $11$, $23$, $47$ which perfectly agrees with the figure.
+  The number of nodes for each of these rules is:
+  $1$, $3$,  $7$, $13$, $25$ and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $11$, $23$, $47$ which perfectly agrees with the figure.
   All rules examined here are very stable up to machine precision.}
   \label{fig:monomial_errors_chebyshevt}
 \end{figure}
@@ -1432,18 +1447,25 @@ it behaves the other way round. The details are shown in figures
 
 \begin{figure}
   \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_chebyshevu.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Chebyshev and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_chebyshevu}
+\end{figure}
+
+\begin{figure}
+  \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu.pdf}
   \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
   Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
   The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is: $1$, $3$, $7$, $15$, $31$, $63$ and the orders according
-  to \eqref{eq:gk_rul_order} are $1$, $5$, $13$, $29$, $61$, $63$ which perfectly agrees with the figure.
+  The number of nodes for each of these rules is:
+  $1$, $3$,  $7$, $15$, $31$,  $63$ and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $13$, $29$, $61$, $125$ which perfectly agrees with the figure.
   The error is in good agreement with the Gauss-Chebyshev rules which is of course
   expected because the rules are identical.}
   \label{fig:monomial_errors_chebyshevu}
 \end{figure}
-
-\marginpar{Order max rule}
 
 \begin{figure}[h]
   \centering
@@ -1530,17 +1552,32 @@ node distribution in the plane for two-dimensional quadrature rules.
 
 \begin{figure}
   \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_hermitephy.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Hermite and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_hermitephy}
+\end{figure}
+
+\begin{figure}
+  \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy.pdf}
   \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
   Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
   The upper plot shows Gauss-Hermite rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is: $1$, $3$, $7$, $9$, $17$, $19$, $31$, $33$, $35$ and the
-  orders according to \eqref{eq:gk_rul_order} are $1$, $5$, $7$, $15$, $17$, $29$, $31$, $33$, $51$ which
-  perfectly agrees with the figure. Given that none of the higher order rules agree with any Gauss-Hermite rule,
+  The number of nodes for each of these rules is:
+  $1$, $3$, $7$,  $9$, $17$, $19$, $31$, $33$, $35$
+  and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $7$, $15$, $17$, $29$, $31$, $33$, $51$
+  which perfectly agrees with the figure. Given that none of the higher order rules agree with any Gauss-Hermite rule,
   the stability and error behavior is excellent. On the other hand, the rule with $35$ points integrates monomials
   correctly only up to $x^{51}$ with $51 = 2 \cdot 25 + 1$ instead of up to $n = 2 \cdot 35 - 1 = 69$.}
   \label{fig:conv_monom_hermite}
 \end{figure}
+
+By comparing to figure \ref{fig:conv_monom_hermite} we can confirm that the rules with $K < 18$ are stable.
+The rule obtained with $K=17$ has $35$ nodes and is of order $51$. In the range $18 < K \leq 25$ we get no
+new rules but rather the same nodes and weights as with $K = 17$. Rules with even higher $K > 25$ were found
+to be highly unstable.
 
 \begin{figure}[h]
   \centering
@@ -1593,6 +1630,21 @@ and \ref{fig:gk_hermitephy_ratio_large}.
   Genz-Keister is worse and for gray dots the ratio equals 1. Even if not visible here,
   the white boundary will go more to the right and reach dimension $D = 3$ at level $K = 51$.}
   \label{fig:gk_hermitephy_ratio_large}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_high.pdf}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The number of nodes for each of these rules is:
+  $53$, $55$, $57$, $59$, $61$, $63$, $65$, $67$, $69$, $71$, $73$, $75$,  $77$,
+  $79$, $81$, $83$, $85$, $87$, $89$, $91$, $93$, $95$, $97$, $99$, $101$, $103$.
+  The rules for $K > 25$ become soon highly unstable. A notable exception is the
+  last rule with $K = 51$ having $103$ nodes which shows good behavior and
+  is of order $103$. This is obviously extremely inefficient for practical
+  use.}
+  \label{fig:conv_monom_hermite_high}
 \end{figure}
 
 
