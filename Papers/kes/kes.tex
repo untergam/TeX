@@ -491,7 +491,7 @@ of node-weight pairs.
 
 \begin{algorithm}
   \caption{Exhaustive search up to $n_{\textrm{max}}$ and $p_{\textrm{max}}$}
-  \label{alg:compute_weights}
+  \label{alg:exhaustive_search}
   \begin{algorithmic}
     \Procedure{ExhaustiveSearch}{$n_{\textrm{max}}$, $p_{\textrm{max}}$}
       \State $\mat{M} \in \{0,1\}^{n \times p}$
@@ -556,7 +556,7 @@ polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
   \includegraphics[width=0.6\textwidth]{./img/map_chebu_100_100.png}
   \caption{Map of the extensions $E_p$ of Gauss-Chebyshev quadrature rules
            $U_n$ for $n \leq 100$ and $p$ up to $100$.}
-  \label{fig:map_leg_100_100}
+  \label{fig:map_chebu_100_100}
 \end{figure}
 
 For Laguerre polynomials there are no classical Kronrod extensions with $p = n+1$
@@ -775,7 +775,7 @@ we can however never solve this problem exactly like in rational arithmetic.
 
 \begin{algorithm}[h!]
   \caption{Compute table $\vec{A}$ of $a_{i}$ factors}
-  \label{alg:gk_compute_weight_factors}
+  \label{alg:gk_compute_a_values}
   \begin{algorithmic}
     \Procedure{ComputeAValues}{$\Lambda$, $\vec{M}$}
       \State $\vec{A} := \vec{0} \in \mathbb{R}^{J+1}$
