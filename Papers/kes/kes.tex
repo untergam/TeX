@@ -18,6 +18,7 @@
 \usepackage{algpseudocode}
 \usepackage{footnote}
 \usepackage{placeins}
+\usepackage{subfloat}
 
 \include{header_math}
 
@@ -74,7 +75,7 @@ extend a given set of nodes by a bunch of new nodes.
   \end{equation}
   for all $i = 0, \ldots, p-1$. Assume further that the roots of $E_p$
   are all real and of multiplicity one, and distinct from
-  those of $P_n$. Then there exists a qudrature formula supported on the
+  those of $P_n$. Then there exists a quadrature formula supported on the
   roots of $P_n E_p$, whose degree of polynomial exactness is at least
   $n + 2p -1$.
 \end{theorem}
@@ -235,7 +236,9 @@ form expressions for the moments hold:
   \begin{cases}
     \frac{2 \sqrt{\pi}}{n} \frac{\Gamma\left(\frac{n+1}{2}\right)}
                                 {\Gamma\left(\frac{n}{2}\right)} & \quad n \quad \mathrm{even}
-                                                                   \footnote{For $n=0$ one takes the limes.} \\
+                                                                   \footnote{For $n=0$ one takes the limes
+                                                                   or replace $n\Gamma\left(\frac{n}{2}\right)$
+                                                                   by $2\Gamma\left(\frac{n}{2}+1\right)$} \\
     0                                                            & \quad n \quad \mathrm{odd}
   \end{cases} \label{eq:moments_chebyshevt} \\
   \int_{-1}^{1} t^n \sqrt{1-t^2} \di{t} & =
@@ -1335,6 +1338,58 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   \label{fig:gk_legendre_ratio_large}
 \end{figure}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_legendre_2D}
+\end{figure}
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials is used:
+\begin{equation} \label{eq:legendre_exact_solution}
+  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \di{\vec{x}}
+  =
+  \prod_{d=1}^D \frac{1 + (-1)^{n_d}}{1 + n_d}
+\end{equation}
+where we know the closed form exact solution.
+
+\begin{subfigures}
+  \label{fig:monomial_errors_legendre_multivariate}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_2.pdf}
+    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_legendre_multivariate_dimension_2}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_3.pdf}
+    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_legendre_multivariate_dimension_3}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_4.pdf}
+    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_legendre_multivariate_dimension_4}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_5.pdf}
+    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_legendre_multivariate_dimension_5}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_6.pdf}
+    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_legendre_multivariate_dimension_6}
+  \end{figure}
+\end{subfigures}
+
 \FloatBarrier
 \subsection{Chebyshev Quadrature of the first kind}
 
@@ -1430,6 +1485,61 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   Genz-Keister is worse and for gray dots the ratio equals 1.}
   \label{fig:gk_chebyshevt_ratio_large}
 \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_chebyshevt_2D}
+\end{figure}
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials is used:
+\begin{equation} \label{eq:chebyshevt_exact_solution}
+  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \frac{1}{\sqrt{1-x_d^2}} \di{\vec{x}}
+  =
+  \left(\frac{\sqrt{\pi}}{2}\right)^D
+  \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
+  \frac{\Gamma\left(\frac{1 + n_d}{2}\right)}
+       {\Gamma\left(\frac{n_d}{2}+1\right)}
+\end{equation}
+where we know the closed form exact solution.
+
+\begin{subfigures}
+  \label{fig:monomial_errors_chebyshevt_multivariate}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_2.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevt_multivariate_dimension_2}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_3.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevt_multivariate_dimension_3}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_4.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevt_multivariate_dimension_4}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_5.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevt_multivariate_dimension_5}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_6.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevt_multivariate_dimension_6}
+  \end{figure}
+\end{subfigures}
 
 \FloatBarrier
 \subsection{Chebyshev Quadrature of the second kind}
@@ -1533,6 +1643,52 @@ it behaves the other way round. The details are shown in figures
   Genz-Keister is worse and for gray dots the ratio equals 1.}
   \label{fig:gk_chebyshevu_ratio_large}
 \end{figure}
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials is used:
+\begin{equation} \label{eq:chebyshevu_exact_solution}
+  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \sqrt{1-x_d^2} \di{\vec{x}}
+  =
+  \left(\frac{\sqrt{\pi}}{4}\right)^D
+  \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
+  \frac{\Gamma\left(\frac{1 + n_d}{2}\right)}
+       {\Gamma\left(\frac{n_d}{2}+2\right)}
+\end{equation}
+where we know the closed form exact solution.
+
+\begin{subfigures}
+  \label{fig:monomial_errors_chebyshevu_multivariate}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_2.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevu_multivariate_dimension_2}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_3.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevu_multivariate_dimension_3}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_4.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevu_multivariate_dimension_4}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_5.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevu_multivariate_dimension_5}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_6.pdf}
+    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_chebyshevu_multivariate_dimension_6}
+  \end{figure}
+\end{subfigures}
 
 \FloatBarrier
 \subsection{Hermite Quadrature}
@@ -1660,6 +1816,58 @@ and \ref{fig:gk_hermitephy_ratio_large}.
   use.}
   \label{fig:conv_monom_hermite_high}
 \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_hermitephy_2D}
+\end{figure}
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials is used:
+\begin{equation} \label{eq:hermitephy_exact_solution}
+  \idotsint \limits_{\vec{x} \in \mathbb{R}^D} \prod_{d=1}^D x_d^{n_d} \exp\left(-x_d^2\right) \di{\vec{x}}
+  =
+  \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{1 + n_d}{2}\right)
+\end{equation}
+where we know the closed form exact solution.
+
+\begin{subfigures}
+  \label{fig:monomial_errors_hermitephy_multivariate}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_2.pdf}
+    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_hermitephy_multivariate_dimension_2}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_3.pdf}
+    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_hermitephy_multivariate_dimension_3}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_4.pdf}
+    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_hermitephy_multivariate_dimension_4}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_5.pdf}
+    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_hermitephy_multivariate_dimension_5}
+  \end{figure}
+  \begin{figure}\centering
+    \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_6.pdf}
+    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \label{fig:monomial_errors_hermitephy_multivariate_dimension_6}
+  \end{figure}
+\end{subfigures}
 
 
 \FloatBarrier
