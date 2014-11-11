@@ -983,8 +983,12 @@ One should note that not all rules are equally well suited. A criterion on the e
 \emph{sparsity} of the final rule is the number of zero elements in the $\vec{z}$ sequence.
 The more non-zero elements the better but unfortunately such sequences are rare.
 Additionally there appears the question of stability which was discussed in \cite{genz}.
-Novak and Ritter show in \cite{novak_ritter} that the Genz-Keister construction produces
-quadrature rules which are of classical Smolyak form.
+Novak and Ritter show in \cite{novak_ritter}, section 6, that the Genz-Keister construction
+produces quadrature rules which are of classical Smolyak form. This is convenient
+for two reasons. First, we can construct $D$ dimensional rules either by direct full
+Genz-Keister construction or by Smolyak construction applied to the set of one-dimensional
+Genz-Keister rules. Second, the convergence and error analysis from Smolyak theory is
+also valid for this construction.
 
 \marginpar{Note about more rules}
 
@@ -1208,10 +1212,20 @@ and shown to be:
 \end{equation}
 The $K$ in this formula is, for each fixed quadrature
 rule, the maximal value of $K$ for which the Genz-Keister construction results
-in the given rule.
+in the given rule. For example in the Hermite case $K=9, \ldots, 14$ all yield
+the same node-weight pairs. The order os this rule is then $2\cdot 14 + 1 = 29$.
 
-\marginpar{See also \cite{novak_ritter}, sec. 6.}
+Lemma 4.1 in \cite{holtz} gives conditions on the one-dimensional rules
+such that the Smolyak construction of level $K$ from these rules has
+order at least $2K-1$. It can be seen from figures \ref{fig:number_nodes_legendre},
+\ref{fig:number_nodes_chebyshevt}, \ref{fig:number_nodes_chebyshevu} and
+\ref{fig:number_nodes_hermitephy} that the rules discussed here fulfill the
+required conditions as their orders are always large enough.
 
+Finally, corollary 7 from \cite{novak_ritter} gives the degree of exactness
+for $K \geq D - 1$ as $2 (K+1-D) + 1$.
+
+\marginpar{TODO: inconsistent?}
 
 \subsection{Legendre Quadrature}
 
