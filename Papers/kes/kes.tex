@@ -1348,13 +1348,13 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
 \end{figure}
 
 For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials is used:
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \begin{equation} \label{eq:legendre_exact_solution}
   \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \di{\vec{x}}
   =
   \prod_{d=1}^D \frac{1 + (-1)^{n_d}}{1 + n_d}
 \end{equation}
-where we know the closed form exact solution.
+where we know the exact solution in closed form.
 
 \begin{subfigures}
   \label{fig:monomial_errors_legendre_multivariate}
@@ -1496,16 +1496,16 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
 \end{figure}
 
 For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials is used:
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \begin{equation} \label{eq:chebyshevt_exact_solution}
   \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \frac{1}{\sqrt{1-x_d^2}} \di{\vec{x}}
   =
   \left(\frac{\sqrt{\pi}}{2}\right)^D
   \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
-  \frac{\Gamma\left(\frac{1 + n_d}{2}\right)}
+  \frac{\Gamma\left(\frac{n_d}{2}+\frac{1}{2}\right)}
        {\Gamma\left(\frac{n_d}{2}+1\right)}
 \end{equation}
-where we know the closed form exact solution.
+where we know the exact solution in closed form.
 
 \begin{subfigures}
   \label{fig:monomial_errors_chebyshevt_multivariate}
@@ -1645,16 +1645,16 @@ it behaves the other way round. The details are shown in figures
 \end{figure}
 
 For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials is used:
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \begin{equation} \label{eq:chebyshevu_exact_solution}
   \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \sqrt{1-x_d^2} \di{\vec{x}}
   =
   \left(\frac{\sqrt{\pi}}{4}\right)^D
   \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
-  \frac{\Gamma\left(\frac{1 + n_d}{2}\right)}
+  \frac{\Gamma\left(\frac{n_d}{2}+\frac{1}{2}\right)}
        {\Gamma\left(\frac{n_d}{2}+2\right)}
 \end{equation}
-where we know the closed form exact solution.
+where we know the exact solution in closed form.
 
 \begin{subfigures}
   \label{fig:monomial_errors_chebyshevu_multivariate}
@@ -1827,13 +1827,13 @@ and \ref{fig:gk_hermitephy_ratio_large}.
 \end{figure}
 
 For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials is used:
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \begin{equation} \label{eq:hermitephy_exact_solution}
   \idotsint \limits_{\vec{x} \in \mathbb{R}^D} \prod_{d=1}^D x_d^{n_d} \exp\left(-x_d^2\right) \di{\vec{x}}
   =
-  \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{1 + n_d}{2}\right)
+  \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{n_d + 1}{2}\right)
 \end{equation}
-where we know the closed form exact solution.
+where we know the exact solution in closed form.
 
 \begin{subfigures}
   \label{fig:monomial_errors_hermitephy_multivariate}
