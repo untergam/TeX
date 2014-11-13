@@ -1993,7 +1993,7 @@ alternating order.
   \hline
   \end{tabular}
   \caption{Generators in the Legendre case $\mathcal{K} = (1,2,4,8,16,32)$
-  computed to 20 decimal digits. Rigorous errors are provided by ball
+  computed to 20 decimal digits. Rigorous error bounds are provided by ball
   arithmetic.}
 \end{table}
 
@@ -2031,7 +2031,7 @@ alternating order.
   \hline
   \end{tabular}
   \caption{Generators in the Chebyshev (first kind) case $\mathcal{K} = (1, 2, 4, 6, 12, 24)$
-  computed to 20 decimal digits. Rigorous errors are provided by ball
+  computed to 20 decimal digits. Rigorous error bounds are provided by ball
   arithmetic.}
 \end{table}
 
@@ -2076,7 +2076,7 @@ alternating order.
   \hline
   \end{tabular}
   \caption{Generators in the Chebyshev (second kind) case $\mathcal{K} = (1, 2, 4, 8, 16, 32)$
-  computed to 20 decimal digits. Rigorous errors are provided by ball
+  computed to 20 decimal digits. Rigorous error bounds are provided by ball
   arithmetic.}
 \end{table}
 
@@ -2106,10 +2106,57 @@ alternating order.
   $\lambda_{17}$ & $3.3491639537131949774$  & $\pm 2.7947e-251$ \\
   \hline
   \end{tabular}
-  \caption{Generators in the Hermite case $\mathcal{K} = (1, 2, 6, 10, 16, 68)$
-  computed to 20 decimal digits. Rigorous errors are provided by ball
+  \caption{Generators in the Hermite case $\mathcal{K} = (1, 2, 6, 10, 16)$
+  computed to 20 decimal digits. Rigorous error bounds are provided by ball
   arithmetic. We can confirm the claim made in \cite{genz_keister} for their
   table 4 (both columns) and assure that all digits shown are indeed correct.}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{|l|ll|}
+  \hline
+  {}             & Generator                & Error \\
+  \hline
+  $\lambda_{18}$ & $12.371183263294440156$  & $\pm 6.2996e-242$ \\
+  $\lambda_{19}$ & $0.36668252574926773363$ & $\pm 1.7765e-253$ \\
+  $\lambda_{20}$ & $11.773315693849850411$  & $\pm 2.3346e-240$ \\
+  $\lambda_{21}$ & $0.66761453794663251987$ & $\pm 1.6969e-252$ \\
+  $\lambda_{22}$ & $11.279571841264790728$  & $\pm 2.642e-239$ \\
+  $\lambda_{23}$ & $1.0853772883690724485$  & $\pm 3.7943e-251$ \\
+  $\lambda_{24}$ & $10.839884501585234819$  & $\pm 2.0142e-238$ \\
+  $\lambda_{25}$ & $1.3554874833640409297$  & $\pm 2.0233e-250$ \\
+  $\lambda_{26}$ & $10.435144794449726187$  & $\pm 9.2267e-238$ \\
+  $\lambda_{27}$ & $1.8804002593778771426$  & $\pm 3.9786e-249$ \\
+  $\lambda_{28}$ & $10.055514590896118546$  & $\pm 3.4517e-237$ \\
+  $\lambda_{29}$ & $2.4894835291142853745$  & $\pm 5.0127e-247$ \\
+  $\lambda_{30}$ & $9.6950986498409657256$  & $\pm 9.4588e-237$ \\
+  $\lambda_{31}$ & $2.7429887276487330543$  & $\pm 3.9256e-246$ \\
+  $\lambda_{32}$ & $9.3500178360366242267$  & $\pm 1.9321e-236$ \\
+  $\lambda_{33}$ & $3.1578423043107310587$  & $\pm 6.5944e-245$ \\
+  $\lambda_{34}$ & $9.0175517361800331664$  & $\pm 3.4879e-236$ \\
+  $\lambda_{35}$ & $3.5581744596318809581$  & $\pm 1.268e-243$ \\
+  $\lambda_{36}$ & $8.6957029638952971694$  & $\pm 5.2545e-236$ \\
+  $\lambda_{37}$ & $3.7936922531585261377$  & $\pm 5.3856e-243$ \\
+  $\lambda_{38}$ & $8.3829544155838454626$  & $\pm 5.7185e-236$ \\
+  $\lambda_{39}$ & $4.2688636547893383582$  & $\pm 7.0628e-242$ \\
+  $\lambda_{40}$ & $8.0781250284796943353$  & $\pm 5.6882e-236$ \\
+  $\lambda_{41}$ & $4.6477303329076984149$  & $\pm 1.4317e-240$ \\
+  $\lambda_{42}$ & $7.7802807323602445651$  & $\pm 4.7409e-236$ \\
+  $\lambda_{43}$ & $4.8019262436547872092$  & $\pm 3.184e-240$ \\
+  $\lambda_{44}$ & $7.4886797763487223782$  & $\pm 3.3395e-236$ \\
+  $\lambda_{45}$ & $5.2754516328221667421$  & $\pm 2.5212e-239$ \\
+  $\lambda_{46}$ & $7.2027436504485393396$  & $\pm 1.7826e-236$ \\
+  $\lambda_{47}$ & $5.4830796220220625119$  & $\pm 6.2053e-239$ \\
+  $\lambda_{48}$ & $6.9220548983808420548$  & $\pm 7.4588e-237$ \\
+  $\lambda_{49}$ & $5.8591159720395398957$  & $\pm 1.8806e-238$ \\
+  $\lambda_{50}$ & $6.6464009334963516572$  & $\pm 2.1116e-237$ \\
+  $\lambda_{51}$ & $6.1118124629258834825$  & $\pm 3.619e-238$ \\
+  \hline
+  \end{tabular}
+  \caption{Higher generators in the Hermite case $\mathcal{K} = (1, 2, 6, 10, 16, 68)$
+  computed to 20 decimal digits. Rigorous error bounds are provided by ball
+  arithmetic.}
 \end{table}
 
 \end{appendix}
