@@ -237,7 +237,7 @@ form expressions for the moments hold:
     \frac{2 \sqrt{\pi}}{n} \frac{\Gamma\left(\frac{n+1}{2}\right)}
                                 {\Gamma\left(\frac{n}{2}\right)} & \quad n \quad \mathrm{even}
                                                                    \footnote{For $n=0$ one takes the limes
-                                                                   or replace $n\Gamma\left(\frac{n}{2}\right)$
+                                                                   or replaces $n\Gamma\left(\frac{n}{2}\right)$
                                                                    by $2\Gamma\left(\frac{n}{2}+1\right)$} \\
     0                                                            & \quad n \quad \mathrm{odd}
   \end{cases} \label{eq:moments_chebyshevt} \\
@@ -356,6 +356,7 @@ We start with the equation \eqref{eq:linsys_for_weights} shown above:
 This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \vec{r}$:
 
 \begin{equation}
+  \label{eq:linsys_for_weights}
   \begin{bmatrix}
     \gamma_1^0     & \hdots & \gamma_i^0     & \hdots & \gamma_n^0 \\
     \vdots         & {}     & \vdots         & {}     & \vdots \\
@@ -422,6 +423,99 @@ in listing \ref{alg:compute_weights}.
     \EndProcedure
   \end{algorithmic}
 \end{algorithm}
+
+
+\FloatBarrier
+\subsection{Validation of nodes and weights}
+\label{sec:validation_nodes_weights}
+
+
+Validation of the extensions computed is necessary and happens in
+two separate steps where the second one is optional. Even if we
+can solve equation \eqref{eq:linsys_for_extension} and algorithm
+\ref{alg:find_extension} does return a non-vanishing polynomial $E_p$,
+this does not guarantee we have found a suitable extensions.
+As an example we look at possible extensions of the Gauss-Hermite rule
+given by the polynomial $H_3 = 8t^3 - 12t$. Searching for an extension
+$E_4$ of degree 4 we get the polynomial $E_4 = t^4 - 5t^2 - \frac{5}{4}$.
+Computing the roots and therewith the quadrature nodes algebraically we get:
+\begin{align*}
+  t &= \pm\sqrt{\sqrt{\frac{15}{2}}+\frac{5}{2}} \approx \pm 2.288801605\\
+  t &= \pm \imath \sqrt{\frac{1}{2} \left(\sqrt{30}-5\right)} \approx \pm 0.4884800789 \imath \,.
+\end{align*}
+Numerical computation with at least 20 digits of precision by ball arithmetic gives:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  Midpoint & Radius \\
+  \hline
+  $-2.2888016051 - 2.12589347958 \cdot 10^{-128}\imath$   & $\pm (6.24 \cdot 10^{-63}, 6.24 \cdot 10^{-63}\imath)$ \\
+  $2.2888016051 + 1.55755275766 \cdot 10^{-128}\imath$    & $\pm (6.24 \cdot 10^{-63}, 6.24 \cdot 10^{-63}\imath)$ \\
+  $-4.76485148133 \cdot 10^{-129} - 0.488480078945\imath$ & $\pm (8.42 \cdot 10^{-64}, 8.42 \cdot 10^{-64}\imath)$ \\
+  $-4.75946861246 \cdot 10^{-129} + 0.488480078945\imath$ & $\pm (8.42 \cdot 10^{-64}, 8.42 \cdot 10^{-64}\imath)$ \\
+%   $-2.2888016051038216989 + 9.0133709461704339673e-65\imath$  & $\pm (4.12e-31, 4.12e-31\imath)$ \\
+%   $2.2888016051038216989 + 1.3445251464279069435e-64\imath$  & $\pm (4.12e-31, 4.12e-31\imath)$ \\
+%   $-1.6077784669939595885e-66 - 0.48848007894471046411\imath$ & $\pm (8.6e-32, 8.6e-32\imath)$ \\
+%   $1.7455978790703967984e-64 + 0.48848007894471046411\imath$ & $\pm (8.6e-32, 8.6e-32\imath)$ \\
+  \hline
+  \end{tabular}
+\end{table}
+Obviously two of the nodes are complex-valued. This is actually guaranteed because
+the balls that contain the roots do not intersect with the real line.
+Hence this is not a valid extension.
+Looking for an extension of order 5 we see that there is none. The next higher extension
+which exists is $E_6 = t^6 -\frac{105}{8}t^4 + \frac{315}{8}t^2 - \frac{315}{32}$.
+Computing the roots of $E_6$ again up to at least 20 digits precision by ball arithmetic gives:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|}
+  \hline
+  Midpoint & Radius \\
+  \hline
+  $-2.95921077906 - 2.41239124804 \cdot 10^{-194}\imath$  & $\pm (2.48 \cdot 10^{-62}, 2.48 \cdot 10^{-62}\imath)$ \\
+  $-2.0232301911 + 8.64516353565 \cdot 10^{-224}\imath$   & $\pm (3.03 \cdot 10^{-62}, 3.03 \cdot 10^{-62}\imath)$ \\
+  $-0.524033547487 + 1.58006659246 \cdot 10^{-187}\imath$ & $\pm (3.72 \cdot 10^{-63}, 3.72 \cdot 10^{-63}\imath)$ \\
+  $0.524033547487 + 2.19180934901 \cdot 10^{-193}\imath$  & $\pm (2.09 \cdot 10^{-63}, 2.09 \cdot 10^{-63}\imath)$ \\
+  $2.0232301911 - 2.0066613913 \cdot 10^{-197}\imath$     & $\pm (4.13 \cdot 10^{-62}, 4.13 \cdot 10^{-62}\imath)$ \\
+  $2.95921077906 - 6.84940421565 \cdot 10^{-194}\imath$   & $\pm (2.3 \cdot 10^{-62}, 2.3 \cdot 10^{-62}\imath)$ \\
+%   $-2.9592107790638377223 + 1.7977637202018041576e-94\imath$  & $\pm (1.8e-30, 1.8e-30\imath)$ \\
+%   $-2.0232301911005156592 - 2.0407955812719218635e-117\imath$ & $\pm (2.89e-30, 2.89e-30\imath)$ \\
+%   $-0.52403354748695764515 - 2.4545467326488632765e-91\imath$ & $\pm (2.59e-31, 2.59e-31\imath)$ \\
+%   $0.52403354748695764515 + 1.8726705418768793309e-95\imath$ & $\pm (2.59e-31, 2.59e-31\imath)$ \\
+%   $2.0232301911005156592 + 1.4630238608413119772e-97\imath$  & $\pm (2.26e-30, 2.26e-30\imath)$ \\
+%   $2.9592107790638377223 - 3.9794249014883685781e-96\imath$  & $\pm (1.8e-30, 1.8e-30\imath)$ \\
+  \hline
+  \end{tabular}
+\end{table}
+The imaginary parts are tiny and we safely assume that the roots are indeed all real.
+This result is in principle not guaranteed, the balls do all intersect the real line
+but also extend into the complex plane. However we can recompute these numbers with higher
+precision and obtain smaller radii up to a point where we are satisfied with the result.
+
+To validate an extension $E_p$ of $P_n$ we first check that the roots $\{\gamma_i\}_{i=1}^p$ of
+this polynomial $E_p$ actually lie within the region $\Omega$.
+The subset $\Omega$ of $\mathbb{R}$ is the region where the original polynomials $P_n$ are orthogonal
+and where we want the quadrature to happen, see table \ref{eq:orthogonal_polynomials} for details.
+Explicitly stated, we require that:
+\begin{equation}
+  \{\gamma_i\}_{i=1}^p \subset \Omega \,.
+\end{equation}
+
+The second step in the validation of an extension concerns the weights.
+While we infer from \eqref{eq:linsys_for_weights} that the weights are all
+real, they can still be negative. Negative weights can affect the stability
+of a quadrature rule. For that reason one usually drops rules having negative
+weights. By requiring that:
+\begin{equation}
+  \omega_i > 0 \quad i=1, \ldots, p+n
+\end{equation}
+we can filter out invalid extensions.
+These steps apply in the same way also to nested towers
+$P_n \subset E_{p_1} \subset E_{p_2} \subset \ldots \subset E_{p_k}$
+of extensions. The nodes can be validated for each level $k$ independently.
+In contrast, the weights need to be computed and examined in the end for
+all levels together.
 
 
 \FloatBarrier
