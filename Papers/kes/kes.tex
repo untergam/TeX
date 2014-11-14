@@ -564,7 +564,7 @@ roots to a high working precision can still take some time.
 \section{Direct Search for single Extensions}
 
 In this section we will consider only single Kronrod extensions. Given a polynomial
-$P_n$ of either Legendre or Laguerre or Hermite type and of degree $n$, we compute
+$P_n$ of either Legendre, Chebyshev, Laguerre or Hermite type and of degree $n$, we compute
 the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of algorithm
 \ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
 the first place. Next we compute nodes and weights. If requested, validity checks
@@ -707,6 +707,100 @@ rules for higher dimensional integrals. For the number of dimensions in the
 range from $4$ up to some ten this can be done efficiently by the well known
 Smolyak construction.
 
+
+Given an initial polynomial $P_n$ of degree $n$, we want to find the set of all
+extension towers\footnote{By abuse of notation, let $E_{p_k}$ denote the polynomial
+of degree $p_k$ as well as the abstract extension over $E_{p_{k-1}}$ defined by it.}
+%$P_n \subset E_{p_1} \subset E_{p_2} \subset \ldots \subset E_{p_k}$
+$P_n \equiv E_{p_0} \subset E_{p_1} \subset \ldots \subset E_{p_k} \subset \ldots \subset E_{p_{k_{\textrm{max}}}}$
+%$P = P_0 \subset P_1 \subset \ldots \subset P_k \subset \ldots \subset P_{k_{\textrm{max}}}$
+over $P$ having finite height $k_{\textrm{max}}$. Additionally we truncate this
+potentially infinite set by requiring that the degrees $p_k$ of all polynomials $E_{p_k}$
+never exceed a fixed upper bound $p_{\textrm{max}}$. This will in the end give a finite tree
+of nested extensions.
+
+Given the polynomial $P_k(x) := \prod_{i=0}^k E_{p_i}(x)$ fixing the lower part of this tower,
+we can call algorithm \ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
+upper layers $k, \ldots, k_{\textrm{max}}$. This algorithm will perform a flat exhaustive search
+on layer $k$ and then call itself for the next layer $k+1$. To get this process started, we
+make an initial call for $k=1$ with $P_{0} := P_n \equiv E_{p_0}$.
+
+\marginpar{validation}
+
+\begin{algorithm}
+  \caption{Recursive search for extensions over $P_{k-1}$}
+  \label{alg:recursive_search}
+  \begin{algorithmic}
+    \Procedure{RecursiveSearch}{$P_{k-1}$, $p_{\textrm{max}}$, $k$, $k_{\textrm{max}}$}
+    \State {}
+    \Comment Search for possible extensions of $P_{k-1}$ of order $p \leq p_{\textrm{max}}$
+    \For{$p = 1, \ldots, p_{\textrm{max}}$}
+      \State $E_p := \textsc{ComputeExtension}(P_{k-1}, p)$
+%         if(validate_weights) {
+%             /* Validate nodes and weights */
+%             fmpq_poly_mul(Pnp1, Pn, En);
+%             valid = validate_rule(&nrroots, &nrweights, Pnp1, NCHECKDIGITS, loglevel);
+%         } else {
+%             /* Validate only nodes */
+%             valid = validate_extension_by_poly(&nrroots, En, NCHECKDIGITS, loglevel);
+%         }
+      \If{$E_p \not\equiv 0$}
+        \State {}
+        \Comment Valid extension $E_p$ of order $p$ found for $P_{k-1}$ on layer $k$
+        \State $p_k := p$
+        \State $\mathcal{K} := (p_0, \ldots, p_{k-1}, p) \in \mathbb{N}^{k+1}$
+        \State $\mathcal{R} := \mathcal{R} \cup \mathcal{K}$
+        \If{$k < k_{\textrm{max}}$}
+          \State {}
+          \Comment Follow the recursion down, descending to new layer $k+1$
+          \State $P_{k} := P_{k-1} E_p$
+          \State $\textsc{RecursiveSearch}(P_{k}, p_{\textrm{max}}, k+1, k_{\textrm{max}})$
+        \Else
+          \State {}
+          \Comment Maximum recursion depth reached, not descending
+        \EndIf
+      \Else
+        \State {}
+        \Comment No valid extension of order $p$ found for $P_{k-1}$ on layer $k$
+      \EndIf
+    \EndFor
+    \State {}
+    \Comment Maximal extension order $p_{\textrm{max}}$ reached, ascending
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+  \caption{Exhaustive recursive search up to $p_{\textrm{max}}$ and $k_{\textrm{max}}$}
+  \label{alg:exhaustive_recursive_search}
+  \begin{algorithmic}
+    \Procedure{ExhaustiveRecursiveSearch}{$P$, $p_{\textrm{max}}$, $k_{\textrm{max}}$}
+      \State $\mathcal{R} := \{\}$
+      \Comment Storage for all the rules $\mathcal{K}$ found
+      \State $p_0 := \deg P$
+      \State $\textsc{RecursiveSearch}(P, p_{\textrm{max}}, 1, k_{\textrm{max}})$
+    \EndProcedure
+  \end{algorithmic}
+\end{algorithm}
+
+
+
+We denote by $\mathcal{Q}[p_0, \ldots, p_k]$ the quadrature rule and explicitly
+the nodes and weights that can be computed from the nested Kronrod extension
+$\mathcal{K} = (p_0, \ldots, p_k)$. Of course $\mathcal{Q}[n]$ is simple the
+original quadrature rule we started with. In all cases considered here this
+will be a Gauss rule of order $n$ having $n$ points.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/graph_1_100_6_part.png}
+  \caption{Part of the tree of nested higher order Kronrod Extensions of the
+  single point Gauss-Hermite rule $\mathcal{Q}[1]$. On the top right corner
+  we recognize the rules of highest nesting degree found so far.}
+  \label{fig:graph_1_100_6_part}
+\end{figure}
 
 
 
