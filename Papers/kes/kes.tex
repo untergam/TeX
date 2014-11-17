@@ -792,11 +792,10 @@ will be a Gauss rule of order $n$ having $n$ points.
   \centering
   \includegraphics[width=0.8\linewidth]{./img/graph_hermite_1_100_6_part.png}
   \caption{Part of the tree of nested higher order Kronrod Extensions of the
-  single point Gauss-Hermite rule $\mathcal{Q}[1]$. On the top right corner
+  single point Gauss-Hermite rule $\mathcal{Q}[1]$. In the top right corner
   we recognize the rules of highest nesting degree found so far.}
   \label{fig:graph_1_100_6_part}
 \end{figure}
-
 
 \begin{table}[h]
   \centering
@@ -897,8 +896,8 @@ will be a Gauss rule of order $n$ having $n$ points.
   The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$
   was never reached. Notice that extensions and especially highly nested extensions are very
   abundant in the case of Legendre polynomials.}
+  \label{tab:legendre_extensions}
 \end{table}
-
 
 \begin{table}[h]
   \centering
@@ -983,8 +982,8 @@ will be a Gauss rule of order $n$ having $n$ points.
   The table lists the most deeply nested extensions for $n \leq 10$ which were found.
   The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$
   was never reached. The Chebyshev polynomials also possess a rich structure of deeply nested extensions.}
+  \label{tab:chebyshevt_extensions}
 \end{table}
-
 
 \begin{table}[h]
   \centering
@@ -1094,8 +1093,8 @@ will be a Gauss rule of order $n$ having $n$ points.
   The table lists the most deeply nested extensions for $n \leq 10$ which were found.
   The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$
   was never reached. The Chebyshev polynomials also possess a rich structure of deeply nested extensions.}
+  \label{tab:chebyshevu_extensions}
 \end{table}
-
 
 \begin{table}[h]
   \centering
@@ -1212,8 +1211,8 @@ will be a Gauss rule of order $n$ having $n$ points.
   The table lists the most deeply nested extensions for $n \leq 20$ which were found.
   The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$ was never reached.
   For this type of polynomial, deeply nested rules are extremely rare.}
+  \label{tab:laguerre_extensions}
 \end{table}
-
 
 \begin{table}[h]
   \centering
@@ -1332,7 +1331,19 @@ will be a Gauss rule of order $n$ having $n$ points.
   \caption{Nested higher order Kronrod extensions $\mathcal{K}$ of the Hermite polynomials $H_n$.
   The table lists the most deeply nested extensions for $n \leq 20$ which were found.
   The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$ was never reached.}
+  \label{tab:hermite_extensions}
 \end{table}
+
+If we run this algorithm for recursive enumeration, it finds a multitude
+of higher order nested Kronrod extensions. Depending on the kind of orthogonal
+polynomial we start with, there are large differences in the number and nesting
+degree of the extensions. For polynomials which are specializations of the
+Jacobi polynomials, we find the most regular structure presenting us a vast number
+of extensions. For other polynomials like the Laguerre polynomials there are almost
+no extensions and the average nesting level is very low. From this large zoo of
+possible $\mathcal{K}$ tuples, some of the more interesting ones are summarized
+in the tables \ref{tab:legendre_extensions}, \ref{tab:chebyshevt_extensions},
+\ref{tab:chebyshevu_extensions}, \ref{tab:laguerre_extensions} and \ref{tab:hermite_extensions}.
 
 \marginpar{cite smolyak, complexity bound in nesting?}
 
