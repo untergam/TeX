@@ -6,6 +6,7 @@
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}
+\newtheorem*{theorem*}{Theorem}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{color}
@@ -19,10 +20,11 @@
 \usepackage{footnote}
 \usepackage{placeins}
 \usepackage{subfloat}
+\usepackage{array}
+\usepackage{ragged2e}
+\newcolumntype{x}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
 
 \include{header_math}
-
-\newtheorem*{theorem*}{Theorem}
 
 \synctex=1
 \parindent 0pt
@@ -349,7 +351,7 @@ to find the corresponding weights $\vec{\omega} := \{\omega_i\}_{i=1}^{n} \in \m
 We start with the equation \eqref{eq:linsys_for_weights} shown above:
 
 \begin{equation}
-  \sum_{i=1}^{n} \omega_i \gamma_i^k = \int_{\Omega} t^k \omega(t) \di{t} \,,
+  \sum_{i=1}^{n} \omega_i \gamma_i^k = \int_{\Omega} t^k \omega(t) \di{t} \,
   \quad k = 0, \ldots, n-1
 \end{equation}
 
@@ -795,13 +797,309 @@ will be a Gauss rule of order $n$ having $n$ points.
   \label{fig:graph_1_100_6_part}
 \end{figure}
 
+
 \begin{table}[h]
   \centering
-  \begin{tabular}{|l|p{10cm}|}
+  \begin{tabular}{|x{1cm}|x{10cm}|}
   \hline
-  $L_n$ & $\mathcal{K}$ \\
+  $P_n$ & $\mathcal{K} = (p_0, p_1, \ldots, p_k)$ \\
   \hline
-  $L_1$ &
+  $P_1$ $k \geq 6$ &
+  $(1,2,4,8,16,32,64)$,
+  $(1,2,4,8,30,46,92)$,
+  $(1,2,4,14,22,44,88)$,
+  $(1,2,4,14,22,44,90)$,
+  $(1,4,6,12,24,48,96)$ \\
+  \hline
+  $P_2$ $k \geq 5$ &
+  $(2,3,6,12,44,68)$,
+  $(2,3,6,22,34,68)$,
+  $(2,3,10,16,32,64)$,
+  $(2,3,10,16,32,66)$,
+  $(2,3,16,22,44,88)$,
+  $(2,3,16,22,44,90)$,
+  $(2,4,6,22,35,70)$,
+  $(2,4,6,22,36,70)$,
+  $(2,4,6,22,36,71)$,
+  $(2,4,6,22,36,72)$,
+  $(2,4,6,29,42,84)$,
+  $(2,4,14,20,40,82)$,
+  $(2,4,15,22,44,88)$,
+  $(2,4,15,22,44,90)$,
+  $(2,4,16,22,44,90)$,
+  $(2,4,16,22,45,92)$,
+  $(2,6,9,32,50,100)$,
+  $(2,6,16,25,50,100)$,
+  $(2,7,10,20,40,80)$ \\
+  \hline
+  $P_3$ $k \geq 5$ &
+  $(3,4,8,16,32,64)$,
+  $(3,4,8,30,46,92)$,
+  $(3,4,14,22,44,88)$,
+  $(3,4,14,22,44,90)$ \\
+  \hline
+  $P_4$ $k \geq 5$ &
+  $(4,5,10,20,40,80)$ \\
+  \hline
+  $P_5$ $k \geq 5$ &
+  $(5,6,12,24,48,96)$ \\
+  \hline
+  $P_6$ $k \geq 4$ &
+  $(6,7,14,28,56)$,
+  $(6,7,14,30,58)$,
+  $(6,7,14,54,82)$,
+  $(6,7,26,40,80)$,
+  $(6,8,14,29,58)$,
+  $(6,8,14,30,58)$,
+  $(6,8,14,30,59)$,
+  $(6,8,14,55,84)$,
+  $(6,8,14,56,84)$,
+  $(6,8,14,56,85)$,
+  $(6,8,15,54,84)$,
+  $(6,8,26,40,80)$,
+  $(6,8,26,40,81)$,
+  $(6,8,26,40,82)$ \\
+  \hline
+  $P_7$ $k \geq 4$ &
+  $(7,8,16,32,64)$,
+  $(7,8,16,34,66)$,
+  $(7,8,16,62,94)$,
+  $(7,8,16,64,96)$,
+  $(7,8,30,46,92)$ \\
+  \hline
+  $P_8$ $k \geq 4$ &
+  $(8,9,18,36,72)$,
+  $(8,9,18,38,74)$ \\
+  \hline
+  $P_9$ $k \geq 4$ &
+  $(9,10,20,40,80)$,
+  $(9,10,20,42,82)$ \\
+  \hline
+  $P_{10}$ $k \geq 4$ &
+  $(10,11,22,44,88)$,
+  $(10,11,22,46,90)$,
+  $(10,12,22,45,90)$,
+  $(10,12,22,45,92)$,
+  $(10,12,24,46,93)$,
+  $(10,12,24,47,94)$,
+  $(10,12,24,47,96)$,
+  $(10,12,24,48,94)$,
+  $(10,12,24,48,95)$,
+  $(10,12,24,48,96)$ \\
+  \hline
+  \end{tabular}
+  \caption{Nested higher order Kronrod extensions $\mathcal{K}$ of the Legendre polynomials $P_n$.
+  The table lists the most deeply nested extensions for $n \leq 10$ which were found.
+  The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$
+  was never reached. Notice that extensions and especially highly nested extensions are very
+  abundant in the case of Legendre polynomials.}
+\end{table}
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|x{1cm}|x{10cm}|}
+  \hline
+  $T_n$ & $\mathcal{K} = (p_0, p_1, \ldots, p_k)$ \\
+  \hline
+  $T_1$ $k \geq ?$ &
+  computing \\
+  \hline
+  $T_2$ $k \geq ?$ &
+  computing \\
+  \hline
+  $T_3$ $k \geq 5$ &
+  $(3,4,6,12,24,48,96)$,
+  $(3,4,6,12,24,48)$,
+  $(3,4,6,12,24,96)$,
+  $(3,4,6,12,48,72)$,
+  $(3,4,6,12,72,96)$,
+  $(3,4,6,24,36,72)$,
+  $(3,4,6,36,48,96)$,
+  $(3,4,12,18,36,72)$,
+  $(3,4,18,24,48,96)$,
+  $(3,6,10,18,36,72)$,
+  $(3,10,12,24,48,96)$ \\
+  \hline
+  $T_4$ $k \geq 5$ &
+  $(4,5,8,16,32,64)$,
+  $(4,5,8,16,64,96)$,
+  $(4,5,8,32,48,96)$,
+  $(4,5,16,24,48,96)$,
+  $(4,8,13,24,48,96)$ \\
+  \hline
+  $T_5$ $k \geq 4$ &
+  $(5,6,10,20,40,80)$,
+  $(5,6,10,20,40)$,
+  $(5,6,10,20,80)$,
+  $(5,6,10,40,60)$,
+  $(5,6,10,60,80)$,
+  $(5,6,10,80,100)$,
+  $(5,6,20,30,60)$,
+  $(5,6,20,60,90)$,
+  $(5,6,30,40,80)$,
+  $(5,6,40,50,100)$,
+  $(5,10,16,30,60)$,
+  $(5,10,16,60,90)$,
+  $(5,10,30,46,90)$,
+  $(5,16,20,40,80)$,
+  $(5,20,26,50,100)$ \\
+  \hline
+  $T_6$ $k \geq 4$ &
+  $(6,7,12,24,48,96)$,
+  $(6,7,12,24,48)$,
+  $(6,7,12,24,96)$,
+  $(6,7,12,48,72)$,
+  $(6,7,12,72,96)$,
+  $(6,7,24,36,72)$,
+  $(6,7,36,48,96)$,
+  $(6,12,19,36,72)$,
+  $(6,19,24,48,96)$ \\
+  \hline
+  $T_7$ $k \geq 4$ &
+  $(7,8,14,28,56)$,
+  $(7,8,14,56,84)$,
+  $(7,8,28,42,84)$,
+  $(7,14,22,42,84)$ \\
+  \hline
+  $T_8$ $k \geq 4$ &
+  $(8,9,16,32,64)$,
+  $(8,9,16,64,96)$,
+  $(8,9,32,48,96)$,
+  $(8,16,25,48,96)$ \\
+  \hline
+  $T_9$ $k \geq 4$ &
+  $(9,10,18,36,72)$ \\
+  \hline
+  $T_{10}$ $k \geq 4$ &
+  $(10,11,20,40,80)$ \\
+  \hline
+  \end{tabular}
+  \caption{Nested higher order Kronrod extensions $\mathcal{K}$ of the Chebyshev polynomials $T_n$.
+  The table lists the most deeply nested extensions for $n \leq 10$ which were found.
+  The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$
+  was never reached. The Chebyshev polynomials also possess a rich structure of deeply nested extensions.}
+\end{table}
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|x{1cm}|x{10cm}|}
+  \hline
+  $U_n$ & $\mathcal{K} = (p_0, p_1, \ldots, p_k)$ \\
+  \hline
+  $U_1$ $k \geq ?$ &
+  computing \\
+  \hline
+  $U_2$ $k \geq 5$ &
+  $(2,3,6,12,24,48,96)$,
+  $(2,3,6,12,24,48)$,
+  $(2,3,6,12,24,96)$,
+  $(2,3,6,12,48,72)$,
+  $(2,3,6,12,72,96)$,
+  $(2,3,6,24,36,72)$,
+  $(2,3,6,36,48,96)$,
+  $(2,3,12,18,36,72)$,
+  $(2,3,18,24,48,96)$,
+  $(2,6,9,18,36,72)$,
+  $(2,9,12,24,48,96)$ \\
+  \hline
+  $U_3$ $k \geq 5$ &
+  $(3,4,8,16,32,64)$,
+  $(3,4,8,16,64,96)$,
+  $(3,4,8,32,48,96)$,
+  $(3,4,16,24,48,96)$,
+  $(3,8,12,24,48,96)$ \\
+  \hline
+  $U_4$ $k \geq 4$ &
+  $(4,5,10,20,40,80)$,
+  $(4,5,10,20,40)$,
+  $(4,5,10,20,80)$,
+  $(4,5,10,40,60)$,
+  $(4,5,10,60,80)$,
+  $(4,5,10,80,100)$,
+  $(4,5,20,30,60)$,
+  $(4,5,20,60,90)$,
+  $(4,5,30,40,80)$,
+  $(4,5,40,50,100)$,
+  $(4,10,15,30,60)$,
+  $(4,10,15,60,90)$,
+  $(4,10,30,45,90)$,
+  $(4,15,20,40,80)$,
+  $(4,20,25,50,100)$ \\
+  \hline
+  $U_5$ $k \geq 4$ &
+  $(5,6,12,24,48,96)$,
+  $(5,6,12,24,48)$,
+  $(5,6,12,24,96)$,
+  $(5,6,12,48,72)$,
+  $(5,6,12,72,96)$,
+  $(5,6,24,36,72)$,
+  $(5,6,36,48,96)$,
+  $(5,12,18,36,72)$,
+  $(5,18,24,48,96)$ \\
+  \hline
+  $U_6$ $k \geq 4$ &
+  $(6,7,14,28,56)$,
+  $(6,7,14,56,84)$,
+  $(6,7,28,42,84)$,
+  $(6,14,21,42,84)$ \\
+  \hline
+  $U_7$ $k \geq 4$ &
+  $(7,8,16,32,64)$,
+  $(7,8,16,64,96)$,
+  $(7,8,32,48,96)$,
+  $(7,16,24,48,96)$ \\
+  \hline
+  $U_8$ $k \geq 3$ &
+  $(8,9,18,36,72)$,
+  $(8,9,18,36)$,
+  $(8,9,18,72)$,
+  $(8,9,36,54)$,
+  $(8,9,54,72)$,
+  $(8,9,72,90)$,
+  $(8,18,27,54)$,
+  $(8,18,54,81)$,
+  $(8,27,36,72)$,
+  $(8,36,45,90)$ \\
+  \hline
+  $U_9$ $k \geq 3$ &
+  $(9,10,20,40,80)$,
+  $(9,10,20,40)$,
+  $(9,10,20,80)$,
+  $(9,10,40,60)$,
+  $(9,10,60,80)$,
+  $(9,10,80,100)$,
+  $(9,20,30,60)$,
+  $(9,20,60,90)$,
+  $(9,30,40,80)$,
+  $(9,40,50,100)$ \\
+  \hline
+  $U_{10}$ $k \geq 3$ &
+  $(10,11,22,44,88)$,
+  $(10,11,22,44)$,
+  $(10,11,22,88)$,
+  $(10,11,44,66)$,
+  $(10,11,66,88)$,
+  $(10,22,33,66)$,
+  $(10,22,66,99)$,
+  $(10,33,44,88)$ \\
+  \hline
+  \end{tabular}
+  \caption{Nested higher order Kronrod extensions $\mathcal{K}$ of the Chebyshev polynomials $U_n$.
+  The table lists the most deeply nested extensions for $n \leq 10$ which were found.
+  The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$
+  was never reached. The Chebyshev polynomials also possess a rich structure of deeply nested extensions.}
+\end{table}
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|x{1cm}|x{10cm}|}
+  \hline
+  $L_n$ & $\mathcal{K} = (p_0, p_1, \ldots, p_k)$ \\
+  \hline
+  $L_1$ $k \geq 3$ &
   $(1,3,5,12,24)$,
   $(1,3,5,12,25)$,
   $(1,3,5,12,26)$,
@@ -830,7 +1128,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(1,3,8,90)$,
   $(1,5,11,68)$ \\
   \hline
-  $L_2$ &
+  $L_2$ $k \geq 2$ &
   $(2,4,7,29)$,
   $(2,4,8,86)$,
   $(2,4,9,86)$,
@@ -874,7 +1172,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(2,9,48)$,
   $(2,10,58)$ \\
   \hline
-  $L_3$ &
+  $L_3$ $k \geq 2$ &
   $(3,6,41)$,
   $(3,6,42)$,
   $(3,6,43)$,
@@ -884,39 +1182,42 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(3,7,58)$,
   $(3,7,94)$ \\
   \hline
-  $L_4$ &
+  $L_4$ $k \geq 2$ &
   $\emptyset$ \\
   \hline
-  $L_5$ &
+  $L_5$ $k \geq 2$ &
   $(5,9,39)$, $(5,9,40)$ \\
   \hline
-  $L_6$ &
+  $L_6$ $k \geq 2$ &
   $\emptyset$ \\
   \hline
-  $L_7$ &
+  $L_7$ $k \geq 2$ &
   $\emptyset$ \\
   \hline
-  $L_8$ &
+  $L_8$ $k \geq 2$ &
   $(8,15,26)$ \\
   \hline
-  $L_9$ &
+  $L_9$ $k \geq 2$ &
+  $\emptyset$ \\
+  \hline
+  $L_10$ $k \geq 2$ &
   $\emptyset$ \\
   \hline
   \end{tabular}
   \caption{Nested higher order Kronrod extensions $\mathcal{K}$ of the Laguerre polynomials $L_n$.
-  The table lists all extensions for $n \leq 20$ with nesting degree $k \geq 3$ for $n=1$
-  or $k \geq 2$ for $n\geq 2$. The maximal order $p_{\mathrm{max}}$ was set to $100$. For this
-  type of polynomial, deeply nested rules are extremely sparse.}
+  The table lists the most deeply nested extensions for $n \leq 20$ which were found.
+  The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$ was never reached.
+  For this type of polynomial, deeply nested rules are extremely rare.}
 \end{table}
 
 
 \begin{table}[h]
   \centering
-  \begin{tabular}{|l|p{10cm}|}
+  \begin{tabular}{|x{1cm}|x{10cm}|}
   \hline
-  $H_n$ & $\mathcal{K}$ \\
+  $H_n$ & $\mathcal{K} = (p_0, p_1, \ldots, p_k)$ \\
   \hline
-  $H_1$ &
+  $H_1$ $k \geq 4$ &
   $(1,2,6,10,16,68)$,
   $(1,2,6,10,18,66)$,
   $(1,2,6,10,18,68)$,
@@ -943,7 +1244,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(1,4,8,14,96)$,
   $(1,8,14,22,90)$ \\
   \hline
-  $H_2$ &
+  $H_2$ $k \geq 4$ &
   $(2,3,4,8,24)$,
   $(2,3,4,8,50)$,
   $(2,3,4,8,52)$,
@@ -967,7 +1268,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(2,3,6,16,92)$,
   $(2,3,6,16,98)$ \\
   \hline
-  $H_3$ &
+  $H_3$ $k \geq 3$ &
   $(3,6,10,16,68)$,
   $(3,6,10,18,66)$,
   $(3,6,10,18,68)$,
@@ -992,7 +1293,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(3,6,24,40)$,
   $(3,6,24,44)$ \\
   \hline
-  $H_4$ &
+  $H_4$ $k \geq 3$ &
   $(4,5,10,36,56)$,
   $(4,5,10,36)$,
   $(4,5,10,38)$,
@@ -1003,25 +1304,30 @@ will be a Gauss rule of order $n$ having $n$ points.
   $(4,5,22,42)$,
   $(4,5,30,48)$ \\
   \hline
-  $H_5$ &
+  $H_5$ $k \geq 3$ &
   $(5,8,14,96)$ \\
   \hline
-  $H_6$ &
-  $(6,9,14,68)$, $(6,9,16,66)$, $(6,9,16,68)$ \\
+  $H_6$ $k \geq 3$ &
+  $(6,9,14,68)$,
+  $(6,9,16,66)$,
+  $(6,9,16,68)$ \\
   \hline
-  $H_7$ &
+  $H_7$ $k \geq 3$ &
   $\emptyset$ \\
   \hline
-  $H_8$ &
+  $H_8$ $k \geq 3$ &
   $(8,11,18,66)$ \\
   \hline
-  $H_9$ &
+  $H_9$ $k \geq 3$ &
   $(9,14,22,90)$ \\
+  \hline
+  $H_10$ $k \geq 3$ &
+  $\emptyset$ \\
   \hline
   \end{tabular}
   \caption{Nested higher order Kronrod extensions $\mathcal{K}$ of the Hermite polynomials $H_n$.
-  The table lists all extensions for $n \leq 20$ with nesting degree $k \geq 4$ for $n=1$ and $n=2$
-  or $k \geq 3$ for $n\geq 3$. The maximal order $p_{\mathrm{max}}$ was set to $100$.}
+  The table lists the most deeply nested extensions for $n \leq 20$ which were found.
+  The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$ was never reached.}
 \end{table}
 
 
