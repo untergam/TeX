@@ -228,7 +228,7 @@ By explicit computation one can easily show that the following closed
 form expressions for the moments hold:
 
 \begin{savenotes}
-\begin{align} \label{eq:moments_explicit}
+\begin{align}
   \int_{-1}^{1} t^n \di{t} & = \frac{1 + (-1)^n}{n + 1} =
   \begin{cases}
     \frac{2}{n + 1} & \quad n \quad \mathrm{even} \\
@@ -358,7 +358,7 @@ We start with the equation \eqref{eq:linsys_for_weights} shown above:
 This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \vec{r}$:
 
 \begin{equation}
-  \label{eq:linsys_for_weights}
+  \label{eq:linsys_for_weights_matrix}
   \begin{bmatrix}
     \gamma_1^0     & \hdots & \gamma_i^0     & \hdots & \gamma_n^0 \\
     \vdots         & {}     & \vdots         & {}     & \vdots \\
@@ -505,7 +505,7 @@ Explicitly stated, we require that:
 \end{equation}
 
 The second step in the validation of an extension concerns the weights.
-While we infer from \eqref{eq:linsys_for_weights} that the weights are all
+While we infer from \eqref{eq:linsys_for_weights_matrix} that the weights are all
 real, they can still be negative. Negative weights can affect the stability
 of a quadrature rule. For that reason one usually drops rules having negative
 weights. By requiring that:
@@ -841,8 +841,12 @@ will be a Gauss rule of order $n$ having $n$ points.
   $P_4$ $k \geq 5$ &
   $(4,5,10,20,40,80)$ \\
   \hline
-  $P_5$ $k \geq 5$ &
-  $(5,6,12,24,48,96)$ \\
+  $P_5$ $k \geq 4$ &
+  $(5,6,12,24,48,96)$,
+  $(5,6,12,24,48)$,
+  $(5,6,12,46,70)$,
+  $(5,6,22,34,68)$,
+  $(5,6,34,46,92)$ \\
   \hline
   $P_6$ $k \geq 4$ &
   $(6,7,14,28,56)$,
@@ -1200,7 +1204,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $L_9$ $k \geq 2$ &
   $\emptyset$ \\
   \hline
-  $L_10$ $k \geq 2$ &
+  $L_{10}$ $k \geq 2$ &
   $\emptyset$ \\
   \hline
   \end{tabular}
@@ -1321,7 +1325,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   $H_9$ $k \geq 3$ &
   $(9,14,22,90)$ \\
   \hline
-  $H_10$ $k \geq 3$ &
+  $H_{10}$ $k \geq 3$ &
   $\emptyset$ \\
   \hline
   \end{tabular}
@@ -1330,13 +1334,7 @@ will be a Gauss rule of order $n$ having $n$ points.
   The maximal order $p_{\mathrm{max}}$ was set to $100$ and the recursion limit $k_{\mathrm{max}}$ was never reached.}
 \end{table}
 
-
-\marginpar{About extension towers}
-\marginpar{Tree graphs go here}
-
-\marginpar{
-cite smolyak, complexity bound in nesting
-}
+\marginpar{cite smolyak, complexity bound in nesting?}
 
 
 \FloatBarrier
