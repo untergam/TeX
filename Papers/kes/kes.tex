@@ -436,64 +436,85 @@ Validation of the extensions computed is necessary and happens in
 two separate steps where the second one is optional. Even if we
 can solve equation \eqref{eq:linsys_for_extension} and algorithm
 \ref{alg:find_extension} does return a non-vanishing polynomial $E_p$,
-this does not guarantee we have found a suitable extensions.
-As an example we look at possible extensions of the Gauss-Hermite rule
-given by the polynomial $H_3 = 8t^3 - 12t$. Searching for an extension
-$E_4$ of degree 4 we get the polynomial $E_4 = t^4 - 5t^2 - \frac{5}{4}$.
+this does not guarantee we have found a suitable extension.
+As an example we look at possible extensions $E_p$ of the Gauss-Laguerre rule
+given by the polynomial $L_2 = \frac{1}{2}t^2 - 2t + 1$, having two quadrature
+points $t = 2 \pm \sqrt{2}$.
+Searching for an extension $E_3$ of degree 3 we get the polynomial $E_3 = t^3 - 9t^2 + 9t - 33$.
 Computing the roots and therewith the quadrature nodes algebraically we get:
 \begin{align*}
-  t &= \pm\sqrt{\sqrt{\frac{15}{2}}+\frac{5}{2}} \approx \pm 2.288801605\\
-  t &= \pm \imath \sqrt{\frac{1}{2} \left(\sqrt{30}-5\right)} \approx \pm 0.4884800789 \imath \,.
+  t & = 3 -\frac{1}{2} \left(1 \pm \imath \sqrt{3}\right) \sqrt[3]{30 - 6\sqrt{19}}
+          -\frac{1}{2} \left(1 \mp \imath \sqrt{3}\right) \sqrt[3]{30 + 6\sqrt{19}} \\
+  t & = 3 + \sqrt[3]{30 - 6\sqrt{19}} + \sqrt[3]{30 + 6\sqrt{19}} \,.
 \end{align*}
-Numerical computation with at least 20 digits of precision by ball arithmetic gives:
-\begin{table}[h]
-  \centering
+Numerical computation with at least 20 digits of precision by ball arithmetic
+gives the following numbers (midpoint) and error bars (radius):
+\begin{center}
   \begin{tabular}{|l|l|}
   \hline
   Midpoint & Radius \\
   \hline
-  $-2.2888016051 - 2.12589347958 \cdot 10^{-128}\imath$   & $\pm (6.24 \cdot 10^{-63}, 6.24 \cdot 10^{-63}\imath)$ \\
-  $2.2888016051 + 1.55755275766 \cdot 10^{-128}\imath$    & $\pm (6.24 \cdot 10^{-63}, 6.24 \cdot 10^{-63}\imath)$ \\
-  $-4.76485148133 \cdot 10^{-129} - 0.488480078945\imath$ & $\pm (8.42 \cdot 10^{-64}, 8.42 \cdot 10^{-64}\imath)$ \\
-  $-4.75946861246 \cdot 10^{-129} + 0.488480078945\imath$ & $\pm (8.42 \cdot 10^{-64}, 8.42 \cdot 10^{-64}\imath)$ \\
-%   $-2.2888016051038216989 + 9.0133709461704339673e-65\imath$  & $\pm (4.12e-31, 4.12e-31\imath)$ \\
-%   $2.2888016051038216989 + 1.3445251464279069435e-64\imath$  & $\pm (4.12e-31, 4.12e-31\imath)$ \\
-%   $-1.6077784669939595885e-66 - 0.48848007894471046411\imath$ & $\pm (8.6e-32, 8.6e-32\imath)$ \\
-%   $1.7455978790703967984e-64 + 0.48848007894471046411\imath$ & $\pm (8.6e-32, 8.6e-32\imath)$ \\
+  $8.39619697401 - 5.58635992795 \cdot 10^{-56}\imath$ & $\pm (3.07 \cdot 10^{-55}, 3.07 \cdot 10^{-55}\imath)$ \\
+  $0.301901512994 + 1.95938927647\imath$               & $\pm (2.16 \cdot 10^{-58}, 2.16 \cdot 10^{-58}\imath)$ \\
+  $0.301901512994 - 1.95938927647\imath$               & $\pm (8.96 \cdot 10^{-63}, 8.96 \cdot 10^{-63}\imath)$ \\
+%   $8.3961969740111558247 - 5.5863599279532526469 \cdot 10^{-56}\imath$ & $\pm (3.07\cdot 10^{-55}, 3.07\cdot 10^{-55}\imath)$ \\
+%   $0.30190151299442208767 + 1.9593892764699326199\imath$               & $\pm (2.16\cdot 10^{-58}, 2.16\cdot 10^{-58}\imath)$ \\
+%   $0.30190151299442208767 - 1.9593892764699326199\imath$               & $\pm (8.96\cdot 10^{-63}, 8.96\cdot 10^{-63}\imath)$ \\
   \hline
   \end{tabular}
-\end{table}
+\end{center}
 Obviously two of the nodes are complex-valued. This is actually guaranteed because
 the balls that contain the roots do not intersect with the real line.
 Hence this is not a valid extension.
-Looking for an extension of order 5 we see that there is none. The next higher extension
-which exists is $E_6 = t^6 -\frac{105}{8}t^4 + \frac{315}{8}t^2 - \frac{315}{32}$.
-Computing the roots of $E_6$ again up to at least 20 digits precision by ball arithmetic gives:
-\begin{table}[h]
-  \centering
+Looking for an extension of order 4 we find
+$E_4 = t^4 - \frac{272}{13}t^3 + \frac{1512}{13}t^2 - \frac{1824}{13}t + \frac{552}{13}$.
+Computing the roots of $E_4$ again up to at least 20 digits of precision gives:
+\begin{center}
   \begin{tabular}{|l|l|}
   \hline
   Midpoint & Radius \\
   \hline
-  $-2.95921077906 - 2.41239124804 \cdot 10^{-194}\imath$  & $\pm (2.48 \cdot 10^{-62}, 2.48 \cdot 10^{-62}\imath)$ \\
-  $-2.0232301911 + 8.64516353565 \cdot 10^{-224}\imath$   & $\pm (3.03 \cdot 10^{-62}, 3.03 \cdot 10^{-62}\imath)$ \\
-  $-0.524033547487 + 1.58006659246 \cdot 10^{-187}\imath$ & $\pm (3.72 \cdot 10^{-63}, 3.72 \cdot 10^{-63}\imath)$ \\
-  $0.524033547487 + 2.19180934901 \cdot 10^{-193}\imath$  & $\pm (2.09 \cdot 10^{-63}, 2.09 \cdot 10^{-63}\imath)$ \\
-  $2.0232301911 - 2.0066613913 \cdot 10^{-197}\imath$     & $\pm (4.13 \cdot 10^{-62}, 4.13 \cdot 10^{-62}\imath)$ \\
-  $2.95921077906 - 6.84940421565 \cdot 10^{-194}\imath$   & $\pm (2.3 \cdot 10^{-62}, 2.3 \cdot 10^{-62}\imath)$ \\
-%   $-2.9592107790638377223 + 1.7977637202018041576e-94\imath$  & $\pm (1.8e-30, 1.8e-30\imath)$ \\
-%   $-2.0232301911005156592 - 2.0407955812719218635e-117\imath$ & $\pm (2.89e-30, 2.89e-30\imath)$ \\
-%   $-0.52403354748695764515 - 2.4545467326488632765e-91\imath$ & $\pm (2.59e-31, 2.59e-31\imath)$ \\
-%   $0.52403354748695764515 + 1.8726705418768793309e-95\imath$ & $\pm (2.59e-31, 2.59e-31\imath)$ \\
-%   $2.0232301911005156592 + 1.4630238608413119772e-97\imath$  & $\pm (2.26e-30, 2.26e-30\imath)$ \\
-%   $2.9592107790638377223 - 3.9794249014883685781e-96\imath$  & $\pm (1.8e-30, 1.8e-30\imath)$ \\
+  $12.486507079 + 1.54779865518 \cdot 10^{-135}\imath$   & $\pm (2.26 \cdot 10^{-61}, 2.26 \cdot 10^{-61}\imath)$ \\
+  $6.92395654571 - 9.45876955945 \cdot 10^{-136}\imath$  & $\pm (4.77 \cdot 10^{-61}, 4.77 \cdot 10^{-61}\imath)$ \\
+  $1.04067484064 - 1.40662202686 \cdot 10^{-176}\imath$  & $\pm (1.16 \cdot 10^{-61}, 1.16 \cdot 10^{-61}\imath)$ \\
+  $0.471938457685 + 4.23901787652 \cdot 10^{-155}\imath$ & $\pm (1.04 \cdot 10^{-61}, 1.04 \cdot 10^{-61}\imath)$ \\
+%   $12.486507079040894342 - 8.1602535315123270486 \cdot 10^{-67}\imath$  & $\pm (1.87 \cdot 10^{-29}, 1.87 \cdot 10^{-29}\imath)$ \\
+%   $6.9239565457104964806 + 9.2730153767185534643 \cdot 10^{-68}\imath$  & $\pm (3.32 \cdot 10^{-29}, 3.32 \cdot 10^{-29}\imath)$ \\
+%   $1.0406748406401594478 + 1.9354816536399788732 \cdot 10^{-82}\imath$  & $\pm (9.12 \cdot 10^{-30}, 9.12 \cdot 10^{-30}\imath)$ \\
+%   $0.47193845768537280597 - 2.7619821190421472721 \cdot 10^{-70}\imath$ & $\pm (7.78 \cdot 10^{-30}, 7.78 \cdot 10^{-30}\imath)$ \\
   \hline
   \end{tabular}
-\end{table}
-The imaginary parts are tiny and we safely assume that the roots are indeed all real.
-This result is in principle not guaranteed, the balls do all intersect the real line
-but also extend into the complex plane. However we can recompute these numbers with higher
-precision and obtain smaller radii up to a point where we are satisfied with the result.
+\end{center}
+The imaginary parts are tiny and we may safely assume that the roots are indeed all real
+and positive. This result is in principle not guaranteed, the balls do all intersect the
+real line but also extend into the complex plane. However we can recompute these numbers
+with higher precision and obtain smaller radii up to a point where we are satisfied with
+the result.
+The extension $E_4$ has one drawback, namely there are negative weights for the resulting
+quadrature rule. Numerical computation of the weights (ordered by nodes) yields:
+\begin{center}
+  \begin{tabular}{|l|l|}
+  \hline
+  Midpoint & Radius \\
+  \hline
+  $2.72885335563 \cdot 10^{-5} + 1.81693615677 \cdot 10^{-140}\imath$ & $\pm (4.59 \cdot 10^{-31}, 3.19 \cdot 10^{-61}\imath)$ \\
+  $0.00425721115051 + 2.50073034862 \cdot 10^{-138}\imath$            & $\pm (6.87 \cdot 10^{-30}, 4.77 \cdot 10^{-60}\imath)$ \\
+  $0.0923319982492 - 9.18105623974 \cdot 10^{-138}\imath$             & $\pm (6.32 \cdot 10^{-29}, 4.38 \cdot 10^{-59}\imath)$ \\
+  $1.05270222681 + 8.51307944261 \cdot 10^{-137}\imath$               & $\pm (4.4 \cdot 10^{-28},  3.03 \cdot 10^{-58}\imath)$ \\
+  $-3.25091510452 - 2.96660678416 \cdot 10^{-136}\imath$              & $\pm (1.83 \cdot 10^{-27}, 1.24 \cdot 10^{-57}\imath)$ \\
+  $3.10159637977 + 2.1819204052 \cdot 10^{-136}\imath$                & $\pm (2.24 \cdot 10^{-27}, 1.53 \cdot 10^{-57}\imath)$ \\
+%   $2.7288533556335961714 \cdot 10^{-5} + 1.8169361567679507853 \cdot 10^{-140}\imath)$ & $\pm (4.59 \cdot 10^{-31}, 3.19 \cdot 10^{-61}\imath)$ \\
+%   $0.0042572111505089950348 + 2.5007303486216135832 \cdot 10^{-138}\imath)$  & $\pm (6.87 \cdot 10^{-30}, 4.77 \cdot 10^{-60}\imath)$ \\
+%   $0.092331998249178834251 - 9.1810562397406881314 \cdot 10^{-138}\imath)$   & $\pm (6.32 \cdot 10^{-29}, 4.38 \cdot 10^{-59}\imath)$ \\
+%   $1.0527022268092954566 + 8.5130794426057161648 \cdot 10^{-137}\imath)$     & $\pm (4.4 \cdot 10^{-28}, 3.03 \cdot 10^{-58}\imath)$  \\
+%   $-3.250915104516208807 - 2.966606784162811204 \cdot 10^{-136}\imath)$      & $\pm (1.83 \cdot 10^{-27}, 1.24 \cdot 10^{-57}\imath)$ \\
+%   $3.1015963797736691851 + 2.181920405197753538 \cdot 10^{-136}\imath)$      & $\pm (2.24 \cdot 10^{-27}, 1.53 \cdot 10^{-57}\imath)$ \\
+  \hline
+  \end{tabular}
+\end{center}
+Turning our attention to the extension
+$E_5 = t^5 - \frac{1625}{47}t^4 + \frac{55000}{141}t^3 - \frac{76200}{47}t^2 + \frac{87000}{47}t - \frac{8840}{47}$
+we will find that all its roots are on the positive real axis and all weights are strictly positive.
 
 To validate an extension $E_p$ of $P_n$ we first check that the roots $\{\gamma_i\}_{i=1}^p$ of
 this polynomial $E_p$ actually lie within the region $\Omega$.
