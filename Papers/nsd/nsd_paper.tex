@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
-
+\usepackage{subfloat}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
@@ -13,6 +13,8 @@
 
 \usepackage[pagebackref,hyperindex=true]{hyperref}
 \hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
+
+\usepackage[version=3]{mhchem}
 
 \include{header_math}
 \include{header_gfx}
@@ -49,31 +51,49 @@ by Huybrechs and some others. The main technique is described in \cite{HV_hoq} f
 the one-dimensional case and in \cite{HV_cub} for multivariate integrands.
 Semi-infinite intervals are treated in \cite{H_nsd_sii}.
 
-\marginpar{to cite \cite{AH_cgq_it}}
+\marginpar{cite \cite{AH_cgq_it}}
 
 
 \section{About semi-classical wavepackets}
 
-\marginpar{Definition of wavepackets.}
 \marginpar{Exact formula for 1D overlap integral (?)}
 \marginpar{Transformation to NSD highly oscillatory integral}
-\marginpar{Explicit $A$, $b$, $c$}
 \marginpar{Properties of $A$, sym + i sym}
 \marginpar{Put this section at the end?}
 
 
 In this section we look at the wavepackets involved in the computation
-of overlap integrals. Each wavepacket $\phi$ is of the form:
+of overlap integrals. Semiclassical wavepackets are constructed from a
+Groundstate
+\begin{align*}
+  \phi_{\vec{0}}\left(\vec{x}\right)
+  =
+  (\pi\varepsilon^2)^{-\frac{D}{4}} (\det\mat{Q})^{-\frac{1}{2}}
+  \exp \left( \frac{\imath}{2\varepsilon^2}
+  \dotp{(\vec{x}-\vec{q})}{\mat{P}\mat{Q}\inv(\vec{x}-\vec{q})}
+  + \frac{\imath}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
+  \right)
+\end{align*}
+by raising and lowering operators $\mathcal{R}$ and $\mathcal{L}$
+and in the multi-dimensional case counted by a multi-index
+$\vec{k} \in \mathbb{N}_0^D$. There are the parameters for average
+position $\vec{q} \in \mathbb{R}^D$ and momentum $\vec{p} \in \mathbb{R}^D$
+and the parameters $\mat{Q} \in \mathbb{C}^{D \times D}$ and $\mat{P} \in \mathbb{C}^{D \times D}$
+for position and momentum spread. These parameters are usually collected
+in the set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
+Further there is the semiclassical scaling parameter $\varepsilon > 0$.
+For many more details describing these wavepackets, see \cite{H_ladder_operators}
+and \cite{B_master_thesis}.
+What matters most here is, that each wavepacket $\phi$ is of the form:
 
 \begin{equation}
   \phi(\vec{x}) \sim p\left(\vec{x}\right)\exp\left(\frac{i}{\varepsilon^2} g\left(\vec{x}\right)\right) \,.
 \end{equation}
 
-This is sufficient for the steepest descent technique to be applicable.
+This form is sufficient for the steepest descent technique to be applicable.
 Indeed, comparing to the integrand in \eqref{eq:oscillatory_integral},
 we find that $\omega = \frac{1}{\varepsilon^2}$. The method becomes
 better the smaller $\varepsilon$ is.
-
 The actual oscillator $g$ is of the form:
 
 \begin{equation}
@@ -336,20 +356,20 @@ The integral we want to compute is:
 and by using the expanded form of $g$ it can be written as:
 
 \begin{equation}
-\begin{split}
+\begin{alignedat}{2}
  I & = \iiint f\left(\vec{x}\right)
-              \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
-              \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
-              \exp\left(i \omega \left(t_{3,3} x_3^2 \right) \right)
+             & & \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right) \\
+             & & & \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right) \\
+             & & & \exp\left(i \omega \left(t_{3,3} x_3^2 \right) \right)
        \mathrm{d}\vec{x} \\
    & = \iiint f\left(\vec{x}\right)
-              \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
-            \mathrm{d}x_1
-              \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
-            \mathrm{d}x_2
-              \exp\left(i \omega \left(t_{3,3} x_3^2 \right) \right)
+             & & \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
+            \mathrm{d}x_1 \\
+             & & & \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
+            \mathrm{d}x_2 \\
+             & & & \exp\left(i \omega \left(t_{3,3} x_3^2 \right) \right)
             \mathrm{d}x_3 \,.
-\end{split}
+\end{alignedat}
 \end{equation}
 
 We pulled out of each integral the parts of the oscillator
@@ -376,11 +396,11 @@ we find the relevant oscillator $g_1(x_1, x_2, x_3)$ to be:
 \end{equation}
 
 where we treat the variables $x_2$ and $x_3$ as parameters.
-Let $x_1^*$ denote the (perhaps complex) stationary point of
-$g_1$. The path equation then becomes:
-
-\marginpar{Actually, not a 'point' but $x_1^*$ depends on $x_2$ up to $x_N$,
-so rather a 'subspace' thing}
+Let $x_1^*$ denote the (perhaps complex) stationary point
+\footnote{Actually, $x_i^{*}$ is not a \emph{point}. It depends
+on $x_{i+1}$ up to $x_N$, so $x_i^{*}$ is rather a $N-i$
+dimensional object.}
+of $g_1$. The path equation then becomes:
 
 \begin{equation}
   g_1\left(h_1(\tau_1)\right) = g_1\left(x_1^{*}\right) + i \tau_1
@@ -404,16 +424,16 @@ $h_1\left(\tau_1\right)$ parametrized in the variable $\tau_1 \in [0,\infty[$.
 Note that, at this point $h_1$ still depends on $x_2$ and $x_3$.
 Transforming the integrand of this first integral we find:
 
-\begin{equation}
+\begin{equation*}
  i_1\left(\tau_1, x_2, x_3\right) := f\left(h_1(\tau_1, x_2, x_3), x_2, x_3\right)
                                      \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
                                      \exp\left(- \omega \tau_1 \right)
                                      \pdiff{h_1\left(\tau_1, x_2, x_3\right)}{\tau_1}
-\end{equation}
+\end{equation*}
 
 and for the integral itself:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
   I_1\left(x_2, x_3\right) & = \int_0^{\infty} i_1\left(\tau_1, x_2, x_3\right) \mathrm{d}\tau_1 \\
                            & = \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
@@ -422,7 +442,7 @@ and for the integral itself:
                                                \pdiff{h_1\left(\tau_1, x_2, x_3\right)}{\tau_1}
                                \mathrm{d}\tau_1 \,.
 \end{split}
-\end{equation}
+\end{equation*}
 
 We pull out the prefactor $\exp\left(i \omega k_1\left(x_2, x_3\right) \right)$
 constant with respect to $x_1$ and call it $p_1\left(x_2, x_3\right)$.
@@ -1751,12 +1771,164 @@ Some open issues are:
 \end{itemize}
 
 
-\section{Examples}
+\section{Numerical Examples}
 
-\subsection{Two-Packet toy example}
+\subsection{Motivation}
 
-Show breakdown of Gauss Hermite quadrature even for small momenta
-Convergence of NSD for arbitrary momenta
+The initial motivation for this research originates from the computation of autocorrelations
+of wavepackets $\Psi$ like:
+\begin{equation} \label{eq:compute_ac_wavepackets}
+  I = \Braket{\Psi[\Pi] | \Psi[\Pi^{\prime}]}
+    = \idotsint_{\mathbb{R}^{D}} \conj{\Psi[\Pi]} \Psi[\Pi^{\prime}] \mathrm{d}\vec{x} \,.
+\end{equation}
+Computing that integral by standard numerical quadrature schemes turns out to be
+very difficult. In some most interesting cases where $\Pi \approx \Pi^{\prime}$ holds,
+Gaussian quadrature introduces huge errors and hence spurious correlations.
+
+We studied the time-dependent Schr\"odinger equation with a wavepacket $\Psi$ propagating in
+a Morse potential $V(x)$. The potential was fit to experimental data which are taken from
+\cite{SIZ_hg2}. The Semiclassical parameter $\varepsilon = 0.048360$ matches the nuclear
+dynamics of the mercury compound \ce{Hg2}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./fig/ac_mercurial_morse.pdf}
+  \caption{Autocorrelation of the Mercury dynamics computed with classical
+  Gauss-Hermite quadrature and with the steepest descent method each with several
+  numbers of quadrature points. Only the numerical steepest descent transformation
+  yields accurate results.}
+  \label{fig:ac_mercurial_morse}
+\end{figure}
+
+Gauss-Hermite quadrature with any number of nodes shows high spurious autocorrelation bumps.
+Using the steepest descent transformation before applying a quadrature scheme gives
+correct results for an even smaller number of nodes.
+
+In the following we will perform numerical simulations and shows the
+robustness of this new technique.
+
+
+\subsection{Two-Packet Experiment}
+
+In this section we show the insufficiency of the Gauss-Hermite quadrature
+for \eqref{eq:compute_ac_wavepackets}. The setup of this experiment consists
+of two wavepackets $\phi[\Pi]$ and $\phi[\Pi^\prime]$. Both are fixed in space
+at positions $q$ and $q^\prime$. Next we direct the momenta $p$ and $p^\prime$
+towards each other ($p^\prime = -p$) and start increasing their magnitude $|p|$.
+The procedure is shown also in figure \ref{fig:convergence_setup}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\linewidth]{./fig/convergence_setup.pdf}
+  \caption{Setup of the first experiment. There are two wavepackets $\Psi$
+    and $\Psi^\prime$ located next to each other at fixed positions $q$ and
+    $q^\prime$. We set increasing momenta $p$ and $p^\prime$
+    in opposite direction.}
+  \label{fig:convergence_setup}
+\end{figure}
+
+The higher the momenta, the more oscillations appear in the product $\conj{\phi}(x) \phi^\prime(x)$.
+These oscillations are difficult for Gauss Hermite quadrature to catch and it will
+break down even for relatively small momenta. On the other hand, since the
+steepest descent transformation applies to arbitrary high oscillator frequency,
+it perfectly handles arbitrary momenta and converges fast to the correct
+overlap integral value.
+
+For the one-dimensional case there exists an analytic formula for computing
+the integral. Evaluation is very expensive but can still server as exact
+reference solution.
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_1d_conv_p_0_0_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_1d_conv_p_0_0_val_nsd}
+  \end{subfigure} \\
+    \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_qr.pdf}
+    \caption{Error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_0_0_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_nsd.pdf}
+    \caption{Error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_0_0_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_1d_conv_p_0_0}
+  \caption{Experiment with $\phi_{0}$ and $\phi_{0}^{\prime}$.
+  The parameters are:
+  $q=-0.2$, $p=1.5$, $Q=1.0$, $P=1.0\imath$ and
+  $q^\prime=0.125$, $p^\prime=-1.5$, $Q^\prime=0.8$, $P^\prime=1.25\imath$
+  with $\varepsilon = 0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_1d_conv_p_2_1_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_1d_conv_p_2_1_val_nsd}
+  \end{subfigure} \\
+    \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_qr.pdf}
+    \caption{Error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_2_1_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_nsd.pdf}
+    \caption{Error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_2_1_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_1d_conv_p_2_1}
+  \caption{Experiment with $\phi_{2}$ and $\phi_{1}^{\prime}$.
+  The parameters are:
+  $q=-0.2$, $p=1.5$, $Q=1.0$, $P=1.0\imath$ and
+  $q^\prime=0.125$, $p^\prime=-1.5$, $Q^\prime=0.8$, $P^\prime=1.25\imath$
+  with $\varepsilon = 0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_1d_conv_p_11_9_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_1d_conv_p_11_9_val_nsd}
+  \end{subfigure} \\
+    \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_qr.pdf}
+    \caption{Error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_11_9_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_nsd.pdf}
+    \caption{Error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_11_9_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_1d_conv_p_2_1}
+  \caption{Experiment with $\phi_{11}$ and $\phi_{9}^{\prime}$.
+  The parameters are:
+  $q=-0.2$, $p=1.2$, $Q=1.0$, $P=1.0\imath$ and
+  $q^\prime=0.2$, $p^\prime=-1.2$, $Q^\prime=0.5$, $P^\prime=2.0\imath$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\marginpar{comment figures}
+\marginpar{oscillation in polynomial}
+
+
 
 Figures:
 \begin{itemize}
@@ -1780,7 +1952,7 @@ Show a 2D example
 Additional oscillations around true autocorrelation function
 
 \bibliographystyle{plain}
-\bibliography{nsd}
+\bibliography{nsd,chem,mt,own}
 
 
 \end{document}
