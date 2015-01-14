@@ -6,6 +6,7 @@
 \usepackage{subfloat}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{placeins}
 
 \usepackage{color}
 \definecolor{linkcol}{rgb}{0,0,0.4}
@@ -1849,14 +1850,24 @@ reference solution.
     \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
     \label{fig:tp_1d_conv_p_0_0_val_nsd}
   \end{subfigure} \\
-    \begin{subfigure}{0.5\linewidth}
+  \begin{subfigure}{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_qr.pdf}
-    \caption{Error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
     \label{fig:tp_1d_conv_p_0_0_err_qr}
   \end{subfigure}
   \begin{subfigure}{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_nsd.pdf}
-    \caption{Error of the steepest descent method compared to the exact solution.}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_0_0_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_0_0_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
     \label{fig:tp_1d_conv_p_0_0_err_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_p_0_0}
@@ -1878,14 +1889,24 @@ reference solution.
     \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
     \label{fig:tp_1d_conv_p_2_1_val_nsd}
   \end{subfigure} \\
-    \begin{subfigure}{0.5\linewidth}
+  \begin{subfigure}{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_qr.pdf}
-    \caption{Error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
     \label{fig:tp_1d_conv_p_2_1_err_qr}
   \end{subfigure}
   \begin{subfigure}{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_nsd.pdf}
-    \caption{Error of the steepest descent method compared to the exact solution.}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_2_1_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_2_1_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
     \label{fig:tp_1d_conv_p_2_1_err_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_p_2_1}
@@ -1907,14 +1928,24 @@ reference solution.
     \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
     \label{fig:tp_1d_conv_p_11_9_val_nsd}
   \end{subfigure} \\
-    \begin{subfigure}{0.5\linewidth}
+  \begin{subfigure}{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_qr.pdf}
-    \caption{Error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
     \label{fig:tp_1d_conv_p_11_9_err_qr}
   \end{subfigure}
   \begin{subfigure}{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_nsd.pdf}
-    \caption{Error of the steepest descent method compared to the exact solution.}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_11_9_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_1d_conv_p_11_9_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
     \label{fig:tp_1d_conv_p_11_9_err_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_p_2_1}
@@ -1927,6 +1958,236 @@ reference solution.
 
 \marginpar{comment figures}
 \marginpar{oscillation in polynomial}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_2d_conv_p_00_00_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_2d_conv_p_00_00_val_nsd}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_err_qr.pdf}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_00_00_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_err_nsd.pdf}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_00_00_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_00_00_err_rel_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_00_00_err_rel_nsd}
+  \end{subfigure}
+  \label{fig:tp_2d_conv_p_00_00}
+  \caption{Experiment with $\phi_{0,0}$ and $\phi_{0,0}^{\prime}$.
+  The parameters are:
+  $\vec{q} = (-0.1,  0.1)$,
+  $\vec{p} = ( 1.0, -0.1)$,
+  $\mat{Q} = ( 1.0,       0; 0, 1.0)$
+  $\mat{P} = ( 1.0\imath, 0; 0, 1.0\imath)$
+  and
+  $\vec{q}^\prime = ( 0.1, 0.1)$,
+  $\vec{p}^\prime = (-1.0, 0.1)$,
+  $\mat{Q}^\prime = ( 1.0,       0; 0, 1.0)$,
+  $\mat{P}^\prime = ( 1.0\imath, 0; 0, 1.0\imath)$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,1)_(1,0)_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_2d_conv_p_01_10_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,1)_(1,0)_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_2d_conv_p_01_10_val_nsd}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,1)_(1,0)_err_qr.pdf}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_01_10_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,1)_(1,0)_err_nsd.pdf}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_01_10_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,1)_(1,0)_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_01_10_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,1)_(1,0)_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_01_10_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_2d_conv_p_01_10}
+  \caption{Experiment with $\phi_{0,1}$ and $\phi_{1,0}^{\prime}$.
+  The parameters are:
+  $\vec{q} = (-0.1,  0.1)$,
+  $\vec{p} = ( 1.0, -0.1)$,
+  $\mat{Q} = ( 1.0,       0; 0, 1.0)$
+  $\mat{P} = ( 1.0\imath, 0; 0, 1.0\imath)$
+  and
+  $\vec{q}^\prime = ( 0.1, 0.1)$,
+  $\vec{p}^\prime = (-1.0, 0.1)$,
+  $\mat{Q}^\prime = ( 1.0,       0; 0, 1.0)$,
+  $\mat{P}^\prime = ( 1.0\imath, 0; 0, 1.0\imath)$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_2d_conv_p_88_88_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_2d_conv_p_88_88_val_nsd}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_err_qr.pdf}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_88_88_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_err_nsd.pdf}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_88_88_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_88_88_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_2d_conv_p_88_88_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_2d_conv_p_88_88}
+  \caption{Experiment with $\phi_{8,8}$ and $\phi_{8,8}^{\prime}$.
+  The parameters are:
+  $\vec{q} = (-0.1,  0.1)$,
+  $\vec{p} = ( 1.0, -0.1)$,
+  $\mat{Q} = ( 1.0,       0; 0, 1.0)$
+  $\mat{P} = ( 1.0\imath, 0; 0, 1.0\imath)$
+  and
+  $\vec{q}^\prime = ( 0.1, 0.1)$,
+  $\vec{p}^\prime = (-1.0, 0.1)$,
+  $\mat{Q}^\prime = ( 2.0,       0; 0, 0.5)$,
+  $\mat{P}^\prime = ( 0.5\imath, 0; 0, 2.0\imath)$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_4d_conv_p_0000_0000_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_4d_conv_p_0000_0000_val_nsd}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_err_qr.pdf}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_0000_0000_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_err_nsd.pdf}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_0000_0000_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_0000_0000_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_0000_0000_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_4d_conv_p_0000_0000}
+  \caption{Experiment with $\phi_{0,0,0,0}$ and $\phi_{0,0,0,0}^{\prime}$.
+  The parameters are:
+  $\vec{q} = (-0.1, -0.1, -0.1, -0.1)$,
+  $\vec{p} = ( 0.2, -0.2, -0.2,  0.2)$,
+  $\mat{Q} = \mat{1}$
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = ( 0.1, 0.1, 0.1,  0.1)$,
+  $\vec{p}^\prime = (-0.2, 0.2, 0.2, -0.2)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.1$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_val_qr.pdf}
+    \caption{Gauss-Hermite quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_4d_conv_p_1111_1111_val_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_val_nsd.pdf}
+    \caption{Steepest descent transformation and quadrature with $|\Gamma|$ nodes.}
+    \label{fig:tp_4d_conv_p_1111_1111_val_nsd}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_err_qr.pdf}
+    \caption{Absolute error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_1111_1111_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_err_nsd.pdf}
+    \caption{Absolute error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_1111_1111_err_nsd}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_err_rel_qr.pdf}
+    \caption{Relative error of the Gauss-Hermite quadrature compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_1111_1111_err_qr}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_err_rel_nsd.pdf}
+    \caption{Relative error of the steepest descent method compared to the exact solution.}
+    \label{fig:tp_4d_conv_p_1111_1111_err_nsd}
+  \end{subfigure}
+  \label{fig:tp_4d_conv_p_1111_1111}
+  \caption{Experiment with $\phi_{1,1,1,1}$ and $\phi_{1,1,1,1}^{\prime}$.
+  The parameters are:
+  $\vec{q} = (-0.1, -0.1, -0.1, -0.1)$,
+  $\vec{p} = ( 0.2, -0.2, -0.2,  0.2)$,
+  $\mat{Q} = \mat{1}$
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = ( 0.1, 0.1, 0.1,  0.1)$,
+  $\vec{p}^\prime = (-0.2, 0.2, 0.2, -0.2)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.1$.}
+\end{figure}
 
 
 
@@ -1950,6 +2211,9 @@ Spurious autocorrelation bumps
 
 Show a 2D example
 Additional oscillations around true autocorrelation function
+
+
+\FloatBarrier
 
 \bibliographystyle{plain}
 \bibliography{nsd,chem,mt,own}
