@@ -17,17 +17,7 @@
         },
         }
         \node [block]  (op) {Original Problem \\ $\langle \phi | \phi \rangle$};
-        \node [block, right =2cm of op] (gh) {Gauss Hermite Quadrature \\ $\sum$};
-%         \node [block, right =2cm of acquire] (rgb2gray) {RGB to Gray};
-%         \node [block, right =2cm of rgb2gray] (otsu) {Localized OTSU \\ Thresholding};
-%         \node [block, below right =2cm and -0.5cm of start] (gchannel) {Subtract the \\ Green Channel};
-%         \node [block, right =2cm of gchannel] (closing) {Morphological \\ Closing};
-%         \node [block, right =2cm of closing] (NN) {Sign Detection \\ Using NN};
-%         \node [input, right =2cm of NN] (limit) {Speed \\ Limit};
-%         \node [coordinate, below right =1cm and 1cm of otsu] (right) {};  %% Coordinate on right and middle
-%         \node [coordinate,above left =1cm and 1cm of gchannel] (left) {};  %% Coordinate on left and middle
-
-%% paths
-        \path[draw,->] (op) edge (gh);
+        \node [block, right =2cm of op] (gh) {Gauss Hermite \\ Quadrature};
+        \path[draw,->] (op) -- (gh);
     \end{tikzpicture}
 \end{document}

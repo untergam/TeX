@@ -16,12 +16,10 @@
         minimum height=1cm
         },
         }
-        \node [block]  (op) {Original Problem \\ $\langle \phi | \phi^\prime \rangle$};
+        \node [block]  (op) {Original Problem \\ $\langle \phi | \phi \rangle$};
         \node [block, right =2cm of op] (nsd) {Numerical \\ Steepest Descent};
-        \node [block, right =2cm of nsd] (smolyak) {Smolyak \\ Construction};
-        \node [block, right =2cm of smolyak] (gk) {Genz-Keister \\ Qudrature};
+        \node [block, right =2cm of nsd] (mdgk) {Multidimensional \\ Genz-Keister \\ Qudrature};
         \path[draw,->] (op) -- (nsd);
-        \path[draw,->] (nsd) -- (smolyak);
-        \path[draw,->] (smolyak) -- (gk);
+        \path[draw,->] (nsd) -- (mdgk);
     \end{tikzpicture}
 \end{document}
