@@ -1841,7 +1841,7 @@ reference solution.
 
 
 \FloatBarrier
-\subsection{Convergence in $|p|$}
+\subsubsection{Convergence in $|p|$}
 
 
 \begin{figure}
@@ -2196,7 +2196,7 @@ reference solution.
 
 
 \FloatBarrier
-\subsection{Convergence in $\varepsilon$}
+\subsubsection{Convergence in $\varepsilon$}
 
 
 \begin{figure}
@@ -2538,17 +2538,394 @@ reference solution.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\FloatBarrier
-
-
-
-
-
-
 
 Show that we need still $N^D$ quadrature nodes
 but that $N$ is much smaller than for traditional
 schemes.
+
+
+\FloatBarrier
+\subsubsection{Higher dimensions}
+
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_3d_conv_p_000_000_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_3d_conv_p_000_000_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_000_000_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_000_000_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_000_000_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_000_000_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_3d_conv_p_000_000}
+  \caption{Experiment with $\phi_{0,0,0}$ and $\phi_{0,0,0}^{\prime}$
+  in 3 dimensions.
+  The parameters are:
+  $\vec{q} = 1.2 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.8 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_3d_conv_p_011_110_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_3d_conv_p_011_110_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_011_110_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_011_110_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_011_110_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_011_110_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_3d_conv_p_011_110}
+  \caption{Experiment with $\phi_{0,1,1}$ and $\phi_{1,1,0}^{\prime}$
+  in 3 dimensions.
+  The parameters are:
+  $\vec{q} = 1.2 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.8 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(2,2,2)_(2,2,2)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_3d_conv_p_222_222_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(2,2,2)_(2,2,2)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_3d_conv_p_222_222_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(2,2,2)_(2,2,2)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_222_222_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(2,2,2)_(2,2,2)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_222_222_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(2,2,2)_(2,2,2)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_222_222_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(2,2,2)_(2,2,2)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_222_222_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_3d_conv_p_222_222}
+  \caption{Experiment with $\phi_{2,2,2}$ and $\phi_{2,2,2}^{\prime}$
+  in 3 dimensions.
+  The parameters are:
+  $\vec{q} = 1.2 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.8 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_3d_conv_p_040_400_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_3d_conv_p_040_400_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_040_400_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_040_400_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_040_400_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_3d_conv_p_040_400_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_3d_conv_p_040_400}
+  \caption{Experiment with $\phi_{0,4,0}$ and $\phi_{4,0,0}^{\prime}$
+  in 3 dimensions.
+  The parameters are:
+  $\vec{q} = 1.2 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.8 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_4d_conv_p_0211_1210}
+  \caption{Experiment with $\phi_{0,2,1,1}$ and $\phi_{1,2,1,0}^{\prime}$
+  in 4 dimensions.
+  The parameters are:
+  $\vec{q} = 1.01 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.99 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_6d_conv_p_000000_000000}
+  \caption{Experiment with $\phi_{\vec{0}}$ and $\phi_{\vec{0}}^{\prime}$
+  in 6 dimensions.
+  The parameters are:
+  $\vec{q} = 1.01 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.99 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_6d_conv_p_101000_110000}
+  \caption{Experiment with $\phi_{1,0,1,0,0,0}$ and $\phi_{1,1,0,0,0,0}^{\prime}$
+  in 6 dimensions.
+  The parameters are:
+  $\vec{q} = 1.01 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.99 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_val_nsd_tp.pdf}
+    \caption{Tensor-product with $|\Gamma|^D$ nodes.}
+    \label{fig:tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_val_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_val_nsd_gk.pdf}
+    \caption{Smolyak construction of level $K$.}
+    \label{fig:tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_val_nsd_gk.pdf}
+  \end{subfigure} \\
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_nsd_tp.pdf}
+    \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_nsd_gk.pdf}
+    \caption{Absolute error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_nsd_gk}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_rel_nsd_tp.pdf}
+    \caption{Relative error of the tensor product ansatz compared to the exact solution.}
+    \label{fig:tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_rel_nsd_tp}
+  \end{subfigure}
+  \begin{subfigure}{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_rel_nsd_gk.pdf}
+    \caption{Relative error of the Smolyak construction compared to the exact solution.}
+    \label{fig:tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_err_rel_nsd_gk}
+  \end{subfigure}
+  \label{fig:tp_sg_12d_conv_p_000000000000_000000000000}
+  \caption{Experiment with $\phi_{\vec{0}}$ and $\phi_{\vec{0}}^{\prime}$
+  in 12 dimensions.
+  The parameters are:
+  $\vec{q} = 1.0001 (1,\ldots,1)$,
+  $\vec{p} = (1,\ldots,1)$,
+  $\mat{Q} = \mat{1}$,
+  $\mat{P} = \imath \mat{1}$
+  and
+  $\vec{q}^\prime = 0.9999 (1,\ldots,1)$,
+  $\vec{p}^\prime = -(1,\ldots,1)$,
+  $\mat{Q}^\prime = \mat{1}$,
+  $\mat{P}^\prime = \imath \mat{1}$
+  with $\varepsilon=0.3$.}
+\end{figure}
+
+
+
 
 
 \subsection{Mercury Morse}
