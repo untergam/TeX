@@ -2545,8 +2545,109 @@ schemes.
 
 
 \FloatBarrier
-\subsubsection{Higher dimensions}
+\subsubsection{Going to higher dimensions}
 
+
+As seen in the last section, after the steepest descent transformation we still
+need a quadrature albeit with much less quadrature points. In the case of higher
+dimensionality (at least $D > 2$) of the original problem this full tensor product
+in general is very expensive. Therefore we seek for a replacement that is cheaper
+to compute but still accurate. The Smolyak approach is an obvious candidate.
+If it really is well-suited depends also on the multi-indices $\vec{k}$ and
+$\vec{l}$ of the wavepackets $\phi$ and $\phi^\prime$ which have to be sparse
+enough. But we assume that this is the case for now. Then we end up in a chain
+as shown in figure \ref{fig:transformation_chain_3}, first performing the steepest
+descent transformation to get rid of the oscillations then using the Smolyak
+construction to lessen the curse of dimensionality.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{./fig/diagram3.pdf}
+  \caption{Overview of the computation seen as chain of transformation.}
+  \label{fig:transformation_chain_3}
+\end{figure}
+
+For this to work out we rewrite the Smolyak construction into a less well known
+version such that in can act as a simple transformation of a set of Gauss-Hermite
+quadrature nodes connecting to the numerical steepest descent step. The Smolyak
+construction of level $k \geq 1$ in $D$ dimensions can be written as:
+
+\begin{equation*}
+  S_{D,k} \assign \sum_{q=k-D}^{k-1} (-1)^{k-1-q} \binom{D-1}{k-1-q}
+                  \sum_{\substack{\vec{l} \in \mathbb{N}^D \\
+                                  \|\vec{l}\|_1 = D+q}}
+                  \left(Q_{l_1} \otimes \cdots \otimes Q_{l_D}\right)
+\end{equation*}
+
+which is known combination technique. The formula was first derived in
+\cite{Wasilkowski_Wozniakowski_95}. This version stresses that the Smolyak
+construction is nothing more than a certain sum of specific smaller tensor
+products of one-dimensional quadrature rules $\{Q_i\}_{i \in\mathbb{N}}$.
+Our own implementation is based mainly on the details explained in
+\cite{Heiss_Winschel_08} and \cite{Gerstner_Griebel_98}.
+
+However, this setup as shown will not work too well and, even worse, yield
+a much \emph{larger} number of nodes compared to the simple full tensor
+product under some circumstances. The reason is that the Gauss-Hermite
+quadrature points are not \emph{nested} while this is a central prerequisite
+for the Smolyak construction to work and reduce complexity.
+
+To resolve this issue, we look for sets of nested points that can be fed
+into the Smolyak construction. Luckily there exist the so-called Genz-Keister
+quadrature points which can be build for the case of a Gaussian integral, too.
+For further details on the Genz-Keister construction, see the original paper
+\cite{genz_keister} as well as our own work \cite{B_kes} and references there in.
+Using these points instead of the Gauss-Hermite nodes will result in a chain
+as shown in figure \ref{fig:transformation_chain_4}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{./fig/diagram4.pdf}
+  \caption{Overview of the computation seen as chain of transformation.}
+  \label{fig:transformation_chain_4}
+\end{figure}
+
+These Genz-Keister quadrature nodes can be constructed not only
+for the one-dimensional case but in any number of dimensions
+with moderate effort. Even better, one can proof \cite{novak_ritter} that
+the resulting multi-dimensional Genz-Keister construction is equivalent to the
+Smolyak construction starting from one-dimensional Genz-Keister nodes.
+Since there are much less Genz-Keister nodes comapred to the full tensor
+of Gauss-Hermite nodes, as shown in figure \ref{fig:gk_hermitephy_ratio},
+we can largely reduce the computational effort.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./fig/gk_hermitephy_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_hermitephy_ratio}
+\end{figure}
+
+Inside the algorithm producing these nodes we can at the same time also
+explicitly compute the necessary matching weights for quadrature.
+At the end of the day we obtain the relatively simple chain shown in
+\ref{fig:transformation_chain_5} where we plug the set of multi-dimensional
+Genz-Keister nodes $\gamma_i \in \mathbb{R}^D$ directly into the steepest
+descent transformation. However, we should keep in mind that this reduction
+is not always applicable or profitable, depending on $\vec{k}$ and $\vec{l}$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{./fig/diagram5.pdf}
+  \caption{Overview of the computation seen as chain of transformation.}
+  \label{fig:transformation_chain_5}
+\end{figure}
+
+In the remainder of this section we will perform numerical experiments and
+compare this approach based on Genz-Keister quadrature rules to the full
+tensor ansatz using Gauss-Hermite node weight pairs. Again we study the
+convergence of the quadrature error in the same setup as in the last section.
+First we measure the error for oscillations caused by increasing momentum.
+The second setup fixes momentum and varies the semi-classical scaling
+parameter $\varepsilon$, also resulting in oscillatory integrands.
 
 \begin{figure}
   \begin{subfigure}[t]{0.5\linewidth}
@@ -3312,7 +3413,7 @@ Additional oscillations around true autocorrelation function
 \FloatBarrier
 
 \bibliographystyle{plain}
-\bibliography{nsd,chem,mt,own}
+\bibliography{nsd,chem,mt,own,sparse,kes}
 
 
 \end{document}
