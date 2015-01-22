@@ -52,6 +52,20 @@ by Huybrechs and some others. The main technique is described in \cite{HV_hoq} f
 the one-dimensional case and in \cite{HV_cub} for multivariate integrands.
 Semi-infinite intervals are treated in \cite{H_nsd_sii}.
 
+Computing that integral above by direct standard numerical quadrature schemes
+would look like depicted in figure \ref{fig:transformation_chain_1} where we apply a
+suitable quadrature rule, in this case Gauss-Hermite rules, directly to the
+integrand $I = \braket{\phi|\phi^\prime}$. Since our interests stem from quantum
+mechanics, we anticipate the integrand being composed of wavepackets $\phi$,
+forming overlap integrals.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\linewidth]{./fig/diagram.pdf}
+  \caption{Overview of the integral computation.}
+  \label{fig:transformation_chain_1}
+\end{figure}
+
 \marginpar{cite \cite{AH_cgq_it}}
 
 
@@ -279,27 +293,16 @@ and we assumed that $\vec{x}$ is real. Be sure to pay attention to
 the fact that here we have $\vec{b}\T$ only instead of $\vec{b}\H$.
 
 
-
-
-
-
-
-
-
-
-
-
 \section{Numerical steepest descent}
 
-Some math
-What is already done and known in literature
-Finite intervals, including complex stationary points
-Semi-finite and half-open intervals
+Some math.
+What is already done and known in literature.
+Finite intervals, including complex stationary points.
+Semi-finite and half-open intervals.
 What about complex stationary points here?
-Generalization on doubly-infinite intervals
-Conditions on $f$ to hold
+Generalization on doubly-infinite intervals.
+Conditions on $f$ to hold.
 We have $f$ a polynomial only, no reason to worry
-
 
 A general highly oscillatory integral:
 
@@ -311,6 +314,13 @@ A general highly oscillatory integral:
 \end{equation}
 
 in $N$ dimensions.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=\linewidth]{./fig/diagram2.pdf}
+  \caption{Steepest descent transformation and integral computation.}
+  \label{fig:transformation_chain_2}
+\end{figure}
 
 
 \section{Oscillator given by triangular matrix}
@@ -1782,14 +1792,18 @@ of wavepackets $\Psi$ like:
   I = \Braket{\Psi[\Pi] | \Psi[\Pi^{\prime}]}
     = \idotsint_{\mathbb{R}^{D}} \conj{\Psi[\Pi]} \Psi[\Pi^{\prime}] \mathrm{d}\vec{x} \,.
 \end{equation}
-Computing that integral by standard numerical quadrature schemes turns out to be
-very difficult. In some most interesting cases where $\Pi \approx \Pi^{\prime}$ holds,
-Gaussian quadrature introduces huge errors and hence spurious correlations.
 
-We studied the time-dependent Schr\"odinger equation with a wavepacket $\Psi$ propagating in
-a Morse potential $V(x)$. The potential was fit to experimental data which are taken from
-\cite{SIZ_hg2}. The Semiclassical parameter $\varepsilon = 0.048360$ matches the nuclear
-dynamics of the mercury compound \ce{Hg2}.
+
+This turns out to be very challenging. In some of the most interesting cases where
+$\Pi \approx \Pi^{\prime}$ holds or where the semiclassical scaling parameter $\varepsilon$
+becomes small, Gaussian quadrature introduces huge errors and hence we find spurious
+non-physical correlations.
+
+For example we studied the time-dependent Schr\"odinger equation with a wave\-packet $\Psi$
+propagating in a Morse potential $V(x)$. The potential was fit to experimental data which
+are taken from \cite{SIZ_hg2}. The semiclassical scaling parameter $\varepsilon = 0.048360$
+representing mass ratio between nuclei and electrons matches the nuclear dynamics of the
+mercury compound \ce{Hg2}.
 
 \begin{figure}
   \centering
@@ -1801,12 +1815,12 @@ dynamics of the mercury compound \ce{Hg2}.
   \label{fig:ac_mercurial_morse}
 \end{figure}
 
-Gauss-Hermite quadrature with any number of nodes shows high spurious autocorrelation bumps.
-Using the steepest descent transformation before applying a quadrature scheme gives
-correct results for an even smaller number of nodes.
+Gauss-Hermite quadrature with any number of nodes shows high spurious autocorrelation bumps,
+compare to figure \ref{fig:ac_mercurial_morse}. Using the steepest descent transformation
+before applying a quadrature scheme gives correct results for an even smaller number of nodes.
 
-In the following we will perform numerical simulations and shows the
-robustness of this new technique.
+In the following we will perform a number of different numerical simulations and show
+the robustness as well as pleasant convergence properties of this new technique.
 
 
 \subsection{Two-Packet Experiment}
@@ -1836,15 +1850,26 @@ it perfectly handles arbitrary momenta and converges fast to the correct
 overlap integral value.
 
 For the one-dimensional case there exists an analytic formula for computing
-the integral. Evaluation is very expensive but can still server as exact
-reference solution.
+the integral for any state $\phi_k$. Evaluation is very expensive but can never the
+less serve as exact reference solution. For examples in higher dimensions we can take
+the formula for general Gaussian integrals in case we look at ground states
+$\phi_{\vec{0}}$ only. Otherwise we take the computation including the steepest
+descent transformation using the largest number of quadrature nodes as reference.
+
+The whole process of computing the integral works as shown in the figure
+\ref{fig:transformation_chain_2}. Especially in the multi-dimensional case
+we still need a full tensor product of Gauss-Hermite quadrature nodes in the end.
+This results in $N^D$ quadrature nodes, which scales exponentially with the
+dimension $D$. The important bit is however that the value of $N$ is \emph{much}
+smaller compared to direct application of traditional quadrature schemes as done
+in \ref{fig:transformation_chain_1}.
 
 
 \FloatBarrier
 \subsubsection{Convergence in $|p|$}
 
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_val_qr.pdf}
     \caption{Direct Gauss-Hermite quadrature of size $N$ with a total of $|\Gamma|$ nodes.}
@@ -1883,7 +1908,7 @@ reference solution.
   with $\varepsilon = 0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_val_qr.pdf}
     \caption{Direct Gauss-Hermite quadrature of size $N$ with a total of $|\Gamma|$ nodes.}
@@ -1922,7 +1947,7 @@ reference solution.
   with $\varepsilon = 0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_val_qr.pdf}
     \caption{Direct Gauss-Hermite quadrature of size $N$ with a total of $|\Gamma|$ nodes.}
@@ -1964,7 +1989,7 @@ reference solution.
 \marginpar{comment figures}
 \marginpar{oscillation in polynomial}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(0,0)_(0,0)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2010,7 +2035,7 @@ reference solution.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(1,0)_(0,1)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2056,7 +2081,7 @@ reference solution.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2102,7 +2127,7 @@ reference solution.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2148,7 +2173,7 @@ reference solution.
   with $\varepsilon=0.1$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2199,7 +2224,7 @@ reference solution.
 \subsubsection{Convergence in $\varepsilon$}
 
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_0_0_val_qr.pdf}
     \caption{Direct Gauss-Hermite quadrature of size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2237,7 +2262,7 @@ reference solution.
   $q^\prime=1.0$, $p^\prime=-0.2$, $Q^\prime=2.0$, $P^\prime=0.5\imath$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_2_1_val_qr.pdf}
     \caption{Direct Gauss-Hermite quadrature of size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2275,7 +2300,7 @@ reference solution.
   $q^\prime=1.0$, $p^\prime=-0.2$, $Q^\prime=2.0$, $P^\prime=0.5\imath$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_8_8_val_qr.pdf}
     \caption{Direct Gauss-Hermite quadrature of size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2313,7 +2338,7 @@ reference solution.
   $q^\prime=1.0$, $p^\prime=-0.2$, $Q^\prime=2.0$, $P^\prime=0.5\imath$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(0,0)_(0,0)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2358,7 +2383,7 @@ reference solution.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(0,1)_(1,0)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2403,7 +2428,7 @@ reference solution.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(2,3)_(2,2)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2448,7 +2473,7 @@ reference solution.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_eps_(0,0,0,0)_(0,0,0,0)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2493,7 +2518,7 @@ reference solution.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_eps_(2,1,2,1)_(1,1,1,1)_val_qr.pdf}
     \caption{Direct tensor product Gauss-Hermite quadrature of linear size $N$ with a total of $|\Gamma|$ nodes.}
@@ -2539,13 +2564,8 @@ reference solution.
 \end{figure}
 
 
-Show that we need still $N^D$ quadrature nodes
-but that $N$ is much smaller than for traditional
-schemes.
-
-
 \FloatBarrier
-\subsubsection{Going to higher dimensions}
+\subsection{Going to higher dimensions}
 
 
 As seen in the last section, after the steepest descent transformation we still
@@ -2563,7 +2583,7 @@ construction to lessen the curse of dimensionality.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{./fig/diagram3.pdf}
-  \caption{Overview of the computation seen as chain of transformation.}
+  \caption{Overview of the computation seen as chain of transformations.}
   \label{fig:transformation_chain_3}
 \end{figure}
 
@@ -2603,7 +2623,7 @@ as shown in figure \ref{fig:transformation_chain_4}.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{./fig/diagram4.pdf}
-  \caption{Overview of the computation seen as chain of transformation.}
+  \caption{Overview of the computation seen as chain of transformations.}
   \label{fig:transformation_chain_4}
 \end{figure}
 
@@ -2637,7 +2657,7 @@ is not always applicable or profitable, depending on $\vec{k}$ and $\vec{l}$.
 \begin{figure}[h!]
   \centering
   \includegraphics[width=\linewidth]{./fig/diagram5.pdf}
-  \caption{Overview of the computation seen as chain of transformation.}
+  \caption{Overview of the computation seen as chain of transformations.}
   \label{fig:transformation_chain_5}
 \end{figure}
 
@@ -2649,7 +2669,12 @@ First we measure the error for oscillations caused by increasing momentum.
 The second setup fixes momentum and varies the semi-classical scaling
 parameter $\varepsilon$, also resulting in oscillatory integrands.
 
-\begin{figure}
+
+\FloatBarrier
+\subsubsection{Convergence in $|p|$}
+
+
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,0,0)_(0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2696,7 +2721,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,1,1)_(1,1,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2743,7 +2768,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(0,4,0)_(4,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2790,7 +2815,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_p_(4,4,4)_(4,4,4)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2837,7 +2862,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_p_(0,2,1,1)_(1,2,1,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2884,7 +2909,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(0,0,0,0,0,0)_(0,0,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2931,7 +2956,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_p_(1,0,1,0,0,0)_(1,1,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -2978,7 +3003,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   with $\varepsilon=0.3$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_12d_conv_p_(0,0,0,0,0,0,0,0,0,0,0,0)_(0,0,0,0,0,0,0,0,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3030,7 +3055,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
 \subsubsection{Convergence in $\varepsilon$}
 
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3076,7 +3101,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3122,7 +3147,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3168,7 +3193,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3214,7 +3239,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3260,7 +3285,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3306,7 +3331,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
@@ -3352,7 +3377,7 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
