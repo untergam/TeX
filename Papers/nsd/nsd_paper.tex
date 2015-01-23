@@ -82,13 +82,11 @@ the computation of overlap integrals from quantum mechanics.
 
 \marginpar{Exact formula for 1D overlap integral (?)}
 \marginpar{Transformation to NSD highly oscillatory integral}
-\marginpar{Properties of $A$, sym + i sym}
-\marginpar{Put this section at the end?}
 
 
-In this section we look at the wavepackets involved in the computation
+In this section we look at the wavepackets $\phi$ involved in the computation
 of overlap integrals. Semiclassical wavepackets are constructed from a
-Groundstate
+groundstate
 \begin{align*}
   \phi_{\vec{0}}\left(\vec{x}\right)
   =
@@ -99,26 +97,29 @@ Groundstate
   \right)
 \end{align*}
 by raising and lowering operators $\mathcal{R}$ and $\mathcal{L}$
-and in the multi-dimensional case counted by a multi-index
+and in the $D$ dimensional case counted by a multi-index vector
 $\vec{k} \in \mathbb{N}_0^D$. There are the parameters for average
 position $\vec{q} \in \mathbb{R}^D$ and momentum $\vec{p} \in \mathbb{R}^D$
 and the parameters $\mat{Q} \in \mathbb{C}^{D \times D}$ and $\mat{P} \in \mathbb{C}^{D \times D}$
 for position and momentum spread. These parameters are usually collected
 in the set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
-Further there is the semiclassical scaling parameter $\varepsilon > 0$.
+Further there is the semiclassical scaling parameter $1 \gg \varepsilon > 0$.
 For many more details describing these wavepackets, see \cite{H_ladder_operators}
 and \cite{B_master_thesis}.
 What matters most here is, that each wavepacket $\phi$ is of the form:
 
 \begin{equation}
-  \phi(\vec{x}) \sim p\left(\vec{x}\right)\exp\left(\frac{i}{\varepsilon^2} g\left(\vec{x}\right)\right) \,.
+  \phi(\vec{x}) \sim p\left(\vec{x}\right)
+                     \exp\left(\frac{\imath}{\varepsilon^2} g\left(\vec{x}\right)\right) \,.
 \end{equation}
 
 This form is sufficient for the steepest descent technique to be applicable.
 Indeed, comparing to the integrand in \eqref{eq:oscillatory_integral},
-we find that $\omega = \frac{1}{\varepsilon^2}$. The method becomes
-better the smaller $\varepsilon$ is.
-The actual oscillator $g$ is of the form:
+we find that $\omega = \frac{1}{\varepsilon^2}$ which means that the oscillator
+frequency increases very fast for small scaling parameters $\varepsilon$.
+What looks like a big issue in the first moment is actually a very lucky coincidence.
+The steepest descent method which we will look at in the next section becomes
+the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of the form:
 
 \begin{equation}
   g\left(\vec{x}\right)
@@ -128,38 +129,74 @@ The actual oscillator $g$ is of the form:
   \dotp{\vec{p}}{\vec{x}-\vec{q}}
 \end{equation}
 
-Usually we are interested in integrals of the form $\dotp{\phi_k}{\phi_l}$.
+Usually we are interested in overlap integrals like $\dotp{\phi_k}{\phi_l}$.
 In that case the integral is still of the same oscillatory structure:
 
 \begin{equation}
 \begin{split}
   \dotp{\phi_k}{\phi_l} & =
-  \int_{-\infty}^{\infty} \conj{p_k(x)\exp\left(\frac{i}{\varepsilon^2} g_k(x)\right)}
-                                p_l(x)\exp\left(\frac{i}{\varepsilon^2} g_l(x)\right)
+  \int_{-\infty}^{\infty} \conj{p_k(x)\exp\left(\frac{\imath}{\varepsilon^2} g_k(x)\right)}
+                                p_l(x)\exp\left(\frac{\imath}{\varepsilon^2} g_l(x)\right)
   \mathrm{d}\vec{x} \\
   & =
   \int_{-\infty}^{\infty}
     \conj{p_k(x)} p_l(x)
-    \exp\left(-\frac{i}{\varepsilon^2} \conj{g_k(x)} + \frac{i}{\varepsilon^2} g_l(x)\right)
+    \exp\left(-\frac{\imath}{\varepsilon^2} \conj{g_k(x)} + \frac{\imath}{\varepsilon^2} g_l(x)\right)
   \mathrm{d}\vec{x} \\
   & =
   \int_{-\infty}^{\infty}
     \conj{p_k(x)} p_l(x)
-    \exp\left(\frac{i}{\varepsilon^2}\left(-\conj{g_k(x)} + g_l(x)\right)\right)
+    \exp\left(\frac{\imath}{\varepsilon^2}\left(-\conj{g_k(x)} + g_l(x)\right)\right)
   \mathrm{d}\vec{x} \,.
 \end{split}
 \end{equation}
 
 The next step to take is to combine both oscillators $g_k$ and $g_l$ into a
 single one such that we get back a formal expression like the one in
-\eqref{eq:oscillatory_integral} we started with.
+\eqref{eq:oscillatory_integral} we started with. But first we would like to
+show a concrete example in figure \ref{fig:overlap_example} of how the wavepackets
+involved and the integrand look like.
+
+\begin{figure}[h!]
+  \begin{subfigure}[t]{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./fig/overlap_wavepackets.pdf}
+    \caption{Wavepackets $\phi_1$ and $\phi_2$.}
+    \label{fig:overlap_example_wavepackets}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./fig/overlap_integrand.pdf}
+    \caption{Integrand consisting of $\phi_1$ and $\phi_2$.}
+    \label{fig:overlap_example_integrand}
+  \end{subfigure} \\
+  \begin{subfigure}[t]{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./fig/overlap_wavepackets_2.pdf}
+    \caption{Wavepackets $\phi_8$ and $\phi_6$.}
+    \label{fig:overlap_example_wavepackets_2}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.5\linewidth}
+    \includegraphics[width=\linewidth]{./fig/overlap_integrand_2.pdf}
+    \caption{Integrand consisting of $\phi_8$ and $\phi_6$.}
+    \label{fig:overlap_example_integrand_2}
+  \end{subfigure}
+  \caption{\label{fig:overlap_example}
+  Wavepackets $\phi_k$ and $\phi_l$ and the integrand $\conj{\phi_k} \phi_l$.
+  The parameter sets are
+  $q_k = \frac{1}{8}$, $p_k = -\frac{1}{2}$,
+  $Q_k = \frac{9}{10}$, $P_k = \frac{10}{9}\imath$
+  and
+  $q_l = -\frac{1}{6}$, $p_l = \frac{2}{5}$,
+  $Q_l = 1$, $P_l = \imath$.
+  The scaling parameter is $\varepsilon = \frac{1}{\sqrt{10}} \approx 0.316$.
+  Note that the indices $k$ and $l$ typically range up to a few tens
+  and the $\varepsilon$ is not very small.}
+\end{figure}
 
 
 \subsection{Combining different oscillators}
 
 Combining the two oscillators is actually a straight-forward computation,
 however it is very error prone, big chances are that we miss a transpose
-or conjugate somewhere. To simplify the notation define:
+or conjugate somewhere. To simplify the notation define the matrix:
 
 \begin{equation}
   \mat{\Gamma_i} \assign \mat{P_i}\mat{Q_i}\inv
@@ -167,7 +204,7 @@ or conjugate somewhere. To simplify the notation define:
 
 and start with computing $\conj{g_k}$:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
  \conj{g_k}
  & =
@@ -191,11 +228,11 @@ and start with computing $\conj{g_k}$:
               \right)
  + \vec{x}\H \vec{p_k} - \vec{q_k}\H \vec{p_k} \,.
 \end{split}
-\end{equation}
+\end{equation*}
 
 Next we add $g_l$ and simplify the following expression:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
  -\conj{g_k} + g_l
  = &
@@ -246,14 +283,14 @@ Next we add $g_l$ and simplify the following expression:
                \right)
  + \left(\vec{q_k}\H \vec{p_k} - \vec{p_l}\H \vec{q_l}\right) \,.
 \end{split}
-\end{equation}
+\end{equation*}
 
 In the end we find an oscillator of the usual normal form
 % $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c$
 $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\T \vec{x} + c$
 where:
 
-\marginpar{Recheck the $\vec{b}\T \vec{x}$}
+\marginpar{Recheck the $\vec{b}\T \vec{x}$ vs $\vec{b}\H \vec{x}$}
 
 \begin{equation} \label{eq:combined_oscillators}
 \begin{split}
@@ -300,7 +337,11 @@ where:
 
 and we assumed that $\vec{x}$ is real. Be sure to pay attention to
 the fact that here we have $\vec{b}\T$ only instead of $\vec{b}\H$.
-
+The matrix $\mat{A}$ has a special property, both its real and
+imaginary parts are symmetric while the matrix itself is in general
+\emph{not} Hermitian. This places the matrix right outside the convenient
+set of normal matrices, which implies that it is not diagonalizable
+by unitary matrices,  an important  consequence as we will see later.
 
 \section{Numerical steepest descent}
 
