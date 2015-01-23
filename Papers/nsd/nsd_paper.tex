@@ -35,29 +35,24 @@
 \section{Introduction}
 
 
-\marginpar{What is NSD?}
-\marginpar{Why do we need it?}
-
-
 Given functions $f(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{R}$ and
-$g(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{C}$, compute the integral:
+$g(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{C}$, we want to compute the integral:
 
 \begin{equation} \label{eq:hoi}
  I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} f \exp(i \omega g) \, \mathrm{d}x_1 \cdots \mathrm{d}x_n
 \end{equation}
 
-This is a highly oscillatory integral. Usually we call $g$ the \emph{oscillator}
-and $f$ the \emph{amplitude} or \emph{envelope}. For more details see the work
-by Huybrechs and some others. The main technique is described in \cite{HV_hoq} for
-the one-dimensional case and in \cite{HV_cub} for multivariate integrands.
-Semi-infinite intervals are treated in \cite{H_nsd_sii}.
+where $\omega > 0$ is the frequency.
+This is an instance from a very large and important class of highly oscillatory integrals.
+Usually one calls the function $g$ the \emph{oscillator} and the function $f$ the
+\emph{amplitude} or \emph{envelope}.
 
 Computing that integral above by direct standard numerical quadrature schemes
 would look like depicted in figure \ref{fig:transformation_chain_1} where we apply a
-suitable quadrature rule, in this case Gauss-Hermite rules, directly to the
-integrand $I = \braket{\phi|\phi^\prime}$. Since our interests stem from quantum
-mechanics, we anticipate the integrand being composed of wavepackets $\phi$,
-forming overlap integrals.
+suitable quadrature rule, in our specific case Gauss-Hermite rules, directly to the
+integrand $I$. Since our interests stem from quantum
+mechanics, we anticipate the integrand $I$ being composed of wavepackets $\phi$ and
+$\phi^\prime$, forming overlap integrals like $\braket{\phi|\phi^\prime}$.
 
 \begin{figure}[h!]
   \centering
@@ -66,7 +61,21 @@ forming overlap integrals.
   \label{fig:transformation_chain_1}
 \end{figure}
 
-\marginpar{cite \cite{AH_cgq_it}}
+Direct quadrature in general requires that the number of quadrature points
+increases with $\omega$, making it more and more expensive the larger the
+oscillation frequency gets. In our case this growth continues up to a range
+where we can not afford to use such many quadrature nodes.
+It turns out that we need much better methods to efficiently deal with this
+kind of integrals as \eqref{eq:hoi} and obtain mathematically correct results.
+Therefore the theory of \emph{numerical steepest descent} was developed about ten
+years ago exactly for these integrals. For more details on the mathematical theory
+see the work by Huybrechs, Vandewalle and some other People. The main technique
+is described in \cite{HV_hoq} for the one-dimensional case and in \cite{HV_cub}
+for multivariate integrands. Semi-infinite intervals are treated in \cite{H_nsd_sii}.
+Other bits and pieces can be found in \cite{AH_cgq} and \cite{AH_cgq_it}.
+
+In this text we will concentrate on the application of this theory on
+the computation of overlap integrals from quantum mechanics.
 
 
 \section{About semi-classical wavepackets}
@@ -294,6 +303,9 @@ the fact that here we have $\vec{b}\T$ only instead of $\vec{b}\H$.
 
 
 \section{Numerical steepest descent}
+
+\marginpar{What is NSD?}
+\marginpar{Why do we need it?}
 
 Some math.
 What is already done and known in literature.
@@ -1807,7 +1819,7 @@ mercury compound \ce{Hg2}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{./fig/ac_mercurial_morse.pdf}
+  \includegraphics[width=0.8\linewidth]{./fig/ac_mercurial_morse.pdf}
   \caption{Autocorrelation of the Mercury dynamics computed with classical
   Gauss-Hermite quadrature and with the steepest descent method each with several
   numbers of quadrature points. Only the numerical steepest descent transformation
@@ -1830,7 +1842,10 @@ for computing the integral in \eqref{eq:compute_ac_wavepackets}. The setup
 of this experiment consists of two wavepackets $\phi[\Pi]$ and $\phi[\Pi^\prime]$.
 Both are fixed in space at positions $q$ and $q^\prime$. Next we direct the
 momenta $p$ and $p^\prime$ towards each other ($p^\prime = -p$) and start
-increasing their magnitude $|p|$. The procedure is shown also in figure \ref{fig:convergence_setup}.
+increasing their magnitude $|p|$. (Note that for all figures below, the values
+of the $p$ axis are multiplicative factors on top of the wavepacket' original
+values $p$ and $p^\prime$.)
+The procedure is shown also in figure \ref{fig:convergence_setup}.
 
 \begin{figure}[h!]
   \centering
