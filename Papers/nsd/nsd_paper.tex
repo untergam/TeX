@@ -3492,6 +3492,29 @@ Additional oscillations around true autocorrelation function
 
 
 \FloatBarrier
+\section{Conclusion}
+
+For the problem of computing overlap integrals of semiclassical wavepackets $\ket{\phi}$
+we showed that the common quadrature schemes are insufficient. This is
+caused by the oscillatory nature of the integrands. Depending on
+the phase space constellation wavepackets, Gaussian quadrature
+can introduce large errors hence entirely destroying the numerical simulation results
+in the worst case.
+
+Based on some recent developments in the area of highly oscillatory quadrature
+we presented an improvement. This new method adapts the technique of numerical
+steepest descent specially to the needs of overlap integrals $\braket{\phi|\phi^\prime}$.
+To some extend it is possible also to treat more general operator integrals
+$\braket{\phi|\hat{o}|\phi^\prime}$ but issues may arise from the complex behavior of $\hat{o}$.
+
+The fundamental technique is not restricted to one-dimensional examples and works well
+in any number of dimensions. There is still a quadrature involved, using a smaller number
+of nodes. Full tensor product quadrature becomes expensive in higher dimensions.
+Therefore we applied the Smolyak construction and use a specially crafted set of nested
+quadrature points to lessen the curse of dimensionality.
+
+
+\FloatBarrier
 
 \bibliographystyle{plain}
 \bibliography{nsd,chem,mt,own,sparse,kes}
