@@ -3513,6 +3513,14 @@ of nodes. Full tensor product quadrature becomes expensive in higher dimensions.
 Therefore we applied the Smolyak construction and use a specially crafted set of nested
 quadrature points to lessen the curse of dimensionality.
 
+In the future, more work can be done in different directions. Computation for large
+wavepacket indices $k$ poses an important problem limiting the application of the
+steepest descent techniques.
+Being able to compute integrals like $\braket{\phi|\hat{o}|\phi^\prime}$ becomes important
+for some new time-propagation methods currently in development.
+Finally, we used the classical Smolyak construction while even more sparse schemes
+like hyperbolic cuts might be beneficent. One might consider adaptive versions too.
+
 
 \FloatBarrier
 
