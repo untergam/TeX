@@ -1825,14 +1825,73 @@ additional factors appear in the integrals.
 
 \section{Open issues in theory}
 
-Some open issues are:
 
-\begin{itemize}
-  \item We have to evaluate polynomials for higher order states $\phi_{k}$.
-        This can destroy the whole nice convergence.
-  \item Potentials with poles and potentials with exponential
-        parts will destroy convergence, too.
-\end{itemize}
+There are some yet unanswered questions in theory as well as in practical use.
+In this section we will briefly review them, find the main difficulties
+in each one and try to propose possible solutions.
+
+First of all, despite comprehensive numerical evidence we need a full proof
+showing the validity of our extension to the theory of numerical steepest descent
+to infinite intervals. The first idea was to use the work from \cite{HV_hoq}
+on finite intervals and from \cite{H_nsd_sii} on semi-finite intervals
+to construct a solution for infinite intervals. In this process it turned out
+that the proof of the latter is flawed. The next step is then about the correct
+handling of the stationary point since our single stationary point is in general
+complex. There are some comments on that situation in the first reference.
+
+One serious issue arises when we try to compute the integral $\braket{\phi_k|\phi_l}$
+for large values of the indices $k$ or $l$. Because these indices are essentially the
+degree of the polynomial part of any wavepacket $\phi$. The Hermite polynomials then
+stay in the envelope part $f$ and are not treated by numerical steepest descent which
+targets only the oscillator $g$ explicitly. In case of high degrees, the polynomials
+itself become rapidly oscillatory and we end up with another oscillatory integral,
+this time \emph{not} of a form where a steepest descend transformation is applicable.
+Figure \ref{fig:polynomials_oscillations} shows a typical example of such an integrand.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./fig/poly_oscillations.pdf}
+  \caption{Integrand of the overlap of $\phi_{120}$ and $\phi_{122}$
+  with $\varepsilon=0.1$. The parameter set $\Pi = \{0,0,1,\imath\}$
+  is identical for both packets and hence the exponential parts cancel
+  to $\exp(-\frac{x^2}{\varepsilon^2})$. This example shows the oscillatory
+  structure caused solely by the high degree of the polynomials involved.}
+  \label{fig:polynomials_oscillations}
+\end{figure}
+
+
+In the end the values $k$ and $l$ set the lower bound on the number of Gauss-Hermite
+quadrature nodes that we have to use for correct integration. One might try to resolve
+these oscillations by another method on top of what we did so far.
+
+The next problem is about integrals $\braket{\phi|\hat{o}|\phi}$ including additional
+operators $\hat{o}$. An example of this kind is the computation of expectation
+values of potential energies: $\braket{\phi|V|\phi}$. \footnote{Kinetic energy
+expectation $\braket{\phi|\hat{T}|\phi}$ is in our case no issue because the
+gradient of a wavepacket can be expressed in a linear combination of new wavepackets
+again, hence we are back at the case $\braket{\phi_k|\phi_l}$.}
+In the example given, the parameter sets of both wavepackets match and therefore
+the integration is much easier, oscillations caused by the exponential parts cancel
+out to a large degree. But let us consider the general case where we have
+$\braket{\phi|\hat{o}|\phi^\prime}$. The main issue here are the possible effects
+on the oscillator $g$ induced by $\hat{o}$. For example, assume that $\hat{o}$ is a
+potential $V(x)$. Then, $V$ becomes part of the envelope and there apply
+some growth limits on the envelope $f$ for $|x| \rightarrow \infty$. If $V$ contains
+exponential parts, they have to be merged into the oscillator $g$ and in turn change the
+layout of the integration paths. Further, if there are any poles in $f$, we have to
+be very careful with integration too and include all the residuals. In the computations
+done so far, the envelope $f$ is assumed to have no poles in $\mathbb{C}^{d}$
+Altogether this poses some challenges for non-polynomial potentials $V$.
+
+
+%     \item Works better for larger $\omega$ hence for smaller $\varepsilon$
+%     \item Works very well for $\Pi \approx \Pi^{\prime}$ (interesting case)
+%     \item Still need full tensor grid of quadrature nodes,
+%       but much less nodes in each direction
+%     \item In higher dimensions: use Smolyak sparse grids
+%     \item Non-classical Smolyak constructions
+%       \item Hyperbolic cut sections
+%       \item Adaptive versions
 
 
 \section{Numerical Examples}
