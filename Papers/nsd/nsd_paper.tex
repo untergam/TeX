@@ -1823,28 +1823,33 @@ Because $\mat{U}$ is unitary we finally have $|\det\mat{U}| = 1$ and no
 additional factors appear in the integrals.
 
 
-\section{Open issues in theory}
+\section{Some open issues}
 
 
 There are some yet unanswered questions in theory as well as in practical use.
 In this section we will briefly review them, find the main difficulties
 in each one and try to propose possible solutions.
 
-First of all, despite comprehensive numerical evidence we need a full proof
+First of all, despite comprehensive numerical evidence, we need a full proof
 showing the validity of our extension to the theory of numerical steepest descent
-to infinite intervals. The first idea was to use the work from \cite{HV_hoq}
+to infinite intervals. The idea was to use the work from \cite{HV_hoq}
 on finite intervals and from \cite{H_nsd_sii} on semi-finite intervals
-to construct a solution for infinite intervals. In this process it turned out
-that the proof of the latter is flawed. The next step is then about the correct
-handling of the stationary point since our single stationary point is in general
-complex. There are some comments on that situation in the first reference.
+to construct a solution for infinite intervals by gluing together three regions.
+In this process it turned out that the proof given in the latter reference is flawed.
+As is stands now we can not even assume the semi-finite part to be correct.
+The next step is then about the correct handling of stationary points since our
+single stationary point $x^{*}$ is in general complex. There are some comments on
+that situation in the first reference. The central observation being made is that
+the integration path should pass through the stationary point even if it is abroad
+in the complex plane. In our implementation we shift the whole oscillator such that
+$x^{*} = 0$. This point is essential for the reason that we can attach the paths there.
 
 One serious issue arises when we try to compute the integral $\braket{\phi_k|\phi_l}$
 for large values of the indices $k$ or $l$. Because these indices are essentially the
 degree of the polynomial part of any wavepacket $\phi$. The Hermite polynomials then
 stay in the envelope part $f$ and are not treated by numerical steepest descent which
 targets only the oscillator $g$ explicitly. In case of high degrees, the polynomials
-itself become rapidly oscillatory and we end up with another oscillatory integral,
+themselves become rapidly oscillatory and we end up with another oscillatory integral,
 this time \emph{not} of a form where a steepest descend transformation is applicable.
 Figure \ref{fig:polynomials_oscillations} shows a typical example of such an integrand.
 
@@ -1859,39 +1864,45 @@ Figure \ref{fig:polynomials_oscillations} shows a typical example of such an int
   \label{fig:polynomials_oscillations}
 \end{figure}
 
+In the end, the values $k$ and $l$ set the lower bound on the number of Gauss-Hermite
+quadrature nodes that we have to use for correct integration. This is very unfortunate
+and can diminish the gain in number of nodes obtained through the steepest descent
+transformation. One might try to resolve these oscillations by another method on top
+of what we did so far. Rewriting the Hermite polynomials into their integral formulation
+\begin{equation*}
+  \operatorname{H}_n(x) =
+  \frac{\exp\left(\frac{3\pi \imath n}{2}\right) 2^n}{\sqrt{\pi}}
+  \int_{-\infty}^{\infty} t^n e^{-(t - \imath x)^2} \di{t}
+\end{equation*}
+does not solve the problem as there is still a troublesome factor $t^n$.
+If we would apply the steepest descent transformation to this integral, computing
+the $n$-th power of the integration paths will yield polynomials of high order.
 
-In the end the values $k$ and $l$ set the lower bound on the number of Gauss-Hermite
-quadrature nodes that we have to use for correct integration. One might try to resolve
-these oscillations by another method on top of what we did so far.
-
-The next problem is about integrals $\braket{\phi|\hat{o}|\phi}$ including additional
-operators $\hat{o}$. An example of this kind is the computation of expectation
-values of potential energies: $\braket{\phi|V|\phi}$. \footnote{Kinetic energy
+The next open problem is about integrals $\braket{\phi|\hat{o}|\phi}$ including
+additional scalar multiplicative or differential operators $\hat{o}$. An example
+of this kind is the computation of expectation values of potential
+\footnote{Kinetic energy
 expectation $\braket{\phi|\hat{T}|\phi}$ is in our case no issue because the
 gradient of a wavepacket can be expressed in a linear combination of new wavepackets
 again, hence we are back at the case $\braket{\phi_k|\phi_l}$.}
-In the example given, the parameter sets of both wavepackets match and therefore
-the integration is much easier, oscillations caused by the exponential parts cancel
-out to a large degree. But let us consider the general case where we have
-$\braket{\phi|\hat{o}|\phi^\prime}$. The main issue here are the possible effects
-on the oscillator $g$ induced by $\hat{o}$. For example, assume that $\hat{o}$ is a
-potential $V(x)$. Then, $V$ becomes part of the envelope and there apply
-some growth limits on the envelope $f$ for $|x| \rightarrow \infty$. If $V$ contains
-exponential parts, they have to be merged into the oscillator $g$ and in turn change the
-layout of the integration paths. Further, if there are any poles in $f$, we have to
-be very careful with integration too and include all the residuals. In the computations
-done so far, the envelope $f$ is assumed to have no poles in $\mathbb{C}^{d}$
-Altogether this poses some challenges for non-polynomial potentials $V$.
+energies: $\braket{\phi|V|\phi}$.
+In this example given, the same wavepacket $\phi$ appears in both, the bra and the
+ket part of the integral. Therefore the integration is much easier, oscillations
+caused by the exponential parts cancel out to a large degree. But let us consider
+the general case where we have $\braket{\phi|\hat{o}|\phi^\prime}$. The main issue
+here are the possible effects on the oscillator $g$ induced by $\hat{o}$. For example,
+assume that $\hat{o}$ is a potential $V(x)$. Then, $V$ becomes part of the envelope
+and there apply some growth limits on the envelope $f$ for $|x| \rightarrow \infty$.
+If $V$ contains exponential parts, they have to be merged into the oscillator $g$ and
+in turn change the layout of the integration paths. Further, if there are any poles
+in $f$, we have to be very careful with integration too and make sure to include all
+the relevant residuals. In the computations done so far, the envelope $f$ is assumed
+to have no poles in $\mathbb{C}^{d}$. Altogether this poses some challenges for
+non-polynomial potentials $V$.
 
-
-%     \item Works better for larger $\omega$ hence for smaller $\varepsilon$
-%     \item Works very well for $\Pi \approx \Pi^{\prime}$ (interesting case)
-%     \item Still need full tensor grid of quadrature nodes,
-%       but much less nodes in each direction
-%     \item In higher dimensions: use Smolyak sparse grids
-%     \item Non-classical Smolyak constructions
-%       \item Hyperbolic cut sections
-%       \item Adaptive versions
+Although there are some loose ends, we have constructed a method which works better for larger
+$\omega$ hence for smaller $\varepsilon$. It also gives excellent results in the
+interesting and complicated case where  $\Pi \approx \Pi^{\prime}$.
 
 
 \section{Numerical Examples}
@@ -1933,6 +1944,8 @@ before applying a quadrature scheme gives correct results for an even smaller nu
 
 In the following we will perform a number of different numerical simulations and show
 the robustness as well as pleasant convergence properties of this new technique.
+All simulations shown here were carried out by our implementation in the \texttt{WaveBlocks}
+simulation code \cite{waveblocksnd}.
 
 
 \subsection{Two-Packet Experiment}
@@ -3578,7 +3591,7 @@ steepest descent techniques.
 Being able to compute integrals like $\braket{\phi|\hat{o}|\phi^\prime}$ becomes important
 for some new time-propagation methods currently in development.
 Finally, we used the classical Smolyak construction while even more sparse schemes
-like hyperbolic cuts might be beneficent. One might consider adaptive versions too.
+like hyperbolic cuts could be beneficent. One might consider adaptive versions too.
 
 
 \FloatBarrier
