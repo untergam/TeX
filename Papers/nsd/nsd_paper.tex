@@ -343,6 +343,7 @@ imaginary parts are symmetric while the matrix itself is in general
 set of normal matrices, which implies that it is not diagonalizable
 by unitary matrices,  an important  consequence as we will see later.
 
+
 \section{Numerical steepest descent}
 
 \marginpar{What is NSD?}
@@ -357,16 +358,163 @@ Generalization on doubly-infinite intervals.
 Conditions on $f$ to hold.
 We have $f$ a polynomial only, no reason to worry
 
-A general highly oscillatory integral:
 
+\subsection{Overview and summary of the ideas}
+
+
+A typical example of a highly oscillatory integral looks like:
+\begin{equation}
+  I = \int_{\Omega} f(\vec{x}) e^{\imath \omega g(\vec{x})} \di{\vec{x}}
+\end{equation}
+where the non-oscillatory function $g:\mathbb{R}^D \rightarrow \mathbb{R}$
+is called the oscillator and the also non-oscillatory function
+$f:\mathbb{R}^D \rightarrow \mathbb{R}$ the envelope. The parameter
+$\omega \in \mathbb{R}^{+}$ is the frequency. Often one looks at the
+asymptotic behavior for $\omega \rightarrow \infty$. In our setting
+this parameter $\omega$ has a fixed and finite value.
+Finally there is the domain of integration denoted by $\Omega$.
+In the theory so far this is a bounded subset of $\mathbb{R}^D$.
+Figure \ref{fig:oscillatory_example_2d} shows a particular
+example of such an integrand.
+
+\marginpar{recheck domains}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\linewidth]{fig/oscillatory_example_2d.png}
+  \caption{Oscillatory integrand of
+  $\int_{-2}^3 \int_{-2}^3 \frac{e^{5 \imath \left(x^2-x y-y^2\right)}}{1 + (x+y)^2} \di{x} \di{y}  $
+  with envelope $f(x) = \frac{1}{1 + (x+y)^2}$ and a quadratic oscillator
+  $g(x) = x^2 - x y - y^2$ at low frequency of $\omega = 5$.}
+  \label{fig:oscillatory_example_2d}
+\end{figure}
+
+For our problem at hand we will need to integrate over the whole space $\mathbb{R}^D$.
+In this setting a general highly oscillatory integral takes the form:
 \begin{equation} \label{eq:oscillatory_integral}
   I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
         f\left(\vec{x}\right)
         \exp\left(i\omega g\left(\vec{x}\right) \right)
       \mathrm{d} \vec{x}
 \end{equation}
+in $D$ dimensions.
+There are two essential observations to be made about the
+oscillatory part $\exp\left(i\omega g\left(\vec{x}\right) \right)$
+of any such integral. First, this expression does decay exponentially
+fast for increasing $\Im g(z)$ and second, it does not oscillate for
+constant $\Re g(z)$. This can easily be seen by expanding complex numbers:
+\begin{equation}
+  e^{\imath \omega g(z)}
+  =
+  e^{\imath \omega (\Re g(z) + \imath \Im g(z))}
+  =
+  e^{\imath \omega \Re g(z)}
+  e^{- \omega \Im g(z)} \,.
+\end{equation}
+The main idea behind the numerical steepest descent is then to
+transform the integrand such that it is no longer oscillatory but
+rather exponentially decaying. For this we need to find a coordinate
+transformation $z = h(\tau)$ such that the \emph{real} part of $g(z)$
+is constant. In a second step we then apply Cauchy's Theorem for contour
+integrals along the path $h(\tau)$.
 
-in $N$ dimensions.
+\marginpar{Figure?}
+
+Let us look again at the plot in figure \ref{fig:oscillatory_example_2d}
+and ask the question which regions of the integrand contribute most
+to the value of the integral. By intuition one would say, at least asymptotically
+for $\omega \rightarrow \infty$, that oscillations in integrand generally approximately
+cancel out and mainly places with locally no oscillations contribute to the value.
+Regions showing no oscillations are \emph{stationary points} where
+$\nabla g(\vec{x}) = \vec{0}$ on one hand and so called \emph{resonance points}
+defined by the condition $\nabla g(\vec{x}) \perp \partial \Omega$ on the other.
+In the one-dimensional case one can forget about the complications around resonance
+points and just take care of the endpoints of the interval $[a, b] = \Omega$. In our
+case there is no surface $\partial \Omega$ anyway as we compute over the whole space.
+
+In the one-dimensional procedure we find all stationary points $\{x_{j}^{*}\}_{j}$
+from equating the gradient to zero:
+\begin{equation}
+  \nabla_{x} \, g(x) = 0 \,.
+\end{equation}
+The set of contributing points is then:
+\begin{equation}
+  \Theta := \{a, b\} \cup \{x^{*}_j\}_j \,.
+\end{equation}
+Next we set up the so called \emph{path equation} to compute the coordinate
+transformation $h(\tau)$. This has to be done locally at all contributing points.
+Hence $\forall \xi \in \Theta$:
+\begin{equation}
+  g(h_\xi(\tau)) = g(\xi) + \imath \tau
+\end{equation}
+Solving these equations yields a bunch of paths $h_{\xi}(\tau)$. Each one is
+indexed by the point $\xi$ it starts at and parametrized by $\tau \in \mathbb{R}_0^{+}$.
+Refer to figure \ref{fig:nsd_path_example} for a simple example with only a single
+stationary point.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\linewidth]{./fig/nsd_path_figure.pdf}
+  \caption{Example of the contributing points $a$, $b$ and $x_0^{*}$ and the
+  paths $h_a(\tau)$, $h_b(\tau)$ and $h_{x_0^{*},\pm}(\tau)$ attached.}
+  \label{fig:nsd_path_example}
+\end{figure}
+
+Solving the path equation amounts to finding an inverse of $g$. In some cases
+this inverse is multi-valued and the path not unique. At the endpoints we can
+choose the correct path $h_a(\tau)$ by requiring $h_a(0) = a$ which forces the
+path to be really attached to the point $a$. At the stationary points we have
+to choose two paths, $h_{x^{*}_j,+}$ and $h_{x^{*}_j,-}$, one of which is considered
+incoming and the other outgoing (note that this is not reflected by the parameterization).
+Then we have to make sure that the outgoing path of one stationary point
+and the incoming of the next one will lead to the same \emph{valley}. This guarantees
+that we can concatenate all paths in the end and obtain a closed contour for integration.
+We will not bother too much with these details as they are not relevant for our problem.
+Many more details can be found in the original papers \cite{HV_hoq} and \cite{HV_cub} by
+Huybrechs and Vandewalle.
+
+Now it is time to assemble the parts. For each path attached at a point $\xi \in \Theta$
+we perform the transformation $x \mapsto h_{\xi}(\tau)$. Doing this change of variable
+will give a bunch of integrals, one or two for each $\xi$:
+\begin{equation} \label{eq:single_path_integral}
+  J[\xi] := e^{\imath \omega g(\xi)}
+            \int_{0}^{\infty}
+              f(h_{\xi}(\tau)) \,
+              h_{\xi}^{\prime}(\tau) \,
+              e^{-\omega \tau} \,
+            \mathrm{d}\tau \,.
+\end{equation}
+We continue by applying Cauchy's theorem:
+\begin{equation}
+      I = e^{\imath\omega g(a)} J[a]
+        + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
+        - e^{\imath\omega g(b)} J[b]
+\end{equation}
+which is valid for the correct choice of paths. We glue together all the paths
+to a single long path connecting the endpoints $a$ and $b$ while wandering around
+in the complex plane and visiting each stationary point once. Obviously we have to
+be very careful, avoid crossing branch cuts and be aware of all potential poles.
+In our case there is no danger because $f$ is simple a polynomial.
+
+Up to now we just transformed the problem, nothing more. The new task is to
+compute by quadrature all the integrals \eqref{eq:single_path_integral} and
+there can be exponentially many of these. For this type of semi-infinite integrals
+Gauss-Laguerre quadrature with nodes $\{\gamma_k\}_{k}$ and weights
+$\{w_k\}_{k}$ seems to be most appropriate:
+\begin{equation}
+  J[\xi] \approx \frac{e^{\imath \omega g(\xi)}}{\omega}
+                 \sum_{k}
+                   f\left(h_{\xi}\left(\frac{\gamma_k}{\omega}\right)\right)
+                   h_{\xi}^{\prime}\left(\frac{\gamma_k}{\omega}\right)
+                   w_k
+\end{equation}
+Depending on the path $h_{\xi}$ these integrals can be weakly singular which
+can in turn be accounted for by the generalized Gauss-Laguerre quadrature.
+
+For our problem we will find that we can always glue together the two opposite
+paths at the single stationary point, apply one further transformation and
+finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:hoi}
+then looks like shown in figure \ref{fig:transformation_chain_2}.
 
 \begin{figure}[h!]
   \centering
@@ -375,6 +523,98 @@ in $N$ dimensions.
   \label{fig:transformation_chain_2}
 \end{figure}
 
+Performing these transformations on the first two example wavepackets $\phi_k$ and $\phi_l$
+from figure \ref{fig:overlap_example} we can make the plot shown in \ref{fig:hawp_trafo_example}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./fig/stationary_point_example.pdf}
+  \caption{Contour levels and zeros (blue) of $|\conj{\phi_{\vec{l}}} \phi_{\vec{k}}|$,
+  Gradient field and zeros of $|g|$ (yellow), Path of steepest descent with 9 Gauss Hermite
+  quadrature nodes (red), in complex plane.}
+  \label{fig:hawp_trafo_example}
+\end{figure}
+
+
+\subsection{Extensions and new concepts}
+
+
+In the last part we have walked through the very basic concept of the numerical steepest
+descent method. Under some broad assumptions this was proven to work for finite intervals
+and an arbitrary number of real stationary points. The extension into higher dimensions
+is worked out too by the original authors. However, the state of the theory is too narrow
+for setting. First we need to consider complex stationary points too. If a such a point
+is near enough the real line, it will influence the oscillator enough to become relevant.
+Figure \ref{fig:oscillatory_integral_complex_sp} shows the example
+\begin{equation}
+  \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
+\end{equation}
+for different values of $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$.
+One stationary point is located at $x^{*} = \imath \sqrt{\delta}$ and comes close
+to the real line. The influence is clearly present. The general advise for complex
+stationary points is that the path has to pass through this point. It turns out this
+works very well for our setting.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
+  \caption{Oscillatory integral on $[-2,2]$ with a stationary point $x^{*}$ at $\imath \sqrt{\delta}$
+  shown for several different decreasing values of $\delta$.}
+  \label{fig:oscillatory_integral_complex_sp}
+\end{figure}
+
+Another direction to extend the theory are infinite regions $\Omega$. In out case we will need
+$\Omega = \mathbb{R}^D$. Before we take this step, we look at semi-finite intervals.
+For semi-finite intervals $[a, \infty [$ we attach only a single path $h_a(\tau)$ an the
+endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}.
+As an example, we look at the following integral:
+\begin{equation}
+  I = \int_0^\infty \frac{100}{100 + x^2} \exp\left(\imath \omega e^{\sqrt{x}}\right) \di{x}
+\end{equation}
+where we set $\omega = 2$. The path then is given by the expression:
+\begin{equation}
+  h_a(\tau) = \log(1 + \imath\tau)^2 \,.
+\end{equation}
+After the change of variable the integral takes the following ugly form:
+\begin{equation}
+  I = 200 e^{\imath\omega}
+      \int_0^{\infty}
+        \frac{\imath \log(1+\imath\tau) e^{-\omega\tau}}
+             {(1 + \imath\tau)\left(100+\log^4(1+\imath\tau)\right)}
+      \di{\tau} \,.
+\end{equation}
+
+\begin{figure}[h!]
+  \begin{subfigure}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{./fig/oscillatory_example_semiopen.pdf}
+    \caption{Oscillatory integrand on $[a, \infty[$.}
+    \label{fig:oscillatory_example_semiopen_integrand}
+  \end{subfigure}
+  \begin{subfigure}[t]{0.5\linewidth}
+    \centering
+    \includegraphics[height=4cm]{./fig/oscillatory_example_semiopen_path.pdf}
+    \caption{Path of steepest descend.}
+    \label{fig:oscillatory_example_semiopen_path}
+  \end{subfigure}
+  \caption{\label{fig:oscillatory_example_semiopen}
+  Example of an oscillatory integrand on a semi-finite interval and the
+  corresponding path of steepest descend.}
+\end{figure}
+
+Given all these parts, the extension to infinite intervals becomes simple.
+We just split the interval $]-\infty, \infty[$ into the union of three
+intervals: $]-\infty, a]$, $[a,b]$ and $[b,\infty[$. The reason to choose three
+instead of only two semi-finite intervals is the stationary point which we know
+to exist in our specific case. With this splitting we can put it into the finite
+interval and know that it gets handled correctly. Of course the paths at the points
+$a$ and $b$ will be traversed two times in opposite directions and hence cancel out.
+The only thing that remains is the pair of paths attached at the complex stationary
+point $x^{*}$. This works the same in any number of dimensions. By gluing together
+the two paths of opposite direction we end up with a cross of exactly $D$ paths.
+Therefore the number and nesting depth of integrals to perform does \emph{not} grow
+compared to direct integration. This is of course very fortunate.
+
 
 \section{Oscillator given by triangular matrix}
 \label{sec:mv_triag_plain}
@@ -382,8 +622,9 @@ in $N$ dimensions.
 
 In this section we show a complete computation for a three
 dimensional example. The purpose is to give the reader a
-rough feeling on how the overall process works. We will
-write down all the technical details in the next section.
+rough feeling on how the overall process for our specific
+overlap integral works. We will write down all the technical
+details in the next section.
 
 For the following example computation we assume that
 the upper triangular matrix $\mat{T}$ is given as:
@@ -1347,7 +1588,7 @@ we would divide by zero. But we can interpret this failure also
 by noticing that in such a case the oscillator is not quadratic
 anymore but degenerated in at least one direction.
 
-\marginpar{It is not clear if/when that can happen.}
+\marginpar{It is not clear if/when that can happen. Degenerate conic.}
 
 \begin{algorithm}
   \caption{Procedure for updating the oscillator matrix $\mat{T}$}
