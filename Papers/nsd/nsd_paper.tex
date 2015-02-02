@@ -71,22 +71,19 @@ Therefore the theory of \emph{numerical steepest descent} was developed about te
 years ago exactly for these integrals. For more details on the mathematical theory
 see the work by Huybrechs, Vandewalle and some other People. The main technique
 is described in \cite{HV_hoq} for the one-dimensional case and in \cite{HV_cub}
-for multivariate integrands. Semi-infinite intervals are treated in \cite{H_nsd_sii}.
+for multivariate integrands. Semi-finite intervals are treated in \cite{H_nsd_sii}.
 Other bits and pieces can be found in \cite{AH_cgq} and \cite{AH_cgq_it}.
 
 In this text we will concentrate on the application of this theory on
 the computation of overlap integrals from quantum mechanics.
 
 
-\section{About semi-classical wavepackets}
-
-\marginpar{Exact formula for 1D overlap integral (?)}
-\marginpar{Transformation to NSD highly oscillatory integral}
+\section{About semiclassical wavepackets}
 
 
 In this section we look at the wavepackets $\phi$ involved in the computation
-of overlap integrals. Semiclassical wavepackets are constructed from a
-groundstate
+of overlap integrals. Semiclassical wavepackets in $D$ dimensions are constructed
+from a groundstate:
 \begin{align*}
   \phi_{\vec{0}}\left(\vec{x}\right)
   =
@@ -97,22 +94,28 @@ groundstate
   \right)
 \end{align*}
 by raising and lowering operators $\mathcal{R}$ and $\mathcal{L}$
-and in the $D$ dimensional case counted by a multi-index vector
-$\vec{k} \in \mathbb{N}_0^D$. There are the parameters for average
-position $\vec{q} \in \mathbb{R}^D$ and momentum $\vec{p} \in \mathbb{R}^D$
-and the parameters $\mat{Q} \in \mathbb{C}^{D \times D}$ and $\mat{P} \in \mathbb{C}^{D \times D}$
-for position and momentum spread. These parameters are usually collected
-in the set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
+and enumerated by a multi-index vector $\vec{k} \in \mathbb{N}_0^D$.
+There are the parameters for average position $\vec{q} \in \mathbb{R}^D$
+and momentum $\vec{p} \in \mathbb{R}^D$. Additionally there are two invertible
+complex matrices $\mat{Q} \in \mathbb{C}^{D \times D}$ and $\mat{P} \in \mathbb{C}^{D \times D}$
+satisfying the Conditions:
+\begin{align}
+  \mat{Q}\T\mat{P} - \mat{P}\T\mat{Q} &= \mat{0} \\
+  \mat{Q}\H\mat{P} - \mat{P}\H\mat{Q} &= 2\imath\mat{I} \,.
+\end{align}
+Implied by these constraints, the matrix $\mat{P}\mat{Q}\inv$ is complex symmetric
+(but not Hermitian) and has positive definite imaginary part.
+All these parameters are usually collected in the set
+$\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
 Further there is the semiclassical scaling parameter $1 \gg \varepsilon > 0$.
 For many more details describing these wavepackets, see \cite{H_ladder_operators}
 and \cite{B_master_thesis}.
 What matters most here is, that each wavepacket $\phi$ is of the form:
-
 \begin{equation}
-  \phi(\vec{x}) \sim p\left(\vec{x}\right)
-                     \exp\left(\frac{\imath}{\varepsilon^2} g\left(\vec{x}\right)\right) \,.
+  \phi[\Pi](\vec{x}) \sim p\left(\vec{x}\right)
+                          \exp\left(\frac{\imath}{\varepsilon^2} g\left(\vec{x}\right)\right)
 \end{equation}
-
+with $p(\vec{x})$ a multivariate polynomial.
 This form is sufficient for the steepest descent technique to be applicable.
 Indeed, comparing to the integrand in \eqref{eq:oscillatory_integral},
 we find that $\omega = \frac{1}{\varepsilon^2}$ which means that the oscillator
@@ -120,7 +123,6 @@ frequency increases very fast for small scaling parameters $\varepsilon$.
 What looks like a big issue in the first moment is actually a very lucky coincidence.
 The steepest descent method which we will look at in the next section becomes
 the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of the form:
-
 \begin{equation}
   g\left(\vec{x}\right)
   \assign
@@ -128,10 +130,11 @@ the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of 
   +
   \dotp{\vec{p}}{\vec{x}-\vec{q}}
 \end{equation}
-
-Usually we are interested in overlap integrals like $\dotp{\phi_k}{\phi_l}$.
-In that case the integral is still of the same oscillatory structure:
-
+We are interested in overlap integrals\footnote{For one-dimensional wavepackets there
+exists an exact formula which is very expensive to evaluate numerically.} like
+$\dotp{\phi_k}{\phi_l}$. These integrals become even more difficult in case the parameters
+sets $\Pi_k$ and $\Pi_l$ differ. In any case the integral is still of the same oscillatory
+structure like a single wavepacket:
 \begin{equation}
 \begin{split}
   \dotp{\phi_k}{\phi_l} & =
@@ -150,12 +153,11 @@ In that case the integral is still of the same oscillatory structure:
   \mathrm{d}\vec{x} \,.
 \end{split}
 \end{equation}
-
 The next step to take is to combine both oscillators $g_k$ and $g_l$ into a
 single one such that we get back a formal expression like the one in
-\eqref{eq:oscillatory_integral} we started with. But first we would like to
-show a concrete example in figure \ref{fig:overlap_example} of how the wavepackets
-involved and the integrand look like.
+\eqref{eq:hoi} we started with. But first we would like to
+show in figure \ref{fig:overlap_example} a concrete example of how the
+wavepackets involved and the integrand look like.
 
 \begin{figure}[h!]
   \begin{subfigure}[t]{0.5\linewidth}
@@ -188,7 +190,7 @@ involved and the integrand look like.
   $Q_l = 1$, $P_l = \imath$.
   The scaling parameter is $\varepsilon = \frac{1}{\sqrt{10}} \approx 0.316$.
   Note that the indices $k$ and $l$ typically range up to a few tens
-  and the $\varepsilon$ is not very small.}
+  and this $\varepsilon$ is not very small.}
 \end{figure}
 
 
@@ -196,14 +198,11 @@ involved and the integrand look like.
 
 Combining the two oscillators is actually a straight-forward computation,
 however it is very error prone, big chances are that we miss a transpose
-or conjugate somewhere. To simplify the notation define the matrix:
-
+or conjugate somewhere. To simplify the notation we define the matrix:
 \begin{equation}
   \mat{\Gamma_i} \assign \mat{P_i}\mat{Q_i}\inv
 \end{equation}
-
 and start with computing $\conj{g_k}$:
-
 \begin{equation*}
 \begin{split}
  \conj{g_k}
@@ -284,8 +283,8 @@ Next we add $g_l$ and simplify the following expression:
  + \left(\vec{q_k}\H \vec{p_k} - \vec{p_l}\H \vec{q_l}\right) \,.
 \end{split}
 \end{equation*}
-
-In the end we find an oscillator of the usual normal form
+In the end we find a general quadratic oscillator of the common expanded
+normal form
 % $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c$
 $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\T \vec{x} + c$
 where:
@@ -616,7 +615,7 @@ Therefore the number and nesting depth of integrals to perform does \emph{not} g
 compared to direct integration. This is of course very fortunate.
 
 
-\section{Oscillator given by triangular matrix}
+\section{A first exemplary computation}
 \label{sec:mv_triag_plain}
 
 
@@ -1455,7 +1454,7 @@ The solution is pretty simple: we keep the $x_{i+1}^2$ and all of
 $x_{i+1} x_j$. To achieve this we split the terms inside $k_i$
 into two groups:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
  k_i & = - \frac{1}{4 t_{i,i}}
          \left(
@@ -1473,12 +1472,12 @@ into two groups:
            \underbrace{2 \sum_{j=i+2}^{N} \sum_{k=j+1}^{N} t_{i,j} x_j t_{i,k} x_k}_{\text{move}}
          \right) \,.
 \end{split}
-\end{equation}
+\end{equation*}
 
 Taking now formula \eqref{eq:general_partial_gi} for $g_{i+1}$
 we can compute $\grave{g}_{i+1}$ from \eqref{eq:update_equation} as:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
   \grave{g}_{i+1}
   & = t_{i+1,i+1} x_{i+1}^2 - \frac{1}{4 t_{i,i}} t_{i,i+1}^2 x_{i+1}^2
@@ -1488,7 +1487,7 @@ we can compute $\grave{g}_{i+1}$ from \eqref{eq:update_equation} as:
     + \sum_{j=i+2}^{N} \underbrace{\left(t_{i+1,j} - \frac{t_{i,i+1} t_{i,j}}{2 t_{i,i}}\right)}_{\grave{t}_{i+1,j}} x_{i+1} x_j
     + \text{junk} \,.
 \end{split}
-\end{equation}
+\end{equation*}
 
 All terms that we decided to move out are labeled as \emph{junk} here and dealt
 with below.
@@ -1498,7 +1497,7 @@ entries in the $i+1$-th row of the triangular matrix $\mat{T}$ have changed.
 We take into account the junk terms now. First notice that it is possible
 to split them once more into terms to keep and new junk terms:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
   & - \frac{1}{4 t_{i,i}}
       \left(
@@ -1517,7 +1516,7 @@ to split them once more into terms to keep and new junk terms:
         2 \sum_{j=i+3}^{N} \sum_{k=j+1}^{N} t_{i,j} x_j t_{i,k} x_k
       \right) \,.
 \end{split}
-\end{equation}
+\end{equation*}
 
 The first and third term are in turn added to the oscillator $\grave{g}_{i+2}$.
 All others are handled recursively and added to $\grave{g}_{k}$ with $k \geq i+3$
@@ -1791,7 +1790,7 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 % in $N$ dimensions.
 
 
-\section{General case, arbitrary oscillator}
+\section{General quadratic oscillator}
 
 
 In this section we consider a more general oscillator term
@@ -3035,7 +3034,7 @@ compare this approach based on Genz-Keister quadrature rules to the full
 tensor ansatz using Gauss-Hermite node weight pairs. Again we study the
 convergence of the quadrature error in the same setup as in the last section.
 First we measure the error for oscillations caused by increasing momentum.
-The second setup fixes momentum and varies the semi-classical scaling
+The second setup fixes momentum and varies the semiclassical scaling
 parameter $\varepsilon$, also resulting in oscillatory integrands.
 
 
