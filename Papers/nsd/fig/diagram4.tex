@@ -19,7 +19,7 @@
         \node [block]  (op) {Original Problem \\ $\langle \phi | \phi^\prime \rangle$};
         \node [block, right =2cm of op] (nsd) {Numerical \\ Steepest Descent};
         \node [block, right =2cm of nsd] (smolyak) {Smolyak \\ Construction};
-        \node [block, right =2cm of smolyak] (gk) {Genz-Keister \\ Qudrature};
+        \node [block, right =2cm of smolyak] (gk) {Genz-Keister \\ Quadrature};
         \path[draw,->] (op) -- (nsd);
         \path[draw,->] (nsd) -- (smolyak);
         \path[draw,->] (smolyak) -- (gk);

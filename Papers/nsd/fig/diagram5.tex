@@ -18,7 +18,7 @@
         }
         \node [block]  (op) {Original Problem \\ $\langle \phi | \phi^\prime \rangle$};
         \node [block, right =2cm of op] (nsd) {Numerical \\ Steepest Descent};
-        \node [block, right =2cm of nsd] (mdgk) {Multidimensional \\ Genz-Keister \\ Qudrature};
+        \node [block, right =2cm of nsd] (mdgk) {Multidimensional \\ Genz-Keister \\ Quadrature};
         \path[draw,->] (op) -- (nsd);
         \path[draw,->] (nsd) -- (mdgk);
     \end{tikzpicture}
