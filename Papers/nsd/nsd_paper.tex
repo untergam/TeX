@@ -345,19 +345,6 @@ by unitary matrices,  an important  consequence as we will see later.
 
 \section{Numerical steepest descent}
 
-\marginpar{What is NSD?}
-\marginpar{Why do we need it?}
-
-Some math.
-What is already done and known in literature.
-Finite intervals, including complex stationary points.
-Semi-finite and half-open intervals.
-What about complex stationary points here?
-Generalization on doubly-infinite intervals.
-Conditions on $f$ to hold.
-We have $f$ a polynomial only, no reason to worry
-
-
 \subsection{Overview and summary of the ideas}
 
 
@@ -371,25 +358,26 @@ $f:\mathbb{R}^D \rightarrow \mathbb{R}$ the envelope. The parameter
 $\omega \in \mathbb{R}^{+}$ is the frequency. Often one looks at the
 asymptotic behavior for $\omega \rightarrow \infty$. In our setting
 this parameter $\omega$ has a fixed and finite value.
-Finally there is the domain of integration denoted by $\Omega$.
-In the theory so far this is a bounded subset of $\mathbb{R}^D$.
+Finally there is the domain of integration denoted by $\Omega \subset \mathbb{R}^D$.
+In the theory shown so far this is a bounded subset of $\mathbb{R}^D$.
 Figure \ref{fig:oscillatory_example_2d} shows a particular
-example of such an integrand.
+example of such a nasty integrand.
 
 \marginpar{recheck domains}
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.6\linewidth]{fig/oscillatory_example_2d.png}
-  \caption{Oscillatory integrand of
-  $\int_{-2}^3 \int_{-2}^3 \frac{e^{5 \imath \left(x^2-x y-y^2\right)}}{1 + (x+y)^2} \di{x} \di{y}  $
-  with envelope $f(x) = \frac{1}{1 + (x+y)^2}$ and a quadratic oscillator
-  $g(x) = x^2 - x y - y^2$ at low frequency of $\omega = 5$.}
+  \caption{Oscillatory integrand of the integral
+  $\int_{-2}^3 \int_{-2}^3 \frac{e^{5 \imath (x^2-x y-y^2)}}{1 + (x+y)^2} \di{x} \di{y}  $
+  with envelope $f(x,y) = \frac{1}{1 + (x+y)^2}$ and a quadratic oscillator
+  $g(x,y) = x^2 - x y - y^2$ at low frequency of $\omega = 5$.}
   \label{fig:oscillatory_example_2d}
 \end{figure}
 
-For our problem at hand we will need to integrate over the whole space $\mathbb{R}^D$.
-In this setting a general highly oscillatory integral takes the form:
+For our problem at hand, computing overlap integrals, we will need to integrate
+over the whole space $\mathbb{R}^D$. In this setting a general highly oscillatory
+integral takes the form:
 \begin{equation} \label{eq:oscillatory_integral}
   I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
         f\left(\vec{x}\right)
@@ -402,16 +390,16 @@ oscillatory part $\exp\left(i\omega g\left(\vec{x}\right) \right)$
 of any such integral. First, this expression does decay exponentially
 fast for increasing $\Im g(z)$ and second, it does not oscillate for
 constant $\Re g(z)$. This can easily be seen by expanding complex numbers:
-\begin{equation}
+\begin{equation*}
   e^{\imath \omega g(z)}
   =
   e^{\imath \omega (\Re g(z) + \imath \Im g(z))}
   =
   e^{\imath \omega \Re g(z)}
   e^{- \omega \Im g(z)} \,.
-\end{equation}
-The main idea behind the numerical steepest descent is then to
-transform the integrand such that it is no longer oscillatory but
+\end{equation*}
+The main idea behind the \emph{numerical steepest descent} method is therefore
+to transform the integrand such that it is no longer oscillatory but
 rather exponentially decaying. For this we need to find a coordinate
 transformation $z = h(\tau)$ such that the \emph{real} part of $g(z)$
 is constant. In a second step we then apply Cauchy's Theorem for contour
@@ -420,19 +408,22 @@ integrals along the path $h(\tau)$.
 \marginpar{Figure?}
 
 Let us look again at the plot in figure \ref{fig:oscillatory_example_2d}
-and ask the question which regions of the integrand contribute most
+and ask the question in which regions of $\Omega$ the integrand contributes most
 to the value of the integral. By intuition one would say, at least asymptotically
-for $\omega \rightarrow \infty$, that oscillations in integrand generally approximately
+for $\omega \rightarrow \infty$, that oscillations in the integrand generally approximately
 cancel out and mainly places with locally no oscillations contribute to the value.
 Regions showing no oscillations are \emph{stationary points} where
 $\nabla g(\vec{x}) = \vec{0}$ on one hand and so called \emph{resonance points}
 defined by the condition $\nabla g(\vec{x}) \perp \partial \Omega$ on the other.
 In the one-dimensional case one can forget about the complications around resonance
 points and just take care of the endpoints of the interval $[a, b] = \Omega$. In our
-case there is no surface $\partial \Omega$ anyway as we compute over the whole space.
+case there is no surface $\partial \Omega$ anyway as we compute over the whole space
+$\mathbb{R}^D$.
 
-In the one-dimensional procedure we find all stationary points $\{x_{j}^{*}\}_{j}$
-from equating the gradient to zero:
+In the following we briefly consider the one-dimensional integral over the interval
+$[a,b]$ and walk through the major steps involved in the procedure. We can find all
+stationary points $\{x_{j}^{*}\}_{j}$ from equating the gradient to zero (assuming
+the equation is indeed solvable):
 \begin{equation}
   \nabla_{x} \, g(x) = 0 \,.
 \end{equation}
@@ -440,51 +431,71 @@ The set of contributing points is then:
 \begin{equation}
   \Theta := \{a, b\} \cup \{x^{*}_j\}_j \,.
 \end{equation}
-Next we set up the so called \emph{path equation} to compute the coordinate
-transformation $h(\tau)$. This has to be done locally at all contributing points.
-Hence $\forall \xi \in \Theta$:
+Next, we set up the so called \emph{path equation} to compute the coordinate
+transformation $h(\tau)$ or equivalently the path of integration. This has to
+be done locally at all contributing points. Hence, for all $\xi \in \Theta$:
 \begin{equation}
-  g(h_\xi(\tau)) = g(\xi) + \imath \tau
+  g(h_\xi(\tau)) = g(\xi) + \imath \tau \,.
 \end{equation}
 Solving these equations yields a bunch of paths $h_{\xi}(\tau)$. Each one is
-indexed by the point $\xi$ it starts at and parametrized by $\tau \in \mathbb{R}_0^{+}$.
-Refer to figure \ref{fig:nsd_path_example} for a simple example with only a single
+indexed by the point $\xi$ it starts at\footnote{Note that this is not the full truth.
+In case of multi-valued inverses of $g$ at the point $\xi$ it can happen that
+$h_\xi(0) \neq \xi$. With $g (x)= x^2$ and $\xi = 3$ we find $h_3(\tau) = \pm \sqrt{9+\imath\tau}$
+and $h_3(0) = \pm 3 \neq 3$.}
+and parametrised by $\tau \in \mathbb{R}_0^{+}$.
+Refer to figure \ref{fig:nsd_path_example} for a simple example having only a single
 stationary point.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.6\linewidth]{./fig/nsd_path_figure.pdf}
-  \caption{Example of the contributing points $a$, $b$ and $x_0^{*}$ and the
-  paths $h_a(\tau)$, $h_b(\tau)$ and $h_{x_0^{*},\pm}(\tau)$ attached.}
+  \caption{Example of an integral treated by the numerical steepest descent method.
+  The oscillator is $g(x) = x^2$ and hence $\partial_x g(x) = 0$ at $x^{*} = 0$.
+  Shown are the contributing points $a$, $b$ and $x_0^{*}$ and the paths
+  $h_a(\tau)$, $h_b(\tau)$ and $h_{x_0^{*},\pm}(\tau)$ attached to them.
+  Instead of integrating directly from $a$ to $b$ along the real axis, we follow
+  the red path through the complex plane.}
   \label{fig:nsd_path_example}
 \end{figure}
 
-Solving the path equation amounts to finding an inverse of $g$. In some cases
+In general, solving the path equation amounts to finding an inverse of $g$. In some cases
 this inverse is multi-valued and the path not unique. At the endpoints we can
 choose the correct path $h_a(\tau)$ by requiring $h_a(0) = a$ which forces the
-path to be really attached to the point $a$. At the stationary points we have
+path chosen to be really attached to the point $a$. At the stationary points we have
 to choose two paths, $h_{x^{*}_j,+}$ and $h_{x^{*}_j,-}$, one of which is considered
-incoming and the other outgoing (note that this is not reflected by the parameterization).
+incoming and the other outgoing (note that this is not reflected by the parametrisation
+in $\tau$), such that the integration contour passes through each stationary point once.
 Then we have to make sure that the outgoing path of one stationary point
 and the incoming of the next one will lead to the same \emph{valley}. This guarantees
 that we can concatenate all paths in the end and obtain a closed contour for integration.
 We will not bother too much with these details as they are not relevant for our problem.
 Many more details can be found in the original papers \cite{HV_hoq} and \cite{HV_cub} by
-Huybrechs and Vandewalle.
+Huybrechs and Vandewalle. If the path equation can not be solved analytically, not
+all is lost as it is possible to work with numerical path approximations, see \cite{AH_nsd_pa}.
+By the formal structure of the semiclassical wavepackets, the path equation in our case is always
+a multivariate quadratic form which we can solve explicitly.
 
 Now it is time to assemble the parts. For each path attached at a point $\xi \in \Theta$
 we perform the transformation $x \mapsto h_{\xi}(\tau)$. Doing this change of variable
-will give a bunch of integrals, one or two for each $\xi$:
+will give a bunch of new integrals, one or two for each $\xi$:
 \begin{equation} \label{eq:single_path_integral}
-  J[\xi] := e^{\imath \omega g(\xi)}
-            \int_{0}^{\infty}
-              f(h_{\xi}(\tau)) \,
-              h_{\xi}^{\prime}(\tau) \,
-              e^{-\omega \tau} \,
-            \mathrm{d}\tau \,.
+\begin{split}
+  J[\xi] & := e^{\imath \omega g(\xi)}
+              \int_{0}^{\infty}
+                f(h_{\xi}(\tau)) \,
+                h_{\xi}^{\prime}(\tau) \,
+                e^{-\omega \tau} \,
+              \mathrm{d}\tau \\
+         & = \frac{e^{\imath \omega g(\xi)}}{\omega}
+              \int_{0}^{\infty}
+                f\left(h_{\xi}\left(\frac{\tau}{\omega}\right)\right) \,
+                h_{\xi}^{\prime}\left(\frac{\tau}{\omega}\right) \,
+                e^{-\tau} \,
+              \mathrm{d}\tau \,.
+\end{split}
 \end{equation}
 We continue by applying Cauchy's theorem:
-\begin{equation}
+\begin{equation} \label{eq:cauchy}
       I = e^{\imath\omega g(a)} J[a]
         + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
         - e^{\imath\omega g(b)} J[b]
@@ -493,37 +504,39 @@ which is valid for the correct choice of paths. We glue together all the paths
 to a single long path connecting the endpoints $a$ and $b$ while wandering around
 in the complex plane and visiting each stationary point once. Obviously we have to
 be very careful, avoid crossing branch cuts and be aware of all potential poles.
-In our case there is no danger because $f$ is simple a polynomial.
+In our case there is no danger around because $f$ is simply a polynomial.
 
 Up to now we just transformed the problem, nothing more. The new task is to
 compute by quadrature all the integrals \eqref{eq:single_path_integral} and
-there can be exponentially many of these. For this type of semi-infinite integrals
-Gauss-Laguerre quadrature with nodes $\{\gamma_k\}_{k}$ and weights
-$\{w_k\}_{k}$ seems to be most appropriate:
+there can be exponentially many of these in higher dimensions. For this type of
+semi-finite integrals Gauss-Laguerre quadrature with nodes $\{\gamma_k\}_{k}$
+and weights $\{w_k\}_{k}$ seems to be most appropriate:
 \begin{equation}
   J[\xi] \approx \frac{e^{\imath \omega g(\xi)}}{\omega}
                  \sum_{k}
                    f\left(h_{\xi}\left(\frac{\gamma_k}{\omega}\right)\right)
                    h_{\xi}^{\prime}\left(\frac{\gamma_k}{\omega}\right)
-                   w_k
+                   w_k \,.
 \end{equation}
-Depending on the path $h_{\xi}$ these integrals can be weakly singular which
-can in turn be accounted for by the generalized Gauss-Laguerre quadrature.
+Depending on the oscillator and in turn the path $h_{\xi}$ these integrals can be
+weakly singular (to be precise, having roots in the denominator) which can in turn
+be accounted for by the generalized Gauss-Laguerre quadrature. These singularities
+originate from roots involved in the multi-valued inverses of $g$ at some stationary
+points.
 
 For our problem we will find that we can always glue together the two opposite
-paths at the single stationary point, apply one further transformation and
-finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:hoi}
-then looks like shown in figure \ref{fig:transformation_chain_2}.
+straight line paths at the single stationary point, apply one further transformation and
+finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:oscillatory_integral}
+then looks like shown in figure \ref{fig:transformation_chain_2}. Performing these
+transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from figure
+\ref{fig:overlap_example} we can make the plot shown in \ref{fig:hawp_trafo_example}.
 
-\begin{figure}[h!]
+\begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./fig/diagram2.pdf}
   \caption{Steepest descent transformation and integral computation.}
   \label{fig:transformation_chain_2}
 \end{figure}
-
-Performing these transformations on the first two example wavepackets $\phi_k$ and $\phi_l$
-from figure \ref{fig:overlap_example} we can make the plot shown in \ref{fig:hawp_trafo_example}.
 
 \begin{figure}[h!]
   \centering
@@ -538,45 +551,48 @@ from figure \ref{fig:overlap_example} we can make the plot shown in \ref{fig:haw
 \subsection{Extensions and new concepts}
 
 
-In the last part we have walked through the very basic concept of the numerical steepest
+In the last part we have walked through the very basic concepts of the numerical steepest
 descent method. Under some broad assumptions this was proven to work for finite intervals
 and an arbitrary number of real stationary points. The extension into higher dimensions
-is worked out too by the original authors. However, the state of the theory is too narrow
-for setting. First we need to consider complex stationary points too. If a such a point
-is near enough the real line, it will influence the oscillator enough to become relevant.
-Figure \ref{fig:oscillatory_integral_complex_sp} shows the example
+has been worked out too by the original authors. However, the state of the theory is too narrow
+for our setting. First we need to consider complex stationary points too. If such a point
+is near to the real line, it will influence the oscillator enough to become relevant.
+Figure \ref{fig:oscillatory_integral_complex_sp} for example shows the integrand of:
 \begin{equation}
-  \int_{-2}^{2} \log\left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
+  \int_{-2}^{2} \left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
 \end{equation}
-for different values of $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$.
+for different values of the parameter
+$\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$.
 One stationary point is located at $x^{*} = \imath \sqrt{\delta}$ and comes close
 to the real line. The influence is clearly present. The general advise for complex
-stationary points is that the path has to pass through this point. It turns out this
+stationary points is that the path should pass through this point. This will then give
+an exact decomposition in the sense of \eqref{eq:cauchy}. It turns out this
 works very well for our setting.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
+  \includegraphics[width=0.9\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
   \caption{Oscillatory integral on $[-2,2]$ with a stationary point $x^{*}$ at $\imath \sqrt{\delta}$
   shown for several different decreasing values of $\delta$.}
   \label{fig:oscillatory_integral_complex_sp}
 \end{figure}
 
-Another direction to extend the theory are infinite regions $\Omega$. In out case we will need
-$\Omega = \mathbb{R}^D$. Before we take this step, we look at semi-finite intervals.
-For semi-finite intervals $[a, \infty [$ we attach only a single path $h_a(\tau)$ an the
-endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}.
+Another direction to extend the theory are infinite regions $\Omega$. In our case we will
+need $\Omega = \mathbb{R}^D$. Before we take this step, we look at semi-finite intervals.
+For semi-finite intervals $[a, \infty [$ we attach only one single path $h_a(\tau)$ an the
+endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}. If there
+are stationary points, they can be split off into sub-problems over finite intervals.
 As an example, we look at the following integral:
 \begin{equation}
   I = \int_0^\infty \frac{100}{100 + x^2} \exp\left(\imath \omega e^{\sqrt{x}}\right) \di{x}
 \end{equation}
-where we set $\omega = 2$. The path then is given by the expression:
+where we set $\omega = 2$. The path is given by the expression:
 \begin{equation}
   h_a(\tau) = \log(1 + \imath\tau)^2 \,.
 \end{equation}
-After the change of variable the integral takes the following ugly form:
+After the change of variables the integral takes the following ugly form:
 \begin{equation}
-  I = 200 e^{\imath\omega}
+  I = 200 \, e^{\imath\omega}
       \int_0^{\infty}
         \frac{\imath \log(1+\imath\tau) e^{-\omega\tau}}
              {(1 + \imath\tau)\left(100+\log^4(1+\imath\tau)\right)}
@@ -602,17 +618,18 @@ After the change of variable the integral takes the following ugly form:
 \end{figure}
 
 Given all these parts, the extension to infinite intervals becomes simple.
-We just split the interval $]-\infty, \infty[$ into the union of three
+We just split the overall interval $]-\infty, \infty[$ into a union of three
 intervals: $]-\infty, a]$, $[a,b]$ and $[b,\infty[$. The reason to choose three
 instead of only two semi-finite intervals is the stationary point which we know
 to exist in our specific case. With this splitting we can put it into the finite
 interval and know that it gets handled correctly. Of course the paths at the points
-$a$ and $b$ will be traversed two times in opposite directions and hence cancel out.
-The only thing that remains is the pair of paths attached at the complex stationary
-point $x^{*}$. This works the same in any number of dimensions. By gluing together
-the two paths of opposite direction we end up with a cross of exactly $D$ paths.
-Therefore the number and nesting depth of integrals to perform does \emph{not} grow
-compared to direct integration. This is of course very fortunate.
+$a$ and $b$ will be traversed two times in reversed directions and hence cancel out.
+The only thing that remains is the pair of paths attached to the single complex stationary
+point $x^{*}$. This works the same in any number of dimensions where we resolve the nested
+integrals one after the other. By gluing together the two paths of opposite direction
+we end up with a cross of exactly $D$ straight paths. Therefore the number and nesting
+depth of integrals to perform does \emph{not} grow compared to direct integration.
+This is of course very fortunate.
 
 
 \section{A first exemplary computation}
