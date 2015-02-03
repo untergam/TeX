@@ -558,29 +558,42 @@ has been worked out too by the original authors. However, the state of the theor
 for our setting. First we need to consider complex stationary points too. If such a point
 is near to the real line, it will influence the oscillator enough to become relevant.
 Figure \ref{fig:oscillatory_integral_complex_sp} for example shows the integrand of:
-\begin{equation}
+\begin{equation} \label{eq:nsd_csp_integral_example}
   \int_{-2}^{2} \left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
 \end{equation}
-for different values of the parameter
-$\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$.
-One stationary point is located at $x^{*} = \imath \sqrt{\delta}$ and comes close
-to the real line. The influence is clearly present. The general advise for complex
-stationary points is that the path should pass through this point. This will then give
-an exact decomposition in the sense of \eqref{eq:cauchy}. It turns out this
-works very well for our setting.
+for different values of the parameter $\delta$. One stationary point is located on the imaginary axis
+at $x^{*} = \imath \sqrt{\delta}$ and comes close to the real line. The influence is clearly present
+for small values of $\delta$ and soon becomes negligible for larger values.
+The general advise for complex stationary points is that the contour should pass through this point
+as shown in figure \ref{fig:oscillatory_integral_complex_sp}. This will then give an exact
+decomposition in the sense of \eqref{eq:cauchy}. It turns out this works very well for our setting.
+Actually, the \emph{only} thing we have is a single stationary point.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
   \caption{Oscillatory integral on $[-2,2]$ with a stationary point $x^{*}$ at $\imath \sqrt{\delta}$
-  shown for several different decreasing values of $\delta$.}
+  shown for several different decreasing values of
+  $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$.}
+  \label{fig:oscillatory_integral_complex_sp}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\linewidth]{./fig/nsd_path_csp_figure.pdf}
+  \caption{Paths of the integral \eqref{eq:nsd_csp_integral_example}.
+  The two additional paths $h_{x^{*},{\pm}}(\tau)$ go through the complex
+  stationary point $x_0^{*}$. The contribution stemming from these two paths
+  varies with $\delta$. For $\delta = 1$ it is $\bigO{10^{-16}}$ and the whole
+  integral has a value of $I = 0.0317496$ while for $\delta = \frac{1}{5}$ it is
+  $0.033533$ which is not negligible given that now $I = 0.0253591$.}
   \label{fig:oscillatory_integral_complex_sp}
 \end{figure}
 
 Another direction to extend the theory are infinite regions $\Omega$. In our case we will
 need $\Omega = \mathbb{R}^D$. Before we take this step, we look at semi-finite intervals.
 For semi-finite intervals $[a, \infty [$ we attach only one single path $h_a(\tau)$ an the
-endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}. If there
+finite endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}. If there
 are stationary points, they can be split off into sub-problems over finite intervals.
 As an example, we look at the following integral:
 \begin{equation}
