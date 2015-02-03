@@ -565,7 +565,7 @@ for different values of the parameter $\delta$. One stationary point is located 
 at $x^{*} = \imath \sqrt{\delta}$ and comes close to the real line. The influence is clearly present
 for small values of $\delta$ and soon becomes negligible for larger values.
 The general advise for complex stationary points is that the contour should pass through this point
-as shown in figure \ref{fig:oscillatory_integral_complex_sp}. This will then give an exact
+as shown in figure \ref{fig:oscillatory_integral_complex_sp_paths}. This will then give an exact
 decomposition in the sense of \eqref{eq:cauchy}. It turns out this works very well for our setting.
 Actually, the \emph{only} thing we have is a single stationary point.
 
@@ -587,7 +587,7 @@ Actually, the \emph{only} thing we have is a single stationary point.
   varies with $\delta$. For $\delta = 1$ it is $\bigO{10^{-16}}$ and the whole
   integral has a value of $I = 0.0317496$ while for $\delta = \frac{1}{5}$ it is
   $0.033533$ which is not negligible given that now $I = 0.0253591$.}
-  \label{fig:oscillatory_integral_complex_sp}
+  \label{fig:oscillatory_integral_complex_sp_paths}
 \end{figure}
 
 Another direction to extend the theory are infinite regions $\Omega$. In our case we will
@@ -657,7 +657,6 @@ details in the next section.
 
 For the following example computation we assume that
 the upper triangular matrix $\mat{T}$ is given as:
-
 \begin{equation}
  \mat{T} =
  \begin{pmatrix}
@@ -666,29 +665,21 @@ the upper triangular matrix $\mat{T}$ is given as:
   0       & 0       & t_{3,3}
  \end{pmatrix}
 \end{equation}
-
 and we study the oscillator $g$ given by:
-
 \begin{equation}
  g\left(\vec{x}\right) := \vec{x}\H \mat{T} \vec{x} \,.
 \end{equation}
-
 Expanded out this becomes:
-
 \begin{equation}
  g\left(x_1, x_2, x_3\right) = t_{1,1} x_1^2 + t_{2,2} x_2^2 + t_{3,3} x_3^2
                              + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3 + t_{2,3} x_2 x_3 \,.
 \end{equation}
-
 The integral we want to compute is:
-
 \begin{equation} \label{eq:mv_original_integral}
   I = \iiint_{-\infty}^{\infty} f\left(\vec{x}\right) \exp\left(i \omega g\left(\vec{x}\right) \right) \mathrm{d}\vec{x}
     = \iiint_{-\infty}^{\infty} i\left(x_1, x_2, x_3\right) \mathrm{d}x_1 \mathrm{d}x_2 \mathrm{d}x_3
 \end{equation}
-
 and by using the expanded form of $g$ it can be written as:
-
 \begin{equation}
 \begin{alignedat}{2}
  I & = \iiint f\left(\vec{x}\right)
@@ -705,43 +696,32 @@ and by using the expanded form of $g$ it can be written as:
             \mathrm{d}x_3 \,.
 \end{alignedat}
 \end{equation}
-
 We pulled out of each integral the parts of the oscillator
 independent of the integration variable. Therefore we split
 the full oscillator $g$ additively into $N$ parts $g_i$:
-
 \begin{equation}
   g(\vec{x}) = g_1(x_1, x_2, x_3) + g_2(x_2, x_3) + g_3(x_3)\,.
 \end{equation}
-
 Beginning with the inner most one we can resolve these onion-like
 nested integrals one by one. From:
-
 \begin{equation}
  \int_{-\infty}^{\infty} f\left(\vec{x}\right)
    \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
  \mathrm{d}x_1
 \end{equation}
-
 we find the relevant oscillator $g_1(x_1, x_2, x_3)$ to be:
-
 \begin{equation}
   g_1\left(x_1\right) \assign t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3 \,.
 \end{equation}
-
 where we treat the variables $x_2$ and $x_3$ as parameters.
 Let $x_1^*$ denote the (perhaps complex) stationary point
 \footnote{Actually, $x_i^{*}$ is not a \emph{point}. It depends
 on $x_{i+1}$ up to $x_N$, so $x_i^{*}$ is rather a $N-i$
-dimensional object.}
-of $g_1$. The path equation then becomes:
-
+dimensional object.} of $g_1$. The path equation then becomes:
 \begin{equation}
   g_1\left(h_1(\tau_1)\right) = g_1\left(x_1^{*}\right) + i \tau_1
 \end{equation}
-
 which, expanded out, yields:
-
 \begin{gather}
   t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 = k_1(x_2, x_3) + i \tau_1 \\
   t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 - k_1(x_2, x_3) - i \tau_1 = 0 \,.
@@ -754,19 +734,16 @@ current integral. We will see later how to deal explicitly with
 all the $k_i$ depending on all the variables $\left(x_{i+1}, \ldots ,x_N\right)$.
 
 By solving the last equation we obtain the complex integration path
-$h_1\left(\tau_1\right)$ parametrized in the variable $\tau_1 \in [0,\infty[$.
+$h_1\left(\tau_1\right)$ parametrised in the variable $\tau_1 \in [0,\infty[$.
 Note that, at this point $h_1$ still depends on $x_2$ and $x_3$.
 Transforming the integrand of this first integral we find:
-
 \begin{equation*}
  i_1\left(\tau_1, x_2, x_3\right) := f\left(h_1(\tau_1, x_2, x_3), x_2, x_3\right)
                                      \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
                                      \exp\left(- \omega \tau_1 \right)
                                      \pdiff{h_1\left(\tau_1, x_2, x_3\right)}{\tau_1}
 \end{equation*}
-
 and for the integral itself:
-
 \begin{equation*}
 \begin{split}
   I_1\left(x_2, x_3\right) & = \int_0^{\infty} i_1\left(\tau_1, x_2, x_3\right) \mathrm{d}\tau_1 \\
@@ -777,56 +754,42 @@ and for the integral itself:
                                \mathrm{d}\tau_1 \,.
 \end{split}
 \end{equation*}
-
 We pull out the prefactor $\exp\left(i \omega k_1\left(x_2, x_3\right) \right)$
 constant with respect to $x_1$ and call it $p_1\left(x_2, x_3\right)$.
 Then we continue with the second integral where we have to merge parts of
 $p_1$ into $g_2$ (we will show the details later):
-
 \begin{equation}
   \int_{-\infty}^{\infty} I_1\left(x_2, x_3\right)
                           \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
                           \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
   \mathrm{d}x_2 \,.
 \end{equation}
-
 The oscillator is given by:
-
 \begin{equation}
  g_2(x_2) = t_{2,2} x_2^2 + t_{2,3} x_2 x_3 + k_1(x_2, x_3)
 \end{equation}
-
 and depends parametrically on $x_3$. For the path we have:
-
 \begin{equation}
   g_2\left(h_2(\tau_2)\right) = g_2\left(x_2^{*}\right) + i \tau_2
 \end{equation}
-
 which in turn can be resolved to:
-
 \begin{equation}
   t_{2,2} h_2^2 + t_{2,3} h_2 x_3 + k_1(h_2, x_3) = k_2(x_3) + i \tau_2
 \end{equation}
-
 and then:
-
 \begin{equation}
   t_{2,2} h_2^2 + t_{2,3} h_2 x_3 + k_1(h_2, x_3) - k_2(x_3) - i \tau_2 = 0 \,.
 \end{equation}
-
 Using this path $h_2$ obtained from solving the quadratic
 path equation we get the new integrand as:
-
 \begin{equation}
   i_2\left(\tau_2, x_3\right) := I_1\left(h_2(\tau_2, x_3), x_3\right)
                                  \exp\left(i \omega k_2\left(x_3\right) \right)
                                  \exp\left(- \omega \tau_2 \right)
                                  \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2} \,.
 \end{equation}
-
 And then in turn we write for the integral:
-
-\begin{equation}
+\begin{equation*}
 \begin{split}
   I_2\left(x_3\right) & = \int_0^{\infty} i_2\left(\tau_2, x_3\right) \mathrm{d}\tau_2 \\
                       & = \exp\left(i \omega k_2\left(x_3\right) \right)
@@ -835,26 +798,20 @@ And then in turn we write for the integral:
                                           \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2}
                           \mathrm{d}\tau_2 \,.
 \end{split}
-\end{equation}
-
+\end{equation*}
 where we pull out $p_2 \assign \exp\left(i \omega k_2\left(x_3\right) \right)$.
 For the third and outer-most integral we can write:
-
 \begin{equation}
   \int_{-\infty}^{\infty} I_2\left(x_3\right)
                           \exp\left(i \omega k_2\left(x_3\right) \right)
                           \exp\left(i \omega t_{3,3} x_3^2\right)
   \mathrm{d}x_3 \,.
 \end{equation}
-
 Once more, we first extract the oscillator expression:
-
 \begin{equation}
   g_3\left(x_3\right) = t_{3,3} x_3^2 + k_2(x_3)\,.
 \end{equation}
-
 The corresponding path equation is:
-
 \begin{equation}
 \begin{split}
   g_3\left(h_3\left(\tau_3\right)\right) & = g_3(x_3^{*}) + i \tau_3 \\
@@ -862,17 +819,13 @@ The corresponding path equation is:
   t_{3,3} h_3^2 + k_2(h_3) - k_3 - i \tau_3 & = 0 \,.
 \end{split}
 \end{equation}
-
 Note that the variable $k_3$ does not depend on any $x_i$ anymore.
 With the solution $h_3$ our integrand reads:
-
 \begin{equation}
  i_3\left(\tau_3\right) := I_2\left(h_3(\tau_3)\right) \exp\left(i \omega k_3 \right)
                            \exp\left(- \omega \tau_3 \right) \pdiff{h_3\left(\tau_3\right)}{\tau_3}
 \end{equation}
-
 and the integral becomes:
-
 \begin{equation}
 \begin{split}
   I_3 & = \int_0^{\infty} i_3\left(\tau_3\right) \mathrm{d}\tau_3 \\
@@ -884,10 +837,8 @@ and the integral becomes:
 \end{split}
 \end{equation}
 
-
 Finally we obtain the solution of the original integral:
-
-\begin{equation}
+\begin{equation*}
 \begin{split}
   I & = I_3 = \int_0^{\infty} I_2\left(h_3(\tau_3)\right) \ldots \mathrm{d}\tau_3 \\
     & = \int_0^{\infty}
@@ -913,8 +864,7 @@ Finally we obtain the solution of the original integral:
           \ldots \mathrm{d}\tau_2
         \ldots \mathrm{d}\tau_3 \\
 \end{split}
-\end{equation}
-
+\end{equation*}
 This is the nasty return of the recursive scheme here.
 The final denested paths $\tilde{h}_1\left(\tau_1, \tau_2, \tau_3\right)$ and
 $\tilde{h}_2\left(\tau_2, \tau_3\right)$ can be found from
