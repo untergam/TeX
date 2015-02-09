@@ -47,11 +47,11 @@ This is an instance from a very large and important class of highly oscillatory 
 Usually one calls the function $g$ the \emph{oscillator} and the function $f$ the
 \emph{amplitude} or \emph{envelope}.
 
-Computing that integral above by direct standard numerical quadrature schemes
+Computing the integral above by direct standard numerical quadrature schemes
 would look like depicted in figure \ref{fig:transformation_chain_1} where we apply a
 suitable quadrature rule, in our specific case Gauss-Hermite rules, directly to the
-integrand $I$. Since our interests stem from quantum
-mechanics, we anticipate the integrand $I$ being composed of wavepackets $\phi$ and
+integral $I$. Since our interests stem from quantum mechanics, we anticipate the
+integrand in $I$ being composed of wavepackets $\phi$ and
 $\phi^\prime$, forming overlap integrals like $\braket{\phi|\phi^\prime}$.
 
 \begin{figure}[h!]
@@ -64,26 +64,24 @@ $\phi^\prime$, forming overlap integrals like $\braket{\phi|\phi^\prime}$.
 Direct quadrature in general requires that the number of quadrature points
 increases with $\omega$, making it more and more expensive the larger the
 oscillation frequency gets. In our case this growth continues up to a range
-where we can not afford to use such many quadrature nodes.
+that we can not afford.
 It turns out that we need much better methods to efficiently deal with this
-kind of integrals as \eqref{eq:hoi} and obtain mathematically correct results.
-Therefore the theory of \emph{numerical steepest descent} was developed about ten
+kind of integrals and obtain mathematically correct results.
+The theory of \emph{numerical steepest descent} was developed about ten
 years ago exactly for these integrals. For more details on the mathematical theory
-see the work by Huybrechs, Vandewalle and some other People. The main technique
+see the work by Huybrechs, Vandewalle and others. The main technique
 is described in \cite{HV_hoq} for the one-dimensional case and in \cite{HV_cub}
-for multivariate integrands. Semi-finite intervals are treated in \cite{H_nsd_sii}.
+for multivariate integrands. Semi-finite intervals appear in \cite{H_nsd_sii}.
 Other bits and pieces can be found in \cite{AH_cgq} and \cite{AH_cgq_it}.
 
 In this text we will concentrate on the application of this theory on
-the computation of overlap integrals from quantum mechanics.
+the computation of some overlap integrals from quantum mechanics.
 
 
 \section{About semiclassical wavepackets}
 
 
-In this section we look at the wavepackets $\phi$ involved in the computation
-of overlap integrals. Semiclassical wavepackets in $D$ dimensions are constructed
-from a groundstate:
+Semiclassical wavepackets in $D$ dimensions are constructed from a groundstate:
 \begin{align*}
   \phi_{\vec{0}}\left(\vec{x}\right)
   =
@@ -105,8 +103,7 @@ satisfying the Conditions:
 \end{align}
 Implied by these constraints, the matrix $\mat{P}\mat{Q}\inv$ is complex symmetric
 (but not Hermitian) and has positive definite imaginary part.
-All these parameters are usually collected in the set
-$\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
+We collect all these parameters in the set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
 Further there is the semiclassical scaling parameter $1 \gg \varepsilon > 0$.
 For many more details describing these wavepackets, see \cite{H_ladder_operators}
 and \cite{B_master_thesis}.
@@ -120,7 +117,6 @@ This form is sufficient for the steepest descent technique to be applicable.
 Indeed, comparing to the integrand in \eqref{eq:oscillatory_integral},
 we find that $\omega = \frac{1}{\varepsilon^2}$ which means that the oscillator
 frequency increases very fast for small scaling parameters $\varepsilon$.
-What looks like a big issue in the first moment is actually a very lucky coincidence.
 The steepest descent method which we will look at in the next section becomes
 the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of the form:
 \begin{equation}
@@ -167,7 +163,7 @@ wavepackets involved and the integrand look like.
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./fig/overlap_integrand.pdf}
-    \caption{Integrand consisting of $\phi_1$ and $\phi_2$.}
+    \caption{Integrand in case of $\phi_1$ and $\phi_2$.}
     \label{fig:overlap_example_integrand}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
@@ -177,11 +173,11 @@ wavepackets involved and the integrand look like.
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./fig/overlap_integrand_2.pdf}
-    \caption{Integrand consisting of $\phi_8$ and $\phi_6$.}
+    \caption{Integrand in case of $\phi_8$ and $\phi_6$.}
     \label{fig:overlap_example_integrand_2}
   \end{subfigure}
   \caption{\label{fig:overlap_example}
-  Wavepackets $\phi_k$ and $\phi_l$ and the integrand $\conj{\phi_k} \phi_l$.
+  Examples of wavepackets $\phi_k$ and $\phi_l$ and the integrand $\conj{\phi_k} \phi_l$.
   The parameter sets are
   $q_k = \frac{1}{8}$, $p_k = -\frac{1}{2}$,
   $Q_k = \frac{9}{10}$, $P_k = \frac{10}{9}\imath$
@@ -228,9 +224,7 @@ and start with computing $\conj{g_k}$:
  + \vec{x}\H \vec{p_k} - \vec{q_k}\H \vec{p_k} \,.
 \end{split}
 \end{equation*}
-
 Next we add $g_l$ and simplify the following expression:
-
 \begin{equation*}
 \begin{split}
  -\conj{g_k} + g_l
@@ -287,7 +281,7 @@ In the end we find a general quadratic oscillator of the common expanded
 normal form
 % $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c$
 $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\T \vec{x} + c$
-where:
+where careful computation gives:
 
 \marginpar{Recheck the $\vec{b}\T \vec{x}$ vs $\vec{b}\H \vec{x}$}
 
