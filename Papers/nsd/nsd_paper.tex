@@ -2010,8 +2010,8 @@ mercury compound \ce{Hg2}.
   \includegraphics[width=0.8\linewidth]{./fig/ac_mercurial_morse.pdf}
   \caption{Autocorrelation of the Mercury dynamics computed with classical
   Gauss-Hermite quadrature and with the steepest descent method each with several
-  numbers of quadrature points. Only the numerical steepest descent transformation
-  yields accurate results.}
+  numbers of quadrature points. While Gauss-Hermite quadrature fails,
+  the numerical steepest descent transformation yields accurate results.}
   \label{fig:ac_mercurial_morse}
 \end{figure}
 
@@ -2049,15 +2049,15 @@ The procedure is shown also in figure \ref{fig:convergence_setup}.
 \end{figure}
 
 The higher the momenta, the more oscillations appear in the product $\conj{\phi}(x) \phi^\prime(x)$.
-These oscillations are difficult for Gauss Hermite quadrature to catch and it will
-break down even for relatively small momenta. On the other hand, since the
+These oscillations are difficult for Gauss Hermite quadrature to catch and accuracy
+will break down even for relatively small momenta. On the other hand, since the
 steepest descent transformation applies to arbitrary high oscillator frequency,
 it perfectly handles arbitrary momenta and converges fast to the correct
 overlap integral value.
 
 For the one-dimensional case there exists an analytic formula for computing
-the integral for any state $\phi_k$. Evaluation is very expensive but can never the
-less serve as exact reference solution. For examples in higher dimensions we can take
+the integral for any state $\phi_k$. Evaluation is very expensive but can nevertheless
+serve as exact reference solution. For examples in higher dimensions we can take
 the formula for general Gaussian integrals in case we look at ground states
 $\phi_{\vec{0}}$ only. Otherwise we take the computation including the steepest
 descent transformation using the largest number of quadrature nodes as reference.
@@ -2797,15 +2797,13 @@ For this to work out we rewrite the Smolyak construction into a less well known
 version such that in can act as a simple transformation of a set of Gauss-Hermite
 quadrature nodes connecting to the numerical steepest descent step. The Smolyak
 construction of level $k \geq 1$ in $D$ dimensions can be written as:
-
 \begin{equation*}
   S_{D,k} \assign \sum_{q=k-D}^{k-1} (-1)^{k-1-q} \binom{D-1}{k-1-q}
                   \sum_{\substack{\vec{l} \in \mathbb{N}^D \\
                                   \|\vec{l}\|_1 = D+q}}
                   \left(Q_{l_1} \otimes \cdots \otimes Q_{l_D}\right)
 \end{equation*}
-
-which is known combination technique. The formula was first derived in
+which is known as the combination technique. The formula was first derived in
 \cite{Wasilkowski_Wozniakowski_95}. This version stresses that the Smolyak
 construction is nothing more than a certain sum of specific smaller tensor
 products of one-dimensional quadrature rules $\{Q_i\}_{i \in\mathbb{N}}$.
@@ -2845,8 +2843,9 @@ we can largely reduce the computational effort.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{./fig/gk_hermitephy_ratio.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  \caption{Heat map of the ratio $\frac{|\Gamma_{G}|}{|\Gamma_T|}$ of number $|\Gamma_G|$
+  of Genz-Keister points and number $|\Gamma_T|$ of Gauss-Hermite tensor product
+  points for dimensions $D$ up to 8 and level $K \leq 12$. White dots are $D,K$
   combinations where Genz-Keister is advantageous, while for black dots
   Genz-Keister is worse and for gray dots the ratio equals 1.}
   \label{fig:gk_hermitephy_ratio}
