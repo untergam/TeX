@@ -1974,7 +1974,8 @@ in turn change the layout of the integration paths. Further, if there are any po
 in $f$, we have to be very careful with integration too and make sure to include all
 the relevant residuals. In the computations done so far, the envelope $f$ is assumed
 to have no poles in $\mathbb{C}^{d}$. Altogether this poses some challenges for
-non-polynomial potentials $V$.
+non-polynomial potentials $V$. Polynomial potentials are tame enough to
+fit the framework shown.
 
 Although there are some loose ends, we have constructed a method which works better for larger
 $\omega$ hence for smaller $\varepsilon$. It also gives excellent results in the
@@ -2836,9 +2837,11 @@ for the one-dimensional case but in any number of dimensions
 with moderate effort. Even better, one can proof \cite{novak_ritter} that
 the resulting multi-dimensional Genz-Keister construction is equivalent to the
 Smolyak construction starting from one-dimensional Genz-Keister nodes.
-Since there are much less Genz-Keister nodes comapred to the full tensor
+Since there are much less Genz-Keister nodes compared to the full tensor
 of Gauss-Hermite nodes, as shown in figure \ref{fig:gk_hermitephy_ratio},
-we can largely reduce the computational effort.
+we can largely reduce the computational effort. Note however that for $D \leq 2$
+they are unprofitable because they encompass more nodes that a simple Gauss-Hermite
+tensor product.
 
 \begin{figure}[h]
   \centering
