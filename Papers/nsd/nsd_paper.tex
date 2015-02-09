@@ -649,8 +649,8 @@ rough feeling on how the overall process for our specific
 overlap integral works. We will write down all the technical
 details in the next section.
 
-For the following example computation we assume that
-the upper triangular matrix $\mat{T}$ is given as:
+For the following computation we assume that
+the upper triangular matrix $\mat{T}$ is given:
 \begin{equation}
  \mat{T} =
  \begin{pmatrix}
@@ -661,9 +661,9 @@ the upper triangular matrix $\mat{T}$ is given as:
 \end{equation}
 and we study the oscillator $g$ given by:
 \begin{equation}
- g\left(\vec{x}\right) := \vec{x}\H \mat{T} \vec{x} \,.
+ g\left(\vec{x}\right) := \vec{x}\H \mat{T} \vec{x} \,,
 \end{equation}
-Expanded out this becomes:
+i.e.:
 \begin{equation}
  g\left(x_1, x_2, x_3\right) = t_{1,1} x_1^2 + t_{2,2} x_2^2 + t_{3,3} x_3^2
                              + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3 + t_{2,3} x_2 x_3 \,.
@@ -673,7 +673,8 @@ The integral we want to compute is:
   I = \iiint_{-\infty}^{\infty} f\left(\vec{x}\right) \exp\left(i \omega g\left(\vec{x}\right) \right) \mathrm{d}\vec{x}
     = \iiint_{-\infty}^{\infty} i\left(x_1, x_2, x_3\right) \mathrm{d}x_1 \mathrm{d}x_2 \mathrm{d}x_3
 \end{equation}
-and by using the expanded form of $g$ it can be written as:
+where we collapsed the internals into a single function $i\left(x_1, x_2, x_3\right)$
+for reasons of notation. By using the expanded form of $g$ the integral can be written as:
 \begin{equation}
 \begin{alignedat}{2}
  I & = \iiint f\left(\vec{x}\right)
@@ -696,7 +697,7 @@ the full oscillator $g$ additively into $N$ parts $g_i$:
 \begin{equation}
   g(\vec{x}) = g_1(x_1, x_2, x_3) + g_2(x_2, x_3) + g_3(x_3)\,.
 \end{equation}
-Beginning with the inner most one we can resolve these onion-like
+Beginning with the inner most one, we can resolve these onion-like
 nested integrals one by one. From:
 \begin{equation}
  \int_{-\infty}^{\infty} f\left(\vec{x}\right)
@@ -708,22 +709,24 @@ we find the relevant oscillator $g_1(x_1, x_2, x_3)$ to be:
   g_1\left(x_1\right) \assign t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3 \,.
 \end{equation}
 where we treat the variables $x_2$ and $x_3$ as parameters.
-Let $x_1^*$ denote the (perhaps complex) stationary point
-\footnote{Actually, $x_i^{*}$ is not a \emph{point}. It depends
-on $x_{i+1}$ up to $x_N$, so $x_i^{*}$ is rather a $N-i$
-dimensional object.} of $g_1$. The path equation then becomes:
+Let $x_1^*$ denote the (perhaps complex) stationary point\footnote{A
+\emph{stationary point} $\vec{x}^{*}$ is the solution to the equation
+$\nabla g(\vec{x}) = 0$, a point where the derivative of the oscillator vanishes.
+Actually, $x_i^{*}$ is not a \emph{point}.
+It depends on $x_{i+1}$ up to $x_N$, so $x_i^{*}$ is rather a $N-i$
+dimensional object.} of $g_1$. The path equation then is:
 \begin{equation}
   g_1\left(h_1(\tau_1)\right) = g_1\left(x_1^{*}\right) + i \tau_1
 \end{equation}
-which, expanded out, yields:
+which, expanded out, is:
 \begin{gather}
   t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 = k_1(x_2, x_3) + i \tau_1 \\
   t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 - k_1(x_2, x_3) - i \tau_1 = 0 \,.
 \end{gather}
 
-The expression $g_1\left(x_1^{*}\right)$ depends parametrically on
+Since the expression $g_1\left(x_1^{*}\right)$ depends parametrically on
 $x_2$ and $x_3$, we denote the whole thing by $k_1\left(x_2, x_3\right)$.
-Since $k_1$ does not depend on $x_1$ we can pull it out from the
+As $k_1$ does not depend on $x_1$ we can pull it out from the
 current integral. We will see later how to deal explicitly with
 all the $k_i$ depending on all the variables $\left(x_{i+1}, \ldots ,x_N\right)$.
 
@@ -741,24 +744,24 @@ and for the integral itself:
 \begin{equation*}
 \begin{split}
   I_1\left(x_2, x_3\right) & = \int_0^{\infty} i_1\left(\tau_1, x_2, x_3\right) \mathrm{d}\tau_1 \\
-                           & = \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
+                           & = \exp\left(i \omega \,k_1\!\left(x_2, x_3\right) \right)
                                \int_0^{\infty} f\left(h_1(\tau_1, x_2, x_3), x_2, x_3\right)
                                                \exp\left(- \omega \tau_1 \right)
                                                \pdiff{h_1\left(\tau_1, x_2, x_3\right)}{\tau_1}
                                \mathrm{d}\tau_1 \,.
 \end{split}
 \end{equation*}
-We pull out the prefactor $\exp\left(i \omega k_1\left(x_2, x_3\right) \right)$
+We pull out the prefactor $\exp\left(i \omega \,k_1\!\left(x_2, x_3\right) \right)$
 constant with respect to $x_1$ and call it $p_1\left(x_2, x_3\right)$.
 Then we continue with the second integral where we have to merge parts of
 $p_1$ into $g_2$ (we will show the details later):
 \begin{equation}
   \int_{-\infty}^{\infty} I_1\left(x_2, x_3\right)
-                          \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
+                          \exp\left(i \omega \,k_1\!\left(x_2, x_3\right) \right)
                           \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
   \mathrm{d}x_2 \,.
 \end{equation}
-The oscillator is given by:
+The oscillator is given now by:
 \begin{equation}
  g_2(x_2) = t_{2,2} x_2^2 + t_{2,3} x_2 x_3 + k_1(x_2, x_3)
 \end{equation}
@@ -778,7 +781,7 @@ Using this path $h_2$ obtained from solving the quadratic
 path equation we get the new integrand as:
 \begin{equation}
   i_2\left(\tau_2, x_3\right) := I_1\left(h_2(\tau_2, x_3), x_3\right)
-                                 \exp\left(i \omega k_2\left(x_3\right) \right)
+                                 \exp\left(i \omega \,k_2\!\left(x_3\right) \right)
                                  \exp\left(- \omega \tau_2 \right)
                                  \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2} \,.
 \end{equation}
@@ -786,7 +789,7 @@ And then in turn we write for the integral:
 \begin{equation*}
 \begin{split}
   I_2\left(x_3\right) & = \int_0^{\infty} i_2\left(\tau_2, x_3\right) \mathrm{d}\tau_2 \\
-                      & = \exp\left(i \omega k_2\left(x_3\right) \right)
+                      & = \exp\left(i \omega \,k_2\!\left(x_3\right) \right)
                           \int_0^{\infty} I_1\left(h_2(\tau_2, x_3), x_3\right)
                                           \exp\left(- \omega \tau_2 \right)
                                           \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2}
