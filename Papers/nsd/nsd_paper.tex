@@ -192,6 +192,7 @@ wavepackets involved and the integrand look like.
 
 \subsection{Combining different oscillators}
 
+
 Combining the two oscillators is actually a straight-forward computation,
 however it is very error prone, big chances are that we miss a transpose
 or conjugate somewhere. To simplify the notation we define the matrix:
@@ -1511,6 +1512,7 @@ in this chapter.
 
 \subsection{Quadrature and quadrature rules}
 
+
 The quadrature rules necessary for evaluating the integral
 in \eqref{eq:transformed_integral} are the well known
 classical Gauss-Hermite rules. The Gauss-Hermite quadrature
@@ -1671,36 +1673,32 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 In this section we consider a more general oscillator term
 than the one from equation \eqref{eq:triangular_oscillator}.
 This time we try to solve the full quadratic problem:
-
 \begin{equation} \label{eq:general_oscillator}
   g\left(\vec{x}\right) \assign \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c
 \end{equation}
 
-\marginpar{Rather $\vec{x}\H \mat{A} \vec{x}$?}
 \marginpar{What about $\vec{b}\H \vec{x}$?}
 
 where we do not make any assumptions on $\mat{A} \in \mathbb{C}^{N \times N}$.
 The general strategy we follow is to reduce this problem back to the
 triangular oscillator we studied in much detail and know how to solve.
 
+
 \subsection{Removing the linear term}
+
 
 First we want to get rid of the linear term $\vec{b}\H \vec{x}$.
 This is done by a technique similar to completion of the square.
 Starting from the above oscillator we want to find a transformation
 $\chi$ that annihilates the linear term.
 
-
 Assuming that this transformation is linear:
-
 \begin{equation}
  \vec{x}^{\prime} = \chi^{-1}\left(\vec{x}\right) := \vec{x} - \vec{u}
  \quad \leftrightarrow \quad
  \vec{x} = \chi\left(\vec{x}^{\prime}\right) = \vec{x}^{\prime} + \vec{u} \,.
 \end{equation}
-
 we find that:
-
 \begin{equation}
 \begin{split}
   \vec{x}^{\prime}\H \mat{A} \vec{x}^{\prime}
@@ -1711,11 +1709,9 @@ we find that:
       \vec{u}\H \mat{A} \vec{x} + \vec{u}\H \mat{A} \vec{u} \,.
 \end{split}
 \end{equation}
-
 If we match this against the definition of $g$ we get the
 relations shown next. We are interested in the linear terms
 only for finding $\vec{u}$:
-
 \begin{equation}
 \begin{split}
   \vec{b}\H \vec{x} & = - \vec{u}\H \mat{A}\H \vec{x} - \vec{u}\H \mat{A} \vec{x} \\
@@ -1723,24 +1719,20 @@ only for finding $\vec{u}$:
   \vec{b}           & = - \left(\mat{A} + \mat{A}\H\right) \vec{u} \\
 \end{split}
 \end{equation}
-
 and finally:
-
 \begin{equation}
   \vec{u} = - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \,.
 \end{equation}
-
 With the explicit value of $u$ we can rewrite our $\chi$ in a final form:
-
 \begin{equation} \label{eq:transform_chi}
- \vec{x}^{\prime} = \chi^{-1}\left(\vec{x}\right) := \vec{x} + \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}
+\begin{split}
+ \vec{x}^{\prime} & = \chi^{-1}\left(\vec{x}\right) := \vec{x} + \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \\
  \quad \leftrightarrow \quad
- \vec{x} = \chi\left(\vec{x}^{\prime}\right) = \vec{x}^{\prime} - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \,.
+ \vec{x} & = \chi\left(\vec{x}^{\prime}\right) = \vec{x}^{\prime} - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \,.
+\end{split}
 \end{equation}
-
 Then we can start computing the new oscillator $g^{\prime}$:
-
-\begin{equation}
+\begin{equation*}
 \begin{split}
   g\left(\vec{x}\right)
   & =g\left(\chi\left(\vec{x}^{\prime}\right)\right) \\
@@ -1749,11 +1741,7 @@ Then we can start computing the new oscillator $g^{\prime}$:
       \left(\vec{x}^{\prime} - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}\right)
       + \vec{b}\H \left(\vec{x}^{\prime} - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}\right)
       + c \\
-% \end{split}
-% \end{equation}
 \intertext{we expand and simplify this step by step:}
-% \begin{equation}
-% \begin{split}
   & =   \vec{x}^{\prime}\H \mat{A} \vec{x}^{\prime}
       - \vec{x}^{\prime}\H \mat{A} \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}
       - \left(\left(\mat{A} + \mat{A}\H\right)\inv \vec{b}\right)\H \mat{A} \vec{x}^{\prime} \\
@@ -1769,11 +1757,9 @@ Then we can start computing the new oscillator $g^{\prime}$:
       + \vec{b}\H \vec{x}^{\prime} - \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}
       + c \,.
 \end{split}
-\end{equation}
-
+\end{equation*}
 In a next step, try to unify the linear terms having only one $\vec{x}^{\prime}$:
-
-\begin{equation}
+\begin{equation*}
 \begin{split}
    &- \vec{x}^{\prime}\H \mat{A} \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}
     - \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\Hinv \mat{A} \vec{x}^{\prime}
@@ -1796,12 +1782,10 @@ In a next step, try to unify the linear terms having only one $\vec{x}^{\prime}$
  = &- \vec{b}\H \vec{x}^{\prime}
     + \vec{b}\H \vec{x}^{\prime} = 0 \,.
 \end{split}
-\end{equation}
-
+\end{equation*}
 and indeed we find that they vanish. This confirms that the
 transformation is correct. At the end of the day we obtain the
 new oscillator free of any linear term:
-
 \begin{equation}
   g^{\prime}\left(\vec{x}^{\prime}\right) \assign
   \vec{x}^{\prime}\H \mat{A} \vec{x}^{\prime}
@@ -1809,9 +1793,7 @@ new oscillator free of any linear term:
   - \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\inv \vec{b}
   + c
 \end{equation}
-
 where we can pack all the constant terms into the definition of $c^{\prime}$:
-
 \begin{equation}
 \begin{split}
   c^{\prime} & \assign
@@ -1822,28 +1804,25 @@ where we can pack all the constant terms into the definition of $c^{\prime}$:
              -\frac{1}{2} \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} + c \,.
 \end{split}
 \end{equation}
-
 Therefore:
-
 \begin{equation} \label{eq:linearless_operator}
   g^{\prime}\left(\vec{x}^{\prime}\right) = \vec{x}^{\prime}\H \mat{A} \vec{x}^{\prime}
 %                                            -\frac{1}{2} \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} + c
                                             + c^{\prime}
 \end{equation}
 
+
 \subsection{Triangularize the oscillator}
+
 
 Given an oscillator like \eqref{eq:linearless_operator} above
 with an arbitrary matrix $\mat{A}$ of full rank. We seek a coordinate
 transformation $\rho$ that makes the matrix $\mat{A}$ (upper) triagonal.
 This is achieved by the Schur decomposition \cite{matcomp}:
-
 \begin{equation}
  \mat{A} = \mat{U}\H \mat{T} \mat{U}
 \end{equation}
-
 where:
-
 \begin{equation}
   \mat{T} =
   \begin{pmatrix}
@@ -1852,21 +1831,15 @@ where:
     0       &        & t_{N,N}
   \end{pmatrix}
 \end{equation}
-
 and the matrix $\mat{U}$ is even unitary.
-(The decomposition is not necessarily unique
-but this does not matter for our purpose.)
-
+(The decomposition is not necessarily unique but this does not matter for our purpose.)
 The variable transformation is then given by the following mapping:
-
 \begin{equation} \label{eq:transform_rho}
  \vec{x}^{\prime\prime} = \rho^{-1}\left(\vec{x}^{\prime}\right) := \mat{U} \vec{x}^{\prime}
  \quad \leftrightarrow \quad
  \vec{x}^{\prime} = \rho\left(\vec{x}^{\prime\prime}\right) = \mat{U}\inv \vec{x}^{\prime\prime} = \mat{U}\H \vec{x}^{\prime\prime} \,.
 \end{equation}
-
 For the oscillator we compute:
-
 \begin{equation}
 \begin{split}
  g^{\prime}\left(\vec{x}^{\prime}\right)
@@ -1880,26 +1853,20 @@ For the oscillator we compute:
    + c^{\prime}
 \end{split}
 \end{equation}
-
 with $\mat{T}$ being upper triagonal. Finally we obtain
 the triangular oscillator:
-
 \begin{equation}
   g^{\prime\prime}\left(\vec{x}^{\prime\prime}\right) \assign \vec{x}^{\prime\prime}\H \mat{T} \vec{x}^{\prime\prime} + c^{\prime} \,.
 \end{equation}
-
 Combining both transformations $\chi$ and $\rho$ into a single one
 we get the following pullback:
-
 \begin{equation}
   g\left(\vec{x}\right)
   = g\left(\chi\left(\rho\left(\vec{x}^{\prime\prime}\right)\right)\right)
   = g\left(\zeta\left(\vec{x}^{\prime\prime}\right)\right)
 \end{equation}
-
 The related transformation $\zeta$ is the explicit
 composition of $\chi$ and $\rho$:
-
 \begin{equation}
 \begin{split}
   \vec{x}^{\prime\prime} & = \zeta\inv \left(\vec{x}\right)
@@ -1912,27 +1879,21 @@ composition of $\chi$ and $\rho$:
             = \mat{U}\H \vec{x}^{\prime\prime} - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \,.
 \end{split}
 \end{equation}
-
 With the help of $\zeta$ we can transform any oscillator of
 the form \eqref{eq:general_oscillator} into a triangular
 one like shown in \eqref{eq:triangular_oscillator}.
 
 In this variable transformation we need also to include
-the Jacowidth=bi determinant.
-
+the Jacobi determinant.
 Writing the first transformation as in \eqref{eq:transform_chi} we have:
-
 \begin{equation}
   J\chi = \pdiff{\chi\left( \vec{x}^{\prime} \right)}{\vec{x}^{\prime}} = \id
 \end{equation}
-
 and hence $\det(J\chi) = 1$. For the other transformation
 \eqref{eq:transform_rho} it holds:
-
 \begin{equation}
  J\rho = \pdiff{\rho\left(\vec{x}^{\prime\prime}\right)}{\vec{x}^{\prime\prime}} = \mat{U}\inv
 \end{equation}
-
 from which we find $\det(J\rho) = \det(\mat{U}\inv) = \frac{1}{\det\mat{U}}$.
 Because $\mat{U}$ is unitary we finally have $|\det\mat{U}| = 1$ and no
 additional factors appear in the integrals.
@@ -2024,6 +1985,7 @@ interesting and complicated case where  $\Pi \approx \Pi^{\prime}$.
 
 \subsection{Motivation}
 
+
 The initial motivation for this research originates from the computation of autocorrelations
 of wavepackets $\Psi$ like:
 \begin{equation} \label{eq:compute_ac_wavepackets}
@@ -2064,6 +2026,7 @@ simulation code \cite{waveblocksnd}.
 
 
 \subsection{Two-Packet Experiment}
+
 
 In this section we show the insufficiency of the Gauss-Hermite quadrature
 for computing the integral in \eqref{eq:compute_ac_wavepackets}. The setup
