@@ -871,6 +871,7 @@ by substituting $h_2$ for $x_2$ and $h_3$ for $x_3$.
 
 \section{Systematic approach}
 
+
 In this section we look at the general $N$ dimensional case
 and follow a very systematic approach. We will investigate
 all the technical details omitted during the example from
@@ -880,26 +881,21 @@ the last section.
 \subsection{General triangular oscillators}
 
 
-Given a general, potentially complex, upper triangular
+Given a general, probably complex, upper triangular
 matrix $\mat{T}$ of dimension $N \times N$ we look at
 the oscillator given by:
-
 \begin{equation} \label{eq:triangular_oscillator}
   g\left(\vec{x}\right) = \vec{x}\H \mat{T} \vec{x} \,.
 \end{equation}
-
 The process of pulling out from each integral parts that do not
 depend on the respective variable of integration yields the
 additive decomposition of $g$:
-
 \begin{equation}
   g\left(\vec{x}\right) = g\left(x_1, \ldots, x_N\right) = \sum_{i=1}^N g_i(x_i, \ldots, x_N) \,.
 \end{equation}
-
 At each shell $i$ of the onion we exclusively work with the
 partial oscillator $g_i$. In general the coefficients of this
 oscillator are given by the $i$-th row of $\mat{T}$:
-
 \begin{equation} \label{eq:general_partial_gi}
 \boxed{
   g_i\left(x_i, x_{i+1}, \ldots, x_N\right)
@@ -915,14 +911,11 @@ As we know from the theory of numerical steepest descent, we need
 to find the stationary points of an oscillator $g_i$. It is possible
 to do this by a straight forward computation.
 
-First we take the partial derivative of $g_i$,
-in fact we have:
-
+First we take the partial derivative of $g_i$, in fact we have:
 \begin{equation}
  \dot{g}_i \assign \pdiff{g_i}{x_i}
               = 2 t_{i,i} x_i + \sum_{j=i+1}^{N} t_{i,j} x_j
 \end{equation}
-
 The location of the stationary point is implicitly specified by:
 
 \marginpar{Actually still not points!}
@@ -930,9 +923,7 @@ The location of the stationary point is implicitly specified by:
 \begin{equation}
   \dot{g}_i = 0 \,.
 \end{equation}
-
 Solving this equation for the stationary point $x^*_i$ explicitly we get:
-
 \begin{equation} \label{eq:stationary_point_xi}
 \boxed{
   x_i^*
@@ -940,15 +931,13 @@ Solving this equation for the stationary point $x^*_i$ explicitly we get:
   = - \frac{ \sum_{j=i+1}^{N} t_{i,j} x_j }{ 2 t_{i,i} } \,.
 }
 \end{equation}
-
 It is important to remember that at level $i$ the point $x_i^*$
 is stationary with respect to the coordinate $x_i$ but
 depends on the variables $x_{i+1}$ through $x_N$.
 
 Plugging this solution $x_i^*$ into $g_i$ from \eqref{eq:general_partial_gi}
 we can compute the expressions $k_i$ explicitly:
-
-\begin{equation}
+\begin{equation*}
 \begin{split}
   g_i(x_i^*, x_{i+1}, \ldots, x_N)
   & =
@@ -963,10 +952,8 @@ we can compute the expressions $k_i$ explicitly:
   \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2
   - \frac{1}{2 t_{i,i}} \Biggl(\sum_{j=i+1}^{N} t_{i,j} x_j\Biggr) \Biggl(\sum_{k=i+1}^{N} t_{i,k} x_k\Biggr)
 \end{split}
-\end{equation}
-
+\end{equation*}
 and finally:
-
 \begin{equation} \label{eq:general_ki}
 \boxed{
   k_i\left(x_{i+1}, \ldots, x_N\right)
@@ -984,21 +971,16 @@ solve it. We will use formula \eqref{eq:general_partial_gi} in combination
 with \eqref{eq:stationary_point_xi} and \eqref{eq:general_ki} for this task.
 To begin with, the full path equation including all dependencies for the
 oscillator $g_i$ and the corresponding path $h_i$ reads:
-
 \begin{equation*}
   g_i\left(h_i\left(p_i, x_{i+1}, \ldots, x_N\right), x_{i+1}, \ldots, x_N\right)
   = g_i\left(x_i^{*}\left(x_{i+1}, \ldots, x_N\right), x_{i+1}, \ldots, x_N\right) + i p_i \,.
 \end{equation*}
-
 Keeping only the most important dependencies we drop the dependence
 of $g_i$, $h_i$ and $x_i^{*}$ on $x_j$ for $j>i$ and simply write:
-
 \begin{equation} \label{eq:general_path_eqn}
   g_i\left(h_i\left(p_i\right)\right) = g_i\left(x_i^*\right) + i p_i \,.
 \end{equation}
-
 Expanding the left hand side by using \eqref{eq:general_partial_gi} we find:
-
 \begin{equation}
 \begin{split}
   g_i\left(h_i\right)
@@ -1006,10 +988,8 @@ Expanding the left hand side by using \eqref{eq:general_partial_gi} we find:
     = t_{i,i} h_i^2 +  h_i \sum_{j=i+1}^{N} t_{i,j} x_j \,.
 \end{split}
 \end{equation}
-
 Using formula \eqref{eq:general_ki} for the right hand side and
 combining both sides one obtains:
-
 \begin{equation}
   \underbrace{t_{i,i}}_{A} h_i^2
   +
@@ -1018,19 +998,15 @@ combining both sides one obtains:
   \underbrace{\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - i p_i}_{C}
   = 0 \,.
 \end{equation}
-
 What we got is a simple quadratic equation for the path $h_i$.
 Its solution is given by the well known explicit formula:
-
 \begin{equation}
   h_i = \frac{-B \pm \sqrt{\Delta}}{2 A}
   \quad \text{where} \quad
   \Delta \assign B^2 - 4 A C \,.
 \end{equation}
-
 Now let's actually carry out the computation.
 The discriminant seems to be complicated at the first sight:
-
 \begin{equation}
 \begin{split}
   \Delta & = B^2 - 4 A C
@@ -1042,17 +1018,13 @@ The discriminant seems to be complicated at the first sight:
   & = 4 t_{i,i} i p_i
 \end{split}
 \end{equation}
-
 but actually it is surprisingly simple!
 For the complete path we then get:
-
 \begin{equation}
   h_i = \frac{-\sum_{j=i+1}^{N} t_{i,j} x_j \pm \sqrt{4 t_{i,i} i p_i}}
              {2 t_{i,i}}
 \end{equation}
-
 which transforms into a nicer version:
-
 \begin{equation} \label{eq:general_path_formula}
 \boxed{
   h_i\left(p_i, x_{i+1}, \ldots, x_N\right)
@@ -1062,14 +1034,12 @@ which transforms into a nicer version:
   \,.
 }
 \end{equation}
-
 It is important to note that the whole path depends only \emph{linearly}
 on the remaining higher ranked variables $x_j$ with $j>i$.
 As soon as $t_{i,j} = 0$ for all $j \neq i$ we get a bunch of
 completely decoupled paths.
 
 In a next step we can now easily compute the derivative of any path:
-
 \begin{equation}
 \begin{split}
   \pdiff{h_i}{p_i}
@@ -1078,16 +1048,13 @@ In a next step we can now easily compute the derivative of any path:
   & = \pm \pdiff{}{p_i} \sqrt{\frac{i p_i}{t_{i,i}}}
 \end{split}
 \end{equation}
-
 and find this simple expression:
-
 \begin{equation} \label{eq:general_path_derivative_formula}
 \boxed{
   \dot{h}_i \assign \pdiff{h_i\left(p_i\right)}{p_i}
   = \pm \frac{\sqrt{\imath}}{2 \sqrt{t_{i,i}}\sqrt{p_i}} \,.
 }
 \end{equation}
-
 It is obvious that for these formul\ae{} to be valid
 $t_{i,i}$ must never be zero.
 
@@ -1099,7 +1066,6 @@ this reversed order.
 For later usage we denote the paths resulting from this
 recursive resolution by $\tilde{h}_i$. An explicit description
 becomes very nasty soon:
-
 \begin{equation}
 \begin{split}
   \tilde{h}_N(p_N)
@@ -1125,9 +1091,7 @@ becomes very nasty soon:
                )
 \end{split}
 \end{equation}
-
 We can collect all the paths into a single vector like:
-
 \begin{equation}
  \vec{\tilde{h}}\left(\vec{p}\right) \assign
  \begin{bmatrix}
@@ -1146,7 +1110,6 @@ We can collect all the paths into a single vector like:
   \tilde{h}_{N}(p_N) \\
  \end{bmatrix}
 \end{equation}
-
 The last relation is of course a notational shortcut and
 not a mathematical equality in general. For reasons which
 will become clear later we are in the end only interested
@@ -1156,7 +1119,6 @@ this is the implicit choice.
 If we stack all the paths $h_i$ into a vector $\vec{h}$, then
 this composition of all paths can be done easily as shown
 in algorithm \ref{al:precompose_paths}.
-
 \begin{algorithm}
   \caption{Procedure for composing the path}
   \label{al:precompose_paths}
@@ -1169,7 +1131,6 @@ in algorithm \ref{al:precompose_paths}.
     \EndFor
   \end{algorithmic}
 \end{algorithm}
-
 By employing some matrix algebra, then the inner loop
 can even be avoided.
 
@@ -1181,36 +1142,28 @@ In the first step, we completely denest the integral from
 \eqref{eq:oscillatory_integral} as much as possible.
 We start with the inner-most integrand (note that we already
 have split the oscillator):
-
 \begin{equation}
   i_1\left(x_1,\ldots,x_N\right) \assign f\left(\vec{x}\right) \exp\left(i\omega g_1\left(x_1,\ldots,x_N\right)\right)
 \end{equation}
-
 and compute its integral as:
-
 \begin{equation}
   I_1\left(x_2,\ldots,x_N\right) = \int_{-\infty}^\infty i_1\left(x_1,\ldots,x_N\right) \mathrm{d}x_1 \,.
 \end{equation}
-
 Then we continue with the second shell:
-
 \begin{equation}
 \begin{split}
   i_2\left(x_2,\ldots,x_N\right) & \assign I_1\left(x_2,\ldots,x_N\right) \exp\left(i\omega g_2\left(x_2,\ldots,x_N\right)\right) \\
   I_2\left(x_3,\ldots,x_N\right) & = \int_{-\infty}^\infty i_2\left(x_2,\ldots,x_N\right) \mathrm{d}x_2 \,.
 \end{split}
 \end{equation}
-
 This process continues recursively until no more integration
 variables are left:
-
 \begin{equation}
 \begin{split}
   i_N\left(x_N\right) & \assign I_{N-1}\left(x_N\right) \exp\left(i\omega g_N\left(x_N\right)\right) \\
   I_N\left(\right)    & = \int_{-\infty}^\infty i_N\left(x_N\right) \mathrm{d}x_N \,.
 \end{split}
 \end{equation}
-
 and we obtain the final result $I \equiv I_N$. Each of the integrals $I_i$
 involved in this scheme is oscillatory with an oscillator $g_i$.
 
@@ -1223,15 +1176,12 @@ oscillatory.
 For that purpose we computed the paths $h_i$ which implement exactly
 this variable transformation. By construction, the real part of
 $g_i\left(h_i\right)$ is constant and for the composition we have:
-
 \begin{equation}
   g_i\left(h_i\left(p_i, x_{i+1},\ldots,x_N\right)\right)
   = k_i\left(x_{i+1},\ldots,x_N\right)
   + i p_i \,.
 \end{equation}
-
 Plugging this into the exponential yields:
-
 \begin{equation}
 \begin{split}
   \exp\left(i\omega g_i\left(x_i,\ldots,x_N\right)\right)
@@ -1240,7 +1190,6 @@ Plugging this into the exponential yields:
       \exp\left(- \omega p_i\right)
 \end{split}
 \end{equation}
-
 where the first term is still oscillatory but does not depend on $x_i$
 and the second term became exponentially decaying. Next, at stage $i$, we
 transform the whole integral $I_i$. Here we have to pay attention to the
@@ -1248,15 +1197,12 @@ fact that formula \eqref{eq:general_path_formula} yields two paths $h_i^{+}$
 and $h_i^{-}$ with different signs. From the general theory in \cite{AH_cgq}
 we know, that we have to use both and that the transformed integral $I_i$
 consists of two integrals, one for each path:
-
 \begin{equation}
   I_i[h_i] = I_i^{(1)}[h_i^{+}] - I_i^{(2)}[h_i^{-}]
 \end{equation}
-
 Given the integrand $i_i(x_i, \ldots, x_N)$ we use the path $h_i$
 to make a variable transformation going from $x_i$ to $p_i$. The first
 integral $I_i^{(1)}[h_i^{+}]$ therefore reads:
-
 \begin{multline}
   I_i^{(1)}[h_i^{+}]\left(x_{i+1},\ldots,x_N\right) =
   \exp\left(i\omega k_i\left(x_{i+1},\ldots,x_N\right)\right)
@@ -1268,7 +1214,6 @@ integral $I_i^{(1)}[h_i^{+}]$ therefore reads:
     \pdiff{h_i^{+}\left(p_i\right)}{p_i}
   \mathrm{d}p_i
 \end{multline}
-
 and we should not forget that the path $h_i$ depends not only
 on $p_i$ but also on $x_{i+1},\ldots,x_N$. We will see in the
 next section how to handle the factor in front of the integral
@@ -1280,24 +1225,19 @@ We can fix this by the substitution $q = \sqrt{p}$, hence $p = q^2$
 and $\mathrm{d}p = 2 q \mathrm{d}q$. Applying this first to the path
 in \eqref{eq:general_path_formula} and the path derivative in
 \eqref{eq:general_path_derivative_formula} we obtain:
-
 \begin{equation}
   h_i\left(q_i, x_{i+1}, \ldots, x_N\right)
   =
   \pm \sqrt{\frac{\imath}{t_{i,i}}} q_i
   -\frac{1}{2 t_{i,i}} \sum_{j=i+1}^{N} t_{i,j} x_j
 \end{equation}
-
 and
-
 \begin{equation}
   \dot{h}_i \assign \pdiff{h_i\left(q_i\right)}{q_i}
   = \pm \sqrt{\frac{\imath}{t_{i,i}}} \frac{1}{2 q_i} \,.
 \end{equation}
-
 In the integral, the two factors of $2 q_i$ cancel and we are
 left with:
-
 \begin{equation}
   I_i^{(1)}[h_i^{+}] =
   \int_0^\infty
@@ -1306,7 +1246,6 @@ left with:
     \exp\left(- \omega q_i^2\right)
   \mathrm{d}q_i
 \end{equation}
-
 The combination of the $\exp(q_i^2)$ factor and the integration range
 $[0, \infty[$ is a bit unfortunate for our goal of applying a quadrature.
 This combination corresponds to none of the classical Gaussian quadratures
@@ -1316,7 +1255,6 @@ the path $h_i^{-}$ can be transformed into $h_i^{+}$. The substitution
 is trivial and reads $r_i = -q_i$, therefore $q_i = -r_i$ and
 $\mathrm{d}q_i = -\mathrm{d}r_i$. We apply it in the second integral
 $I_i^{(2)}[h_i^{-}]$ only:
-
 \begin{equation}
 \begin{split}
   I_i^{(2)}[h_i^{-}] & =
@@ -1339,9 +1277,7 @@ $I_i^{(2)}[h_i^{-}]$ only:
   \mathrm{d}r_i \\
 \end{split}
 \end{equation}
-
 At this point we can return to the complete integral $I_i$
-
 \begin{equation}
 \begin{split}
   I_i[h_i] & = I_i^{(1)}[h_i^{+}] - I_i^{(2)}[h_i^{-}] = I_i^{(1)}[h_i^{+}] + I_i^{(2)}[h_i^{+}] \\
@@ -1358,9 +1294,7 @@ At this point we can return to the complete integral $I_i$
   \mathrm{d}r_i \\
 \end{split}
 \end{equation}
-
 and after gluing together the two parts, the final integral is:
-
 \begin{equation}
   I_i\left(x_{i+1},\ldots,x_N\right) =
   \int_{-\infty}^\infty
@@ -1369,13 +1303,11 @@ and after gluing together the two parts, the final integral is:
     \exp\left(- \omega \tau_i^2\right)
   \mathrm{d}\tau_i \,.
 \end{equation}
-
 and we reached the goal. This transformed integral is no longer
 oscillatory and well suited for Gauss-Hermite quadrature.
 Applying the corresponding path transformation and variable substitutions
 to each of the $I_i$ and putting together the results we find at the end
 of the day:
-
 \begin{equation} \label{eq:transformed_integral}
 \boxed{
  I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
@@ -1385,7 +1317,6 @@ of the day:
     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 }
 \end{equation}
-
 This integral posses a quadratic exponential decay in all variables and
 hence can be computed easily by classical Gauss-Hermite quadrature
 rules.
@@ -1401,19 +1332,16 @@ have to merge the factor $P_i$ with the next-level oscillator
 $g_{i+1}\left(x_{i+1},\ldots,x_N\right)$.
 Mathematically, this means we compute an update $\grave{g}_{i+1}$
 such that:
-
 \begin{equation} \label{eq:update_equation}
   \grave{g}_{i+1}\left(x_{i+1}, \ldots ,x_N\right)
   \assign g_{i+1}\left(x_{i+1}, \ldots ,x_N\right)
         + k_i\left(x_{i+1}, \ldots ,x_N\right) \,.
 \end{equation}
-
 This seems to be easy, but it is not as straight forward as
 one might think.
 
 Remembering the general form of $k_i$ shown in
 \eqref{eq:general_ki} we can start with:
-
 \begin{equation}
 \begin{split}
   k_i(x_{i+1}, \ldots, x_N)
@@ -1423,14 +1351,12 @@ Remembering the general form of $k_i$ shown in
                             \right) \,.
 \end{split}
 \end{equation}
-
 The main question to answer next is which terms to keep and use
 for the updated oscillator $\grave{g}_{i+1}$ replacing $g_{i+1}$
 and which ones to move one level up outside this particular integral.
 The solution is pretty simple: we keep the $x_{i+1}^2$ and all of
 $x_{i+1} x_j$. To achieve this we split the terms inside $k_i$
 into two groups:
-
 \begin{equation*}
 \begin{split}
  k_i & = - \frac{1}{4 t_{i,i}}
@@ -1450,10 +1376,8 @@ into two groups:
          \right) \,.
 \end{split}
 \end{equation*}
-
 Taking now formula \eqref{eq:general_partial_gi} for $g_{i+1}$
 we can compute $\grave{g}_{i+1}$ from \eqref{eq:update_equation} as:
-
 \begin{equation*}
 \begin{split}
   \grave{g}_{i+1}
@@ -1465,7 +1389,6 @@ we can compute $\grave{g}_{i+1}$ from \eqref{eq:update_equation} as:
     + \text{junk} \,.
 \end{split}
 \end{equation*}
-
 All terms that we decided to move out are labeled as \emph{junk} here and dealt
 with below.
 On the last line we see that we can write the partial oscillator $\grave{g}_{i+1}$
@@ -1473,7 +1396,6 @@ again in the standard form from \eqref{eq:general_partial_gi}, just the
 entries in the $i+1$-th row of the triangular matrix $\mat{T}$ have changed.
 We take into account the junk terms now. First notice that it is possible
 to split them once more into terms to keep and new junk terms:
-
 \begin{equation*}
 \begin{split}
   & - \frac{1}{4 t_{i,i}}
@@ -1494,7 +1416,6 @@ to split them once more into terms to keep and new junk terms:
       \right) \,.
 \end{split}
 \end{equation*}
-
 The first and third term are in turn added to the oscillator $\grave{g}_{i+2}$.
 All others are handled recursively and added to $\grave{g}_{k}$ with $k \geq i+3$
 until we reach $k=N$ and nothing is left. At that point we updated all
@@ -1502,7 +1423,6 @@ rows of $\mat{T}$ below the $i$-th one.
 
 The general formul\ae{} to accomplish this update for a fixed $i$ and
 with $j > i$ and $k > j$ read:
-
 \begin{equation} \label{eq:matrix_update_formulae}
 \boxed{
 \begin{split}
@@ -1511,7 +1431,6 @@ with $j > i$ and $k > j$ read:
 \end{split}
 }
 \end{equation}
-
 and allow us to easily compute the new matrix $\mat{T_{i+1}}$ from
 $\mat{T_i}$ given at step $i$.
 
@@ -1596,28 +1515,23 @@ The quadrature rules necessary for evaluating the integral
 in \eqref{eq:transformed_integral} are the well known
 classical Gauss-Hermite rules. The Gauss-Hermite quadrature
 is built to approximate integrals of the form:
-
 \begin{equation}
   \int_{-\infty}^\infty f\left(x\right) \exp(-x^2) \mathrm{d}x
   \approx
   \sum_{k=1}^n f\bigl(\vec{\gamma}_k\bigr) \vec{w}_k \,.
 \end{equation}
-
 % \begin{equation}
 %   \int_0^\infty f\left(x\right) x^\alpha \exp(-x) \mathrm{d}x
 %   \approx
 %   \sum_{k=1}^n f\bigl(\vec{\gamma}_k\bigr) \vec{w}_k \,.
 % \end{equation}
-
 In one dimension the quadrature nodes $\vec{\gamma}$ of a rule of
 order $n$ are given by the roots of the Hermite polynomial $H_n(x)$
 which is defined as:
-
 \begin{equation}
   H_n(x) \assign \sum_{i=0}^{\lfloor\frac{n}{2}\rfloor}
                    \frac{(-1)^i n!}{i!(n-2i)!} (2x)^{n-2i}
 \end{equation}
-
 % \begin{equation}
 % %   L_n^{\alpha}(x) \assign \sum_{i=0}^n (-1)^i {n+\alpha \choose n-i} \frac{x^i}{i!} \,.
 %   L_n^{\alpha}(x) \assign
@@ -1625,32 +1539,24 @@ which is defined as:
 %     \frac{\Gamma(n+\alpha+1)}{\Gamma(n-i+1) \Gamma(\alpha+i+1)}
 %     \frac{x^i}{i!} \,.
 % \end{equation}
-
 The weights are given by the expression:
-
 \begin{equation}
   \vec{w}_k \assign \frac{2^{n-1} n! \sqrt{\pi}}{n^2 \left(H_{n-1}(x_i)\right)^2}
 \end{equation}
-
 % \begin{equation}
 %   \vec{w}_k \assign
 %   \frac{\Gamma(\alpha+n)}{n \Gamma(n)}
 %   \frac{1}{L^{\alpha}_{n-1}\bigl(\vec{\gamma}_k\bigr) L^{\alpha+1}_{n-1}\bigl(\vec{\gamma}_k\bigr)} \,.
 % \end{equation}
-
 % The non-generalized Gauss-Laguerre quadrature is simply obtained by
 % setting $\alpha = 0$.
-
 For multi-dimensional quadrature we can use a tensor product ansatz:
-
 \begin{equation}
   \vec{X} = \bigotimes_{i=1}^N \vec{x_i} \quad\quad
   \vec{W} = \bigotimes_{i=1}^N \vec{w_i} \,.
 \end{equation}
-
 Another possibility would be to use sparse Smolyak grids.
 Looking again at the full dimensional integral from \eqref{eq:transformed_integral}:
-
 \begin{equation}
  I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
        f\left(\vec{\tilde{h}}(\vec{\tau})\right)
@@ -1658,7 +1564,6 @@ Looking again at the full dimensional integral from \eqref{eq:transformed_integr
                      \exp\left(-\omega \tau_i^2\right)
     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 \end{equation}
-
 % \begin{equation}
 %    I = \int_0^\infty \cdots \int_0^\infty
 %        f\left(\tilde{h}_1(\tau_1),
@@ -1670,9 +1575,7 @@ Looking again at the full dimensional integral from \eqref{eq:transformed_integr
 %         \cdots
 %     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 % \end{equation}
-
 we first remove the $\omega$ from all the exponential functions:
-
 \begin{equation}
  I = \frac{1}{\omega^\frac{N}{2}}
      \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
@@ -1683,10 +1586,8 @@ we first remove the $\omega$ from all the exponential functions:
        \prod_{i=1}^N \exp\left(-\tau_i^2\right) \cdots
     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 \end{equation}
-
 and then apply the standard rule to find $Q \approx I$. At the end
 of the day, the quadrature we will use to approximate $I$ looks like:
-
 \begin{equation} \label{eq:final_quadrature}
 \boxed{
   Q \assign
@@ -1699,10 +1600,8 @@ of the day, the quadrature we will use to approximate $I$ looks like:
     \prod_{i=1}^N w_{k_i} \,.
 }
 \end{equation}
-
 \marginpar{Path inside of $\partial$ are not transformed back.
            Should not be tilde but tilde and ...}
-
 % \begin{equation}
 %    I = \frac{1}{\omega^N}
 %        \int_0^\infty \cdots \int_0^\infty
@@ -1714,14 +1613,13 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 %         \cdots
 %     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 % \end{equation}
-
 % Because of the form of the path derivatives from \eqref{eq:general_path_derivative_formula}
 % with the square root in the denominator the integrand is
 % weakly singular for all $\tau_i \rightarrow 0$ in our case.
 % Therefore we use the regularizing property of the generalized
 % Gauss-Laguerre quadrature and take $\alpha = -\frac{1}{2}$.
-
-
+%
+%
 % \subsection{Summing over paths and pieces}
 %
 %
