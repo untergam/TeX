@@ -37,6 +37,68 @@
 
 \maketitle
 
+
+\section{Introduction}
+
+The Gauss quadrature rules are among the most important techniques
+for numerical integration. Computation of their nodes and weights
+is an important task and makes these rules available for actual computation.
+This problem is by now solved at least for the classical orthogonal
+polynomials and quadrature rules $Q_n$ are available for any number $n$
+of nodes even in the range up to several thousand.
+
+The Gauss rules have a major drawback, namely that for two
+rules $Q_n$ and $Q_m$ with $m > n$, their sets of nodes $\Gamma_n$
+and $\Gamma_m$ are in general different, except for very special
+points like the origin.
+We say that these rules are not \emph{nested} because
+$\Gamma_n \not\subset \Gamma_m$ despite $\Gamma_n$ being of smaller
+cardinality. This implies that almost all function evaluations can
+not be reused. This is an issue for example when one tries to recompute
+an integral with a higher order rule to obtain an error estimation.
+
+Therefore Kronrod proposed \cite{kronrod} to extend a given Gauss
+quadrature rule $Q_n$ with $n+1$ new points yielding a new rule.
+This is done in such a way that now the two rules are nested. A few
+years later Patterson showed \cite{patterson1968} an optimal and
+numerically stable way to compute these new nodes.
+It is possible to iterate these constructions and build whole
+towers of nested quadrature rules \cite{mehrotra-papp}. We will review
+this construction and describe the computation of such iterated nested
+extensions to the Gauss quadrature rules related to the five classical
+orthogonal polynomials.
+
+There are only few theoretical results on the existence of these Kronrod-Patterson
+extensions and they are usually restricted to one single extension.
+Most of these results are for Legendre Polynomials and the branch stemming
+from specializations of Jacobi polynomials. For the case of Hermite polynomials,
+which is most interesting for our application, there is only a single result
+of limited use.
+
+This situation motivates our approach to the topic. We will take an
+algorithmic ansatz and try to explicitly find and enumerate extensions by
+an exhaustive recursive search. This will give us huge families of
+nested quadrature rules for some cases. The evaluation which ones are best
+is not easy and partially left open. In other cases the choice is more
+limited and if we require a certain number nested levels there are only few
+possible rules left to try.
+
+Quadrature rules that are not nested are a particularly bad starting point
+for the classical Smolyak ansatz that is often used for quadrature in higher
+dimensions. The set of quadrature point is then much larger than necessary
+and can be even larger than a full tensor product.
+
+However, starting with a tower of Kronrod extensions and then using the
+Smolyak composition formula yields efficient rules even for high dimensions
+and for more complex cases such as the unbounded case of Gauss-Hermite
+integration. It was proven \cite{novak_ritter} that this construction
+exactly yields the Genz-Keister quadrature rules \cite{genz}. Therefore we
+have an efficient way to actually build all these rules avoiding the explicit
+Smolyak formula. In the end we show the construction sparse quadrature rules
+for any of the classical orthogonal polynomials. The rules are evaluated for
+accuracy as well as effectiveness.
+
+
 \section{Kronrod-Patterson Extensions}
 
 \subsection{Mathematical principles}
