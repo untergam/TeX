@@ -187,18 +187,18 @@ The main algorithm consists of three steps building upon each other.
       \sum_{i=1}^{n+p} \omega^\prime_i t_i^k = \int_{\Omega} t^k \omega(t) \di(t)
     \end{equation}
     for all $k=0, \ldots, n+p-1$. This is again a linear system
-    of equations. The right hand side we have the moments of the
+    of equations. On the right hand side we have the moments of the
     distribution $\omega(t)$. It can happen that some of the weights
     are negative. This might affect the overall stability on the quadrature
     rule but is tolerated for now.
 \end{itemize}
 
 The steps for computing a single extension $E_p$ of $P_n$ are shown in pseudo-code
-in algorithm \eqref{alg:find_extension}. Another version computing iteratively
-multiple nested extensions is shown in \eqref{alg:find_multiextension}.
+in algorithm \ref{alg:find_extension}. Another version computing iteratively
+multiple nested extensions is shown in \ref{alg:find_multiextension}.
 
 
-\subsection{Finding extensions}
+\subsection{Find extensions}
 
 The general degree $p$ monic polynomial $E_p$ with symbolic coefficients is
 written as:
@@ -208,13 +208,13 @@ written as:
 \end{equation}
 
 and we need to determine the set of coefficients $\{a_i\}_{i=0}^{p-1}$.
-Applying next the theorem \ref{th:defining_extension} from above and starting
-with the integral formulation \eqref{eq:defining_extension} we find step by step:
+The theorem \ref{th:defining_extension} from above and the integral formulation
+\eqref{eq:defining_extension} gives:
 
 \begin{equation}
 \begin{split}
   \int_\Omega P_n(t) E_p(t) t^i \omega(t) \,\di(t)
-  & = \int_\Omega P_n(t) \left(t^p + \sum_{k=0}^{p-1} a_k t^k\right) t^i \omega(t) \,\di(t) \\
+  & = \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k + t^p\right) t^i \omega(t) \,\di(t) \\
   & = \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t)
     + \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k\right) t^i \omega(t) \,\di(t) \\
   & = \sum_{k=0}^{p-1} a_k \int_\Omega P_n(t) t^k t^i \omega(t) \,\di(t)
@@ -222,7 +222,7 @@ with the integral formulation \eqref{eq:defining_extension} we find step by step
 \end{split}
 \end{equation}
 
-Now it is time to remember that this integral should equate zero. Hence we find
+This integral is zero. Hence we find
 from the last line the following linear system $\mat{A} \vec{a} = \vec{r}$
 for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$ as:
 
@@ -260,9 +260,9 @@ this vector can be computed very easily.
 
 A limitation of our current implementation (see section \ref{sec:implementation_aspects})
 is that we can work only with distributions $\omega(t)$ that have rational moments.
-However, in case of the most important distributions used as weight functions for
-defining the Legendre, Chebyshev, Laguerre and Hermite orthogonal polynomials this
-is a well known truth and summarized in table \ref{eq:orthogonal_polynomials} below.
+However, in case of the most important distributions used as weight functions
+(see table \ref{eq:orthogonal_polynomials}) for defining the Legendre, Chebyshev, Laguerre
+and Hermite orthogonal polynomials this is a well known truth.
 
 \begin{savenotes}
 \begin{table}[h!]
@@ -376,7 +376,7 @@ factor.
 
 \subsection{Computing nodes}
 
-Computing the nodes amounts to finding all roots of a possibly high degree
+Computing the nodes amounts to find all roots of a possibly high degree
 polynomial. In classical numerics there are various stability issues related
 to this task and a general solution is often not possible. Using arbitrary precision
 ball arithmetic as defined by van der Hoeven in \cite{vdH:ball:greifswald, vdH:ball}
@@ -388,8 +388,8 @@ results in the end.
 The following routine is shown here just for the sake of completeness. Internally
 we pass on by calling a suitable function from the \texttt{arb} library introduced below.
 The function called uses the Durand-Kerner method according to the library documentation.
-An assumption required for this method to work is that the polynomial is square-free
-which is necessary for all valid extensions anyway.
+An assumption required for the specific implementation of this root-finding method to work
+is that the polynomial is square-free which is necessary for all valid extensions anyway.
 
 \begin{algorithm}
   \caption{Compute the nodes up to a given precision $b_{\gamma}$}
@@ -403,10 +403,6 @@ which is necessary for all valid extensions anyway.
 
 
 \subsection{Computing weights}
-
-In this section we will look at the computation of weights in more detail.
-Although not really complicated a systematic understanding is inevitable for
-a correct implementation.
 
 Given a set of nodes $\{\gamma_i\}_{i=1}^{n} \in \mathbb{R}$ we want
 to find the corresponding weights $\vec{\omega} := \{\omega_i\}_{i=1}^{n} \in \mathbb{R}$.
@@ -447,27 +443,26 @@ This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \v
 
 where $k = 0, \ldots, n-1$ is the row index and $i = 1, \ldots, n$
 is the column index of the matrix $\mat{A}$. This system is square
-and of shape $n \times n$. Theorem \ref{th:existence_weights} assures there is
-a unique solution. Given that the nodes are in general algebraic numbers
-and can not be resolved formally we computed approximations by complex
-balls. Even in case we knew the nodes in closed form, there is obviously
+and of shape $n \times n$. Theorem \ref{th:existence_weights} ensures that there is
+a unique solution. Given that the nodes are in general algebraic numbers,
+we compute approximations by complex balls.
+Even in case we knew the nodes in closed form, there is obviously
 no way to solve this system within the rationals and we would have to resort
 to the algebraic number field. Therefore we approximate the weights by complex
-balls the same way. Computing the solution vector $\vec{\omega}$ to a target
-precision of $b_{\omega}$ bits is actually not straight forward. The reason is
-that we know the nodes with a precision of $b_{\gamma}$ bits only. It can then
-happen that this is not precise enough to solve the system and retrieve $b_{\omega}$
-bits for the weights.
+balls in the same way. Computing the solution vector $\vec{\omega}$ to a target
+precision of $b_{\omega}$ bits is actually not straight forward, we know the nodes
+with a precision of $b_{\gamma}$ bits only which is not precise enough to solve
+the system and retrieve $b_{\omega}$ bits for the weights.
 
-The way out of this dilemma consist of an iterative ansatz. First we try to
+The way out of this dilemma consists of an iterative ansatz. First we try to
 solve the system and then check the precision $b_{\omega}^{\prime}$ of the
-weights. If $b_{\omega}^{\prime} \geq b_{\omega}$ then the precision goal was
-met and we can stop. Otherwise we double the required precision
+weights. If $b_{\omega}^{\prime} \geq b_{\omega}$, then the precision goal was
+met and we can stop. Otherwise, we double the required precision
 $b_{\gamma}^{\prime} := 2 b_{\gamma}$ and recompute the nodes first. After
-that we can retry solving this system and see if the precision goal is met
-this time. If not we let the algorithm iterate until the goal of $b_{\omega}$ bits
-is eventually fulfilled or an upper bound hit. The procedure is shown in pseudo-code
-in listing \ref{alg:compute_weights}.
+that we can retry to solve this system and see if the precision goal is met
+this time. If not yet, we let the algorithm iterate until the goal of $b_{\omega}$ bits
+is eventually fulfilled or an upper bound on the number of bits is hit.
+The procedure is shown in pseudo-code in listing \ref{alg:compute_weights}.
 
 \begin{algorithm}
   \caption{Compute the weights up to a given precision $b_{\omega}$}
@@ -525,9 +520,8 @@ gives the following numbers (midpoint) and error bars (radius):
   \hline
   \end{tabular}
 \end{center}
-Obviously two of the nodes are complex-valued. This is actually guaranteed because
-the balls that contain the roots do not intersect with the real line.
-Hence this is not a valid extension.
+Obviously two of the nodes are complex-valued. The balls that contain the roots
+do not intersect with the real line, so this is not a valid extension.
 Looking for an extension of order 4 we find
 $E_4 = t^4 - \frac{272}{13}t^3 + \frac{1512}{13}t^2 - \frac{1824}{13}t + \frac{552}{13}$.
 Computing the roots of $E_4$ again up to at least 20 digits of precision gives:
@@ -548,10 +542,9 @@ Computing the roots of $E_4$ again up to at least 20 digits of precision gives:
   \end{tabular}
 \end{center}
 The imaginary parts are tiny and we may safely assume that the roots are indeed all real
-and positive. This result is in principle not guaranteed, the balls do all intersect the
-real line but also extend into the complex plane. However we can recompute these numbers
-with higher precision and obtain smaller radii up to a point where we are satisfied with
-the result.
+and positive. The balls do all intersect the real line but also extend into the complex plane.
+We can recompute these numbers with higher precision and obtain smaller radii up to a point
+where we are satisfied with the result.
 The extension $E_4$ has one drawback, namely there are negative weights for the resulting
 quadrature rule. Numerical computation of the weights (ordered by nodes) yields:
 \begin{center}
@@ -582,7 +575,7 @@ To validate an extension $E_p$ of $P_n$ we first check that the roots $\{\gamma_
 this polynomial $E_p$ actually lie within the region $\Omega$.
 The subset $\Omega$ of $\mathbb{R}$ is the region where the original polynomials $P_n$ are orthogonal
 and where we want the quadrature to happen, see table \ref{eq:orthogonal_polynomials} for details.
-Explicitly stated, we require that:
+We require that:
 \begin{equation}
   \{\gamma_i\}_{i=1}^p \subset \Omega \,.
 \end{equation}
@@ -591,11 +584,10 @@ The second step in the validation of an extension concerns the weights.
 While we infer from \eqref{eq:linsys_for_weights_matrix} that the weights are all
 real, they can still be negative. Negative weights can affect the stability
 of a quadrature rule. For that reason one usually drops rules having negative
-weights. By requiring that:
+weights. We filter out invalid extensions with the condition:
 \begin{equation}
-  \omega_i > 0 \quad i=1, \ldots, p+n
+  \omega_i > 0 \quad i=1, \ldots, p+n \,.
 \end{equation}
-we can filter out invalid extensions.
 These steps apply in the same way also to nested towers
 $P_n \subset E_{p_1} \subset E_{p_2} \subset \ldots \subset E_{p_k}$
 of extensions. The nodes can be validated for each level $k$ independently.
@@ -615,7 +607,7 @@ have the complete arithmetics of the field $\mathbb{Q}$ available. It also
 implements the polynomial rings $\mathbb{Z}[x]$ and $\mathbb{Q}[x]$ and hence we
 can compute and express the polynomials defining the nodes of our nested extension
 tower. There are at least two reasons we require an efficient implementation of
-$\mathbb{Q}[x]$. First we need to be able to do fast arithmetics with polynomials,
+$\mathbb{Q}[x]$. First, we need to be able to do fast arithmetics with polynomials,
 specifically multiplication and checking whether a given polynomial is indeed square-free.
 Second, the coefficients grow exponentially large and we must use arbitrary precision
 rational numbers for expressing them. Other things we use from \texttt{flint} are
@@ -623,7 +615,7 @@ matrices over $\mathbb{Z}$ and $\mathbb{Q}$. The matrices module provides us wit
 to solve linear systems by integral or rational arithmetic using a specially adapted
 fraction free version of Gauss elimination.
 
-Given all that we can check whether an extension $E_p$ to any given rule $P_n$
+Given all that, we can check whether an extension $E_p$ to any given rule $P_n$
 exists by using only exact rational arithmetic. The price we pay is that we can
 handle only distributions $\omega(t)$ that have rational moments.
 
@@ -648,11 +640,11 @@ roots to a high working precision can still take some time.
 \FloatBarrier
 \section{Direct Search for single Extensions}
 
-In this section we will consider only single Kronrod extensions. Given a polynomial
+We consider now only single Kronrod extensions. Given a polynomial
 $P_n$ of either Legendre, Chebyshev, Laguerre or Hermite type and of degree $n$, we compute
 the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of algorithm
 \ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
-the first place. Next we compute nodes and weights. If requested, validity checks
+the first place. Next, we compute nodes and weights. If requested, validity checks
 are performed to ensure that the nodes are within the region of integration:
 \begin{equation}
   \forall i = 1, \ldots, n+p: \gamma_i \in \Omega \subseteq \mathbb{R}
@@ -662,11 +654,11 @@ and that the weights are positive:
   \forall i = 1, \ldots, n+p: \omega_i > 0 \,.
 \end{equation}
 
-Since the aim of this work is an exhaustive search for valid rules we apply
-this computation for a series of increasing $n$ and test all $p$ up to some
-upper bound. This then guarantees that we have found all extensions of
+Since the aim of this work is an exhaustive search for valid rules, we use
+this algorithm for a series of increasing $n$ and test all $p$ up to some
+upper bound. We obtain all extensions of
 some given Gauss type rule $P_n$ up to extension order $p_{\textrm{max}}$.
-To cover as much as possible the range of rules used in practice we set
+To cover as much as possible the range of rules used in practice, we set
 $n_{\mathrm{max}} = 100$ and also $p_{\textrm{max}} = 100$. In the extreme case
 there is now a polynomial of degree $200$ defining a rule with the same number
 of node-weight pairs.
@@ -699,17 +691,12 @@ above is shown in the figures \ref{fig:map_leg_100_100}, \ref{fig:map_lag_20_100
 and \ref{fig:map_herm_50_100}.
 
 
-\marginpar{Some explanation for each polynomial case}
-\marginpar{todo: replot with negative weights included}
-\marginpar{Consider even larger maps?}
-
-
 \subsection{Existence and non-existence results}
 
 From the rather sparse theory on this subject we know only of very few rigorous
 existence results for Kronrod-Patterson extensions.
 
-In the Legendre case there is a proof saying that for each $n$ there is
+In the Legendre case there is a proof that for each $n$ there is
 always an extension with $p = n + 1$ \cite{szegoe}. This is recovered by our
 computation and shows up in figure \ref{fig:map_leg_100_100} as the first upper
 diagonal line. Additionally to their existence, these rules also have positive
@@ -787,11 +774,10 @@ of another quadrature rule having higher order. In that case the property of
 nested nodes $\{\gamma_i\}_{i=1}^n \subset \{\gamma_i\}_{i=1}^{n+p}$ can reduce
 computation cost.
 
-Another use case however is the construction of quadrature
-rules for higher dimensional integrals. For the number of dimensions in the
-range from $4$ up to some ten this can be done efficiently by the well known
+The construction of quadrature rules for higher dimensional integrals
+needs more than that. For the number of dimensions in the range from $4$ up
+to some ten such quadrature rules can be done efficiently by the well known
 Smolyak construction.
-
 
 Given an initial polynomial $P_n$ of degree $n$, we want to find the set of all
 extension towers\footnote{By abuse of notation, let $E_{p_k}$ denote the polynomial
@@ -799,13 +785,14 @@ of degree $p_k$ as well as the abstract extension over $E_{p_{k-1}}$ defined by 
 %$P_n \subset E_{p_1} \subset E_{p_2} \subset \ldots \subset E_{p_k}$
 $P_n \equiv E_{p_0} \subset E_{p_1} \subset \ldots \subset E_{p_k} \subset \ldots \subset E_{p_{k_{\textrm{max}}}}$
 %$P = P_0 \subset P_1 \subset \ldots \subset P_k \subset \ldots \subset P_{k_{\textrm{max}}}$
-over $P_n$ having finite height $k_{\textrm{max}}$. Additionally we truncate this
+over $P_n$ having finite height $k_{\textrm{max}}$. Additionally, we truncate this
 potentially infinite set by requiring that the degrees $p_k$ of all polynomials $E_{p_k}$
 never exceed a fixed upper bound $p_{\textrm{max}}$. This will in turn give a finite tree
 of nested extensions. In the end, we denote a single extension from this set
 by $\mathcal{K} = (n, p_1, \ldots, p_{k_{\textrm{max}}}) \in \mathbb{N}^{{k_{\textrm{max}}}+1}$.
 
-Given the polynomial $P_{k-1}(x) := \prod_{i=0}^{k-1} E_{p_i}(x)$ fixing the lower part of this tower,
+Given the polynomial $P_{k-1}(x) := \prod_{i=0}^{k-1} E_{p_i}(x)$ keeping the whole lower part
+$E_{p_0} \subset \ldots \subset E_{p_{k-1}}$ of this tower fixed,
 we can call algorithm \ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
 upper layers $k, \ldots, k_{\textrm{max}}$ as far as they exist. This algorithm will perform a
 flat exhaustive search on layer $k$ and then call itself for the next layer $k+1$. To get this
@@ -1442,7 +1429,7 @@ If we run this algorithm for recursive enumeration, it finds a multitude
 of higher order nested Kronrod extensions. Depending on the kind of orthogonal
 polynomial we start with, there are large differences in the number and nesting
 degree of the extensions. For polynomials which are specializations of the
-Jacobi polynomials, we find the most regular structure presenting us a vast number
+Jacobi polynomials, we find the most regular structure which displays a vast number
 of extensions. For other polynomials like the Laguerre polynomials there are almost
 no extensions and the average nesting level is very low. From this large zoo of
 possible $\mathcal{K}$ tuples, some of the more interesting ones are summarized
@@ -1495,8 +1482,8 @@ with $K \geq 0$ as:
   \right\}
   \,.
 \end{equation}
-An algorithm for computing that set $\mathcal{P}$
-is shown in \eqref{alg:ca_enumerate_integer_partitions}.
+A method for computing that set $\mathcal{P}$
+is shown in algorithm \ref{alg:ca_enumerate_integer_partitions}.
 Before we look deeper into the details of this construction,
 we need to introduce the set $\Lambda$ of so called \emph{generators}:
 \begin{equation}
@@ -1538,7 +1525,7 @@ where $\Gamma_\mathbf{p}$ stands for a whole set of nodes given by:
 \end{equation}
 and $\mathcal{S}_\mathbf{p}$ is the set of all permutations of the $D$
 elements of $\mathbf{p} \in \mathcal{P}$. An algorithm for the enumeration
-of all permutations is given in \eqref{alg:ca_enumerate_permutations}.
+of all permutations is given in \ref{alg:ca_enumerate_permutations}.
 Finally we find:
 \begin{equation}
   f\left(\Gamma_\mathbf{p}\right) \assign
@@ -1567,17 +1554,17 @@ where we define the denominator:
 \end{equation}
 and use the multi-index $\mathbf{k} \in \mathbb{N}_{0}^{D}$. Note that the
 prefactor is exactly $1 / |\overline{\gamma_\mathbf{k}}|$.
-Algorithm \eqref{alg:ca_enumerate_lattice_points} implements a procedure
+Algorithm \ref{alg:ca_enumerate_lattice_points} implements a procedure
 for enumeration of all relevant multi-indices.
 This formula above presents us with several parts we need to compute.
 Some of these parts can even be tabulated once for a maximal and
 fixed $J$ value and independent of the dimension $D$.
-Let us start with the numerator. There we need the value $a_i$ which is defined
-as follows:
+Let us start with the numerator. There we need the value $a_i$ which
+is defined by:
 \begin{equation} \label{eq:gk_def_ai}
-  a_{i} := \int_\Omega p_{i}(x) w(x) \di{x}, \quad i = 0, \ldots, J+1
+  a_{i} := \int_\Omega p_{i}(x) w(x) \di{x}, \quad i = 0, \ldots, J+1 \,,
 \end{equation}
-and the domain $\Omega$ and the weight function $w(x)$ are chosen
+whereas the domain $\Omega$ and the weight function $w(x)$ are chosen
 appropriately (see below). The polynomials $p_{i}(x)$ are defined as:
 \begin{equation}
 \begin{split}
@@ -1586,7 +1573,7 @@ appropriately (see below). The polynomials $p_{i}(x)$ are defined as:
 \end{split}
 \end{equation}
 where the empty product equals 1. It holds that $\deg p_i = 2i$.
-Since all the real numbers $\lambda_{j}$ are known we can indeed
+Since all the real numbers $\lambda_{j}$ are known, we can indeed
 expand the product and write $p_i$ as $\sum_{j=0}^{2i} c_j x^j$
 for some coefficients $c_j$. This enables us to compute the integral
 in equation \eqref{eq:gk_def_ai} term-wise by using linearity:
@@ -1598,7 +1585,7 @@ where $M_j$ is the $j$-th moment and chosen according to table
 For the Legendre, Chebyshev and Hermite case, the explicit formulae are
 \eqref{eq:moments_legendre}, \eqref{eq:moments_chebyshevt}, \eqref{eq:moments_chebyshevt}
 and \eqref{eq:moments_hermite_phy}.
-Optionally we can replace very small values by zero. As we will see later
+Optionally, we can replace very small values by zero. As we will see later,
 it is important to be able to decide whether $a_{i} = 0$. Because we
 compute with real numbers (either floating point numbers or real ball arithmetic)
 we can however never solve this problem exactly like in rational arithmetic.
@@ -1665,13 +1652,13 @@ ever need the upper right triangular part:
 \end{center}
 
 Given the list $\Lambda$ of generators and all the values $a_{i}$ collected into
-the list $\vec{A}$ we can compute the table $\mat{T}$ efficiently by algorithm
-\eqref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
+the list $\vec{A}$, we can compute the table $\mat{T}$ efficiently by algorithm
+\ref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
 of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table
-look-up steps. However, precomputation of $\mat{T}$ is expensive for larger $J$
-but on the other hand needs to be done only once for each $\Lambda$ and $w(x)$.
+look-up steps. However, precomputation of $\mat{T}$ is expensive for larger $J$,
+on the other hand needs to be done only once for each $\Lambda$ and $w(x)$.
 The numerator and denominator of the entries in $\mat{T}$ can become really large
-numbers (remember that most moments include gamma functions) while their quotient
+numbers (remember that most moments include gamma functions), while their quotient
 stays within reasonable range for floating point representation. For this reason
 one can compute $\mat{T}$ to high precision with specialized software packages
 like \texttt{flint} \cite{flint, Hart2010} and afterwards use these tabulated
@@ -1701,7 +1688,7 @@ values during usual floating point computations.
 \end{algorithm}
 
 At the end of the day we arrive at the following two algorithms
-\eqref{alg:gk_compute_nodes} and \eqref{alg:gk_compute_weights}
+\ref{alg:gk_compute_nodes} and \ref{alg:gk_compute_weights}
 for computing the node set $\Gamma_\mathbf{p}$ and weights $\omega_\mathbf{p}$
 for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
 
@@ -1767,7 +1754,7 @@ equation \eqref{eq:gk_basic_formula}. Looking at the definition of the weights
 in equation \eqref{eq:gk_weight_def} we have a sum-product structure. A single
 product becomes zero if the numerator $a_{\mathbf{k}_d+\mathbf{p}_d} = 0$. This
 then must happen for all summands in the sum. A simple algorithm to find $\vec{z}$
-is given in \eqref{alg:gk_compute_zsequence} below. It is limited in rigor because
+is given in \ref{alg:gk_compute_zsequence} below. It is limited in rigor because
 of the zero test on floating point numbers.
 
 \begin{algorithm}[h!]
@@ -1801,17 +1788,17 @@ Finally, we cite theorem 3.1 from \cite{genz} but omit the proof:
 
 This theorem tells us which partitions $\mathbf{p}$ we can omit when assembling
 the quadrature rule. The full algorithm for the construction of fully symmetric quadrature
-rules in $D$ dimensions and of level $K$ is shown in \eqref{alg:gk_construction}.
+rules in $D$ dimensions and of level $K$ is shown in \ref{alg:gk_construction}.
 The whole procedure is general in the sense that we can apply it to both the Legendre and
 Hermite cases as it was already done in \cite{genz} and \cite{genz_keister} respectively.
 Further we can repeat the very same computations for both kinds of Gauss-Chebyshev
-quadrature which is new. As we have seen in the last section there exists a plethora
+quadrature which is new. As we have seen in the last section, there exists a plethora
 of nested higher order Kronrod extensions for some orthogonal polynomials. Each of these
 can serve as the basis $\mathcal{K}$ for the generator set $\Lambda$. Genz and Keister used in
 the Hermite case the Kronrod extensions $\mathcal{K} = (1, 2, 6, 10, 16)$ and $\mathcal{K} = (1, 2, 8, 20)$.
 One should note that not all rules are equally well suited. A criterion on the expected
 \emph{sparsity} of the final rule is the number of zero elements in the $\vec{z}$ sequence.
-The more non-zero elements the better but unfortunately such sequences are rare.
+The more non-zero elements the better, but unfortunately such sequences are rare.
 Additionally there appears the question of stability which was discussed in \cite{genz}.
 Novak and Ritter show in \cite{novak_ritter}, section 6, that the Genz-Keister construction
 produces quadrature rules which are of classical Smolyak form. This is convenient
@@ -1861,7 +1848,7 @@ can be used during the Genz-Keister construction. In the programming
 language \texttt{python} they can be implemented very efficiently by
 the use of \texttt{yield} statements inside so called \emph{generator expressions}.
 
-The algorithm \eqref{alg:ca_enumerate_integer_partitions} can
+The algorithm \ref{alg:ca_enumerate_integer_partitions} can
 be used for enumeration of the set $\mathcal{P}$ defined in
 \eqref{eq:partition_set_def}. This works for any given value
 of $D \geq 1$ and maximal element size $K \geq 0$. The elements
@@ -1907,7 +1894,7 @@ of $|\mathbf{p}|$ until the boundary $K$ is hit.
 
 An algorithm to enumerate the set $\mathcal{S}$ of all entry-wise
 permutations of a given vector $\mathbf{p} \in \mathbb{N}_{0}^{D}$
-is shown next in \eqref{alg:ca_enumerate_permutations}. This algorithm
+is shown next in \ref{alg:ca_enumerate_permutations}. This algorithm
 will generate the permutations in reverse lexicographic order,
 starting with $\mathbf{p}$.
 
@@ -1957,7 +1944,7 @@ starting with $\mathbf{p}$.
 In the definition of the weights in formula \eqref{eq:gk_weight_def}
 we need to iterate over the set $\mathcal{L} := \{\mathbf{k_{i}}\}$ of all
 lattice points $\mathbf{k} \in \mathbb{N}_{0}^{D}$ up to some maximal value of
-the $l_{1}$ norm. The algorithm \eqref{alg:ca_enumerate_lattice_points}
+the $l_{1}$ norm. The algorithm \ref{alg:ca_enumerate_lattice_points}
 shows an efficient method for the enumeration of all such points. It
 is well known that the cardinality of $\mathcal{L}$ is:
 \begin{equation}
@@ -2052,10 +2039,9 @@ order at least $2K-1$. It can be seen from figures \ref{fig:number_nodes_legendr
 \ref{fig:number_nodes_hermitephy} that the rules discussed here fulfill the
 required conditions as their orders are always large enough.
 
-Finally, corollary 7 from \cite{novak_ritter} gives the degree of exactness
-for $K \geq D - 1$ as $2 (K+1-D) + 1$.
-
-\marginpar{TODO: inconsistent?}
+% Finally, corollary 7 from \cite{novak_ritter} gives the degree of exactness
+% for $K \geq D - 1$ as $2 (K+1-D) + 1$.
+% \marginpar{TODO: inconsistent?}
 
 \subsection{Legendre Quadrature}
 
@@ -2137,7 +2123,7 @@ fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/number_nodes_levdim_legendre.pdf}
-  \caption{Number $|\Gamma|$ of quadrature nodes for various levels $K$ and dimensions $D$.}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
   \label{fig:number_nodes_levdim_legendre}
 \end{figure}
 
@@ -2293,7 +2279,7 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevt.pdf}
-  \caption{Number $|\Gamma|$ of quadrature nodes for various levels $K$ and dimensions $D$.}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
   \label{fig:number_nodes_levdim_chebyshevt}
 \end{figure}
 
@@ -2452,7 +2438,7 @@ it behaves the other way round. The details are shown in figures
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevu.pdf}
-  \caption{Number $|\Gamma|$ of quadrature nodes for various levels $K$ and dimensions $D$.}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
   \label{fig:number_nodes_levdim_chebyshevu}
 \end{figure}
 
@@ -2617,7 +2603,7 @@ to be highly unstable.
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/number_nodes_levdim_hermitephy.pdf}
-  \caption{Number $|\Gamma|$ of quadrature nodes for various levels $K$ and dimensions $D$.}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
   \label{fig:number_nodes_levdim_hermitephy}
 \end{figure}
 
