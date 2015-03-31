@@ -35,11 +35,13 @@
 \section{Introduction}
 
 
-Given functions $f(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{R}$ and
-$g(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{C}$, we want to compute the integral:
+Consider functions $f(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{R}$ and
+$g(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{C}$, we compute the integral:
 
 \begin{equation} \label{eq:hoi}
- I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} f \exp(i \omega g) \, \mathrm{d}x_1 \cdots \mathrm{d}x_n
+ I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty}
+      f(\vec{x}) \exp(i \omega g(\vec{x}))
+      \, \mathrm{d}x_1 \cdots \mathrm{d}x_n
 \end{equation}
 
 where $\omega > 0$ is the frequency.
@@ -127,7 +129,8 @@ the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of 
   \dotp{\vec{p}}{\vec{x}-\vec{q}}
 \end{equation}
 We are interested in overlap integrals\footnote{For one-dimensional wavepackets there
-exists an exact formula which is very expensive to evaluate numerically.} like
+exists an exact formula which is very expensive to evaluate numerically, see
+\cite{H_R_quantization_rules} and \cite{B_bachelor_thesis} for compatible notation.} like
 $\dotp{\phi_k}{\phi_l}$. These integrals become even more difficult in case the parameters
 sets $\Pi_k$ and $\Pi_l$ differ. In any case the integral is still of the same oscillatory
 structure like a single wavepacket:
@@ -358,8 +361,6 @@ In the theory shown so far this is a bounded subset of $\mathbb{R}^D$.
 Figure \ref{fig:oscillatory_example_2d} shows a particular
 example of such a nasty integrand.
 
-\marginpar{recheck domains}
-
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.6\linewidth]{fig/oscillatory_example_2d.png}
@@ -376,7 +377,7 @@ integral takes the form:
 \begin{equation} \label{eq:oscillatory_integral}
   I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
         f\left(\vec{x}\right)
-        \exp\left(i\omega g\left(\vec{x}\right) \right)
+        e^{i\omega g\left(\vec{x}\right)}
       \mathrm{d} \vec{x}
 \end{equation}
 in $D$ dimensions.
@@ -918,9 +919,6 @@ First we take the partial derivative of $g_i$, in fact we have:
               = 2 t_{i,i} x_i + \sum_{j=i+1}^{N} t_{i,j} x_j
 \end{equation}
 The location of the stationary point is implicitly specified by:
-
-\marginpar{Actually still not points!}
-
 \begin{equation}
   \dot{g}_i = 0 \,.
 \end{equation}
@@ -1058,9 +1056,6 @@ and find this simple expression:
 \end{equation}
 It is obvious that for these formul\ae{} to be valid
 $t_{i,i}$ must never be zero.
-
-\marginpar{It is not clear if/when that can happen.}
-
 Formula \eqref{eq:general_path_formula} allows us now to compute explicitly
 starting with $h_N$ all the paths $h_{N-1}$, $h_{N-2}$ up to $h_1$ in
 this reversed order.
@@ -1482,9 +1477,7 @@ This whole procedure is written out in pseudo code in algorithm
 matrix elements $\mat{T}_{i,i}$ must never become zero. Otherwise
 we would divide by zero. But we can interpret this failure also
 by noticing that in such a case the oscillator is not quadratic
-anymore but degenerated in at least one direction.
-
-\marginpar{It is not clear if/when that can happen. Degenerate conic.}
+anymore but a degenerated conic in at least one direction.
 
 \begin{algorithm}
   \caption{Procedure for updating the oscillator matrix $\mat{T}$}
@@ -1602,8 +1595,7 @@ of the day, the quadrature we will use to approximate $I$ looks like:
     \prod_{i=1}^N w_{k_i} \,.
 }
 \end{equation}
-\marginpar{Path inside of $\partial$ are not transformed back.
-           Should not be tilde but tilde and ...}
+
 % \begin{equation}
 %    I = \frac{1}{\omega^N}
 %        \int_0^\infty \cdots \int_0^\infty
@@ -1676,9 +1668,6 @@ This time we try to solve the full quadratic problem:
 \begin{equation} \label{eq:general_oscillator}
   g\left(\vec{x}\right) \assign \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c
 \end{equation}
-
-\marginpar{What about $\vec{b}\H \vec{x}$?}
-
 where we do not make any assumptions on $\mat{A} \in \mathbb{C}^{N \times N}$.
 The general strategy we follow is to reduce this problem back to the
 triangular oscillator we studied in much detail and know how to solve.
@@ -1906,13 +1895,19 @@ There are some yet unanswered questions in theory as well as in practical use.
 In this section we will briefly review them, find the main difficulties
 in each one and try to propose possible solutions.
 
-First of all, despite comprehensive numerical evidence, we need a full proof
+First of all, despite comprehensive numerical evidence, we would like a full proof
 showing the validity of our extension to the theory of numerical steepest descent
-to infinite intervals. The idea was to use the work from \cite{HV_hoq}
+to infinite intervals.\footnote{The idea was to use the work from \cite{HV_hoq}
 on finite intervals and from \cite{H_nsd_sii} on semi-finite intervals
-to construct a solution for infinite intervals by gluing together three regions.
-In this process it turned out that the proof given in the latter reference is flawed.
-As is stands now we can not even assume the semi-finite part to be correct.
+to construct a solution for infinite intervals by gluing together three regions,
+one finite and two semi-finite ones. In this process it turned out that the proof
+given in the latter reference is flawed. As is stands now we can not even assume
+the semi-finite part to be correct.}
+However, in the case of $\braket{\phi_k | \phi_l}$ and even $\braket{\phi_k | V | \phi_l}$
+for some class of well-behaved, essentially polynomial potential $V(x)$, there is nothing
+to prove. We rely on an intelligent change of variables to obtain a tame non-oscillatory
+integral. Only the harder case for general $V(x)$ is still open.
+
 The next step is then about the correct handling of stationary points since our
 single stationary point $x^{*}$ is in general complex. There are some comments on
 that situation in the first reference. The central observation being made is that
@@ -2070,7 +2065,9 @@ This results in $N^D$ quadrature nodes, which scales exponentially with the
 dimension $D$. The important bit is however that the value of $N$ is \emph{much}
 smaller compared to direct application of traditional quadrature schemes as done
 in \ref{fig:transformation_chain_1}.
-
+The only oscillations that remain are caused by the degree of the polynomial part
+of the integrand for large state index $k$. There, the order bounds of Gauss
+quadrature of course still apply.
 
 \FloatBarrier
 \subsubsection{Convergence in $|p|$}
@@ -2192,9 +2189,6 @@ in \ref{fig:transformation_chain_1}.
   $q^\prime=0.2$, $p^\prime=-1.2$, $Q^\prime=0.5$, $P^\prime=2.0\imath$
   with $\varepsilon=0.3$.}
 \end{figure}
-
-\marginpar{comment figures}
-\marginpar{oscillation in polynomial}
 
 \begin{figure}[ht!]
   \begin{subfigure}[t]{0.5\linewidth}
@@ -2834,7 +2828,7 @@ as shown in figure \ref{fig:transformation_chain_4}.
 
 These Genz-Keister quadrature nodes can be constructed not only
 for the one-dimensional case but in any number of dimensions
-with moderate effort. Even better, one can proof \cite{novak_ritter} that
+with moderate effort. Even better, one can prove \cite{novak_ritter} that
 the resulting multi-dimensional Genz-Keister construction is equivalent to the
 Smolyak construction starting from one-dimensional Genz-Keister nodes.
 Since there are much less Genz-Keister nodes compared to the full tensor
@@ -3630,17 +3624,6 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   $\mat{Q}^\prime = \mat{1}$,
   $\mat{P}^\prime = \imath \mat{1}$.}
 \end{figure}
-
-
-\FloatBarrier
-\subsection{Mercury Morse}
-
-Spurious autocorrelation bumps
-
-\subsection{Harmonic Channel}
-
-Show a 2D example
-Additional oscillations around true autocorrelation function
 
 
 \FloatBarrier
