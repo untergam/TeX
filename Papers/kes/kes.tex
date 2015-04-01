@@ -193,7 +193,7 @@ The main algorithm consists of three steps building upon each other.
 \end{itemize}
 
 The steps for computing a single extension $E_p$ of $P_n$ are shown in pseudo-code
-in algorithm \ref{alg:find_extension}. Another version computing iteratively
+in Algorithm \ref{alg:find_extension}. Another version computing iteratively
 multiple nested extensions is shown in \ref{alg:find_multiextension}.
 
 
@@ -259,7 +259,7 @@ this vector can be computed very easily.
 A limitation of our current implementation (see section \ref{sec:implementation_aspects})
 is that we can work only with distributions $\omega(t)$ that have rational moments.
 However, in case of the most important distributions used as weight functions
-(see table \ref{eq:orthogonal_polynomials}) for defining the Legendre, Chebyshev, Laguerre
+(see Table \ref{eq:orthogonal_polynomials}) for defining the Legendre, Chebyshev, Laguerre
 and Hermite orthogonal polynomials this is a well known truth.
 
 \begin{savenotes}
@@ -489,7 +489,7 @@ The procedure is shown in pseudo-code in listing \ref{alg:compute_weights}.
 
 Validation of the extensions computed is necessary and happens in
 two separate steps where the second one is optional. Even if we
-can solve equation \eqref{eq:linsys_for_extension} and algorithm
+can solve equation \eqref{eq:linsys_for_extension} and Algorithm
 \ref{alg:find_extension} does return a non-vanishing polynomial $E_p$,
 this does not guarantee we have found a suitable extension.
 As an example we look at possible extensions $E_p$ of the Gauss-Laguerre rule
@@ -572,7 +572,7 @@ we will find that all its roots are on the positive real axis and all weights ar
 To validate an extension $E_p$ of $P_n$ we first check that the roots $\{\gamma_i\}_{i=1}^p$ of
 this polynomial $E_p$ actually lie within the region $\Omega$.
 The subset $\Omega$ of $\mathbb{R}$ is the region where the original polynomials $P_n$ are orthogonal
-and where we want the quadrature to happen, see table \ref{eq:orthogonal_polynomials} for details.
+and where we want the quadrature to happen, see Table \ref{eq:orthogonal_polynomials} for details.
 We require that:
 \begin{equation}
   \{\gamma_i\}_{i=1}^p \subset \Omega \,.
@@ -640,7 +640,7 @@ roots to a high working precision can still take some time.
 
 We consider now only single Kronrod extensions. Given a polynomial
 $P_n$ of either Legendre, Chebyshev, Laguerre or Hermite type and of degree $n$, we compute
-the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of algorithm
+the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of Algorithm
 \ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
 the first place. Next, we compute nodes and weights. If requested, validity checks
 are performed to ensure that the nodes are within the region of integration
@@ -786,7 +786,7 @@ by $\mathcal{K} = (n, p_1, \ldots, p_{k_{\textrm{max}}}) \in \mathbb{N}^{{k_{\te
 
 Given the polynomial $P_{k-1}(x) := \prod_{i=0}^{k-1} E_{p_i}(x)$ that defines the
 lower part $E_{p_0} \subset \ldots \subset E_{p_{k-1}}$ of this tower,
-we can call algorithm \ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
+we can call Algorithm \ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
 upper layers $k, \ldots, k_{\textrm{max}}$ as far as they exist. This algorithm will perform a
 flat exhaustive search on layer $k$ and then call itself for the next layer $k+1$. To get this
 process started, we make an initial call for $k=1$ with $P_{0} := P_n \equiv E_{p_0}$ as shown
@@ -1426,7 +1426,7 @@ Jacobi polynomials, we find the most regular structure which displays a vast num
 of extensions. For other polynomials like the Laguerre polynomials there are almost
 no extensions and the average nesting level is very low. From this large zoo of
 possible $\mathcal{K}$ tuples, some of the more interesting ones are summarized
-in the tables \ref{tab:legendre_extensions}, \ref{tab:chebyshevt_extensions},
+in the Tables \ref{tab:legendre_extensions}, \ref{tab:chebyshevt_extensions},
 \ref{tab:chebyshevu_extensions}, \ref{tab:laguerre_extensions} and \ref{tab:hermite_extensions}.
 
 
@@ -1474,7 +1474,7 @@ with $K \geq 0$ as:
   \,.
 \end{equation}
 A method for computing that set $\mathcal{P}$
-is shown in algorithm \ref{alg:ca_enumerate_integer_partitions}.
+is shown in Algorithm \ref{alg:ca_enumerate_integer_partitions}.
 Before we look deeper into the details of this construction,
 we need to introduce the set $\Lambda$ of so called \emph{generators}:
 \begin{equation}
@@ -1571,7 +1571,7 @@ in equation \eqref{eq:gk_def_ai} term-wise by using linearity:
 \begin{equation}
   a_i = \sum_{j=0}^{2i} c_j \int_\Omega x^j w(x) \di{x} = \sum_{j=0}^{2i} c_j M_j
 \end{equation}
-where $M_j$ is the $j$-th moment and chosen according to table
+where $M_j$ is the $j$-th moment and chosen according to Table
 \eqref{eq:orthogonal_polynomials} and the explicit formulae shown thereafter.
 For the Legendre, Chebyshev and Hermite case, the explicit formulae are
 \eqref{eq:moments_legendre}, \eqref{eq:moments_chebyshevt}, \eqref{eq:moments_chebyshevt}
@@ -1643,7 +1643,7 @@ ever need the upper right triangular part:
 \end{center}
 
 Given the list $\Lambda$ of generators and all the values $a_{i}$ collected into
-the list $\vec{A}$, we can compute the table $\mat{T}$ efficiently by algorithm
+the list $\vec{A}$, we can compute the table $\mat{T}$ efficiently by Algorithm
 \ref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
 of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table
 look-up steps. However, precomputation of $\mat{T}$ is expensive for larger $J$,
@@ -1678,7 +1678,7 @@ values during usual floating point computations.
   \end{algorithmic}
 \end{algorithm}
 
-At the end of the day we arrive at the following two algorithms
+At the end of the day we arrive at the following two Algorithms
 \ref{alg:gk_compute_nodes} and \ref{alg:gk_compute_weights}
 for computing the node set $\Gamma_\mathbf{p}$ and weights $\omega_\mathbf{p}$
 for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
@@ -1837,7 +1837,7 @@ can be used during the Genz-Keister construction. In the programming
 language \texttt{python} they can be implemented very efficiently by
 the use of \texttt{yield} statements inside so called \emph{generator expressions}.
 
-The algorithm \ref{alg:ca_enumerate_integer_partitions} can
+The Algorithm \ref{alg:ca_enumerate_integer_partitions} can
 be used for enumeration of the set $\mathcal{P}$ defined in
 \eqref{eq:partition_set_def}. This works for any given value
 of $D \geq 1$ and maximal element size $K \geq 0$. The elements
@@ -1931,7 +1931,7 @@ starting with $\mathbf{p}$.
 In the definition of the weights in formula \eqref{eq:gk_weight_def}
 we need to iterate over the set $\mathcal{L} := \{\mathbf{k_{i}}\}$ of all
 lattice points $\mathbf{k} \in \mathbb{N}_{0}^{D}$ up to some maximal value of
-the $l_{1}$ norm. The algorithm \ref{alg:ca_enumerate_lattice_points}
+the $l_{1}$ norm. The Algorithm \ref{alg:ca_enumerate_lattice_points}
 shows an efficient method for the enumeration of all such points. It
 is well known that the cardinality of $\mathcal{L}$ is:
 \begin{equation}
@@ -2901,7 +2901,7 @@ alternating order.
   \caption{Generators in the Hermite case $\mathcal{K} = (1, 2, 6, 10, 16)$
   computed to 20 decimal digits. Rigorous error bounds are provided by ball
   arithmetic. We can confirm the claim made in \cite{genz_keister} for their
-  table 4 (both columns) and assure that all digits shown are indeed correct.}
+  Table 4 (both columns) and assure that all digits shown are indeed correct.}
 \end{table}
 
 \begin{table}
