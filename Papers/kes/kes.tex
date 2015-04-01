@@ -64,40 +64,41 @@ years later Patterson showed \cite{patterson1968} an optimal and
 numerically stable way to compute these new nodes. The close relation to
 the standard way of computing Gauss quadrature rules is shown in \cite{laurie}.
 It is possible to iterate these constructions and build whole
-towers of nested quadrature rules \cite{mehrotra-papp}. We will review
-this construction and describe the computation of such iterated nested
-extensions to the Gauss quadrature rules related to the five classical
-orthogonal polynomials.
+towers of nested quadrature rules \cite{mehrotra-papp}. We review
+this construction and give a detailed description of the algorithms for
+such iterated nested extensions to the Gauss quadrature rules related
+to the five classical orthogonal polynomials. The algorithms are implemented
+in an efficient code that is publicly available under the GPL license.
 
 There are only few theoretical results on the existence of these Kronrod-Patterson
-extensions and they are usually restricted to one single extension.
+extensions and they are usually restricted to one single extension
+\cite{gautschi-notaris, gautschi, monegato1978, monegato1978_2, szegoe}.
 Most of these results are for Legendre Polynomials and the branch stemming
 from specializations of Jacobi polynomials. For the case of Hermite polynomials,
-which is most interesting for our application, there is only a single result
-of limited use.
+which is most interesting for the application we originally had in mind \cite{H_ladder_operators,
+FGL_semiclassical_dynamics}, there is only a single result of limited use \cite{kahaner-monegato}.
 
-This situation motivates our approach to the topic. We will take an
-algorithmic ansatz and try to explicitly find and enumerate extensions by
-an exhaustive recursive search. This will give us huge families of
-nested quadrature rules for some cases. The evaluation which ones are best
-is not easy and partially left open. In other cases the choice is more
-limited and if we require a certain number nested levels there are only few
-possible rules left to try.
+We take an algorithmic ansatz and explicitly find and enumerate extensions by
+an exhaustive recursive search. This gives us huge families of nested quadrature
+rules for some cases. The evaluation of the best is not easy and partially
+left open. In other cases the choice is more limited and if we require a certain
+number of nested levels, there are only few possible rules left to try.
 
 Quadrature rules that are not nested are a particularly bad starting point
 for the classical Smolyak ansatz that is often used for quadrature in higher
 dimensions. The set of quadrature point is then much larger than necessary
 and can be even larger than a full tensor product.
 
-However, starting with a tower of Kronrod extensions and then using the
-Smolyak composition formula yields efficient rules even for high dimensions
-and for more complex cases such as the unbounded case of Gauss-Hermite
-integration. It was proven \cite{novak_ritter} that this construction
-exactly yields the Genz-Keister quadrature rules \cite{genz}. Therefore we
-have an efficient way to actually build all these rules avoiding the explicit
-Smolyak formula. In the end we show the construction sparse quadrature rules
-for any of the classical orthogonal polynomials. The rules are evaluated for
-accuracy as well as effectiveness.
+However, a tower of Kronrod extensions and the Smolyak composition formula
+yield efficient rules even for high dimensions and for more complex cases such
+as the unbounded case of Gauss-Hermite integration. It was proven \cite{novak_ritter}
+that this construction exactly yields the Genz-Keister quadrature rules \cite{genz}.
+Therefore we have an efficient way to actually build all these rules avoiding
+the explicit Smolyak formula. In the end we provide algorithms for the construction
+of sparse quadrature rules for any of the classical orthogonal polynomials.
+The rules are evaluated for accuracy as well as effectiveness. These algorithms
+are also implemented in the above mentioned code. The implementation follows
+closely the description given here in pseudo code.
 
 
 \section{Kronrod-Patterson Extensions}
@@ -136,7 +137,7 @@ extend a given set of nodes by a bunch of new nodes.
   and suppose that there exists a polynomial $E_p$ of degree $p$ satisfying:
   \begin{equation}
     \label{eq:defining_extension}
-    \int_\Omega P_n(t) E_p(t) t^i \omega(t) \di(t) = 0
+    \int_\Omega P_n(t) E_p(t) t^i \omega(t) \di{t} = 0
   \end{equation}
   for all $i = 0, \ldots, p-1$. Assume further that the roots of $E_p$
   are all real and of multiplicity one, and distinct from
@@ -182,7 +183,7 @@ The main algorithm consists of three steps building upon each other.
     \end{equation}
     we compute the weights by formula \eqref{eq:linsys_for_weights}:
     \begin{equation}
-      \sum_{i=1}^{n+p} \omega^\prime_i t_i^k = \int_{\Omega} t^k \omega(t) \di(t)
+      \sum_{i=1}^{n+p} \omega^\prime_i t_i^k = \int_{\Omega} t^k \omega(t) \di{t}
     \end{equation}
     for all $k=0, \ldots, n+p-1$. This is again a linear system
     of equations. On the right hand side we have the moments of the
@@ -211,39 +212,38 @@ The theorem \ref{th:defining_extension} from above and the integral formulation
 
 \begin{equation}
 \begin{split}
-  \int_\Omega P_n(t) E_p(t) t^i \omega(t) \,\di(t)
-  & = \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k + t^p\right) t^i \omega(t) \,\di(t) \\
-  & = \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t)
-    + \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k\right) t^i \omega(t) \,\di(t) \\
-  & = \sum_{k=0}^{p-1} a_k \int_\Omega P_n(t) t^k t^i \omega(t) \,\di(t)
-    + \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t) \,.
+  0 & = \int_\Omega P_n(t) E_p(t) t^i \omega(t) \,\di{t}
+      = \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k + t^p\right) t^i \omega(t) \,\di{t} \\
+%   & = \int_\Omega P_n(t) t^p t^i \omega(t) \,\di{t}
+%     + \int_\Omega P_n(t) \left(\sum_{k=0}^{p-1} a_k t^k\right) t^i \omega(t) \,\di{t} \\
+    & = \sum_{k=0}^{p-1} a_k \int_\Omega P_n(t) t^k t^i \omega(t) \,\di{t}
+      + \int_\Omega P_n(t) t^p t^i \omega(t) \,\di{t} \,.
 \end{split}
 \end{equation}
 
-This integral is zero. Hence we find
-from the last line the following linear system $\mat{A} \vec{a} = \vec{r}$
+We find from the last line the following linear system $\mat{A} \vec{a} = \vec{r}$
 for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$ as:
 
 \begin{equation}
   \label{eq:linsys_for_extension}
   \begin{bmatrix}
     {}     & \vdots                                        & {} \\
-    \hdots & \int_\Omega P_n(t) t^k t^i \omega(t) \,\di(t) & \hdots \\
+    \hdots & \int_\Omega P_n(t) t^k t^i \omega(t) \,\di{t} & \hdots \\
     {}     & \vdots                                        & {} \\
   \end{bmatrix}
-  \begin{pmatrix}
+  \begin{bmatrix}
     a_0 \\
     \vdots \\
     a_k \\
     \vdots \\
     a_{p-1}
-  \end{pmatrix}
+  \end{bmatrix}
   =
-  \begin{pmatrix}
+  \begin{bmatrix}
   \vdots \\
-  - \int_\Omega P_n(t) t^p t^i \omega(t) \,\di(t) \\
+  - \int_\Omega P_n(t) t^p t^i \omega(t) \,\di{t} \\
   \vdots \\
-  \end{pmatrix}
+  \end{bmatrix}
 \end{equation}
 
 where the first index $i = 0, \ldots, p-1$ runs along a column
@@ -402,8 +402,8 @@ is that the polynomial is square-free which is necessary for all valid extension
 
 \subsection{Computing weights}
 
-Given a set of nodes $\{\gamma_i\}_{i=1}^{n} \in \mathbb{R}$ we want
-to find the corresponding weights $\vec{\omega} := \{\omega_i\}_{i=1}^{n} \in \mathbb{R}$.
+Given a set of $n$ nodes $\{\gamma_i\}_{i=1}^{n}$,  $\gamma_i \in \mathbb{R}$ we want
+to find the corresponding weights $\vec{\omega} := \{\omega_i\}_{i=1}^{n}$, $\omega_i \in \mathbb{R}$.
 We start with the equation \eqref{eq:linsys_for_weights} shown above:
 
 \begin{equation}
@@ -422,21 +422,21 @@ This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \v
     \vdots         & {}     & \vdots         & {}     & \vdots \\
     \gamma_1^{n-1} & \hdots & \gamma_i^{n-1} & \hdots & \gamma_n^{n-1}
   \end{bmatrix}
-  \begin{pmatrix}
+  \begin{bmatrix}
     \omega_1 \\
     \vdots \\
     \omega_i \\
     \vdots \\
     \omega_n
-  \end{pmatrix}
+  \end{bmatrix}
   =
-  \begin{pmatrix}
+  \begin{bmatrix}
   \int_{\Omega} t^0 \omega(t) \,\di{t} \\
   \vdots \\
   \int_{\Omega} t^k \omega(t) \,\di{t} \\
   \vdots \\
   \int_{\Omega} t^{n-1} \omega(t) \,\di{t}
-  \end{pmatrix}
+  \end{bmatrix}
 \end{equation}
 
 where $k = 0, \ldots, n-1$ is the row index and $i = 1, \ldots, n$
@@ -448,9 +448,9 @@ Even in case we knew the nodes in closed form, there is obviously
 no way to solve this system within the rationals and we would have to resort
 to the algebraic number field. Therefore we approximate the weights by complex
 balls in the same way. Computing the solution vector $\vec{\omega}$ to a target
-precision of $b_{\omega}$ bits is actually not straight forward, we know the nodes
-with a precision of $b_{\gamma}$ bits only which is not precise enough to solve
-the system and retrieve $b_{\omega}$ bits for the weights.
+precision of $b_{\omega}$ bits is actually not straight forward, because we know
+the nodes with a precision of $b_{\gamma}$ bits only which could be not precise
+enough to solve the system and retrieve $b_{\omega}$ bits for the weights.
 
 The way out of this dilemma consists of an iterative ansatz. First we try to
 solve the system and then check the precision $b_{\omega}^{\prime}$ of the
@@ -643,14 +643,8 @@ $P_n$ of either Legendre, Chebyshev, Laguerre or Hermite type and of degree $n$,
 the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of algorithm
 \ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
 the first place. Next, we compute nodes and weights. If requested, validity checks
-are performed to ensure that the nodes are within the region of integration:
-\begin{equation}
-  \forall i = 1, \ldots, n+p: \gamma_i \in \Omega \subseteq \mathbb{R}
-\end{equation}
-and that the weights are positive:
-\begin{equation}
-  \forall i = 1, \ldots, n+p: \omega_i > 0 \,.
-\end{equation}
+are performed to ensure that the nodes are within the region of integration
+and that all the weights are positive.
 
 Since the aim of this work is an exhaustive search for valid rules, we use
 this algorithm for a series of increasing $n$ and test all $p$ up to some
@@ -738,7 +732,8 @@ rules would probably be of no practical use anyway.
   \caption{Map of the extensions $E_p$ of Gauss-Laguerre quadrature rules
            $L_n$ for $n \leq 20$ and $p$ up to $100$. The part from
            $20 < n \leq 100$ not shown here does not contain any single
-           valid extension.}
+           valid extension. Compare also to Table 1 in \cite{kahaner_waldvogel_fullerton}.
+           }
   \label{fig:map_lag_20_100}
 \end{figure}
 
@@ -789,8 +784,8 @@ never exceed a fixed upper bound $p_{\textrm{max}}$. This will in turn give a fi
 of nested extensions. In the end, we denote a single extension from this set
 by $\mathcal{K} = (n, p_1, \ldots, p_{k_{\textrm{max}}}) \in \mathbb{N}^{{k_{\textrm{max}}}+1}$.
 
-Given the polynomial $P_{k-1}(x) := \prod_{i=0}^{k-1} E_{p_i}(x)$ keeping the whole lower part
-$E_{p_0} \subset \ldots \subset E_{p_{k-1}}$ of this tower fixed,
+Given the polynomial $P_{k-1}(x) := \prod_{i=0}^{k-1} E_{p_i}(x)$ that defines the
+lower part $E_{p_0} \subset \ldots \subset E_{p_{k-1}}$ of this tower,
 we can call algorithm \ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
 upper layers $k, \ldots, k_{\textrm{max}}$ as far as they exist. This algorithm will perform a
 flat exhaustive search on layer $k$ and then call itself for the next layer $k+1$. To get this
@@ -860,8 +855,8 @@ will be a Gauss rule of order $n$ having $n$ points.
   \centering
   \includegraphics[width=0.8\linewidth]{./img/graph_hermite_1_100_6_part.png}
   \caption{Part of the tree of nested higher order Kronrod Extensions of the
-  single point Gauss-Hermite rule $\mathcal{Q}[1]$. In the top right corner
-  we recognize the rules of highest nesting degree found so far.}
+  single point Gauss-Hermite rule $\mathcal{Q}[1]$.
+  The new and for us most important rules are in the top right corner.}
   \label{fig:graph_1_100_6_part}
 \end{figure}
 
@@ -1652,7 +1647,7 @@ the list $\vec{A}$, we can compute the table $\mat{T}$ efficiently by algorithm
 \ref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
 of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table
 look-up steps. However, precomputation of $\mat{T}$ is expensive for larger $J$,
-on the other hand needs to be done only once for each $\Lambda$ and $w(x)$.
+on the other hand it needs to be done only once for each $\Lambda$ and $w(x)$.
 The numerator and denominator of the entries in $\mat{T}$ can become really large
 numbers (remember that most moments include gamma functions), while their quotient
 stays within reasonable range for floating point representation. For this reason
@@ -2960,6 +2955,7 @@ alternating order.
 
 
 \bibliographystyle{plain}
-\bibliography{kes}
+\bibliography{kes,mt}
+
 
 \end{document}
