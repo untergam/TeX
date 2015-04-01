@@ -116,7 +116,7 @@ What matters most here is, that each wavepacket $\phi$ is of the form:
 \end{equation}
 with $p(\vec{x})$ a multivariate polynomial.
 This form is sufficient for the steepest descent technique to be applicable.
-Indeed, comparing to the integrand in \eqref{eq:oscillatory_integral},
+Indeed, comparing to the integrand in \eqref{eq:hoi},
 we find that $\omega = \frac{1}{\varepsilon^2}$ which means that the oscillator
 frequency increases very fast for small scaling parameters $\varepsilon$.
 The steepest descent method which we will look at in the next section becomes
@@ -372,15 +372,8 @@ example of such a nasty integrand.
 \end{figure}
 
 For our problem at hand, computing overlap integrals, we will need to integrate
-over the whole space $\mathbb{R}^D$. In this setting a general highly oscillatory
-integral takes the form:
-\begin{equation} \label{eq:oscillatory_integral}
-  I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
-        f\left(\vec{x}\right)
-        e^{i\omega g\left(\vec{x}\right)}
-      \mathrm{d} \vec{x}
-\end{equation}
-in $D$ dimensions.
+over the whole space in $D$ dimensions and hence set $\Omega = \mathbb{R}^D$ in
+\eqref{eq:hoi}.
 There are two essential observations to be made about the
 oscillatory part $\exp\left(i\omega g\left(\vec{x}\right) \right)$
 of any such integral. First, this expression does decay exponentially
@@ -522,7 +515,7 @@ points.
 
 For our problem we will find that we can always glue together the two opposite
 straight line paths at the single stationary point, apply one further transformation and
-finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:oscillatory_integral}
+finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:hoi}
 then looks like shown in figure \ref{fig:transformation_chain_2}. Performing these
 transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from figure
 \ref{fig:overlap_example} we can make the plot shown in \ref{fig:hawp_trafo_example}.
@@ -1135,7 +1128,7 @@ can even be avoided.
 
 
 In the first step, we completely denest the integral from
-\eqref{eq:oscillatory_integral} as much as possible.
+\eqref{eq:hoi} as much as possible.
 We start with the inner-most integrand (note that we already
 have split the oscillator):
 \begin{equation}
@@ -1895,22 +1888,22 @@ There are some yet unanswered questions in theory as well as in practical use.
 In this section we will briefly review them, find the main difficulties
 in each one and try to propose possible solutions.
 
-First of all, despite comprehensive numerical evidence, we would like a full proof
-showing the validity of our extension to the theory of numerical steepest descent
-to infinite intervals.\footnote{The idea was to use the work from \cite{HV_hoq}
+In the case of $\braket{\phi_k | \phi_l}$ and even $\braket{\phi_k | V | \phi_l}$
+for some class of well-behaved, essentially polynomial, potential $V(x)$ there is
+nothing to prove. We rely on an intelligent change of variables to obtain a tame
+non-oscillatory integral. Only the harder case for general $V(x)$ is still open.
+Despite comprehensive numerical evidence, we would like a full proof showing the
+validity of our extension to the theory of numerical steepest descent to infinite
+intervals.\footnote{The idea was to use the work from \cite{HV_hoq}
 on finite intervals and from \cite{H_nsd_sii} on semi-finite intervals
 to construct a solution for infinite intervals by gluing together three regions,
 one finite and two semi-finite ones. In this process it turned out that the proof
 given in the latter reference is flawed. As is stands now we can not even assume
 the semi-finite part to be correct.}
-However, in the case of $\braket{\phi_k | \phi_l}$ and even $\braket{\phi_k | V | \phi_l}$
-for some class of well-behaved, essentially polynomial potential $V(x)$, there is nothing
-to prove. We rely on an intelligent change of variables to obtain a tame non-oscillatory
-integral. Only the harder case for general $V(x)$ is still open.
 
 The next step is then about the correct handling of stationary points since our
 single stationary point $x^{*}$ is in general complex. There are some comments on
-that situation in the first reference. The central observation being made is that
+that situation in the original reference \cite{HV_hoq}. The central observation made is that
 the integration path should pass through the stationary point even if it is abroad
 in the complex plane. In our implementation we shift the whole oscillator such that
 $x^{*} = 0$. This point is essential for the reason that we can attach the paths there.
@@ -1938,7 +1931,14 @@ Figure \ref{fig:polynomials_oscillations} shows a typical example of such an int
 In the end, the values $k$ and $l$ set the lower bound on the number of Gauss-Hermite
 quadrature nodes that we have to use for correct integration. This is very unfortunate
 and can diminish the gain in number of nodes obtained through the steepest descent
-transformation. One might try to resolve these oscillations by another method on top
+transformation. However, with modern algorithms it is easily possible to compute
+Gaussian quadrature with hundreds or even thousands of quadrature points. This
+makes the problem accessible for direct computation. Some work
+in this direction will be shown in a future report.
+
+\marginpar{cite papers on ON-GQ}
+
+One might try to resolve these oscillations by another method on top
 of what we did so far. Rewriting the Hermite polynomials into their integral formulation
 \begin{equation*}
   \operatorname{H}_n(x) =
