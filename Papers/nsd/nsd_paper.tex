@@ -50,7 +50,7 @@ Usually one calls the function $g$ the \emph{oscillator} and the function $f$ th
 \emph{amplitude} or \emph{envelope}.
 
 Computing the integral above by direct standard numerical quadrature schemes
-would look like depicted in figure \ref{fig:transformation_chain_1} where we apply a
+would look like depicted in Figure \ref{fig:transformation_chain_1} where we apply a
 suitable quadrature rule, in our specific case Gauss-Hermite rules, directly to the
 integral $I$. Since our interests stem from quantum mechanics, we anticipate the
 integrand in $I$ being composed of wavepackets $\phi$ and
@@ -155,7 +155,7 @@ structure like a single wavepacket:
 The next step to take is to combine both oscillators $g_k$ and $g_l$ into a
 single one such that we get back a formal expression like the one in
 \eqref{eq:hoi} we started with. But first we would like to
-show in figure \ref{fig:overlap_example} a concrete example of how the
+show in Figure \ref{fig:overlap_example} a concrete example of how the
 wavepackets involved and the integrand look like.
 
 \begin{figure}[h!]
@@ -396,7 +396,7 @@ integrals along the path $h(\tau)$.
 
 \marginpar{Figure?}
 
-Let us look again at the plot in figure \ref{fig:oscillatory_example_2d}
+Let us look again at the plot in Figure \ref{fig:oscillatory_example_2d}
 and ask the question in which regions of $\Omega$ the integrand contributes most
 to the value of the integral. By intuition one would say, at least asymptotically
 for $\omega \rightarrow \infty$, that oscillations in the integrand generally approximately
@@ -432,7 +432,7 @@ In case of multi-valued inverses of $g$ at the point $\xi$ it can happen that
 $h_\xi(0) \neq \xi$. With $g (x)= x^2$ and $\xi = 3$ we find $h_3(\tau) = \pm \sqrt{9+\imath\tau}$
 and $h_3(0) = \pm 3 \neq 3$.}
 and parametrised by $\tau \in \mathbb{R}_0^{+}$.
-Refer to figure \ref{fig:nsd_path_example} for a simple example having only a single
+Refer to Figure \ref{fig:nsd_path_example} for a simple example having only a single
 stationary point.
 
 \begin{figure}
@@ -516,8 +516,8 @@ points.
 For our problem we will find that we can always glue together the two opposite
 straight line paths at the single stationary point, apply one further transformation and
 finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:hoi}
-then looks like shown in figure \ref{fig:transformation_chain_2}. Performing these
-transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from figure
+then looks like shown in Figure \ref{fig:transformation_chain_2}. Performing these
+transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from Figure
 \ref{fig:overlap_example} we can make the plot shown in \ref{fig:hawp_trafo_example}.
 
 \begin{figure}
@@ -554,7 +554,7 @@ for different values of the parameter $\delta$. One stationary point is located 
 at $x^{*} = \imath \sqrt{\delta}$ and comes close to the real line. The influence is clearly present
 for small values of $\delta$ and soon becomes negligible for larger values.
 The general advise for complex stationary points is that the contour should pass through this point
-as shown in figure \ref{fig:oscillatory_integral_complex_sp_paths}. This will then give an exact
+as shown in Figure \ref{fig:oscillatory_integral_complex_sp_paths}. This will then give an exact
 decomposition in the sense of \eqref{eq:cauchy}. It turns out this works very well for our setting.
 Actually, the \emph{only} thing we have is a single stationary point.
 
@@ -1107,7 +1107,7 @@ this is the implicit choice.
 
 If we stack all the paths $h_i$ into a vector $\vec{h}$, then
 this composition of all paths can be done easily as shown
-in algorithm \ref{al:precompose_paths}.
+in Algorithm \ref{al:precompose_paths}.
 \begin{algorithm}
   \caption{Procedure for composing the path}
   \label{al:precompose_paths}
@@ -1428,7 +1428,7 @@ handling the factor $p_{i+1}$.
 
 Starting from $\mat{T_1} \equiv \mat{T}$ we compute one after the other
 $\mat{T_2}$, $\mat{T_3}$ until $\mat{T_N}$ which is the final oscillator
-matrix. The following figures \ref{fig:oscillator_update_T1}, \ref{fig:oscillator_update_T2}
+matrix. The following Figures \ref{fig:oscillator_update_T1}, \ref{fig:oscillator_update_T2}
 and  \ref{fig:oscillator_update_T3} show the flow of information during this
 step-wise updates for a schematic matrix.
 
@@ -1465,7 +1465,7 @@ step-wise updates for a schematic matrix.
   \label{fig:oscillator_update_T3}
 \end{figure}
 
-This whole procedure is written out in pseudo code in algorithm
+This whole procedure is written out in pseudo code in Algorithm
 \ref{al:oscillator_update} below. For this to work the diagonal
 matrix elements $\mat{T}_{i,i}$ must never become zero. Otherwise
 we would divide by zero. But we can interpret this failure also
@@ -2012,7 +2012,7 @@ mercury compound \ce{Hg2}.
 \end{figure}
 
 Gauss-Hermite quadrature with any number of nodes shows high spurious autocorrelation bumps,
-compare to figure \ref{fig:ac_mercurial_morse}. Using the steepest descent transformation
+compare to Figure \ref{fig:ac_mercurial_morse}. Using the steepest descent transformation
 before applying a quadrature scheme gives correct results for an even smaller number of nodes.
 
 In the following we will perform a number of different numerical simulations and show
@@ -2032,7 +2032,7 @@ momenta $p$ and $p^\prime$ towards each other ($p^\prime = -p$) and start
 increasing their magnitude $|p|$. (Note that for all figures below, the values
 of the $p$ axis are multiplicative factors on top of the wavepacket' original
 values $p$ and $p^\prime$.)
-The procedure is shown also in figure \ref{fig:convergence_setup}.
+The procedure is shown also in Figure \ref{fig:convergence_setup}.
 
 \begin{figure}[h!]
   \centering
@@ -2058,7 +2058,7 @@ the formula for general Gaussian integrals in case we look at ground states
 $\phi_{\vec{0}}$ only. Otherwise we take the computation including the steepest
 descent transformation using the largest number of quadrature nodes as reference.
 
-The whole process of computing the integral works as shown in the figure
+The whole process of computing the integral works as shown in the Figure
 \ref{fig:transformation_chain_2}. Especially in the multi-dimensional case
 we still need a full tensor product of Gauss-Hermite quadrature nodes in the end.
 This results in $N^D$ quadrature nodes, which scales exponentially with the
@@ -2777,7 +2777,7 @@ to compute but still accurate. The Smolyak approach is an obvious candidate.
 If it really is well-suited depends also on the multi-indices $\vec{k}$ and
 $\vec{l}$ of the wavepackets $\phi$ and $\phi^\prime$ which have to be sparse
 enough. But we assume that this is the case for now. Then we end up in a chain
-as shown in figure \ref{fig:transformation_chain_3}, first performing the steepest
+as shown in Figure \ref{fig:transformation_chain_3}, first performing the steepest
 descent transformation to get rid of the oscillations then using the Smolyak
 construction to lessen the curse of dimensionality.
 
@@ -2817,7 +2817,7 @@ quadrature points which can be build for the case of a Gaussian integral, too.
 For further details on the Genz-Keister construction, see the original paper
 \cite{genz_keister} as well as our own work \cite{B_kes} and references there in.
 Using these points instead of the Gauss-Hermite nodes will result in a chain
-as shown in figure \ref{fig:transformation_chain_4}.
+as shown in Figure \ref{fig:transformation_chain_4}.
 
 \begin{figure}[h!]
   \centering
@@ -2832,7 +2832,7 @@ with moderate effort. Even better, one can prove \cite{novak_ritter} that
 the resulting multi-dimensional Genz-Keister construction is equivalent to the
 Smolyak construction starting from one-dimensional Genz-Keister nodes.
 Since there are much less Genz-Keister nodes compared to the full tensor
-of Gauss-Hermite nodes, as shown in figure \ref{fig:gk_hermitephy_ratio},
+of Gauss-Hermite nodes, as shown in Figure \ref{fig:gk_hermitephy_ratio},
 we can largely reduce the computational effort. Note however that for $D \leq 2$
 they are unprofitable because they encompass more nodes that a simple Gauss-Hermite
 tensor product.
