@@ -1886,34 +1886,37 @@ There are some yet unanswered questions in theory as well as in practical use.
 In this section we will briefly review them, find the main difficulties
 in each one and try to propose possible solutions.
 
+We did not give a proof for the methods proposed.
 In the case of $\braket{\phi_k | \phi_l}$ and even $\braket{\phi_k | V | \phi_l}$
 for some class of well-behaved, essentially polynomial, potential $V(x)$ there is
 nothing to prove. We rely on an intelligent change of variables to obtain a tame
-non-oscillatory integral. Only the harder case for general $V(x)$ is still open.
+non-oscillatory integral. Only the harder case for general $V(x)$ is still left open.
 Despite comprehensive numerical evidence, we would like a full proof showing the
 validity of our extension to the theory of numerical steepest descent to infinite
 intervals.\footnote{The idea was to use the work from \cite{HV_hoq}
 on finite intervals and from \cite{H_nsd_sii} on semi-finite intervals
 to construct a solution for infinite intervals by gluing together three regions,
-one finite and two semi-finite ones. In this process it turned out that the proof
+one finite and two semi-finite ones. It turned out that the proof
 given in the latter reference is flawed. As is stands now we can not even assume
 the semi-finite part to be correct.}
 
-The next step is then about the correct handling of stationary points since our
+The next question is about the correct handling of stationary points since our
 single stationary point $x^{*}$ is in general complex. There are some comments on
-that situation in the original reference \cite{HV_hoq}. The central observation made is that
-the integration path should pass through the stationary point even if it is abroad
-in the complex plane. In our implementation we shift the whole oscillator such that
-$x^{*} = 0$. This point is essential for the reason that we can attach the paths there.
+that situation in the original reference \cite{HV_hoq}. The central observation made
+there is that the integration path should pass through the stationary point even if
+it is abroad in the complex plane. In our implementation we shift the whole oscillator
+such that $x^{*} = 0$. Having this point is essential for the reason that we need to
+attach the paths of steepest descent there.
 
 One serious issue arises when we try to compute the integral $\braket{\phi_k|\phi_l}$
-for large values of the indices $k$ or $l$. Because these indices are essentially the
-degree of the polynomial part of any wavepacket $\phi$. The Hermite polynomials then
+for large values of the indices $k$ or $l$. These indices correspond directly to the
+degree of the polynomial part of any wavepacket $\phi$. The Hermite polynomials
 stay in the envelope part $f$ and are not treated by numerical steepest descent which
 targets only the oscillator $g$ explicitly. In case of high degrees, the polynomials
 themselves become rapidly oscillatory and we end up with another oscillatory integral,
-this time \emph{not} of a form where a steepest descend transformation is applicable.
-Figure \ref{fig:polynomials_oscillations} shows a typical example of such an integrand.
+this time \emph{not} of a form like \eqref{eq:hoi} where a steepest descend transformation
+is applicable. Figure \ref{fig:polynomials_oscillations} shows a typical example of
+such a polynomial oscillatory integrand.
 
 \begin{figure}[h!]
   \centering
@@ -1930,11 +1933,9 @@ In the end, the values $k$ and $l$ set the lower bound on the number of Gauss-He
 quadrature nodes that we have to use for correct integration. This is very unfortunate
 and can diminish the gain in number of nodes obtained through the steepest descent
 transformation. However, with modern algorithms it is easily possible to compute
-Gaussian quadrature with hundreds or even thousands of quadrature points. This
-makes the problem accessible for direct computation. Some work
-in this direction will be shown in a future report.
-
-\marginpar{cite papers on ON-GQ}
+Gaussian quadrature with hundreds or even thousands of quadrature points \cite{GLR,TTS}.
+This makes the problem accessible for direct computation. Some work in this direction
+will be shown in a future report.
 
 One might try to resolve these oscillations by another method on top
 of what we did so far. Rewriting the Hermite polynomials into their integral formulation
@@ -1945,12 +1946,11 @@ of what we did so far. Rewriting the Hermite polynomials into their integral for
 \end{equation*}
 does not solve the problem as there is still a troublesome factor $t^n$.
 If we would apply the steepest descent transformation to this integral, computing
-the $n$-th power of the integration paths will yield polynomials of high order.
+the $n$-th power of the integration paths will again yield polynomials of high order.
 
 The next open problem is about integrals $\braket{\phi|\hat{o}|\phi}$ including
 additional scalar multiplicative or differential operators $\hat{o}$. An example
-of this kind is the computation of expectation values of potential
-\footnote{Kinetic energy
+of this kind is the computation of expectation values of potential\footnote{Kinetic energy
 expectation $\braket{\phi|\hat{T}|\phi}$ is in our case no issue because the
 gradient of a wavepacket can be expressed in a linear combination of new wavepackets
 again, hence we are back at the case $\braket{\phi_k|\phi_l}$.}
@@ -1963,16 +1963,17 @@ here are the possible effects on the oscillator $g$ induced by $\hat{o}$. For ex
 assume that $\hat{o}$ is a potential $V(x)$. Then, $V$ becomes part of the envelope
 and there apply some growth limits on the envelope $f$ for $|x| \rightarrow \infty$.
 If $V$ contains exponential parts, they have to be merged into the oscillator $g$ and
-in turn change the layout of the integration paths. Further, if there are any poles
+in turn change the integration paths. Further, if there are any poles
 in $f$, we have to be very careful with integration too and make sure to include all
 the relevant residuals. In the computations done so far, the envelope $f$ is assumed
 to have no poles in $\mathbb{C}^{d}$. Altogether this poses some challenges for
-non-polynomial potentials $V$. Polynomial potentials are tame enough to
+non-polynomial potentials. Polynomial potentials are tame enough to
 fit the framework shown.
 
-Although there are some loose ends, we have constructed a method which works better for larger
-$\omega$ hence for smaller $\varepsilon$. It also gives excellent results in the
-interesting and complicated case where  $\Pi \approx \Pi^{\prime}$.
+Although there are some loose ends, we have constructed a method which works better
+for larger $\omega$ hence for smaller semiclassical scaling $\varepsilon$.
+It gives excellent results in the interesting and complicated case where
+$\Pi \approx \Pi^{\prime}$.
 
 
 \section{Numerical Examples}
