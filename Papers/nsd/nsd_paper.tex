@@ -129,7 +129,7 @@ the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of 
   \dotp{\vec{p}}{\vec{x}-\vec{q}}
 \end{equation}
 We are interested in overlap integrals\footnote{For one-dimensional wavepackets there
-exists an exact formula which is very expensive to evaluate numerically, see
+exists an exact formula which is very expensive to evaluate numerically, see the original work
 \cite{H_R_quantization_rules} and \cite{B_bachelor_thesis} for compatible notation.} like
 $\dotp{\phi_k}{\phi_l}$. These integrals become even more difficult in case the parameters
 sets $\Pi_k$ and $\Pi_l$ differ. In any case the integral is still of the same oscillatory
@@ -394,8 +394,6 @@ transformation $z = h(\tau)$ such that the \emph{real} part of $g(z)$
 is constant. In a second step we then apply Cauchy's Theorem for contour
 integrals along the path $h(\tau)$.
 
-\marginpar{Figure?}
-
 Let us look again at the plot in Figure \ref{fig:oscillatory_example_2d}
 and ask the question in which regions of $\Omega$ the integrand contributes most
 to the value of the integral. By intuition one would say, at least asymptotically
@@ -560,7 +558,7 @@ Actually, the \emph{only} thing we have is a single stationary point.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.9\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
+  \includegraphics[width=\linewidth]{./fig/oscillatory_integral_complex_sp.pdf}
   \caption{Oscillatory integral on $[-2,2]$ with a stationary point $x^{*}$ at $\imath \sqrt{\delta}$
   shown for several different decreasing values of
   $\delta \in \{10, 5, 2, 1, \frac{1}{2}, \frac{1}{5}, \frac{1}{10}, \frac{1}{100}, 0\}$.}
@@ -569,7 +567,7 @@ Actually, the \emph{only} thing we have is a single stationary point.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\linewidth]{./fig/nsd_path_csp_figure.pdf}
+  \includegraphics[width=0.8\linewidth]{./fig/nsd_path_csp_figure.pdf}
   \caption{Paths of the integral \eqref{eq:nsd_csp_integral_example}.
   The two additional paths $h_{x^{*},{\pm}}(\tau)$ go through the complex
   stationary point $x_0^{*}$. The contribution stemming from these two paths
@@ -1055,7 +1053,7 @@ this reversed order.
 For later usage we denote the paths resulting from this
 recursive resolution by $\tilde{h}_i$. An explicit description
 becomes very nasty soon:
-\begin{equation}
+\begin{equation*}
 \begin{split}
   \tilde{h}_N(p_N)
   & \assign h_N(p_N) \\
@@ -1079,7 +1077,7 @@ becomes very nasty soon:
                 h_N(p_N)
                )
 \end{split}
-\end{equation}
+\end{equation*}
 We can collect all the paths into a single vector like:
 \begin{equation}
  \vec{\tilde{h}}\left(\vec{p}\right) \assign
@@ -1468,9 +1466,9 @@ step-wise updates for a schematic matrix.
 This whole procedure is written out in pseudo code in Algorithm
 \ref{al:oscillator_update} below. For this to work the diagonal
 matrix elements $\mat{T}_{i,i}$ must never become zero. Otherwise
-we would divide by zero. But we can interpret this failure also
-by noticing that in such a case the oscillator is not quadratic
-anymore but a degenerated conic in at least one direction.
+we would divide by zero. We can interpret this failure as a
+case where the oscillator is not quadratic anymore but behaves
+as a conic degenerated along at least one direction.
 
 \begin{algorithm}
   \caption{Procedure for updating the oscillator matrix $\mat{T}$}
@@ -1564,7 +1562,7 @@ Looking again at the full dimensional integral from \eqref{eq:transformed_integr
 %     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 % \end{equation}
 we first remove the $\omega$ from all the exponential functions:
-\begin{equation}
+\begin{equation*}
  I = \frac{1}{\omega^\frac{N}{2}}
      \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
        f\left(\tilde{h}_1\left(\frac{\tau_1}{\sqrt{\omega}}\right),
@@ -1573,7 +1571,7 @@ we first remove the $\omega$ from all the exponential functions:
        \right)
        \prod_{i=1}^N \exp\left(-\tau_i^2\right) \cdots
     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
-\end{equation}
+\end{equation*}
 and then apply the standard rule to find $Q \approx I$. At the end
 of the day, the quadrature we will use to approximate $I$ looks like:
 \begin{equation} \label{eq:final_quadrature}
@@ -1849,7 +1847,7 @@ we get the following pullback:
 \end{equation}
 The related transformation $\zeta$ is the explicit
 composition of $\chi$ and $\rho$:
-\begin{equation}
+\begin{equation*}
 \begin{split}
   \vec{x}^{\prime\prime} & = \zeta\inv \left(\vec{x}\right)
                   = \rho\inv \left( \chi\inv \left(\vec{x}\right) \right)
@@ -1860,7 +1858,7 @@ composition of $\chi$ and $\rho$:
             = \chi \left( \mat{U}\H \vec{x}^{\prime\prime} \right)
             = \mat{U}\H \vec{x}^{\prime\prime} - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \,.
 \end{split}
-\end{equation}
+\end{equation*}
 With the help of $\zeta$ we can transform any oscillator of
 the form \eqref{eq:general_oscillator} into a triangular
 one like shown in \eqref{eq:triangular_oscillator}.
@@ -3631,21 +3629,21 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
 
 For the problem of computing overlap integrals of semiclassical wavepackets $\ket{\phi}$
 we showed that the common quadrature schemes are insufficient. This is
-caused by the oscillatory nature of the integrands. Depending on
-the phase space constellation wavepackets, Gaussian quadrature
-can introduce large errors hence entirely destroying the numerical simulation results
-in the worst case.
+caused by the oscillatory nature of the integrands. Depending on the phase space constellation
+of the wavepackets involved, Gaussian quadrature can introduce large errors hence entirely
+destroying the numerical simulation results in the worst case.
 
-Based on some recent developments in the area of highly oscillatory quadrature
+Based on recent developments in the area of highly oscillatory quadrature
 we presented an improvement. This new method adapts the technique of numerical
 steepest descent specially to the needs of overlap integrals $\braket{\phi|\phi^\prime}$.
 To some extend it is possible also to treat more general operator integrals
-$\braket{\phi|\hat{o}|\phi^\prime}$ but issues may arise from the complex behavior of $\hat{o}$.
+$\braket{\phi|\hat{o}|\phi^\prime}$ but issues may arise from the complex behavior
+of $\hat{o}$.
 
 The fundamental technique is not restricted to one-dimensional examples and works well
-in any number of dimensions. There is still a quadrature involved, using a smaller number
-of nodes. Full tensor product quadrature becomes expensive in higher dimensions.
-Therefore we applied the Smolyak construction and use a specially crafted set of nested
+in any number of dimensions. There is still a quadrature involved, having a much smaller
+number of nodes. Full tensor product quadrature becomes expensive in higher dimensions.
+Therefore we applied the Smolyak construction and used a specially crafted set of nested
 quadrature points to lessen the curse of dimensionality.
 
 In the future, more work can be done in different directions. Computation for large
