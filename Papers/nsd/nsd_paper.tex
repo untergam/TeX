@@ -35,16 +35,16 @@
 \section{Introduction}
 
 
-Consider functions $f(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{R}$ and
-$g(x_1, \ldots, x_n):\mathbb{R}^N\rightarrow\mathbb{C}$, we compute the integral:
+Consider smooth functions $f(\vec{x})$ and $g(\vec{x})$ with $\vec{x} \in \mathbb{R}^N$,
+we compute the integral:
 
 \begin{equation} \label{eq:hoi}
  I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty}
-      f(\vec{x}) \exp(i \omega g(\vec{x}))
-      \, \mathrm{d}x_1 \cdots \mathrm{d}x_n
+      f(\vec{x}) \, \exp(i \omega g(\vec{x}))
+      \, \mathrm{d} \vec{x}
 \end{equation}
 
-where $\omega > 0$ is the frequency.
+where $\omega > 0$ is the \emph{frequency}.
 This is an instance from a very large and important class of highly oscillatory integrals.
 Usually one calls the function $g$ the \emph{oscillator} and the function $f$ the
 \emph{amplitude} or \emph{envelope}.
@@ -283,12 +283,10 @@ Next we add $g_l$ and simplify the following expression:
 \end{equation*}
 In the end we find a general quadratic oscillator of the common expanded
 normal form
+% Use $\vec{b}\T \vec{x}$ or rather $\vec{b}\H \vec{x}$?
 % $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c$
 $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\T \vec{x} + c$
 where careful computation gives:
-
-\marginpar{Recheck the $\vec{b}\T \vec{x}$ vs $\vec{b}\H \vec{x}$}
-
 \begin{equation} \label{eq:combined_oscillators}
 \begin{split}
   \mat{A} & = \frac{1}{2} \left(\mat{\Gamma_l} - \mat{\Gamma_k}\H \right) \\
@@ -329,9 +327,6 @@ where careful computation gives:
         + \left(\vec{q_k}\H \vec{p_k} - \vec{p_l}\H \vec{q_l}\right)
 \end{split}
 \end{equation}
-
-\marginpar{Do we need to split $\vec{b}$ in parts for $\vec{x}$ and $\conj{\vec{x}}$?}
-
 and we assumed that $\vec{x}$ is real. Be sure to pay attention to
 the fact that here we have $\vec{b}\T$ only instead of $\vec{b}\H$.
 The matrix $\mat{A}$ has a special property, both its real and
@@ -348,11 +343,11 @@ by unitary matrices,  an important  consequence as we will see later.
 
 A typical example of a highly oscillatory integral looks like:
 \begin{equation}
-  I = \int_{\Omega} f(\vec{x}) e^{\imath \omega g(\vec{x})} \di{\vec{x}}
+  I = \int_{\Omega} f(\vec{x}) \, \exp(\imath \omega g(\vec{x})) \di{\vec{x}}
 \end{equation}
-where the non-oscillatory function $g:\mathbb{R}^D \rightarrow \mathbb{R}$
+where the non-oscillatory function $g:\mathbb{R}^D \rightarrow \mathbb{C}$
 is called the oscillator and the also non-oscillatory function
-$f:\mathbb{R}^D \rightarrow \mathbb{R}$ the envelope. The parameter
+$f:\mathbb{R}^D \rightarrow \mathbb{C}$ the envelope. The parameter
 $\omega \in \mathbb{R}^{+}$ is the frequency. Often one looks at the
 asymptotic behavior for $\omega \rightarrow \infty$. In our setting
 this parameter $\omega$ has a fixed and finite value.
