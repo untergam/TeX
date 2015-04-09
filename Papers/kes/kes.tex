@@ -23,19 +23,33 @@
 \usepackage{array}
 \usepackage{ragged2e}
 \newcolumntype{x}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
+\usepackage{microtype}
 
 \include{header_math}
 
 \synctex=1
 \parindent 0pt
 
-%opening
 \title{Exhaustive search for higher-order Kronrod-Patterson Extensions}
 \author{R. Bourquin}
+
 
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+  Gauss points are not nested and for this reason one searches
+  for quadrature rules with nested points and similar efficiency.
+  A well studied source of candidates are the Kronrod-Patterson
+  extensions. Under suitable conditions it is possible to build
+  towers of nested rules. We investigate this topic further and
+  give a detailed description of the algorithms used for constructing
+  such iterative extensions. Our new implementation combines several
+  important ideas spread out in theoretical research papers. We
+  apply the resulting algorithms to the classical orthogonal polynomials
+  and build sparse high-dimensional quadrature rules for each class.
+\end{abstract}
 
 
 \section{Introduction}
