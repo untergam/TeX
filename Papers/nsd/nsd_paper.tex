@@ -1051,7 +1051,7 @@ and find this simple expression:
   = \pm \frac{\sqrt{\imath}}{2 \sqrt{t_{i,i}}\sqrt{p_i}} \,.
 }
 \end{equation}
-It is obvious that for these formul\ae{} to be valid
+It is obvious that for these formulae to be valid
 $t_{i,i}$ must never be zero.
 Formula \eqref{eq:general_path_formula} allows us now to compute explicitly
 starting with $h_N$ all the paths $h_{N-1}$, $h_{N-2}$ up to $h_1$ in
@@ -1414,14 +1414,14 @@ All others are handled recursively and added to $\grave{g}_{k}$ with $k \geq i+3
 until we reach $k=N$ and nothing is left. At that point we updated all
 rows of $\mat{T}$ below the $i$-th one.
 
-The general formul\ae{} to accomplish this update for a fixed $i$ and
+The general formulae to accomplish this update for a fixed $i$ and
 with $j > i$ and $k > j$ read:
 \begin{equation} \label{eq:matrix_update_formulae}
 \boxed{
-\begin{split}
+\begin{align}
   \grave{t}_{j,j} & \assign t_{j,j} - \frac{t_{i,j}^2}{4 t_{i,i}} \\
   \grave{t}_{j,k} & \assign t_{j,k} - \frac{t_{i,j} t_{i,k}}{2 t_{i,i}}
-\end{split}
+\end{align}
 }
 \end{equation}
 and allow us to easily compute the new matrix $\mat{T_{i+1}}$ from
@@ -2102,12 +2102,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_1d_conv_p_0_0_err_qr}
+    \label{fig:tp_1d_conv_p_0_0_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_0_0_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_1d_conv_p_0_0_err_nsd}
+    \label{fig:tp_1d_conv_p_0_0_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_p_0_0}
   \caption{Experiment with $\phi_{0}$ and $\phi_{0}^{\prime}$.
@@ -2141,12 +2141,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_1d_conv_p_2_1_err_qr}
+    \label{fig:tp_1d_conv_p_2_1_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_2_1_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_1d_conv_p_2_1_err_nsd}
+    \label{fig:tp_1d_conv_p_2_1_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_p_2_1}
   \caption{Experiment with $\phi_{2}$ and $\phi_{1}^{\prime}$.
@@ -2180,14 +2180,14 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_1d_conv_p_11_9_err_qr}
+    \label{fig:tp_1d_conv_p_11_9_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_p_11_9_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_1d_conv_p_11_9_err_nsd}
+    \label{fig:tp_1d_conv_p_11_9_err_rel_nsd}
   \end{subfigure}
-  \label{fig:tp_1d_conv_p_2_1}
+  \label{fig:tp_1d_conv_p_11_9}
   \caption{Experiment with $\phi_{11}$ and $\phi_{9}^{\prime}$.
   The parameters are:
   $q=-0.2$, $p=1.2$, $Q=1.0$, $P=1.0\imath$ and
@@ -2265,12 +2265,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(1,0)_(0,1)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_2d_conv_p_10_01_err_qr}
+    \label{fig:tp_2d_conv_p_10_01_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(1,0)_(0,1)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_2d_conv_p_10_01_err_nsd}
+    \label{fig:tp_2d_conv_p_10_01_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_2d_conv_p_10_01}
   \caption{Experiment with $\phi_{1,0}$ and $\phi_{0,1}^{\prime}$.
@@ -2311,12 +2311,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_2d_conv_p_88_88_err_qr}
+    \label{fig:tp_2d_conv_p_88_88_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_p_(8,8)_(8,8)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_2d_conv_p_88_88_err_nsd}
+    \label{fig:tp_2d_conv_p_88_88_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_2d_conv_p_88_88}
   \caption{Experiment with $\phi_{8,8}$ and $\phi_{8,8}^{\prime}$.
@@ -2357,12 +2357,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_4d_conv_p_0000_0000_err_qr}
+    \label{fig:tp_4d_conv_p_0000_0000_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(0,0,0,0)_(0,0,0,0)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_4d_conv_p_0000_0000_err_nsd}
+    \label{fig:tp_4d_conv_p_0000_0000_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_4d_conv_p_0000_0000}
   \caption{Experiment with $\phi_{0,0,0,0}$ and $\phi_{0,0,0,0}^{\prime}$.
@@ -2403,12 +2403,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_4d_conv_p_1111_1111_err_qr}
+    \label{fig:tp_4d_conv_p_1111_1111_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_p_(1,1,1,1)_(1,1,1,1)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_4d_conv_p_1111_1111_err_nsd}
+    \label{fig:tp_4d_conv_p_1111_1111_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_4d_conv_p_1111_1111}
   \caption{Experiment with $\phi_{1,1,1,1}$ and $\phi_{1,1,1,1}^{\prime}$.
@@ -2454,12 +2454,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_0_0_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_1d_conv_eps_0_0_err_qr}
+    \label{fig:tp_1d_conv_eps_0_0_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_0_0_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_1d_conv_eps_0_0_err_nsd}
+    \label{fig:tp_1d_conv_eps_0_0_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_eps_0_0}
   \caption{Experiment with $\phi_{0}$ and $\phi_{0}^{\prime}$.
@@ -2492,12 +2492,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_2_1_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_1d_conv_eps_2_1_err_qr}
+    \label{fig:tp_1d_conv_eps_2_1_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_2_1_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_1d_conv_eps_2_1_err_nsd}
+    \label{fig:tp_1d_conv_eps_2_1_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_eps_2_1}
   \caption{Experiment with $\phi_{2}$ and $\phi_{1}^{\prime}$.
@@ -2530,12 +2530,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_8_8_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_1d_conv_eps_8_8_err_qr}
+    \label{fig:tp_1d_conv_eps_8_8_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_1d_conv_eps_8_8_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_1d_conv_eps_8_8_err_nsd}
+    \label{fig:tp_1d_conv_eps_8_8_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_1d_conv_eps_8_8}
   \caption{Experiment with $\phi_{8}$ and $\phi_{8}^{\prime}$.
@@ -2568,12 +2568,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(0,0)_(0,0)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_2d_conv_eps_00_00_err_qr}
+    \label{fig:tp_2d_conv_eps_00_00_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(0,0)_(0,0)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_2d_conv_eps_00_00_err_nsd}
+    \label{fig:tp_2d_conv_eps_00_00_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_2d_conv_eps_00_00}
   \caption{Experiment with $\phi_{0,0}$ and $\phi_{0,0}^{\prime}$.
@@ -2613,12 +2613,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(0,1)_(1,0)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_2d_conv_eps_01_10_err_qr}
+    \label{fig:tp_2d_conv_eps_01_10_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(0,1)_(1,0)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_2d_conv_eps_01_10_err_nsd}
+    \label{fig:tp_2d_conv_eps_01_10_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_2d_conv_eps_01_10}
   \caption{Experiment with $\phi_{0,1}$ and $\phi_{1,0}^{\prime}$.
@@ -2658,12 +2658,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(2,3)_(2,2)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_2d_conv_eps_23_22_err_qr}
+    \label{fig:tp_2d_conv_eps_23_22_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_2d_conv_eps_(2,3)_(2,2)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_2d_conv_eps_23_22_err_nsd}
+    \label{fig:tp_2d_conv_eps_23_22_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_2d_conv_eps_23_22}
   \caption{Experiment with $\phi_{2,3}$ and $\phi_{2,2}^{\prime}$.
@@ -2703,12 +2703,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_eps_(0,0,0,0)_(0,0,0,0)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_4d_conv_eps_0000_0000_err_qr}
+    \label{fig:tp_4d_conv_eps_0000_0000_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_eps_(0,0,0,0)_(0,0,0,0)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_4d_conv_eps_0000_0000_err_nsd}
+    \label{fig:tp_4d_conv_eps_0000_0000_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_4d_conv_eps_0000_0000}
   \caption{Experiment with $\phi_{0,0,0,0}$ and $\phi_{0,0,0,0}^{\prime}$.
@@ -2748,12 +2748,12 @@ quadrature of course still apply.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_eps_(2,1,2,1)_(1,1,1,1)_err_rel_qr.pdf}
     \caption{Relative error of the direct quadrature method compared to the exact solution.}
-    \label{fig:tp_4d_conv_eps_2121_1111_err_qr}
+    \label{fig:tp_4d_conv_eps_2121_1111_err_rel_qr}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_4d_conv_eps_(2,1,2,1)_(1,1,1,1)_err_rel_nsd.pdf}
     \caption{Relative error of the steepest descent method compared to the exact solution.}
-    \label{fig:tp_4d_conv_eps_2121_1111_err_nsd}
+    \label{fig:tp_4d_conv_eps_2121_1111_err_rel_nsd}
   \end{subfigure}
   \label{fig:tp_4d_conv_eps_2121_1111}
   \caption{Experiment with $\phi_{2,1,2,1}$ and $\phi_{1,1,1,1}^{\prime}$.
@@ -3266,34 +3266,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_000_000_val_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_000_000_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_000_000_val_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_000_000_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_000_000_err_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_000_000_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_000_000_err_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_000_000_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_000_000_err_rel_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_000_000_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(0,0,0)_(0,0,0)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_000_000_err_rel_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_000_000_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_3d_conv_p_000_000}
+  \label{fig:tp_sg_3d_conv_eps_000_000}
   \caption{Experiment with $\phi_{0,0,0}$ and $\phi_{0,0,0}^{\prime}$
   in 3 dimensions.
   The parameters are:
@@ -3312,34 +3312,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_110_011_val_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_110_011_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_110_011_val_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_110_011_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_110_011_err_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_110_011_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_110_011_err_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_110_011_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_110_011_err_rel_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_110_011_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(1,1,0)_(0,1,1)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_110_011_err_rel_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_110_011_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_3d_conv_p_110_011}
+  \label{fig:tp_sg_3d_conv_eps_110_011}
   \caption{Experiment with $\phi_{1,1,0}$ and $\phi_{0,1,1}^{\prime}$
   in 3 dimensions.
   The parameters are:
@@ -3358,34 +3358,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_400_040_val_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_400_040_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_400_040_val_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_400_040_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_400_040_err_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_400_040_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_400_040_err_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_400_040_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_400_040_err_rel_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_400_040_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(4,0,0)_(0,4,0)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_400_040_err_rel_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_400_040_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_3d_conv_p_400_040}
+  \label{fig:tp_sg_3d_conv_eps_400_040}
   \caption{Experiment with $\phi_{4,0,0}$ and $\phi_{0,4,0}^{\prime}$
   in 3 dimensions.
   The parameters are:
@@ -3404,34 +3404,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_222_222_val_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_222_222_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_3d_conv_p_222_222_val_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_222_222_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_222_222_err_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_222_222_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_222_222_err_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_222_222_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_222_222_err_rel_nsd_tp}
+    \label{fig:tp_sg_3d_conv_eps_222_222_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_3d_conv_eps_(2,2,2)_(2,2,2)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_3d_conv_p_222_222_err_rel_nsd_gk}
+    \label{fig:tp_sg_3d_conv_eps_222_222_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_3d_conv_p_222_222}
+  \label{fig:tp_sg_3d_conv_eps_222_222}
   \caption{Experiment with $\phi_{2,2,2}$ and $\phi_{2,2,2}^{\prime}$
   in 3 dimensions.
   The parameters are:
@@ -3450,34 +3450,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_4d_conv_p_3000_3000_val_nsd_tp}
+    \label{fig:tp_sg_4d_conv_eps_3000_3000_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_4d_conv_p_3000_3000_val_nsd_gk}
+    \label{fig:tp_sg_4d_conv_eps_3000_3000_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_3000_3000_err_nsd_tp}
+    \label{fig:tp_sg_4d_conv_eps_3000_3000_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_3000_3000_err_nsd_gk}
+    \label{fig:tp_sg_4d_conv_eps_3000_3000_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_3000_3000_err_rel_nsd_tp}
+    \label{fig:tp_sg_4d_conv_eps_3000_3000_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(3,0,0,0)_(3,0,0,0)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_3000_3000_err_rel_nsd_gk}
+    \label{fig:tp_sg_4d_conv_eps_3000_3000_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_4d_conv_p_3000_3000}
+  \label{fig:tp_sg_4d_conv_eps_3000_3000}
   \caption{Experiment with $\phi_{3,0,0,0}$ and $\phi_{3,0,0,0}^{\prime}$
   in 4 dimensions.
   The parameters are:
@@ -3496,34 +3496,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_4d_conv_p_8010_8100_val_nsd_tp}
+    \label{fig:tp_sg_4d_conv_eps_8010_8100_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_4d_conv_p_8010_8100_val_nsd_gk}
+    \label{fig:tp_sg_4d_conv_eps_8010_8100_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_8010_8100_err_nsd_tp}
+    \label{fig:tp_sg_4d_conv_eps_8010_8100_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_8010_8100_err_nsd_gk}
+    \label{fig:tp_sg_4d_conv_eps_8010_8100_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_8010_8100_err_rel_nsd_tp}
+    \label{fig:tp_sg_4d_conv_eps_8010_8100_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_4d_conv_eps_(8,0,1,0)_(8,1,0,0)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_4d_conv_p_8010_8100_err_rel_nsd_gk}
+    \label{fig:tp_sg_4d_conv_eps_8010_8100_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_4d_conv_p_8010_8100}
+  \label{fig:tp_sg_4d_conv_eps_8010_8100}
   \caption{Experiment with $\phi_{8,0,1,0}$ and $\phi_{8,1,0,0}^{\prime}$
   in 4 dimensions.
   The parameters are:
@@ -3542,34 +3542,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_6d_conv_p_500000_500000_val_nsd_tp}
+    \label{fig:tp_sg_6d_conv_eps_500000_500000_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_6d_conv_p_500000_500000_val_nsd_gk}
+    \label{fig:tp_sg_6d_conv_eps_500000_500000_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_6d_conv_p_500000_500000_err_nsd_tp}
+    \label{fig:tp_sg_6d_conv_eps_500000_500000_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_6d_conv_p_500000_500000_err_nsd_gk}
+    \label{fig:tp_sg_6d_conv_eps_500000_500000_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_6d_conv_p_500000_500000_err_rel_nsd_tp}
+    \label{fig:tp_sg_6d_conv_eps_500000_500000_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_6d_conv_eps_(5,0,0,0,0,0)_(5,0,0,0,0,0)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_6d_conv_p_500000_500000_err_rel_nsd_gk}
+    \label{fig:tp_sg_6d_conv_eps_500000_500000_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_6d_conv_p_500000_500000}
+  \label{fig:tp_sg_6d_conv_eps_500000_500000}
   \caption{Experiment with $\phi_{5,0,0,0,0,0}$ and $\phi_{5,0,0,0,0,0}^{\prime}$
   in 6 dimensions.
   The parameters are:
@@ -3588,34 +3588,34 @@ parameter $\varepsilon$, also resulting in oscillatory integrands.
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_val_nsd_tp.pdf}
     \caption{Tensor product of linear size $N$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_8d_conv_p_20000000_20000000_val_nsd_tp}
+    \label{fig:tp_sg_8d_conv_eps_20000000_20000000_val_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_val_nsd_gk.pdf}
     \caption{Smolyak construction of level $K$ with a total of $|\Gamma|$ quadrature nodes.}
-    \label{fig:tp_sg_8d_conv_p_20000000_20000000_val_nsd_gk}
+    \label{fig:tp_sg_8d_conv_eps_20000000_20000000_val_nsd_gk}
   \end{subfigure} \\
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_err_nsd_tp.pdf}
     \caption{Absolute error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_8d_conv_p_20000000_20000000_err_nsd_tp}
+    \label{fig:tp_sg_8d_conv_eps_20000000_20000000_err_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_err_nsd_gk.pdf}
     \caption{Absolute error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_8d_conv_p_20000000_20000000_err_nsd_gk}
+    \label{fig:tp_sg_8d_conv_eps_20000000_20000000_err_nsd_gk}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_err_rel_nsd_tp.pdf}
     \caption{Relative error of the tensor product ansatz compared to the exact solution.}
-    \label{fig:tp_sg_8d_conv_p_20000000_20000000_err_rel_nsd_tp}
+    \label{fig:tp_sg_8d_conv_eps_20000000_20000000_err_rel_nsd_tp}
   \end{subfigure}
   \begin{subfigure}[t]{0.5\linewidth}
     \includegraphics[width=\linewidth]{./plots/tp_sg_8d_conv_eps_(2,0,0,0,0,0,0,0)_(2,0,0,0,0,0,0,0)_err_rel_nsd_gk.pdf}
     \caption{Relative error of the Smolyak construction compared to the exact solution.}
-    \label{fig:tp_sg_8d_conv_p_20000000_20000000_err_rel_nsd_gk}
+    \label{fig:tp_sg_8d_conv_eps_20000000_20000000_err_rel_nsd_gk}
   \end{subfigure}
-  \label{fig:tp_sg_8d_conv_p_20000000_20000000}
+  \label{fig:tp_sg_8d_conv_eps_20000000_20000000}
   \caption{Experiment with $\phi_{2,0,0,0,0,0,0,0}$ and $\phi_{2,0,0,0,0,0,0,0}^{\prime}$
   in 8 dimensions.
   The parameters are:
