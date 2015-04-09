@@ -356,14 +356,14 @@ A typical example of a highly oscillatory integral looks like:
 \begin{equation}
   I = \int_{\Omega} f(\vec{x}) \, \exp(\imath \omega g(\vec{x})) \di{\vec{x}}
 \end{equation}
-where the non-oscillatory function $g:\mathbb{R}^D \rightarrow \mathbb{C}$
+where the non-oscillatory function $g:\mathbb{R}^N \rightarrow \mathbb{C}$
 is called the oscillator and the also non-oscillatory function
-$f:\mathbb{R}^D \rightarrow \mathbb{C}$ the envelope. The parameter
+$f:\mathbb{R}^N \rightarrow \mathbb{C}$ the envelope. The parameter
 $\omega \in \mathbb{R}^{+}$ is the frequency. Often one looks at the
 asymptotic behavior for $\omega \rightarrow \infty$. In our setting
 this parameter $\omega$ has a fixed and finite value.
-Finally there is the domain of integration denoted by $\Omega \subset \mathbb{R}^D$.
-In the theory shown so far this is a bounded subset of $\mathbb{R}^D$.
+Finally there is the domain of integration denoted by $\Omega \subset \mathbb{R}^N$.
+In the theory shown so far this is a bounded subset of $\mathbb{R}^N$.
 Figure \ref{fig:oscillatory_example_2d} shows a particular
 example of such a nasty integrand.
 
@@ -378,7 +378,7 @@ example of such a nasty integrand.
 \end{figure}
 
 For our problem at hand, computing overlap integrals, we will need to integrate
-over the whole space in $D$ dimensions and hence set $\Omega = \mathbb{R}^D$ in
+over the whole space in $N$ dimensions and hence set $\Omega = \mathbb{R}^N$ in
 \eqref{eq:hoi}.
 There are two essential observations to be made about the
 oscillatory part $\exp\left(i\omega g\left(\vec{x}\right) \right)$
@@ -411,7 +411,7 @@ defined by the condition $\nabla g(\vec{x}) \perp \partial \Omega$ on the other.
 In the one-dimensional case one can forget about the complications around resonance
 points and just take care of the endpoints of the interval $[a, b] = \Omega$. In our
 case there is no surface $\partial \Omega$ anyway as we compute over the whole space
-$\mathbb{R}^D$.
+$\mathbb{R}^N$.
 
 In the following we briefly consider the one-dimensional integral over the interval
 $[a,b]$ and walk through the major steps involved in the procedure. We can find all
@@ -584,7 +584,7 @@ Actually, the \emph{only} thing we have is a single stationary point.
 \end{figure}
 
 Another direction to extend the theory are infinite regions $\Omega$. In our case we will
-need $\Omega = \mathbb{R}^D$. Before we take this step, we look at semi-finite intervals.
+need $\Omega = \mathbb{R}^N$. Before we take this step, we look at semi-finite intervals.
 For semi-finite intervals $[a, \infty [$ we attach only one single path $h_a(\tau)$ an the
 finite endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}. If there
 are stationary points, they can be split off into sub-problems over finite intervals.
@@ -633,7 +633,7 @@ $a$ and $b$ will be traversed two times in reversed directions and hence cancel 
 The only thing that remains is the pair of paths attached to the single complex stationary
 point $x^{*}$. This works the same in any number of dimensions where we resolve the nested
 integrals one after the other. By gluing together the two paths of opposite direction
-we end up with a cross of exactly $D$ straight paths. Therefore the number and nesting
+we end up with a cross of exactly $N$ straight paths. Therefore the number and nesting
 depth of integrals to perform does \emph{not} grow compared to direct integration.
 This is of course very fortunate.
 
@@ -1972,7 +1972,7 @@ If $V$ contains exponential parts, they have to be merged into the oscillator $g
 in turn change the integration paths. Further, if there are any poles
 in $f$, we have to be very careful with integration too and make sure to include all
 the relevant residuals. In the computations done so far, the envelope $f$ is assumed
-to have no poles in $\mathbb{C}^{d}$. Altogether this poses some challenges for
+to have no poles in $\mathbb{C}^{N}$. Altogether this poses some challenges for
 non-polynomial potentials. Polynomial potentials are tame enough to
 fit the framework shown.
 
@@ -2065,7 +2065,7 @@ descent transformation using the largest number of quadrature nodes as reference
 
 The whole process of computing the integral works as shown in the Figure
 \ref{fig:transformation_chain_2}. Especially in the multi-dimensional case
-we still need a full tensor product of Gauss-Hermite quadrature nodes in the end.
+we still need a full tensor product of $N$ Gauss-Hermite quadrature nodes in the end.
 This results in $N^D$ quadrature nodes, which scales exponentially with the
 dimension $D$. The important bit is however that the value of $N$ is \emph{much}
 smaller compared to direct application of traditional quadrature schemes as done
