@@ -679,7 +679,7 @@ of node-weight pairs.
 \end{algorithm}
 
 The output of this algorithm applied to the three polynomial classes mentioned
-above is shown in the figures \ref{fig:map_leg_100_100}, \ref{fig:map_lag_20_100}
+above is shown in the Figures \ref{fig:map_leg_100_100}, \ref{fig:map_lag_20_100}
 and \ref{fig:map_herm_50_100}.
 
 
@@ -690,7 +690,7 @@ existence results for Kronrod-Patterson extensions.
 
 In the Legendre case there is a proof that for each $n$ there is
 always an extension with $p = n + 1$ \cite{szegoe}. This is recovered by our
-computation and shows up in figure \ref{fig:map_leg_100_100} as the first upper
+computation and shows up in Figure \ref{fig:map_leg_100_100} as the first upper
 diagonal line. Additionally to their existence, these rules also have positive
 weights in all cases as shown in \cite{monegato1978}. The existence theorems can
 be generalized to hold also for Chebyshev, Gegenbauer and ultimatively Jacobi
@@ -739,7 +739,7 @@ rules would probably be of no practical use anyway.
 
 In the case of Hermite polynomials our computation indeed reveals the three possible
 classical Kronrod rules for $n=1, p=2$ and $n = 2, p = 3$ and $n = 4, p = 5$. This
-can be seen in the very top left corner of figure \ref{fig:map_herm_50_100} and is
+can be seen in the very top left corner of Figure \ref{fig:map_herm_50_100} and is
 in perfect agreement with the literature \cite{monegato1976, kahaner-monegato, vladislav}.
 In fact if we examine the three rules more closely, we will find that the case
 $n = 4, p = 5$ does not have positive weights and is in turn ruled out by the
@@ -2021,7 +2021,7 @@ the same node-weight pairs. The order os this rule is then $2\cdot 14 + 1 = 29$.
 
 Lemma 4.1 in \cite{holtz} gives conditions on the one-dimensional rules
 such that the Smolyak construction of level $K$ from these rules has
-order at least $2K-1$. It can be seen from figures \ref{fig:number_nodes_legendre},
+order at least $2K-1$. It can be seen from Figures \ref{fig:number_nodes_legendre},
 \ref{fig:number_nodes_chebyshevt}, \ref{fig:number_nodes_chebyshevu} and
 \ref{fig:number_nodes_hermitephy} that the rules discussed here fulfill the
 required conditions as their orders are always large enough.
@@ -2042,14 +2042,14 @@ sequence:
 where a large number of non-zero elements occur. Also we can in principle
 arbitrarily extend $\mathcal{K}$ by doubling the degree. If we use this
 extension we get the one-dimensional quadrature nodes and weights shown
-in figure \ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$
+in Figure \ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$
 the weights behave well but for some they start oscillating and even become
 negative. These special values of $K$ correlate with extra zeros in the
 $\vec{z}$ sequence. Figure \ref{fig:gk_legendre_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz. This
-fact is examined in figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre_ratio_large}.
+fact is examined in Figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre_ratio_large}.
 
 \begin{figure}[h]
   \centering
@@ -2208,12 +2208,12 @@ we choose $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ with the $\vec{z}$ sequence:
 \end{equation*}
 Again we can in principle extend $\mathcal{K}$ by doubling the degree.
 Using this extension we get the one-dimensional quadrature nodes and weights shown
-in figure \ref{fig:gk_chebyshevt_nodes_1d}.
+in Figure \ref{fig:gk_chebyshevt_nodes_1d}.
 Figure \ref{fig:gk_chebyshevt_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz, however there
-are some exceptions. This fact is examined in figures \ref{fig:gk_chebyshevt_ratio}
+are some exceptions. This fact is examined in Figures \ref{fig:gk_chebyshevt_ratio}
 and \ref{fig:gk_chebyshevt_ratio_large}.
 
 \begin{figure}[h]
@@ -2366,7 +2366,7 @@ $\mathcal{K} = (1, 2, 4, 8, 16, 32)$ with the $\vec{z}$ sequence:
 \end{equation*}
 Once more we could extend $\mathcal{K}$ by doubling the degree.
 Using this extension we get the one-dimensional quadrature nodes and
-weights shown in figure \ref{fig:gk_chebyshevu_nodes_1d}.
+weights shown in Figure \ref{fig:gk_chebyshevu_nodes_1d}.
 Figure \ref{fig:gk_chebyshevu_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 For $D = 2$ there are levels where Genz-Keister is better than
@@ -2528,7 +2528,7 @@ $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ with the $z$ sequence:
              %0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 \end{equation*}
 Using this extension we get the one-dimensional quadrature nodes and weights shown
-in figure \ref{fig:gk_hermitephy_nodes_1d}.
+in Figure \ref{fig:gk_hermitephy_nodes_1d}.
 Figure \ref{fig:gk_hermitephy_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 
@@ -2565,7 +2565,7 @@ node distribution in the plane for two-dimensional quadrature rules.
   \label{fig:conv_monom_hermite}
 \end{figure}
 
-By comparing to figure \ref{fig:conv_monom_hermite} we can confirm that the rules with $K < 18$ are stable.
+By comparing to Figure \ref{fig:conv_monom_hermite} we can confirm that the rules with $K < 18$ are stable.
 The rule obtained with $K=17$ has $35$ nodes and is of order $51$. In the range $18 < K \leq 25$ we get no
 new rules but rather the same nodes and weights as with $K = 17$. Rules with even higher $K > 25$ were found
 to be highly unstable.
@@ -2606,7 +2606,7 @@ to be highly unstable.
 
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz. This
-can be read off from figures \ref{fig:gk_hermitephy_ratio}
+can be read off from Figures \ref{fig:gk_hermitephy_ratio}
 and \ref{fig:gk_hermitephy_ratio_large}.
 
 \begin{figure}[h]
