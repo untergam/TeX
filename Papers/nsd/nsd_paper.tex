@@ -20,17 +20,28 @@
 \include{header_math}
 \include{header_gfx}
 
-
 \synctex=1
 \parindent 0pt
 
-%opening
 \title{Numerical Steepest Descent for Overlap Integrals of Semiclassical Wavepackets}
 \author{R. Bourquin}
+
 
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+  In this report we show that classical Gauss quadrature is not adequate for a large
+  class of correlation and overlap integrals originating from quantum mechanics. These
+  integrals are usually highly oscillatory and therefore special methods are necessary
+  for accurate computations. We develop and test a new, highly efficient method based
+  on some recent results about numerical steepest descent to solve the problem stated.
+  Our approach is built in principle to work for any number of space dimensions but some
+  care must be taken not to run into the curse of dimensionality. Explicit formulae and
+  algorithms are given in full generality.
+\end{abstract}
+
 
 \section{Introduction}
 
