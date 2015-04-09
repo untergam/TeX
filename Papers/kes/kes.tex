@@ -70,8 +70,8 @@ such iterated nested extensions to the Gauss quadrature rules related
 to the five classical orthogonal polynomials. The algorithms are implemented
 in an efficient code that is publicly available under the GPL license.
 
-There are only few theoretical results on the existence of these Kronrod-Patterson
-extensions and they are usually restricted to one single extension
+There are only few theoretical results on the existence of Kronrod-Patterson
+extensions and they are usually restricted to one single extension level
 \cite{gautschi-notaris, gautschi, monegato1978, monegato1978_2, szegoe}.
 Most of these results are for Legendre Polynomials and the branch stemming
 from specializations of Jacobi polynomials. For the case of Hermite polynomials,
@@ -79,7 +79,7 @@ which is most interesting for the application we originally had in mind \cite{H_
 FGL_semiclassical_dynamics}, there is only a single result of limited use \cite{kahaner-monegato}.
 
 We take an algorithmic ansatz and explicitly find and enumerate extensions by
-an exhaustive recursive search. This gives us huge families of nested quadrature
+an exhaustive recursive search. This gives huge families of nested quadrature
 rules for some cases. The evaluation of the best is not easy and partially
 left open. In other cases the choice is more limited and if we require a certain
 number of nested levels, there are only few possible rules left to try.
@@ -97,7 +97,7 @@ Therefore we have an efficient way to actually build all these rules avoiding
 the explicit Smolyak formula. In the end we provide algorithms for the construction
 of sparse quadrature rules for any of the classical orthogonal polynomials.
 The rules are evaluated for accuracy as well as effectiveness. These algorithms
-are also implemented in the above mentioned code. The implementation follows
+are also implemented in the above mentioned code. The actual implementation follows
 closely the description given here in pseudo code.
 
 
@@ -222,7 +222,7 @@ The theorem \ref{th:defining_extension} from above and the integral formulation
 \end{equation}
 
 We find from the last line the following linear system $\mat{A} \vec{a} = \vec{r}$
-for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$ as:
+for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$:
 
 \begin{equation}
   \label{eq:linsys_for_extension}
@@ -243,7 +243,7 @@ for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$ as:
   \vdots \\
   - \int_\Omega P_n(t) t^p t^i \omega(t) \,\di{t} \\
   \vdots \\
-  \end{bmatrix}
+  \end{bmatrix},
 \end{equation}
 
 where the first index $i = 0, \ldots, p-1$ runs along a column
@@ -457,8 +457,8 @@ solve the system and then check the precision $b_{\omega}^{\prime}$ of the
 weights. If $b_{\omega}^{\prime} \geq b_{\omega}$, then the precision goal was
 met and we can stop. Otherwise, we double the required precision
 $b_{\gamma}^{\prime} := 2 b_{\gamma}$ and recompute the nodes first. After
-that we can retry to solve this system and see if the precision goal is met
-this time. If not yet, we let the algorithm iterate until the goal of $b_{\omega}$ bits
+that we can retry to solve this system and see if the precision goal is met.
+If not yet, we let the algorithm iterate until the goal of $b_{\omega}$ bits
 is eventually fulfilled or an upper bound on the number of bits is hit.
 The procedure is shown in pseudo-code in listing \ref{alg:compute_weights}.
 
@@ -2081,7 +2081,7 @@ fact is examined in Figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   which perfectly agrees with the figure.
   Starting with the $31$ point rule, the rules become somewhat unstable
   and do not reach the machine epsilon error level. This can be explained
-  by growing oscillations in the weights for some of the rules. (Refer to figure
+  by growing oscillations in the weights for some of the rules. (Refer to Figure
   \ref{fig:gk_legendre_nodes_1d} though the rules affected are beyond the range
   of that plot.) The rule having $63$ nodes is very stable again.}
   \label{fig:monomial_errors_legendre}
@@ -2371,7 +2371,7 @@ Figure \ref{fig:gk_chebyshevu_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 For $D = 2$ there are levels where Genz-Keister is better than
 Gauss-Chebyshev tensor products but there are also levels where
-it behaves the other way round. The details are shown in figures
+it behaves the other way round. The details are shown in Figures
 \ref{fig:gk_chebyshevu_ratio} and \ref{fig:gk_chebyshevu_ratio_large}.
 
 \begin{figure}[h]
