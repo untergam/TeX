@@ -14,6 +14,7 @@
 \definecolor{citecol}{rgb}{0.5,0,0}
 \usepackage[pagebackref,hyperindex=true]{hyperref}
 \hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
+\usepackage{subfloat}
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -26,6 +27,7 @@
 \usepackage{microtype}
 
 \include{header_math}
+\include{header_gfx}
 
 \synctex=1
 \parindent 0pt
@@ -710,28 +712,47 @@ weights in all cases as shown in \cite{monegato1978}. The existence theorems can
 be generalized to hold also for Chebyshev, Gegenbauer and ultimatively Jacobi
 polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{./img/map_leg_100_100.png}
-  \caption{Map of the extensions $E_p$ of Gauss-Legendre quadrature rules
-           $P_n$ for $n \leq 100$ and $p$ up to $100$.}
-  \label{fig:map_leg_100_100}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{./img/map_chebt_100_100.png}
-  \caption{Map of the extensions $E_p$ of Gauss-Chebyshev quadrature rules
-           $T_n$ for $n \leq 100$ and $p$ up to $100$.}
-  \label{fig:map_chebt_50_50}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.6\textwidth]{./img/map_chebu_100_100.png}
-  \caption{Map of the extensions $E_p$ of Gauss-Chebyshev quadrature rules
-           $U_n$ for $n \leq 100$ and $p$ up to $100$.}
-  \label{fig:map_chebu_100_100}
+\begin{figure}[ht!]
+  \begin{minipage}[b]{0.49\linewidth}
+  \begin{subfigure}[b]{\linewidth}
+    \includegraphics[width=\textwidth]{./img/map_leg_100_100.png}
+    \caption{Gauss-Legendre rules $P_n$.}
+    \label{fig:map_leg_100_100}
+  \end{subfigure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.49\linewidth}
+  \begin{subfigure}[b]{\linewidth}
+    \includegraphics[width=\textwidth]{./img/map_chebt_100_100.png}
+    \caption{Gauss-Chebyshev rules $T_n$.}
+    \label{fig:map_chebt_50_50}
+  \end{subfigure}
+  \end{minipage} \\
+  \begin{minipage}[t][][t]{0.49\linewidth}
+  \vspace{0pt}
+  \begin{subfigure}[b]{\linewidth}
+    \includegraphics[width=\textwidth]{./img/map_chebu_100_100.png}
+    \caption{Gauss-Chebyshev rules $U_n$.}
+    \label{fig:map_chebu_100_100}
+  \end{subfigure}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t][][t]{0.49\linewidth}
+  \vspace{0pt}
+  \begin{subfigure}[t]{\textwidth}
+    \includegraphics[width=\textwidth]{./img/map_lag_20_100.png}
+    \caption{Gauss-Laguerre rules $L_n$.\vspace{0.3cm}}
+    \label{fig:map_lag_20_100}
+  \end{subfigure}
+  \begin{subfigure}[b]{\linewidth}
+    \includegraphics[width=\textwidth]{./img/map_herm_50_100.png}
+    \caption{Gauss-Hermite rules $H_n$.}
+    \label{fig:map_herm_50_100}
+  \end{subfigure}
+  \end{minipage}
+  \caption{Map of the extensions $E_p$ of Gauss quadrature rules for $n \leq 100$ and $p$ up to $100$.
+  The parts with $n \leq 100$ not shown do not contain any single valid extension.
+  Compare the Laguerre case also to Table 1 in \cite{kahaner_waldvogel_fullerton}.}
 \end{figure}
 
 For Laguerre polynomials there are no classical Kronrod extensions with $p = n+1$
@@ -740,17 +761,6 @@ for any $12 < n \leq 100$ while keeping $p \leq 150$. There is no strong reason 
 believe this would change if allowing for even higher $p$. Apart from that, such
 rules would probably be of no practical use anyway.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{./img/map_lag_20_100.png}
-  \caption{Map of the extensions $E_p$ of Gauss-Laguerre quadrature rules
-           $L_n$ for $n \leq 20$ and $p$ up to $100$. The part from
-           $20 < n \leq 100$ not shown here does not contain any single
-           valid extension. Compare also to Table 1 in \cite{kahaner_waldvogel_fullerton}.
-           }
-  \label{fig:map_lag_20_100}
-\end{figure}
-
 In the case of Hermite polynomials our computation indeed reveals the three possible
 classical Kronrod rules for $n=1, p=2$ and $n = 2, p = 3$ and $n = 4, p = 5$. This
 can be seen in the very top left corner of Figure \ref{fig:map_herm_50_100} and is
@@ -758,16 +768,6 @@ in perfect agreement with the literature \cite{monegato1976, kahaner-monegato, v
 In fact if we examine the three rules more closely, we will find that the case
 $n = 4, p = 5$ does not have positive weights and is in turn ruled out by the
 authors of the aforementioned papers.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{./img/map_herm_50_100.png}
-  \caption{Map of the extensions $E_p$ of Gauss-Hermite quadrature rules
-           $H_n$ for $n \leq 50$ and $p$ up to $100$. The part from
-           $50 < n \leq 100$ not shown here does not contain any single
-           valid extension.}
-  \label{fig:map_herm_50_100}
-\end{figure}
 
 
 \FloatBarrier
