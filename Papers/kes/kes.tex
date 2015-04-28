@@ -1677,6 +1677,34 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:gk_legendre_nodes_cmp}
 \end{figure}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Chebyshev-T nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ Kronrod extension.
+  The points are nicely nested and well suited for sparse grids.}
+  \label{fig:gk_chebyshevt_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Chebyshev-U nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
+  nicely nested and well suited for sparse grids.}
+  \label{fig:gk_chebyshevu_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_cmp.pdf}
+  \caption{Comparison of Gauss-Hermite nodes (right) and nested Genz-Keister nodes (left)
+  based on the $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ Kronrod extension. The points are
+  nicely nested and well suited for sparse grids.}
+  \label{fig:gk_hermitephy_nodes_cmp}
+\end{figure}
+
+
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_1d.pdf}
@@ -1687,6 +1715,31 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   stability of the corresponding rules.}
   \label{fig:gk_legendre_nodes_1d}
 \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_1d.pdf}
+  \caption{Gauss-Chebyshev-T (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_chebyshevt_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_1d.pdf}
+  \caption{Gauss-Chebyshev-U (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. All $(2^i-1)$-point rules are identical.}
+  \label{fig:gk_chebyshevu_nodes_1d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_hermitephy_nodes_1d}
+\end{figure}
+
 
 \begin{figure}
   \centering
@@ -1706,12 +1759,91 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
 
 \begin{figure}
   \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_chebyshevt.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Chebyshev-T and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_chebyshevt}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevt.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various
+  levels $K$ and dimensions $D$ in the Chebyshev-T case.}
+  \label{fig:number_nodes_levdim_chebyshevt}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_chebyshevu.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Chebyshev-U and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_chebyshevu}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevu.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various
+  levels $K$ and dimensions $D$ in the Chebyshev-U case.}
+  \label{fig:number_nodes_levdim_chebyshevu}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_hermitephy.pdf}
+  \caption{Number of nodes for the one-dimensional Gauss-Hermite and Genz-Keister quadrature
+  rules of order $n$ or level $K$ respectively.}
+  \label{fig:number_nodes_hermitephy}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_hermitephy.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various
+  levels $K$ and dimensions $D$ in the Hermite case.}
+  \label{fig:number_nodes_levdim_hermitephy}
+\end{figure}
+
+\clearpage
+
+\begin{figure}
+  \centering
   \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_2d.pdf}
   \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes for
   two-dimensional rules. The Gauss-Legendre points form a full tensor
   product.}
   \label{fig:gk_legendre_nodes_2d}
 \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_2d.pdf}
+  \caption{Gauss-Chebyshev-T (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Chebyshev points form a full tensor
+  product.}
+  \label{fig:gk_chebyshevt_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_2d.pdf}
+  \caption{Gauss-Chebyshev-U (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Chebyshev points form a full tensor
+  product.}
+  \label{fig:gk_chebyshevu_nodes_2d}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_2d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Hermite points form a full tensor
+  product.}
+  \label{fig:gk_hermitephy_nodes_2d}
+\end{figure}
+
+\clearpage
 
 \begin{figure}
   \centering
@@ -1743,6 +1875,105 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   Genz-Keister is worse and for gray dots the ratio equals 1.}
   \label{fig:smol_legendre_ratio}
 \end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevt_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
+  points for dimensions 1 to 4 and Level $K \leq 24$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevt_ratio_large}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Chebyshev-T quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_chebyshevt_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-U tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevu_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-U tensor product
+  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_chebyshevu_ratio_large}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Chebyshev-U quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.
+  Notice that although some of the Gauss rules are already nested, this has
+  (as expected) almost no effect when applying the Smolyak construction.
+  The only difference between this figure and its siblings is the point
+  $D=4$ and $K=8$ which here is white instead of black. Also the boundary
+  will reach $D=5$ a few levels later. However there is obviously still
+  room for improvement.}
+  \label{fig:smol_chebyshevu_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_hermitephy_ratio}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
+  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1. Even if not visible here,
+  the white boundary will go more to the right and reach dimension $D = 3$ at level $K = 51$.}
+  \label{fig:gk_hermitephy_ratio_large}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_hermitephy_ratio}
+\end{figure}
+
+\clearpage
 
 \begin{figure}
   \centering
@@ -1797,89 +2028,7 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:monomial_errors_legendre_multivariate}
 \end{subfigures}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_2D.pdf}
-  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$
-  in the Legendre case.
-  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
-  integrates the monomial with a relative error not larger than $10^{-13}$.}
-  \label{fig:monomial_errors_legendre_2D}
-\end{figure}
-
 \clearpage
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_cmp.pdf}
-  \caption{Comparison of Gauss-Chebyshev-T nodes (right) and nested Genz-Keister nodes (left)
-  based on the $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ Kronrod extension.
-  The points are nicely nested and well suited for sparse grids.}
-  \label{fig:gk_chebyshevt_nodes_cmp}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_1d.pdf}
-  \caption{Gauss-Chebyshev-T (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.}
-  \label{fig:gk_chebyshevt_nodes_1d}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_chebyshevt.pdf}
-  \caption{Number of nodes for the one-dimensional Gauss-Chebyshev-T and Genz-Keister quadrature
-  rules of order $n$ or level $K$ respectively.}
-  \label{fig:number_nodes_chebyshevt}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevt.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various
-  levels $K$ and dimensions $D$ in the Chebyshev-T case.}
-  \label{fig:number_nodes_levdim_chebyshevt}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_2d.pdf}
-  \caption{Gauss-Chebyshev-T (red) and Genz-Keister (blue) nodes for
-  two-dimensional rules. The Gauss-Chebyshev points form a full tensor
-  product.}
-  \label{fig:gk_chebyshevt_nodes_2d}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevt_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
-  points for dimensions 1 to 4 and Level $K \leq 24$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevt_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Chebyshev-T quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_chebyshevt_ratio}
-\end{figure}
 
 \begin{figure}
   \centering
@@ -1928,95 +2077,7 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:monomial_errors_chebyshevt_multivariate}
 \end{subfigures}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_2D.pdf}
-  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$
-  in the Chebyshev-T case.
-  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
-  integrates the monomial with a relative error not larger than $10^{-13}$.}
-  \label{fig:monomial_errors_chebyshevt_2D}
-\end{figure}
-
 \clearpage
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_cmp.pdf}
-  \caption{Comparison of Gauss-Chebyshev-U nodes (right) and nested Genz-Keister nodes (left)
-  based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
-  nicely nested and well suited for sparse grids.}
-  \label{fig:gk_chebyshevu_nodes_cmp}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_1d.pdf}
-  \caption{Gauss-Chebyshev-U (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. All $(2^i-1)$-point rules are identical.}
-  \label{fig:gk_chebyshevu_nodes_1d}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_chebyshevu.pdf}
-  \caption{Number of nodes for the one-dimensional Gauss-Chebyshev-U and Genz-Keister quadrature
-  rules of order $n$ or level $K$ respectively.}
-  \label{fig:number_nodes_chebyshevu}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevu.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various
-  levels $K$ and dimensions $D$ in the Chebyshev-U case.}
-  \label{fig:number_nodes_levdim_chebyshevu}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_2d.pdf}
-  \caption{Gauss-Chebyshev-U (red) and Genz-Keister (blue) nodes for
-  two-dimensional rules. The Gauss-Chebyshev points form a full tensor
-  product.}
-  \label{fig:gk_chebyshevu_nodes_2d}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-U tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevu_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-U tensor product
-  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevu_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Chebyshev-U quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.
-  Notice that although some of the Gauss rules are already nested, this has
-  (as expected) almost no effect when applying the Smolyak construction.
-  The only difference between this figure and its siblings is the point
-  $D=4$ and $K=8$ which here is white instead of black. Also the boundary
-  will reach $D=5$ a few levels later. However there is obviously still
-  room for improvement.}
-  \label{fig:smol_chebyshevu_ratio}
-\end{figure}
 
 \begin{figure}
   \centering
@@ -2066,90 +2127,7 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:monomial_errors_chebyshevu_multivariate}
 \end{subfigures}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_2D.pdf}
-  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$
-  in the Chebyshev-U case.
-  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
-  integrates the monomial with a relative error not larger than $10^{-13}$.}
-  \label{fig:monomial_errors_chebyshevu_2D}
-\end{figure}
-
 \clearpage
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_cmp.pdf}
-  \caption{Comparison of Gauss-Hermite nodes (right) and nested Genz-Keister nodes (left)
-  based on the $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ Kronrod extension. The points are
-  nicely nested and well suited for sparse grids.}
-  \label{fig:gk_hermitephy_nodes_cmp}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
-  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.}
-  \label{fig:gk_hermitephy_nodes_1d}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_hermitephy.pdf}
-  \caption{Number of nodes for the one-dimensional Gauss-Hermite and Genz-Keister quadrature
-  rules of order $n$ or level $K$ respectively.}
-  \label{fig:number_nodes_hermitephy}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_hermitephy.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various
-  levels $K$ and dimensions $D$ in the Hermite case.}
-  \label{fig:number_nodes_levdim_hermitephy}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_2d.pdf}
-  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes for
-  two-dimensional rules. The Gauss-Hermite points form a full tensor
-  product.}
-  \label{fig:gk_hermitephy_nodes_2d}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_hermitephy_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
-  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1. Even if not visible here,
-  the white boundary will go more to the right and reach dimension $D = 3$ at level $K = 51$.}
-  \label{fig:gk_hermitephy_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_hermitephy_ratio}
-\end{figure}
 
 \begin{figure}
   \centering
@@ -2215,6 +2193,38 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \end{figure}
   \label{fig:monomial_errors_hermitephy_multivariate}
 \end{subfigures}
+
+\clearpage
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$
+  in the Legendre case.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_legendre_2D}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$
+  in the Chebyshev-T case.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_chebyshevt_2D}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$
+  in the Chebyshev-U case.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_chebyshevu_2D}
+\end{figure}
 
 \begin{figure}[h]
   \centering
