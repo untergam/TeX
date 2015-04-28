@@ -1499,17 +1499,37 @@ sequence:
 \end{equation*}
 where a large number of non-zero elements occur. Also we can in principle
 arbitrarily extend $\mathcal{K}$ by doubling the degree. If we use this
-extension we get the one-dimensional quadrature nodes and weights shown
-in Figure \ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$
-the weights behave well but for some they start oscillating and even become
-negative. These special values of $K$ correlate with extra zeros in the
-$\vec{z}$ sequence. Figure \ref{fig:gk_legendre_nodes_2d} shows the sparse
-node distribution in the plane for two-dimensional quadrature rules.
+extension we get the one-dimensional quadrature nodes with a constellation
+as in Figure \ref{fig:gk_legendre_nodes_cmp} and weights shown in Figure
+\ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$ the weights
+behave well but for some they start oscillating and even become negative.
+These special values of $K$ correlate with extra zeros in the $\vec{z}$ sequence.
+The number of nodes relative to Gauss-Legendre Quadrature is shown
+in Figure \ref{fig:number_nodes_legendre} for one dimension and
+compared across dimensions in Figure \ref{fig:number_nodes_levdim_legendre}.
+Figure \ref{fig:gk_legendre_nodes_2d} shows the sparse node distribution
+in the plane for two-dimensional quadrature rules.
+
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz. This
 fact is examined in Figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre_ratio_large}.
+The other Figure \ref{fig:smol_legendre_ratio} displays the same comparison,
+this time with respect to the Smolyak construction.
 
-\begin{figure}[h]
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
+\begin{equation} \label{eq:legendre_exact_solution}
+  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \di{\vec{x}}
+  =
+  \prod_{d=1}^D \frac{1 + (-1)^{n_d}}{1 + n_d}
+\end{equation}
+where we know the exact solution in closed form. The results are shown in
+Figure \ref{fig:monomial_errors_legendre} for $D=1$ and for $2 \leq D \leq 6$
+in Figure \ref{fig:monomial_errors_legendre_multivariate}. Finally, the Figure
+\ref{fig:monomial_errors_legendre_2D} shows the minimal level $K$ necessary to
+correctly integrate the term $x^m y^n$.
+
+\begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_cmp.pdf}
   \caption{Comparison of Gauss-Legendre nodes (right) and nested Genz-Keister nodes (left)
@@ -1520,10 +1540,68 @@ fact is examined in Figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
 
 \begin{figure}
   \centering
+  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_1d.pdf}
+  \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.
+  Note that a few rules have oscillations in the weights, some of them
+  are almost zero, others become increasingly negative. This affects the
+  stability of the corresponding rules.}
+  \label{fig:gk_legendre_nodes_1d}
+\end{figure}
+
+\begin{figure}
+  \centering
   \includegraphics[width=\linewidth]{./img/number_nodes_legendre.pdf}
   \caption{Number of nodes for the one-dimensional Gauss-Legendre and Genz-Keister quadrature
   rules of order $n$ or level $K$ respectively.}
   \label{fig:number_nodes_legendre}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_legendre.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
+  \label{fig:number_nodes_levdim_legendre}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_2d.pdf}
+  \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes for
+  two-dimensional rules. The Gauss-Legendre points form a full tensor
+  product.}
+  \label{fig:gk_legendre_nodes_2d}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
+  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:gk_legendre_ratio}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio_large.pdf}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
+  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1. Notice the tendency
+  of the white boundary to go to the right and eventually reach dimensions $D \geq 3$.}
+  \label{fig:gk_legendre_ratio_large}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_legendre_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Legendre quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_legendre_ratio}
 \end{figure}
 
 \begin{figure}
@@ -1545,84 +1623,7 @@ fact is examined in Figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre
   \label{fig:monomial_errors_legendre}
 \end{figure}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_1d.pdf}
-  \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.
-  Note that a few rules have oscillations in the weights, some of them
-  are almost zero, others become increasingly negative. This affects the
-  stability of the corresponding rules.}
-  \label{fig:gk_legendre_nodes_1d}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_legendre_nodes_2d.pdf}
-  \caption{Gauss-Legendre (red) and Genz-Keister (blue) nodes for
-  two-dimensional rules. The Gauss-Legendre points form a full tensor
-  product.}
-  \label{fig:gk_legendre_nodes_2d}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_legendre.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
-  \label{fig:number_nodes_levdim_legendre}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_legendre_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Legendre quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_legendre_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_legendre_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
-  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1. Notice the tendency
-  of the white boundary to go to the right and eventually reach dimensions $D \geq 3$.}
-  \label{fig:gk_legendre_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_2D.pdf}
-  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
-  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
-  integrates the monomial with a relative error not larger than $10^{-13}$.}
-  \label{fig:monomial_errors_legendre_2D}
-\end{figure}
-
-For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
-\begin{equation} \label{eq:legendre_exact_solution}
-  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \di{\vec{x}}
-  =
-  \prod_{d=1}^D \frac{1 + (-1)^{n_d}}{1 + n_d}
-\end{equation}
-where we know the exact solution in closed form.
-
 \begin{subfigures}
-  \label{fig:monomial_errors_legendre_multivariate}
   \begin{figure}\centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_2.pdf}
     \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
@@ -1653,7 +1654,17 @@ where we know the exact solution in closed form.
     in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
     \label{fig:monomial_errors_legendre_multivariate_dimension_6}
   \end{figure}
+  \label{fig:monomial_errors_legendre_multivariate}
 \end{subfigures}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_legendre_2D}
+\end{figure}
 
 \FloatBarrier
 \subsection{Chebyshev Quadrature of the first kind}
@@ -1665,14 +1676,37 @@ we choose $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ with the $\vec{z}$ sequence:
   \vec{z} = (0, 0, 1, 0, 2, 1, 0, 5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 1) \,.
 \end{equation*}
 Again we can in principle extend $\mathcal{K}$ by doubling the degree.
-Using this extension we get the one-dimensional quadrature nodes and weights shown
-in Figure \ref{fig:gk_chebyshevt_nodes_1d}.
+Using this extension we get the one-dimensional quadrature nodes
+with a constellation as in Figure \ref{fig:gk_chebyshevt_nodes_cmp}
+and weights shown in Figure \ref{fig:gk_chebyshevt_nodes_1d}.
+The number of nodes relative to Gauss-Chebyshev Quadrature is shown
+in Figure \ref{fig:number_nodes_chebyshevt} for one dimension and
+compared across dimensions in Figure \ref{fig:number_nodes_levdim_chebyshevt}.
+
 Figure \ref{fig:gk_chebyshevt_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz, however there
 are some exceptions. This fact is examined in Figures \ref{fig:gk_chebyshevt_ratio}
-and \ref{fig:gk_chebyshevt_ratio_large}.
+and \ref{fig:gk_chebyshevt_ratio_large}. The other Figure
+\ref{fig:smol_chebyshevt_ratio} displays the same comparison,
+this time with respect to the Smolyak construction.
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
+\begin{equation} \label{eq:chebyshevt_exact_solution}
+  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \frac{1}{\sqrt{1-x_d^2}} \di{\vec{x}}
+  =
+  \left(\frac{\sqrt{\pi}}{2}\right)^D
+  \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
+  \frac{\Gamma\left(\frac{n_d}{2}+\frac{1}{2}\right)}
+       {\Gamma\left(\frac{n_d}{2}+1\right)}
+\end{equation}
+where we know the exact solution in closed form. The results are shown in
+Figure \ref{fig:monomial_errors_chebyshevt} for $D=1$ and for $2 \leq D \leq 6$
+in Figure \ref{fig:monomial_errors_chebyshevt_multivariate}. Finally, the Figure
+\ref{fig:monomial_errors_chebyshevt_2D} shows the minimal level $K$ necessary to
+correctly integrate the term $x^m y^n$.
 
 \begin{figure}[h]
   \centering
@@ -1681,6 +1715,14 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   based on the $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ Kronrod extension.
   The points are nicely nested and well suited for sparse grids.}
   \label{fig:gk_chebyshevt_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_1d.pdf}
+  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_chebyshevt_nodes_1d}
 \end{figure}
 
 \begin{figure}
@@ -1693,23 +1735,9 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt.pdf}
-  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
-  The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is:
-  $1$, $3$,  $7$, $13$, $25$ and the orders according to \eqref{eq:gk_rul_order} are:
-  $1$, $5$, $11$, $23$, $47$ which perfectly agrees with the figure.
-  All rules examined here are very stable up to machine precision.}
-  \label{fig:monomial_errors_chebyshevt}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevt_nodes_1d.pdf}
-  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.}
-  \label{fig:gk_chebyshevt_nodes_1d}
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevt.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
+  \label{fig:number_nodes_levdim_chebyshevt}
 \end{figure}
 
 \begin{figure}[h]
@@ -1719,23 +1747,6 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
   two-dimensional rules. The Gauss-Chebyshev points form a full tensor
   product.}
   \label{fig:gk_chebyshevt_nodes_2d}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevt.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
-  \label{fig:number_nodes_levdim_chebyshevt}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_chebyshevt_ratio}
 \end{figure}
 
 \begin{figure}[h]
@@ -1760,27 +1771,28 @@ and \ref{fig:gk_chebyshevt_ratio_large}.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_2D.pdf}
-  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
-  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
-  integrates the monomial with a relative error not larger than $10^{-13}$.}
-  \label{fig:monomial_errors_chebyshevt_2D}
+  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_chebyshevt_ratio}
 \end{figure}
 
-For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
-\begin{equation} \label{eq:chebyshevt_exact_solution}
-  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \frac{1}{\sqrt{1-x_d^2}} \di{\vec{x}}
-  =
-  \left(\frac{\sqrt{\pi}}{2}\right)^D
-  \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
-  \frac{\Gamma\left(\frac{n_d}{2}+\frac{1}{2}\right)}
-       {\Gamma\left(\frac{n_d}{2}+1\right)}
-\end{equation}
-where we know the exact solution in closed form.
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt.pdf}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is:
+  $1$, $3$,  $7$, $13$, $25$ and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $11$, $23$, $47$ which perfectly agrees with the figure.
+  All rules examined here are very stable up to machine precision.}
+  \label{fig:monomial_errors_chebyshevt}
+\end{figure}
 
 \begin{subfigures}
-  \label{fig:monomial_errors_chebyshevt_multivariate}
   \begin{figure}\centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_2.pdf}
     \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
@@ -1811,7 +1823,17 @@ where we know the exact solution in closed form.
     in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
     \label{fig:monomial_errors_chebyshevt_multivariate_dimension_6}
   \end{figure}
+  \label{fig:monomial_errors_chebyshevt_multivariate}
 \end{subfigures}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_chebyshevt_2D}
+\end{figure}
 
 \FloatBarrier
 \subsection{Chebyshev Quadrature of the second kind}
@@ -1823,14 +1845,37 @@ $\mathcal{K} = (1, 2, 4, 8, 16, 32)$ with the $\vec{z}$ sequence:
              10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 1)\,.
 \end{equation*}
 Once more we could extend $\mathcal{K}$ by doubling the degree.
-Using this extension we get the one-dimensional quadrature nodes and
-weights shown in Figure \ref{fig:gk_chebyshevu_nodes_1d}.
+Using this extension we get the one-dimensional quadrature nodes
+with a constellation as in Figure \ref{fig:gk_chebyshevu_nodes_cmp}
+and weights shown in Figure \ref{fig:gk_chebyshevu_nodes_1d}.
+The number of nodes relative to Gauss-Chebyshev Quadrature is shown
+in Figure \ref{fig:number_nodes_chebyshevu} for one dimension and
+compared across dimensions in Figure \ref{fig:number_nodes_levdim_chebyshevu}.
 Figure \ref{fig:gk_chebyshevu_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
+
 For $D = 2$ there are levels where Genz-Keister is better than
 Gauss-Chebyshev tensor products but there are also levels where
 it behaves the other way round. The details are shown in Figures
 \ref{fig:gk_chebyshevu_ratio} and \ref{fig:gk_chebyshevu_ratio_large}.
+The third Figure \ref{fig:smol_chebyshevu_ratio} shows the same
+comparison with respect to the Smolyak construction.
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
+\begin{equation} \label{eq:chebyshevu_exact_solution}
+  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \sqrt{1-x_d^2} \di{\vec{x}}
+  =
+  \left(\frac{\sqrt{\pi}}{4}\right)^D
+  \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
+  \frac{\Gamma\left(\frac{n_d}{2}+\frac{1}{2}\right)}
+       {\Gamma\left(\frac{n_d}{2}+2\right)}
+\end{equation}
+where we know the exact solution in closed form. The results are shown in
+Figure \ref{fig:monomial_errors_chebyshevu} for $D=1$ and for $2 \leq D \leq 6$
+in Figure \ref{fig:monomial_errors_chebyshevu_multivariate}. Finally, the Figure
+\ref{fig:monomial_errors_chebyshevu_2D} shows the minimal level $K$ necessary to
+correctly integrate the term $x^m y^n$.
 
 \begin{figure}[h]
   \centering
@@ -1839,6 +1884,14 @@ it behaves the other way round. The details are shown in Figures
   based on the $\mathcal{K} = (1,2,4,8,16,32)$ Kronrod extension. The points are
   nicely nested and well suited for sparse grids.}
   \label{fig:gk_chebyshevu_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_1d.pdf}
+  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. All $(2^i-1)$-point rules are identical.}
+  \label{fig:gk_chebyshevu_nodes_1d}
 \end{figure}
 
 \begin{figure}
@@ -1851,24 +1904,9 @@ it behaves the other way round. The details are shown in Figures
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu.pdf}
-  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
-  The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is:
-  $1$, $3$,  $7$, $15$, $31$,  $63$ and the orders according to \eqref{eq:gk_rul_order} are:
-  $1$, $5$, $13$, $29$, $61$, $125$ which perfectly agrees with the figure.
-  The error is in good agreement with the Gauss-Chebyshev rules which is of course
-  expected because the rules are identical.}
-  \label{fig:monomial_errors_chebyshevu}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_chebyshevu_nodes_1d.pdf}
-  \caption{Gauss-Chebyshev (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. All $(2^i-1)$-point rules are identical.}
-  \label{fig:gk_chebyshevu_nodes_1d}
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevu.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
+  \label{fig:number_nodes_levdim_chebyshevu}
 \end{figure}
 
 \begin{figure}[h]
@@ -1878,29 +1916,6 @@ it behaves the other way round. The details are shown in Figures
   two-dimensional rules. The Gauss-Chebyshev points form a full tensor
   product.}
   \label{fig:gk_chebyshevu_nodes_2d}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_chebyshevu.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
-  \label{fig:number_nodes_levdim_chebyshevu}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.
-  Notice that although some of the Gauss rules are already nested, this has
-  (as expected) almost no effect when applying the Smolyak construction.
-  The only difference between this figure and its siblings is the point
-  $D=4$ and $K=8$ which here is white instead of black. Also the boundary
-  will reach $D=5$ a few levels later. However there is obviously still
-  room for improvement.}
-  \label{fig:smol_chebyshevu_ratio}
 \end{figure}
 
 \begin{figure}[h]
@@ -1923,20 +1938,37 @@ it behaves the other way round. The details are shown in Figures
   \label{fig:gk_chebyshevu_ratio_large}
 \end{figure}
 
-For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
-\begin{equation} \label{eq:chebyshevu_exact_solution}
-  \idotsint \limits_{\vec{x} \in [-1,1]^D} \prod_{d=1}^D x_d^{n_d} \sqrt{1-x_d^2} \di{\vec{x}}
-  =
-  \left(\frac{\sqrt{\pi}}{4}\right)^D
-  \prod_{d=1}^D \left(1 + (-1)^{n_d}\right)
-  \frac{\Gamma\left(\frac{n_d}{2}+\frac{1}{2}\right)}
-       {\Gamma\left(\frac{n_d}{2}+2\right)}
-\end{equation}
-where we know the exact solution in closed form.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Chebyshev quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.
+  Notice that although some of the Gauss rules are already nested, this has
+  (as expected) almost no effect when applying the Smolyak construction.
+  The only difference between this figure and its siblings is the point
+  $D=4$ and $K=8$ which here is white instead of black. Also the boundary
+  will reach $D=5$ a few levels later. However there is obviously still
+  room for improvement.}
+  \label{fig:smol_chebyshevu_ratio}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu.pdf}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Chebyshev rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is:
+  $1$, $3$,  $7$, $15$, $31$,  $63$ and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $13$, $29$, $61$, $125$ which perfectly agrees with the figure.
+  The error is in good agreement with the Gauss-Chebyshev rules which is of course
+  expected because the rules are identical.}
+  \label{fig:monomial_errors_chebyshevu}
+\end{figure}
 
 \begin{subfigures}
-  \label{fig:monomial_errors_chebyshevu_multivariate}
   \begin{figure}\centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_2.pdf}
     \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
@@ -1967,7 +1999,17 @@ where we know the exact solution in closed form.
     in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
     \label{fig:monomial_errors_chebyshevu_multivariate_dimension_6}
   \end{figure}
+  \label{fig:monomial_errors_chebyshevu_multivariate}
 \end{subfigures}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_chebyshevu_2D}
+\end{figure}
 
 \FloatBarrier
 \subsection{Hermite Quadrature}
@@ -1985,10 +2027,39 @@ $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ with the $z$ sequence:
              6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, \ldots)
              %0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 \end{equation*}
-Using this extension we get the one-dimensional quadrature nodes and weights shown
-in Figure \ref{fig:gk_hermitephy_nodes_1d}.
+Using this extension we get the one-dimensional quadrature nodes
+with a constellation as in Figure \ref{fig:gk_hermitephy_nodes_cmp}
+and weights shown in Figure \ref{fig:gk_hermitephy_nodes_1d}.
+The number of nodes relative to Gauss-Hermite Quadrature is shown
+in Figure \ref{fig:number_nodes_hermitephy} for one dimension and
+compared across dimensions in Figure \ref{fig:number_nodes_levdim_hermitephy}.
 Figure \ref{fig:gk_hermitephy_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
+
+By comparing to Figure \ref{fig:conv_monom_hermite} we can confirm that the
+rules with $K < 18$ are stable. The rule obtained with $K=17$ has $35$ nodes
+and is of order $51$. In the range $18 < K \leq 25$ we get no new rules but
+rather the same nodes and weights as with $K = 17$. Rules with even higher
+$K > 25$ were found to be highly unstable.
+
+Notice that for $D < 3$, using the Genz-Keister construction results
+in more quadrature points than the full tensor product Ansatz. This
+can be read off from Figures \ref{fig:gk_hermitephy_ratio}
+and \ref{fig:gk_hermitephy_ratio_large}. The last Figure
+\ref{fig:smol_hermitephy_ratio} displays the same comparison,
+this time with respect to the Smolyak construction.
+
+For testing the quadrature rules in $D$ dimensions, the following integral
+over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
+\begin{equation} \label{eq:hermitephy_exact_solution}
+  \idotsint \limits_{\vec{x} \in \mathbb{R}^D} \prod_{d=1}^D x_d^{n_d} \exp\left(-x_d^2\right) \di{\vec{x}}
+  =
+  \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{n_d + 1}{2}\right)
+\end{equation}
+where we know the exact solution in closed form. The results are shown
+for $2 \leq D \leq 6$ in Figure \ref{fig:monomial_errors_hermitephy_multivariate}.
+Finally, the Figure \ref{fig:monomial_errors_hermitephy_2D} shows the minimal
+level $K$ necessary to correctly integrate the term $x^m y^n$.
 
 \begin{figure}[h]
   \centering
@@ -1997,6 +2068,14 @@ node distribution in the plane for two-dimensional quadrature rules.
   based on the $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ Kronrod extension. The points are
   nicely nested and well suited for sparse grids.}
   \label{fig:gk_hermitephy_nodes_cmp}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
+  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
+  corresponding weights. The 1- and 3-point rules are identical.}
+  \label{fig:gk_hermitephy_nodes_1d}
 \end{figure}
 
 \begin{figure}
@@ -2009,31 +2088,9 @@ node distribution in the plane for two-dimensional quadrature rules.
 
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy.pdf}
-  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
-  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
-  The upper plot shows Gauss-Hermite rules as reference while the lower one shows the Genz-Keister rules.
-  The number of nodes for each of these rules is:
-  $1$, $3$, $7$,  $9$, $17$, $19$, $31$, $33$, $35$
-  and the orders according to \eqref{eq:gk_rul_order} are:
-  $1$, $5$, $7$, $15$, $17$, $29$, $31$, $33$, $51$
-  which perfectly agrees with the figure. Given that none of the higher order rules agree with any Gauss-Hermite rule,
-  the stability and error behavior is excellent. On the other hand, the rule with $35$ points integrates monomials
-  correctly only up to $x^{51}$ with $51 = 2 \cdot 25 + 1$ instead of up to $n = 2 \cdot 35 - 1 = 69$.}
-  \label{fig:conv_monom_hermite}
-\end{figure}
-
-By comparing to Figure \ref{fig:conv_monom_hermite} we can confirm that the rules with $K < 18$ are stable.
-The rule obtained with $K=17$ has $35$ nodes and is of order $51$. In the range $18 < K \leq 25$ we get no
-new rules but rather the same nodes and weights as with $K = 17$. Rules with even higher $K > 25$ were found
-to be highly unstable.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/gk_hermitephy_nodes_1d.pdf}
-  \caption{Gauss-Hermite (red) and Genz-Keister (blue) nodes versus
-  corresponding weights. The 1- and 3-point rules are identical.}
-  \label{fig:gk_hermitephy_nodes_1d}
+  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_hermitephy.pdf}
+  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
+  \label{fig:number_nodes_levdim_hermitephy}
 \end{figure}
 
 \begin{figure}[h]
@@ -2044,28 +2101,6 @@ to be highly unstable.
   product.}
   \label{fig:gk_hermitephy_nodes_2d}
 \end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{./img/number_nodes_levdim_hermitephy.pdf}
-  \caption{Number $|\Gamma|$ of Genz-Keister quadrature nodes for various levels $K$ and dimensions $D$.}
-  \label{fig:number_nodes_levdim_hermitephy}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_hermitephy_ratio}
-\end{figure}
-
-Notice that for $D < 3$, using the Genz-Keister construction results
-in more quadrature points than the full tensor product Ansatz. This
-can be read off from Figures \ref{fig:gk_hermitephy_ratio}
-and \ref{fig:gk_hermitephy_ratio_large}.
 
 \begin{figure}[h]
   \centering
@@ -2088,6 +2123,32 @@ and \ref{fig:gk_hermitephy_ratio_large}.
   \label{fig:gk_hermitephy_ratio_large}
 \end{figure}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
+  \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
+  via tensor product and classical Smolyak construction. White dots are $D,K$
+  combinations where Genz-Keister is advantageous, while for black dots
+  Genz-Keister is worse and for gray dots the ratio equals 1.}
+  \label{fig:smol_hermitephy_ratio}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy.pdf}
+  \caption{Relative quadrature error for integration of single univariate monomials $x^n$ of increasing degree $n$.
+  Each line represents a quadrature rule and the color indicates the number of nodes (colors wrap around once though).
+  The upper plot shows Gauss-Hermite rules as reference while the lower one shows the Genz-Keister rules.
+  The number of nodes for each of these rules is:
+  $1$, $3$, $7$,  $9$, $17$, $19$, $31$, $33$, $35$
+  and the orders according to \eqref{eq:gk_rul_order} are:
+  $1$, $5$, $7$, $15$, $17$, $29$, $31$, $33$, $51$
+  which perfectly agrees with the figure. Given that none of the higher order rules agree with any Gauss-Hermite rule,
+  the stability and error behavior is excellent. On the other hand, the rule with $35$ points integrates monomials
+  correctly only up to $x^{51}$ with $51 = 2 \cdot 25 + 1$ instead of up to $n = 2 \cdot 35 - 1 = 69$.}
+  \label{fig:conv_monom_hermite}
+\end{figure}
+
 \begin{figure}
   \centering
   \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_high.pdf}
@@ -2103,26 +2164,7 @@ and \ref{fig:gk_hermitephy_ratio_large}.
   \label{fig:conv_monom_hermite_high}
 \end{figure}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_2D.pdf}
-  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
-  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
-  integrates the monomial with a relative error not larger than $10^{-13}$.}
-  \label{fig:monomial_errors_hermitephy_2D}
-\end{figure}
-
-For testing the quadrature rules in $D$ dimensions, the following integral
-over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
-\begin{equation} \label{eq:hermitephy_exact_solution}
-  \idotsint \limits_{\vec{x} \in \mathbb{R}^D} \prod_{d=1}^D x_d^{n_d} \exp\left(-x_d^2\right) \di{\vec{x}}
-  =
-  \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{n_d + 1}{2}\right)
-\end{equation}
-where we know the exact solution in closed form.
-
 \begin{subfigures}
-  \label{fig:monomial_errors_hermitephy_multivariate}
   \begin{figure}\centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_2.pdf}
     \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
@@ -2153,8 +2195,17 @@ where we know the exact solution in closed form.
     in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
     \label{fig:monomial_errors_hermitephy_multivariate_dimension_6}
   \end{figure}
+  \label{fig:monomial_errors_hermitephy_multivariate}
 \end{subfigures}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_2D.pdf}
+  \caption{Quadrature of the bivariate monomials $x^m y^n$ for $0 \leq n, m \leq 50$.
+  Each pair $(m,n)$ is color-coded by the lowest level $K$ rule that correctly
+  integrates the monomial with a relative error not larger than $10^{-13}$.}
+  \label{fig:monomial_errors_hermitephy_2D}
+\end{figure}
 
 \FloatBarrier
 \section{Software}
