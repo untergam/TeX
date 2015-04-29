@@ -14,20 +14,18 @@
 \definecolor{citecol}{rgb}{0.5,0,0}
 \usepackage[pagebackref,hyperindex=true]{hyperref}
 \hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
-\usepackage{subfloat}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{footnote}
 \usepackage{placeins}
-\usepackage{subfloat}
 \usepackage{array}
 \usepackage{ragged2e}
 \newcolumntype{x}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
 \usepackage{microtype}
 
 \include{header_math}
-\include{header_gfx}
 
 \synctex=1
 \parindent 0pt
@@ -1525,9 +1523,10 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \end{equation}
 where we know the exact solution in closed form. The results are shown in
 Figure \ref{fig:monomial_errors_legendre} for $D=1$ and for $2 \leq D \leq 6$
-in Figure \ref{fig:monomial_errors_legendre_multivariate}. Finally, the Figure
-\ref{fig:monomial_errors_legendre_2D} shows the minimal level $K$ necessary to
-correctly integrate the term $x^m y^n$.
+in Figures \ref{fig:monomial_errors_legendre_multivariate_a} and
+\ref{fig:monomial_errors_legendre_multivariate_b}.
+Finally, the Figure \ref{fig:monomial_errors_legendre_2D} shows the minimal
+level $K$ necessary to correctly integrate the term $x^m y^n$.
 
 
 \FloatBarrier
@@ -1568,9 +1567,10 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \end{equation}
 where we know the exact solution in closed form. The results are shown in
 Figure \ref{fig:monomial_errors_chebyshevt} for $D=1$ and for $2 \leq D \leq 6$
-in Figure \ref{fig:monomial_errors_chebyshevt_multivariate}. Finally, the Figure
-\ref{fig:monomial_errors_chebyshevt_2D} shows the minimal level $K$ necessary to
-correctly integrate the term $x^m y^n$.
+in Figures \ref{fig:monomial_errors_chebyshevt_multivariate_a} and
+\ref{fig:monomial_errors_chebyshevt_multivariate_b}.
+The last Figure \ref{fig:monomial_errors_chebyshevt_2D} shows the minimal
+level $K$ necessary to correctly integrate the term $x^m y^n$.
 
 
 \FloatBarrier
@@ -1598,6 +1598,12 @@ it behaves the other way round. The details are shown in Figures
 \ref{fig:gk_chebyshevu_ratio} and \ref{fig:gk_chebyshevu_ratio_large}.
 The third Figure \ref{fig:smol_chebyshevu_ratio} shows the same
 comparison with respect to the Smolyak construction.
+Notice that although some of the Gauss rules are already nested, this has
+(as expected) almost no effect when applying the Smolyak construction.
+The only difference between this figure and its siblings is the point
+$D=4$ and $K=8$ which here is white instead of black. Also the boundary
+will reach $D=5$ a few levels later. However there is obviously still
+room for improvement.
 
 For testing the quadrature rules in $D$ dimensions, the following integral
 over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
@@ -1611,9 +1617,10 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
 \end{equation}
 where we know the exact solution in closed form. The results are shown in
 Figure \ref{fig:monomial_errors_chebyshevu} for $D=1$ and for $2 \leq D \leq 6$
-in Figure \ref{fig:monomial_errors_chebyshevu_multivariate}. Finally, the Figure
-\ref{fig:monomial_errors_chebyshevu_2D} shows the minimal level $K$ necessary to
-correctly integrate the term $x^m y^n$.
+in Figures \ref{fig:monomial_errors_chebyshevu_multivariate_a} and
+\ref{fig:monomial_errors_chebyshevu_multivariate_b}.
+Figure \ref{fig:monomial_errors_chebyshevu_2D} shows the minimal
+level $K$ necessary to correctly integrate the term $x^m y^n$.
 
 
 \FloatBarrier
@@ -1662,9 +1669,11 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
   \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{n_d + 1}{2}\right)
 \end{equation}
 where we know the exact solution in closed form. The results are shown
-for $2 \leq D \leq 6$ in Figure \ref{fig:monomial_errors_hermitephy_multivariate}.
-Finally, the Figure \ref{fig:monomial_errors_hermitephy_2D} shows the minimal
+for $2 \leq D \leq 6$ in Figures \ref{fig:monomial_errors_hermitephy_multivariate_a}
+and \ref{fig:monomial_errors_hermitephy_multivariate_b}.
+The Figure \ref{fig:monomial_errors_hermitephy_2D} shows the minimal
 level $K$ necessary to correctly integrate the term $x^m y^n$.
+
 
 \FloatBarrier
 
@@ -1846,131 +1855,106 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
 \clearpage
 
 \begin{figure}
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio.pdf}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio.pdf}
+    \caption{Dimension $D \leq 8$ and Level $K \leq 12$.}
+    \label{fig:gk_legendre_ratio}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio_large.pdf}
+    \caption{Dimension $D \leq 4$ and Level $K \leq 32$. Notice the tendency
+    of the white boundary to go to the right and eventually reach dimensions $D \geq 3$.}
+    \label{fig:gk_legendre_ratio_large}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/smol_legendre_ratio.pdf}
+    \caption{Ratio comparing tensor product and classical Smolyak construction.}
+    \label{fig:smol_legendre_ratio}
+  \end{subfigure}
   \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_legendre_ratio}
+  points for some dimensions and Levels.
+  White dots are $D,K$ combinations where Genz-Keister is advantageous,
+  while for black dots Genz-Keister is worse and for gray dots the ratio equals 1.}
 \end{figure}
 
 \begin{figure}
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_legendre_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Legendre tensor product
-  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1. Notice the tendency
-  of the white boundary to go to the right and eventually reach dimensions $D \geq 3$.}
-  \label{fig:gk_legendre_ratio_large}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio.pdf}
+    \caption{Dimension $D \leq 8$ and Level $K \leq 12$.}
+    \label{fig:gk_chebyshevt_ratio}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio_large.pdf}
+    \caption{Dimension $D \leq 4$ and Level $K \leq 32$.}
+    \label{fig:gk_chebyshevt_ratio_large}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
+    \caption{Ratio comparing tensor product and classical Smolyak construction.}
+    \label{fig:smol_chebyshevt_ratio}
+  \end{subfigure}
+  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
+  points for some dimensions and Levels.
+  White dots are $D,K$ combinations where Genz-Keister is advantageous,
+  while for black dots Genz-Keister is worse and for gray dots the ratio equals 1.}
 \end{figure}
 
 \begin{figure}
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_legendre_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Legendre quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_legendre_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevt_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevt_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-T tensor product
-  points for dimensions 1 to 4 and Level $K \leq 24$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevt_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevt_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Chebyshev-T quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_chebyshevt_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio.pdf}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio.pdf}
+    \caption{Dimension $D \leq 8$ and Level $K \leq 12$.}
+    \label{fig:gk_chebyshevu_ratio}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio_large.pdf}
+    \caption{Dimension $D \leq 4$ and Level $K \leq 32$.}
+    \label{fig:gk_chebyshevu_ratio_large}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
+    \caption{Ratio comparing tensor product and classical Smolyak construction.}
+    \label{fig:smol_chebyshevu_ratio}
+  \end{subfigure}
   \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-U tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevu_ratio}
+  points for some dimensions and Levels.
+  White dots are $D,K$ combinations where Genz-Keister is advantageous,
+  while for black dots Genz-Keister is worse and for gray dots the ratio equals 1.}
 \end{figure}
 
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_chebyshevu_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Chebyshev-U tensor product
-  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_chebyshevu_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_chebyshevu_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Chebyshev-U quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.
-  Notice that although some of the Gauss rules are already nested, this has
-  (as expected) almost no effect when applying the Smolyak construction.
-  The only difference between this figure and its siblings is the point
-  $D=4$ and $K=8$ which here is white instead of black. Also the boundary
-  will reach $D=5$ a few levels later. However there is obviously still
-  room for improvement.}
-  \label{fig:smol_chebyshevu_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio.pdf}
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio.pdf}
+    \caption{Dimension $D \leq 8$ and Level $K \leq 12$.}
+    \label{fig:gk_hermitephy_ratio}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio_large.pdf}
+    \caption{Dimension $D \leq 4$ and Level $K \leq 32$.
+    Even if not visible here, the white boundary will go more to the right and
+    reach dimension $D = 3$ at level $K = 51$.}
+    \label{fig:gk_hermitephy_ratio_large}
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
+    \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
+    \caption{Ratio comparing tensor product and classical Smolyak construction.}
+    \label{fig:smol_hermitephy_ratio}
+  \end{subfigure}
   \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
-  points for dimensions $D$ up to 8 and Level $K \leq 12$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:gk_hermitephy_ratio}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/gk_hermitephy_ratio_large.pdf}
-  \caption{Ratio of the number of Genz-Keister and Gauss-Hermite tensor product
-  points for dimensions 1 to 4 and Level $K \leq 32$. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1. Even if not visible here,
-  the white boundary will go more to the right and reach dimension $D = 3$ at level $K = 51$.}
-  \label{fig:gk_hermitephy_ratio_large}
-\end{figure}
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\linewidth]{./img/smol_hermitephy_ratio.pdf}
-  \caption{Ratio of the number of Gauss-Hermite quadrature points obtained
-  via tensor product and classical Smolyak construction. White dots are $D,K$
-  combinations where Genz-Keister is advantageous, while for black dots
-  Genz-Keister is worse and for gray dots the ratio equals 1.}
-  \label{fig:smol_hermitephy_ratio}
+  points for some dimensions and Levels.
+  White dots are $D,K$ combinations where Genz-Keister is advantageous,
+  while for black dots Genz-Keister is worse and for gray dots the ratio equals 1.}
 \end{figure}
 
 \clearpage
@@ -1994,39 +1978,47 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:monomial_errors_legendre}
 \end{figure}
 
-\begin{subfigures}
-  \begin{figure}\centering
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_2.pdf}
-    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
-    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=2$}
     \label{fig:monomial_errors_legendre_multivariate_dimension_2}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_3.pdf}
-    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
-    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=3$}
     \label{fig:monomial_errors_legendre_multivariate_dimension_3}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_4.pdf}
-    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
-    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=4$}
     \label{fig:monomial_errors_legendre_multivariate_dimension_4}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_legendre_multivariate_a}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_5.pdf}
-    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
-    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=5$}
     \label{fig:monomial_errors_legendre_multivariate_dimension_5}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_legendre_multivariate_dimension_6.pdf}
-    \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
-    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=6$}
     \label{fig:monomial_errors_legendre_multivariate_dimension_6}
-  \end{figure}
-  \label{fig:monomial_errors_legendre_multivariate}
-\end{subfigures}
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:legendre_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_legendre_multivariate_b}
+\end{figure}
 
 \clearpage
 
@@ -2043,39 +2035,47 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:monomial_errors_chebyshevt}
 \end{figure}
 
-\begin{subfigures}
-  \begin{figure}\centering
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_2.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
-    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=2$}
     \label{fig:monomial_errors_chebyshevt_multivariate_dimension_2}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_3.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
-    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=3$}
     \label{fig:monomial_errors_chebyshevt_multivariate_dimension_3}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_4.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
-    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=4$}
     \label{fig:monomial_errors_chebyshevt_multivariate_dimension_4}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_chebyshevt_multivariate_a}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_5.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
-    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=5$}
     \label{fig:monomial_errors_chebyshevt_multivariate_dimension_5}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevt_multivariate_dimension_6.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
-    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=6$}
     \label{fig:monomial_errors_chebyshevt_multivariate_dimension_6}
-  \end{figure}
-  \label{fig:monomial_errors_chebyshevt_multivariate}
-\end{subfigures}
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:chebyshevt_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_chebyshevt_multivariate_b}
+\end{figure}
 
 \clearpage
 
@@ -2093,39 +2093,47 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:monomial_errors_chebyshevu}
 \end{figure}
 
-\begin{subfigures}
-  \begin{figure}\centering
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_2.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
-    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=2$}
     \label{fig:monomial_errors_chebyshevu_multivariate_dimension_2}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_3.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
-    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=3$}
     \label{fig:monomial_errors_chebyshevu_multivariate_dimension_3}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_4.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
-    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=4$}
     \label{fig:monomial_errors_chebyshevu_multivariate_dimension_4}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_chebyshevu_multivariate_a}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_5.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
-    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=5$}
     \label{fig:monomial_errors_chebyshevu_multivariate_dimension_5}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_chebyshevu_multivariate_dimension_6.pdf}
-    \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
-    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=6$}
     \label{fig:monomial_errors_chebyshevu_multivariate_dimension_6}
-  \end{figure}
-  \label{fig:monomial_errors_chebyshevu_multivariate}
-\end{subfigures}
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:chebyshevu_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_chebyshevu_multivariate_b}
+\end{figure}
 
 \clearpage
 
@@ -2160,39 +2168,47 @@ level $K$ necessary to correctly integrate the term $x^m y^n$.
   \label{fig:conv_monom_hermite_high}
 \end{figure}
 
-\begin{subfigures}
-  \begin{figure}\centering
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_2.pdf}
-    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
-    in $D=2$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=2$}
     \label{fig:monomial_errors_hermitephy_multivariate_dimension_2}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_3.pdf}
-    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
-    in $D=3$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=3$}
     \label{fig:monomial_errors_hermitephy_multivariate_dimension_3}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_4.pdf}
-    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
-    in $D=4$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=4$}
     \label{fig:monomial_errors_hermitephy_multivariate_dimension_4}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_hermitephy_multivariate_a}
+\end{figure}
+
+\begin{figure}
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_5.pdf}
-    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
-    in $D=5$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=5$}
     \label{fig:monomial_errors_hermitephy_multivariate_dimension_5}
-  \end{figure}
-  \begin{figure}\centering
+  \end{subfigure} \\
+  \begin{subfigure}[b]{\linewidth}
+    \centering
     \includegraphics[width=\linewidth]{./img/monomial_errors_hermitephy_multivariate_dimension_6.pdf}
-    \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
-    in $D=6$ dimensions. All variables $x_d$ share the same exponent $n$.}
+    \caption{Dimension $D=6$}
     \label{fig:monomial_errors_hermitephy_multivariate_dimension_6}
-  \end{figure}
-  \label{fig:monomial_errors_hermitephy_multivariate}
-\end{subfigures}
+  \end{subfigure}
+  \caption{Relative errors for the integral \eqref{eq:hermitephy_exact_solution}
+    in different dimensions. All variables $x_d$ share the same exponent $n$.}
+  \label{fig:monomial_errors_hermitephy_multivariate_b}
+\end{figure}
 
 \clearpage
 
