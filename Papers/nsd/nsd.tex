@@ -545,10 +545,11 @@ transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from 
 In the last part we have walked through the very basic concepts of the numerical steepest
 descent method. Under some broad assumptions this was proven to work for finite intervals
 and an arbitrary number of real stationary points. The extension into higher dimensions
-has been worked out too by the original authors. However, the state of the theory is too narrow
-for our setting. First we need to consider complex stationary points too. If such a point
-is near to the real line, it will influence the oscillator enough to become relevant.
-Figure \ref{fig:oscillatory_integral_complex_sp} for example shows the integrand of:
+has been worked out too by Huybrechs and Vandewalle in \cite{HV_cub}.
+However, the state of the theory is too narrow for our setting. First we need to consider
+complex stationary points too. If such a point is near to the real line, it will influence
+the oscillator enough to become relevant. Figure \ref{fig:oscillatory_integral_complex_sp}
+for example shows the integrand of:
 \begin{equation} \label{eq:nsd_csp_integral_example}
   \int_{-2}^{2} \left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
 \end{equation}
