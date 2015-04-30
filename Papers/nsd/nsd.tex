@@ -544,8 +544,8 @@ transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from 
 
 In the last part we have walked through the very basic concepts of the numerical steepest
 descent method. Under some broad assumptions this was proven to work for finite intervals
-and an arbitrary number of real stationary points. The extension into higher dimensions
-has been worked out too by Huybrechs and Vandewalle in \cite{HV_cub}.
+and an arbitrary number of real stationary points \cite{HV_hoq}. The extension into higher
+dimensions has been worked out \cite{HV_cub}.
 However, the state of the theory is too narrow for our setting. First we need to consider
 complex stationary points too. If such a point is near to the real line, it will influence
 the oscillator enough to become relevant. Figure \ref{fig:oscillatory_integral_complex_sp}
@@ -556,8 +556,9 @@ for example shows the integrand of:
 for different values of the parameter $\delta$. One stationary point is located on the imaginary axis
 at $x^{*} = \imath \sqrt{\delta}$ and comes close to the real line. The influence is clearly present
 for small values of $\delta$ and soon becomes negligible for larger values.
-The general advise for complex stationary points is that the contour should pass through this point
-as shown in Figure \ref{fig:oscillatory_integral_complex_sp_paths}. This will then give an exact
+The general advise for complex stationary points is that the contour should pass through
+this point as shown in Figure \ref{fig:oscillatory_integral_complex_sp_paths},
+see section 4.3 in \cite{HV_hoq}. This will then give an exact
 decomposition in the sense of \eqref{eq:cauchy}. It turns out this works very well for our setting.
 Actually, the \emph{only} thing we have is a single stationary point.
 
