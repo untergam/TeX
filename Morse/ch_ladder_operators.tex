@@ -1,0 +1,252 @@
+\begin{chapter}{Ladder operators for the Morse Potential}
+In this chapter we derive the explicit form of the ladder operators for the Morse eigenfunctions,
+following \cite{Dong_ladder_operators}.\\
+As already mentioned in \ref{sec:morse_potential}, the Morse potential allows for a continuum of free states as well as a finite number of discrete bound states. In our case, only the bound 
+solutions are of interest.
+
+
+\section{Construction} % (fold)
+\label{sec:Construction}
+Dong starts by looking for differential operators of the form
+\begin{equation}
+    \label{eq:dong_operator_form}
+    \hat{\mathcal{K}}_{\pm}=A_{\pm}(z)\diff{}{z}+B_{\pm}(z)
+\end{equation}
+with the property that
+\begin{align}
+    \hat{\mathcal{K}}_{\pm}\mu_n(z)&=k_{\pm}\mu_{n\pm 1}(z)\\
+	\hat{\mathcal{K}}_{-}\mu_0&\equiv 0\\    
+    \hat{\mathcal{K}}_{+}\mu_{\text{max}}&\equiv 0\;,
+\end{align}
+where $\mu_0$ and $\mu_{\text{max}}$ are referring to the lowest and highest Morse eigenfunction,
+respectively.\\
+
+Application of the differential operator $\mathrm{d}/\mathrm{d}z$ to the $n$-th Morse eigenfunction \eqref{eq:morse_function} leads to
+\begin{equation}
+    \label{eq:dong_apply_ddy}
+    \diff{}{z}\mu_n(z)=-\frac{1}{2}\mu_n(z)+\frac{1}{z}s\mu_n(z)+N_n e^{-z/2}z^s\diff{}{z}\mathrm{L}_n^{2s}(z).
+\end{equation}
+where $\mathrm{L}_n^{2s}(z)$ denotes the n-th generalized Laguerre polynomial.\\
+
+Using the recursion relation
+\begin{equation}
+	\label{eq:dong_ddy_rek}
+	\diff{}{z}\mathrm{L}_{n}^\alpha(z)=-\frac{1}{\alpha+1}\left(z\mathrm{L}_{n-1}^{\alpha+2}(z)+n\mathrm{L}_{n}^\alpha(z)\right)
+\end{equation}
+taken from \cite{DongFactMethods} and substituting it into \eqref{eq:dong_apply_ddy} yields
+\begin{equation}
+    \left(\diff{}{z}(2s+1)-\left(\frac{1}{z}s-\frac{1}{2}\right)(2s+1)+n\right)\mu_n(z)=-\frac{N_n}{N_{n-1}}\mu_{n-1}(z) \;,
+\end{equation}
+such that the lowering operator\footnote{
+    In \cite{Dong_ladder_operators} these operators are denoted as $\hat{K}_{\pm}$, while we choose to follow the notation in \cite{FGL_semiclassical_dynamics} 
+    and use $\mathcal{L}$ for the lowering and $\mathcal{R}$ for the raising operator, respectively.}
+can be defined as
+\begin{equation}
+    \label{eq:dong_lop}
+    \mathcal{L}:=-\left(\diff{}{z}(2s+1)-\frac{1}{z}s(2s+1)+\frac{\nu}{2} \right)\sqrt{\frac{s+1}{s}}
+\end{equation}
+whose action on a Morse eigenfunction $\mu_n$ is given by
+\begin{equation}
+    \label{eq:dong_lop_action}
+    \mathcal{L}\mu_n(z)=l\mu_{n-1}(z),\quad l=\sqrt{n(\nu-n)}\; .
+\end{equation}
+
+For the raising operator using \eqref{eq:dong_apply_ddy} again as well as the relations
+\begin{align}
+    &    z\diff{}{z}\mathrm{L}_n^\alpha(z)=n\mathrm{L}_n^{\alpha}(z)-(n+\alpha)\mathrm{L}_{n-1}^{\alpha}(z)\\
+    &	(n+1)\mathrm{L}_{n+1}^{\alpha}(z)-(2n+\alpha+1-z)\mathrm{L}_n^{\alpha}(z)+(n+\alpha)\mathrm{L}_{n-1}^{\alpha}(z)=0\\
+    &	\mathrm{L}_n^{\alpha-1}(z)=\mathrm{L}_n^{\alpha}(z)-\mathrm{L}_{n-1}^{\alpha}(z)
+\end{align}
+the following expression is found
+\begin{equation}
+    \label{eq:dong_rop}
+    \mathcal{R}:=\left(\diff{}{z}(2s-1)+\frac{1}{z}s(2s-1)-\frac{\nu}{2} \right)\sqrt{\frac{s-1}{s}}
+\end{equation}
+with the corresponding action
+\begin{equation}
+    \label{eq:dong_rop_action}
+    \mathcal{R}\mu_n(z)=r\mu_{n+1}(z),\quad r=\sqrt{(n+1)(\nu-n-1)}\; .
+\end{equation}
+% section Construction (end)
+
+\section{Lie Algebra} % (fold)
+\label{sec:LieAlgebra}
+Next, calculating the commutator of the two ladder operators yields
+\begin{equation}
+    \label{eq:dong_commutator}
+    [\mathcal{R},\mathcal{L}]\mu_n(z)=2k_0\mu_n(z)
+\end{equation}
+with eigenvalue
+\begin{equation}
+    \label{eq:dong_k0_ev}
+    k_0=n-\frac{\nu-1}{2}\;,
+\end{equation}
+which can be rearranged to yield
+\begin{equation}
+\label{eq:dong_k0_ev2}
+\frac{\nu}{2}=n-k_0-\frac{1}{2}\;.
+\end{equation}
+
+This can be plugged into the differential equation for the Morse potential \eqref{eq:morse_transformed_tdse} such that we obtain
+\begin{equation}
+\left( z\frac{\mathrm{d}^{2}}{\mathrm{d}z^{2}}+\diff{}{z}-\frac{s^2}{z}-\frac{z}{4}+n+\frac{1}{2} 
+-k_0 \right)\mu_n=0\; .
+\end{equation}
+
+If we define the operator $\mathcal{K}_0$ as
+\begin{equation}
+    \mathcal{K}_0:=\left( z\frac{\mathrm{d}^{2}}{\mathrm{d}z^{2}}+\diff{}{z}-\frac{s^2}{z}-\frac{z}{4}+n+\frac{1}{2}  \right)\;
+\end{equation}
+we get the following eigenvalue equation
+\begin{equation}
+\label{eq:dong_k0eveq}
+\mathcal{K}_0\mu_n=k_0\mu_n\; .
+\end{equation}
+
+Finally, comparing \eqref{eq:dong_k0eveq} and \eqref{eq:dong_commutator}, we can identify
+$\mathcal{K}_0$ with the commutator $[\mathcal{R},\mathcal{L}]$ of $\mathcal{R}$ and $\mathcal{L}$. These three operators form a closed Lie algebra, which by their commutation relations
+\begin{align}
+    \begin{split}
+	[\mathcal{R},\mathcal{L}]=2\mathcal{K}_0,\quad  [\mathcal{K}_0,\mathcal{L}]=-\mathcal{L},\quad
+	[\mathcal{K}_0,\mathcal{R}]=\mathcal{R}      
+    \end{split}
+\end{align}
+can also be identified as being isomorphic to the angular momentum algebra $\mathfrak{su}(2)$.\\
+
+Finally, as we have seen in section \ref{sub:DiagonalizationHGHam}, an essential step towards the implementation of a time stepping algorithm is the 
+factorization of the Hamiltonian using ladder operators because this will give us the connection to the wave packet parameter evolution.\\
+
+In terms of this algebra of $SU(2)$ the Hamiltonian can be written as:
+\begin{equation}
+    \label{eq:DongHamiltonian}
+    \mathcal{H}=-\frac{\hbar \omega}{\nu}\mathcal{K}_0^2\;,\qquad \omega=\frac{\hbar\beta^2\nu}{2\mu}
+\end{equation}
+
+This looks quite compact, but expanding the square and the commutator in terms of the ladder operators $\mathcal{R}$ and $\mathcal{L}$ 
+we unfortunately get something more complicated than the simple anti-commutator expression \eqref{eq:HG_OpHamiltonian} in the Hagedorn case.
+
+
+\section{Three-Term Recursion} % (fold)
+\label{sec:ThreeTermRecursion}
+Following the procedure in \cite{FGL_semiclassical_dynamics}, we will use \eqref{eq:dong_lop} and \eqref{eq:dong_rop} to obtain a three-term recursion
+relation for the Morse eigenfunctions $\mu_n$. This relation is used for the fast and stable numerical evaluation of the Morse functions.\\
+
+As a first step we can express the differential operator $\mathrm{d}/\mathrm{d}z$ in terms of our ladder operators $\mathcal{L}$ and $\mathcal{R}$:
+\begin{equation}
+    \label{eq:dong_ddyinLR}
+    \diff{}{z}=\mathcal{R}\left(\frac{1}{2(2s-1)}\sqrt{\frac{s}{s-1}}\right)-\mathcal{L}\left(\frac{1}{2(2s+1)}\sqrt{\frac{s}{s+1}}\right)
+    +\frac{\nu}{2(2s+1)(2s-1)}
+\end{equation}
+We then can eliminate this operator from \eqref{eq:dong_lop} and \eqref{eq:dong_rop} such that we get
+\begin{align}
+    \mathcal{L}=-\sqrt{\frac{s+1}{s-1}}\frac{2s+1}{2s-1}\mathcal{R}
+    +\sqrt{\frac{s+1}{s}}\frac{2s}{2s-1}\left(\frac{4s^2-1}{z}-\nu\right)\label{eq:dong_lop2}\\
+    \mathcal{R}=-\sqrt{\frac{s-1}{s+1}}\frac{2s-1}{2s+1}\mathcal{L}
+    +\sqrt{\frac{s-1}{s}}\frac{2s}{2s+1}\left(\frac{4s^2-1}{z}-\nu\right)\label{eq:dong_rop2}
+\end{align}
+
+Next, reordering \eqref{eq:dong_rop_action} and substituting \eqref{eq:dong_rop2} yields
+\begin{align}
+    \mu_{n+1} &= \frac{1}{r}\mathcal{R}\mu_n\\
+    &=\frac{1}{r}\left(-\sqrt{\frac{s-1}{s+1}}\frac{2s-1}{2s+1}\mathcal{L}
+	+\sqrt{\frac{s-1}{s}}\frac{2s}{2s+1}\left(\frac{4s^2-1}{z}-\nu\right)\right)\mu_n
+\end{align}
+and finally, after substituting \eqref{eq:dong_lop_action} we obtain the desired three-term relation
+\begin{equation}
+    \mu_{n+1}=\frac{1}{r}\sqrt{\frac{s-1}{s}}\frac{2s}{2s+1}\left(\frac{4s^2-1}{z}-\nu\right)\mu_n
+    -\frac{l}{r}\sqrt{\frac{s-1}{s+1}}\frac{2s-1}{2s+1}\mu_{n-1}
+\end{equation}
+
+The n-th state can then be explicitly written as
+\begin{equation}
+\mu_n(z)=\mathcal{N}_n\mathcal{R}^n\mu_0(z),\quad \mathcal{N}_n:=\sqrt{\frac{(\nu-n-1)!}{n!(\nu-1)!}}
+\end{equation}
+
+% section Three-Term Recursion (end)
+
+\section{Back Transformation to original position space} % (fold)
+\label{sec:Back_transf}
+Our original physical position variable was exponentially rescaled in order to solve the differential equation and construct the ladder operators.
+However, for the numerical treatment, especially the time stepping, this might cause problems.
+Hence, we also provide a representation of the operators in the original $x$ domain.\\
+
+Using the transformation $z=\nu\exp{(-\beta x)}$ we obtain the following transformed expression for the differential operator
+\begin{equation}
+    \label{eq:ddy}
+    \diff{}{x}=-\beta z\diff{}{z}\;,
+\end{equation}
+such that the back transformation of the $\mathcal{L}$ and $\mathcal{R}$ operators is straightforward
+\begin{align}
+    \label{eq:dong_lrop_x}
+    \begin{split}
+    \mathcal{L}=\left(\frac{e^{\beta x}}{\beta\nu}\diff{}{x}(2s+1)+\frac{e^{\beta x}}{\nu}s(2s+1)-\frac{\nu}{2} \right)\sqrt{\frac{s+1}{s}}\\
+    \mathcal{R}=\left(-\frac{e^{\beta x}}{\beta\nu}\diff{}{x}(2s-1)+\frac{e^{\beta x}}{\nu}s(2s-1)-\frac{\nu}{2} \right)\sqrt{\frac{s-1}{s}}
+    \end{split}
+\end{align}
+
+
+% section Back Transformation to original position space (end)
+
+\section{Matrix Elements} % (fold)
+\label{sec:Matrix Elements}
+Finally, to obtain any information about position and momentum, we need expressions for the matrix elements of the wave function with respect to various operators, the most important being position $\hat{x}$ and momentum $\hat{p}$.\\
+
+In the Hagedorn case we have seen that the wave packet parameters $q$ and $p$ can be seen as mean position and momentum of the wave packet, while
+$Q$ and $P$ describe its width in position and momentum space, respectively.\\
+
+Hence, calculating the corresponding matrix elements within the ladder operator
+formalism might give insights about the form of and relations among the wave packet parameters we are trying to find for the Morse wave packets.\\
+
+To start with, the derivation of the three-term recursion in section \ref{sec:ThreeTermRecursion} already provides us with an expression for
+the differential operator $\mathrm{d}/\mathrm{d}z$. In particular, in \eqref{eq:dong_ddyinLR} we expressed this operator solely in terms of
+our newly constructed ladder operators such that the matrix element evaluates to
+
+\begin{align}
+    \begin{split}
+	\braket{\mu_m\left|\diff{}{z}\right|\mu_n} &= \frac{1}{2(\nu-2n-2)}\sqrt{\frac{(n+1)(\nu-n-1)(\nu-2n-1)}{\nu-2n-3}}\delta_{m,n+1}\\
+	&-\frac{1}{2(\nu-2n)}\sqrt{\frac{n(\nu-n)(\nu-2n-1)}{\nu-2n+1}}\delta_{m,n-1}\\
+	&+\frac{\nu}{2(\nu-2n)(\nu-2n-2)}\delta_{m,n}\; .
+    \end{split}
+\end{align}
+
+Repeating the procedure by which we obtained \eqref{eq:dong_ddyinLR} but eliminating $\mathrm{d}/\mathrm{d}z$ yields
+\begin{equation}
+    \label{eq:dong_1overyinLR}
+    \frac{1}{z}=\mathcal{R}\left(\frac{1}{2s(2s-1)}\sqrt{\frac{s}{s-1}}\right)+\mathcal{L}\left(\frac{1}{2s(2s+1)}\sqrt{\frac{s}{s+1}}\right)
+    +\frac{\nu}{(2s+1)(2s-1)}
+\end{equation}
+and the corresponding matrix element
+
+\begin{align}
+    \begin{split}
+	\braket{\mu_m\left|\frac{1}{z}\right|\mu_n} &= \frac{1}{\nu-2n-2}\sqrt{\frac{(n+1)(\nu-n-1)}{(\nu-2n-1)(\nu-2n-3)}}\delta_{m,n+1}\\
+	&+\frac{1}{\nu-2n}\sqrt{\frac{n(\nu-n)}{(\nu-2n-1)(\nu-2n+1)}}\delta_{m,n-1}\\
+	&+\frac{\nu}{(\nu-2n)(\nu-2n-2)}\delta_{m,n}\;.
+    \end{split}
+\end{align}
+
+For the position operator $\hat{x}$ we can use the following identity from \cite{DongFactMethods}
+\begin{equation}
+    \log z=\sum_{n=1}^\infty\frac{1}{n}\left(1-\frac{1}{z}\right)^n
+\end{equation}
+to express $\hat{x}$ in terms of the ladder operators:
+\begin{align}
+    \begin{split}
+    \hat{x}&=-\frac{1}{\beta}\log\frac{z}{\nu}=\frac{1}{\beta}\left(\log\nu - \log z\right) 
+    	=\frac{\log\nu}{\beta}
+    		-\frac{1}{\beta}\sum_{n=1}^\infty\frac{1}{n}\left( 1-\frac{1}{z}\right)^n \\
+	    &= -\frac{1}{\beta}\sum_{n=1}^\infty\frac{1}{n}\left( 1-
+	    \mathcal{R}\left(\frac{1}{2s(2s-1)}\sqrt{\frac{s}{s-1}}\right)+\mathcal{L}\left(\frac{1}{2s(2s+1)}\sqrt{\frac{s}{s+1}}\right)
+    +\frac{\nu}{(2s+1)(2s-1)}
+	     \right)^n\\
+	     +& \frac{\log\nu}{\beta}
+    \end{split}
+\end{align}
+
+which is unfortunately not a closed form expression and as complicated as the expression we already derived in section \ref{sec:Moments} for the special case of a diagonal matrix element. Additional issues that need to be addressed are convergence of this series and where to truncate it in a
+numerical computation.
+
+% section Matrix Elements (end)
+
+
+\end{chapter}

@@ -1,0 +1,130 @@
+\begin{chapter}{Towards parametrized Morse wave packets}
+
+So far the analytical calculations of various quantities have not given many hints where and which parameters should enter the expression for ladder operators and wave functions. Despite the different structure of the Morse ladder operators and the Hagedorn ladder operators, a starting point is to just insert them analogously to \eqref{eq:HG_ladder}.\\
+
+Also, we make the decision to use the $z$-representation \eqref{eq:dong_lop} and \eqref{eq:dong_rop} of the ladder operators instead of
+the $x$-representation \eqref{eq:dong_lrop_x}. The reason for that is that in the latter case we have further complications due to 
+mixed terms of differential operators and exponentials of the position variable which can be avoided at least for the time being.
+
+\section{Parametrization of Ladder operators } % (fold)
+\label{sec:Parametrization of Ladder }
+
+% section Parametrization of Ladder  (end)
+
+The $L^2(\mathbb{R})$ representation of the momentum operator
+\begin{equation}
+   \hat{p}=-i\varepsilon^2\diff{}{x}
+\end{equation}
+can be expressed in terms of the new variable $z$ and \eqref{eq:ddy} by
+\begin{equation}
+    \label{eq:piny}
+    \hat{p}=i\beta\varepsilon^2 z\diff{}{z}
+\end{equation}
+and can be used to write the ladder operators in the form
+\begin{align}
+    \label{eq:dong_lop_p}
+    \mathcal{L}(q,p,Q,P):=-\left(-\frac{i p}{\beta\varepsilon^2 z}(2s+1)-\frac{1}{z}s(2s+1)+\frac{\nu}{2} \right)\sqrt{\frac{s+1}{s}}
+\end{align}
+and
+\begin{align}
+    \label{eq:dong_rop_p}
+    \mathcal{R}(q,p,Q,P):=\left(-\frac{i p}{\beta\varepsilon^2 z }(2s-1)+\frac{1}{z}s(2s-1)-\frac{\nu}{2} \right)\sqrt{\frac{s-1}{s}}\;.
+\end{align}
+
+In analogy to the definition of the Hagedorn ladder operators, we try to introduce 
+the wave packet parameters $q, p\in\mathbb{R}$ and $Q, P\in\mathbb{C}$ by substituting
+\begin{equation}
+    \label{eq:param_subst1}
+    z\rightarrow i\overline{P}(z-q)\;,\qquad y\to \overline{Q}(y-p)
+\end{equation}
+into \eqref{eq:dong_lop_p} 
+and
+\begin{equation}
+    \label{eq:param_subst2}
+    z\rightarrow -iP(z-q)\;,\qquad y\to Q(y-p)
+\end{equation}
+into \eqref{eq:dong_rop_p} such that we obtain
+
+\begin{equation}
+    \label{eq:param_lop}
+    \mathcal{L}:=-\left(-\frac{\overline{Q}(y-p)}{\beta\varepsilon^2 \overline{P}(z-q)}(2s+1)+\frac{i}{\overline{P}(z-q)}s(2s+1)+\frac{\nu}{2} \right)\sqrt{\frac{s+1}{s}}\\
+\end{equation}
+ and 
+\begin{equation}
+    \label{eq:param_rop}
+    \mathcal{R}:=\left(\frac{Q(y-p)}{\beta\varepsilon^2 P(z-q) }(2s-1)+\frac{i}{P(z-q)}s(2s-1)-\frac{\nu}{2} \right)\sqrt{\frac{s-1}{s}}\;.
+\end{equation}
+
+\section{Ground State} % (fold)
+\label{sec:Ground State}
+In the next step we obtain a differential equation for the parametrized ground state by application of the annihilation operator $\mathcal{L}$
+to $\mu_0$ which, by definition, must yield:
+\begin{equation}
+    \mathcal{L}\mu_0(q,p,Q,P)\stackrel{!}{=}0
+\end{equation}
+The differential equation is explicitly given by
+\begin{equation}
+    -\left(-\frac{Q(y-p)}{\beta\varepsilon^2\overline{P}(z-q)}(2s+1)+\frac{i}{\overline{P}(z-q)}s(2s+1)+\frac{\nu}{2} \right)\sqrt{\frac{s+1}{s}}
+    \mu_0(z)=0
+\end{equation}
+and its solution by
+\begin{equation}
+    \mu_0(z)=N\exp\left(\left(\frac{s}{Q}-\frac{ip}{\beta\varepsilon^2}+\frac{i\overline{P}q}{2Q}\right)\log z-\frac{i\overline{P}}{2Q}z \right)\; .
+\end{equation}
+We can check the consistency of this result by reducing again to the original case where $Q\to 1, P\to i$ and $q,p \to 0$ which leads to
+\begin{equation}
+    \mu_0(z)=N\exp\left(s\log z-\frac{z}{2}\right)=Nz^s\exp\left(-\frac{1}{2}z\right)
+\end{equation}
+Now, since for $n=0$ we can obtain from \eqref{eq:const_rel} that $\nu=1+2s$ such that we indeed arrive at the original Morse ground state.
+
+% section Ground State (end)
+
+\section{Commutator} % (fold)
+\label{sec:Commutator}
+
+\begin{equation}
+    \label{eq:param_commutator}
+    [\mathcal{L},\mathcal{R}]=-\frac{\sqrt{s^2-1}(4s^2-1)(Q+\overline{Q})}{P\overline{P}(q-z)^3}
+\end{equation}
+Again, we can quickly check consistency of this result by letting $Q\to 1, P\to i$ and $q,p\to 0$: 
+\begin{equation}
+    \label{eq:orig_commutator}
+    \frac{2\sqrt{s^2-1}(4s^2-1) }{z^3}
+\end{equation}
+This is indeed the commutator we derived in section \ref{sec:LieAlgebra}.\\
+
+However, since we are still looking for a simplifying relation among the parameters of the form \eqref{eq:HG_param_relations}, comparing \eqref{eq:param_commutator} and \eqref{eq:orig_commutator}, we see that we can also obtain this result by demanding
+\begin{equation}
+\label{eq:param_rel}
+    -2|P|^2=Q+\overline{Q},\qquad q=0\;.
+\end{equation}
+% section Commutator (end)
+
+\section{Conclusion}
+\label{sec:Conclusion}
+While the first of the above conditions \eqref{eq:param_rel} looks somewhat similar to the 
+Hagedorn condition \eqref{eq:HG_param_relations}, the second one, $q=0$, seems rather restrictive, 
+especially when $q$ is interpreted as position parameter of the wave packet. Hence, it is not really clear
+whether the used parameter set or in particular the way it was introduced into the ladder operators is appropriate to describe a Morse wave packet.\\
+
+What we finally want to achieve is the factorization of a general, time-dependent Hamiltonian
+of a form similar to \eqref{eq:HG_TimeDepHamiltonian} in terms of parametrized ladder operators such that
+ordinary differential equations governing the time evolution of the wave packet parameters can be obtained.\\
+
+One of the main difficulties here are the consequences of the variable transformation \eqref{eq:morse_var_transform}. Upon transformation we get ladder operators without mixed position and 
+momentum terms and achieve the closest resemblance to the form of the Hagedorn ladder operators,
+which motivated the substitutions in \eqref{eq:param_subst1} and \eqref{eq:param_subst2}. 
+However, since $z$ is not the real position variable it is difficult to maintain the
+interpretation of $q$ being the wave packet position.\\
+
+If we look at the back transformed ladder operators \eqref{eq:dong_lrop_x}, we have mixed position
+and momentum terms as well as exponentials of the position variable. Despite their more complicated 
+appearance, it might be also useful to use these as a starting point
+for parametrization rather than \eqref{eq:dong_lop_p}  and \eqref{eq:dong_rop_p}.
+
+
+
+
+
+
+\end{chapter}
