@@ -86,8 +86,8 @@ with $\varepsilon$ being the scaled Planck constant and  $\psi(x,t)$ with $x,\;t
 It is assumed that the Hamiltonian $\mathcal{H}$ can be split as follows into kinetic and Potential part:
 \begin{equation}
 	\mathcal{H}=T+V,\quad\begin{cases}
-	    T&=-\frac{-\varepsilon^2}{2}\pdiff{^2}{x^2}, m>0\\
-	    V&=V(x)\in\mathbbm{R}	
+	    T&=-\frac{\varepsilon^4}{2}\pdiff{^2}{x^2}, m>0\\
+	    V&=V(x)\in\mathbbm{R}
 	\end{cases}
 \end{equation}
 Grid-based methods for solving \eqref{eq:sctdse} usually face highly oscillatory solutions, where wave packets typically have a width
@@ -161,10 +161,10 @@ where
 \begin{align*}
 	     Q&=\sqrt{\frac{\alpha}{\omega}}e^{i\theta}, &  P&=i\sqrt{\frac{\gamma}{\omega}}e^{-i\theta}\\
 	     \theta&=\frac{1}{2}\sin^{-1}\left(\frac{\beta}{\sqrt{\alpha\gamma}}\right),
-	     &\omega^2&=(\alpha\gamma^2-\beta^2)\;. 
+	     &\omega^2&=(\alpha\gamma^2-\beta^2)\;.
 \end{align*}
 
-The eigenvectors of this Hamiltonian are the wave packets $\phi_k(q,p,Q,P)$ together with the corresponding well-known harmonic oscillator 
+The eigenvectors of this Hamiltonian are the wave packets $\phi_k(q,p,Q,P)$ together with the corresponding well-known harmonic oscillator
 eigenvalues $\hbar\omega(k+\frac{1}{2})$.\\
 
 If we now introduce time-dependence in the quantum mechanical version of the above Hamiltonian \eqref{eq:HG_Hamiltonian} by considering
