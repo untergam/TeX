@@ -1,0 +1,86 @@
+\chapter{Useful Integrals}
+\label{ch:integral}
+\begin{equation}
+  \label{int:indef_0}
+  \int e^{-\alpha e^{-\beta x}} \left(e^{-\beta x}\right)^{\gamma} \di{x}
+  =
+  \frac{\alpha^{-\gamma}}{\beta}
+  \Gamma(\gamma, \alpha e^{-\beta x}) \,.
+\end{equation}
+
+as well as for the definite one:
+
+\begin{equation}
+  \label{int:def_0}
+  \int_{-\infty}^{\infty} e^{-\alpha e^{-\beta x}} \left(e^{-\beta x}\right)^{\gamma} \di{x}
+  =
+  \frac{\alpha^{-\gamma}}{\beta}
+  \Gamma(\gamma) \,.
+\end{equation}
+
+The first few higher order integrals are:
+
+\begin{equation}
+  \label{int:def_1}
+  \int_{-\infty}^{\infty} e^{-\alpha e^{-\beta x}} \left(e^{-\beta x}\right)^{\gamma} x \di{x}
+  =
+  \frac{\alpha^{-\gamma}}{\beta^{2}}
+  \Gamma(\gamma)
+  \left(\log(\alpha) - \psi^{(0)}(\gamma)\right)
+\end{equation}
+
+\begin{equation}
+  \label{int:def_2}
+  \int_{-\infty}^{\infty} e^{-\alpha e^{-\beta x}} \left(e^{-\beta x}\right)^{\gamma} x^{2} \di{x}
+  =
+  \frac{\alpha^{-\gamma}}{\beta^{3}}
+  \Gamma(\gamma)
+  \left(\left(\log(\alpha) - \psi^{(0)}(\gamma) \right)^{2} + \psi^{(1)}(\gamma) \right)
+\end{equation}
+
+\begin{align}
+  \label{int:def_3}
+  & \int_{-\infty}^{\infty} e^{-\alpha e^{-\beta x}} \left(e^{-\beta x}\right)^{\gamma} x^{3} \di{x} \\
+  & =
+  \frac{\alpha^{-\gamma}}{\beta^{4}}
+  \Gamma(\gamma)
+  \left(
+    \left(\log(\alpha)-\psi^{(0)}(\gamma)\right)^3
+    + 3 \psi ^{(1)}(\gamma) \left(\log(\alpha)-\psi ^{(0)}(\gamma)\right)
+    - \psi^{(2)}(\gamma)
+  \right)
+\end{align}
+
+There exists probably no closed form for the general indefinite integral case
+but we can never the less find a formula for the general definite case:
+
+\begin{equation}
+  \label{int:def_n}
+  I_{\alpha,\beta,\gamma}^{(n)} :=
+  \int_{-\infty}^{\infty} e^{-\alpha e^{-\beta x}} \left(e^{-\beta x}\right)^{\gamma} x^{n} \di{x} \\
+  =
+  \frac{\alpha^{-\gamma}}{\beta^{n+1}}
+  \Gamma(\gamma)
+  \mathrm{B}_{n}\left(\xi_{0}, \ldots, \xi_{n-1}\right)
+\end{equation}
+
+where $\mathrm{B}_{n}$ is the complete Bell polynomial
+\footnote{
+  The complete Bell polynomial $\mathrm{B}_{n}$ is defined as:
+  \begin{equation*}
+    \mathrm{B}_{n}(x_{1}, \ldots, x_{n})
+    :=
+    \sum_{k=0}^{n} \mathrm{B}_{n,k} (x_{1}, \ldots, x_{n-k+1})
+  \end{equation*}
+  where the $\mathrm{B}_{n,k}$ are the partial Bell polynomials.
+  Note that $\mathrm{B}_{0,0} \equiv 1$ and $\mathrm{B}_{n,0} = 0$
+  for $n \geq 1$.}
+of degree $n$ and:
+
+\begin{equation}
+  \xi_{i} := (-1)^{i} \frac{\partial^{i}}{\partial \gamma^{i}}
+  \left(\log(\alpha)-\psi^{(0)}(\gamma)\right) \,.
+\end{equation}
+
+
+
