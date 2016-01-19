@@ -1,0 +1,23 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
+
+%opening
+\title{References to own and related work}
+\author{R. Bourquin}
+
+\begin{document}
+
+\maketitle
+
+\nocite{*}
+
+\bibliographystyle{plain}
+\bibliography{own}
+
+\end{document}

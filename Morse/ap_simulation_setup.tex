@@ -1,0 +1,232 @@
+\begin{chapter}{Simulation Parameters}
+\label{ch:simulation_parameters}
+
+In this chapter we reprint the complete simulation configurations for the examples
+shown in the thesis. All listings are compatible input configuration files for the
+\texttt{WaveBlocks} simulation code \footnote{The simulation code can be found
+at \url{http://waveblocks.origo.ethz.ch}} which was used to perform the simulations.
+The various algorithms presented during the last chapters are all implemented
+in the latest \texttt{WaveBlocks} code. For more information about this project
+and the simulation code see reference \cite{waveblocks}. Simulation setup and
+\texttt{WaveBlocks} usage are described in the \texttt{WaveBlocks} manual in
+many more details than what would fit into this chapter.
+
+
+\section{Motivating tunneling example}
+\label{cfg:tunneling_phi0}
+
+The tunnelling example shown to motivate the spawn approach. Results of this
+simulation are shown in figure \ref{fig:tunneling_highfreq}.
+
+\python{./simulations/eckart_packet_512_phi0.py}
+
+The main simulation parameters are exactly the same as in reference \cite{GHJ_tunneling_spawning}.
+
+
+\FloatBarrier
+\section{More tunneling simulations}
+
+A simulation starting with a $\Ket{\phi_2}$ wavepacket and a little less momentum
+than the one of $\Ket{\phi_0}$.
+
+\subsection{Starting with a $\phi_2$}
+\label{cfg:tunneling_phi2}
+\python{./simulations/eckart_packet_512_phi2.py}
+
+\subsection{Starting with a $\phi_3$}
+\label{cfg:tunneling_phi3}
+Another simulation this time starting with a $\Ket{\phi_3}$ wavepacket.
+\python{./simulations/eckart_packet_512_phi3.py}
+
+
+\FloatBarrier
+\section{Parameters for figure \ref{fig:spawn_issues_k_na}}
+
+The parameters used for the simulation shown on figure \ref{fig:spawn_issues_k_na}
+are given below.
+
+\python{./simulations/delta_gap_phi2.py}
+
+
+\FloatBarrier
+\section{Aposteriori spawning for tunneling simulations}
+\label{cfg:eckart_apost}
+
+\subsection{Starting with a $\phi_0$ and $K_0=50$}
+\label{cfg:eckart_phi0_K050}
+A simulation starting with a $\Ket{\phi_0}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi0_K50/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_0$ and $K_0=75$}
+\label{cfg:eckart_phi0_K075}
+A simulation starting with a $\Ket{\phi_0}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi0_K75/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_0$ and $K_0=100$}
+\label{cfg:eckart_phi0_K0100}
+A simulation starting with a $\Ket{\phi_0}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi0_K100/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_2$ and $K_0=50$}
+\label{cfg:eckart_phi2_K050}
+A simulation starting with a $\Ket{\phi_2}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi2_K50/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_2$ and $K_0=75$}
+\label{cfg:eckart_phi2_K075}
+A simulation starting with a $\Ket{\phi_2}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi2_K75/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_2$ and $K_0=100$}
+\label{cfg:eckart_phi2_K0100}
+A simulation starting with a $\Ket{\phi_2}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi2_K100/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_3$ and $K_0=50$}
+\label{cfg:eckart_phi3_K050}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi3_K50/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_3$ and $K_0=75$}
+\label{cfg:eckart_phi3_K075}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi3_K75/config_spawn_lumping.py}
+
+\subsection{Starting with a $\phi_3$ and $K_0=100$}
+\label{cfg:eckart_phi3_K0100}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the lumping method.
+\python{./figures/eckart_spawn_apost_phi3_K100/config_spawn_lumping.py}
+
+
+\subsection{Starting with a $\phi_0$, set $K_0=50$ and $\mu=1$}
+\label{cfg:eckart_phi0_mu1}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the projection method.
+\python{./figures/eckart_phi0_spawn_project_K50_bs1/config_spawn_projection.py}
+
+\subsection{Starting with a $\phi_0$, set $K_0=50$ and $\mu=3$}
+\label{cfg:eckart_phi0_mu3}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the projection method.
+\python{./figures/eckart_phi0_spawn_project_K50_bs3/config_spawn_projection.py}
+
+\subsection{Starting with a $\phi_0$, set $K_0=50$ and $\mu=6$}
+\label{cfg:eckart_phi0_mu6}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the projection method.
+\python{./figures/eckart_phi0_spawn_project_K50_bs6/config_spawn_projection.py}
+
+\subsection{Starting with a $\phi_0$, set $K_0=50$ and $\mu=12$}
+\label{cfg:eckart_phi0_mu12}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the left of the hill.
+The change of the basis is done with the projection method.
+\python{./figures/eckart_phi0_spawn_project_K50_bs12/config_spawn_projection.py}
+
+
+\FloatBarrier
+\section{Spawning propagation for tunneling simulations}
+\label{cfg:eckart_propag}
+
+The simulation configurations for the spawning propagation were automatically
+generated using the following meta configuration files.
+
+Meta configuration file for different thresholds and using the lumping method.
+\python{./simulations/metaconfiguration_spawn_propag_lumping.py}
+
+Meta configuration file for different thresholds and using the projection method.
+\python{./simulations/metaconfiguration_spawn_propag_projection.py}
+
+
+\FloatBarrier
+\section{Basic avoided crossing simulations}
+
+\subsection{Starting with a $\phi_0$}
+\label{cfg:delta_gap_phi0}
+A simulation starting with a $\Ket{\phi_0}$ wavepacket on the upper level.
+\python{./simulations/delta_gap_phi0.py}
+
+\subsection{Starting with a $\phi_1$}
+\label{cfg:delta_gap_phi1}
+A simulation starting with a $\Ket{\phi_1}$ wavepacket on the upper level.
+\python{./simulations/delta_gap_phi1.py}
+
+\subsection{Starting with a $\phi_2$}
+\label{cfg:delta_gap_phi2}
+A simulation starting with a $\Ket{\phi_2}$ wavepacket on the upper level.
+\python{./simulations/delta_gap_phi2.py}
+
+\subsection{Starting with a $\phi_3$}
+\label{cfg:delta_gap_phi3}
+A simulation starting with a $\Ket{\phi_3}$ wavepacket on the upper level.
+\python{./simulations/delta_gap_phi3.py}
+
+\subsection{Starting with a $\phi_4$}
+\label{cfg:delta_gap_phi4}
+A simulation starting with a $\Ket{\phi_4}$ wavepacket on the upper level.
+\python{./simulations/delta_gap_phi4.py}
+
+
+\subsection{Starting with a linear combination of $\phi_0$ and $\phi_1$}
+\label{cfg:delta_gap_phi0phi1}
+A simulation starting with a linear combination $\Ket{\phi_0+\phi_1}$ on the upper level.
+\python{./simulations/delta_gap_phi0phi1.py}
+
+\subsection{Starting with a linear combination of $\phi_2$ and $\phi_3$}
+\label{cfg:delta_gap_phi2phi3}
+A simulation starting with a linear combination $\Ket{\phi_2+\phi_3}$ on the upper level.
+\python{./simulations/delta_gap_phi2phi3.py}
+
+
+\FloatBarrier
+\section{Aposteriori spawning for avoided crossing simulations}
+\label{cfg:delta_gap_apost}
+
+\subsection{Aposteriori spawning with $\phi_0$ and $k=0$}
+\label{cfg:delta_gap_apost_phi0_k0}
+\python{./figures/delta_gap_spawn_phi0_k0/config_spawn_projection.py}
+
+\subsection{Aposteriori spawning with $\phi_1$ and $k=0$}
+\label{cfg:delta_gap_apost_phi1_k0}
+\python{./figures/delta_gap_spawn_phi1_k0/config_spawn_projection.py}
+\subsection{Aposteriori spawning with $\phi_1$ and $k=1$}
+\label{cfg:delta_gap_apost_phi1_k1}
+\python{./figures/delta_gap_spawn_phi1_k1/config_spawn_projection.py}
+
+\subsection{Aposteriori spawning with $\phi_2$ and $k=0$}
+\label{cfg:delta_gap_apost_phi2_k0}
+\python{./figures/delta_gap_spawn_phi2_k0/config_spawn_projection.py}
+\subsection{Aposteriori spawning with $\phi_2$ and $k=2$}
+\label{cfg:delta_gap_apost_phi2_k2}
+\python{./figures/delta_gap_spawn_phi2_k2/config_spawn_projection.py}
+
+\subsection{Aposteriori spawning with $\phi_3$ and $k=0$}
+\label{cfg:delta_gap_apost_phi3_k0}
+\python{./figures/delta_gap_spawn_phi3_k0/config_spawn_projection.py}
+\subsection{Aposteriori spawning with $\phi_3$ and $k=3$}
+\label{cfg:delta_gap_apost_phi3_k3}
+\python{./figures/delta_gap_spawn_phi3_k3/config_spawn_projection.py}
+
+\subsection{Aposteriori spawning with $\phi_4$ and $k=0$}
+\label{cfg:delta_gap_apost_phi4_k0}
+\python{./figures/delta_gap_spawn_phi4_k0/config_spawn_projection.py}
+\subsection{Aposteriori spawning with $\phi_4$ and $k=4$}
+\label{cfg:delta_gap_apost_phi4_k4}
+\python{./figures/delta_gap_spawn_phi4_k4/config_spawn_projection.py}
+
+\subsection{Aposteriori spawning with $\phi_0 + \phi_1$ and $k=0$}
+\label{cfg:delta_gap_apost_phi0phi1_k0}
+\python{./figures/delta_gap_spawn_phi0phi1_k0/config_spawn_projection.py}
+\subsection{Aposteriori spawning with $\phi_2 + \phi_3$ and $k=0$}
+\label{cfg:delta_gap_apost_phi2phi3_k0}
+\python{./figures/delta_gap_spawn_phi2phi3_k0/config_spawn_projection.py}
+
+\end{chapter}

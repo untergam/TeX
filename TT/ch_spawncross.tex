@@ -438,7 +438,7 @@ and thus $\nu = 1$.
 The following examples show the aposteriori spawning process based on the simulations
 from the last section. The gap size $\delta$ of the avoided crossing is chosen in
 a way that if we start which a $\phi_i$ on the upper level then we end up again
-with a $\phi^\prime_i$ on the lower level, for details see reference \cite{BGH_nonadibatic_algorithms}.
+with a $\phi^\prime_i$ on the lower level, for details see reference \cite{BGH_natac}.
 We first look at the norms and the energies. The most important observation here is that
 the results crucially depend on the values of $k$ in the formula \eqref{eq:estimate_abssqrPQ}.
 If we just set $k=0$ we get wrong norms and wrong energies for higher order
@@ -990,7 +990,7 @@ matrix $M$ was defined in section \ref{sec:diagonalize_potential}.
       \STATE // Transform the packets back into the canonical basis
       \STATE $\Psi^c_0 \assign M \Psi^e_0$ and $\Psi^c_1 \assign M \Psi^e_1$
     \ENDIF
-    \STATE // Time propagation of all $\Psi_j$ using the algorithms from \cite{FGL_semiclassical_dynamics} and \cite{BGH_nonadibatic_algorithms}
+    \STATE // Time propagation of all $\Psi_j$ using the algorithms from \cite{FGL_semiclassical_dynamics} and \cite{BGH_natac}
     \FORALL{$\Psi_j\ofs{t=\tau_i}$}
        \STATE $\Psi_j\ofs{t=\tau_{i+1}} \assign \textbf{time\_propagation}(V, \Psi_j\ofs{t=\tau_i})$
     \ENDFOR
