@@ -985,7 +985,7 @@ we will need to extend the algorithm later on in the next chapters.
       \STATE // We have now two new, full wavepackets
       \STATE $\Psi_0 \assign \tilde{v}$ and $\Psi_1 \assign \tilde{w}$
     \ENDIF
-    \STATE // Time propagation of all $\Psi_j$ using the algorithms from \cite{FGL_semiclassical_dynamics} and \cite{BGH_nonadibatic_algorithms}
+    \STATE // Time propagation of all $\Psi_j$ using the algorithms from \cite{FGL_semiclassical_dynamics} and \cite{BGH_natac}
     \FORALL{$\Psi_j\ofs{t=\tau_i}$}
        \STATE $\Psi_j\ofs{t=\tau_{i+1}} \assign \textbf{time\_propagation}(V, \Psi_j\ofs{t=\tau_i})$
     \ENDFOR
