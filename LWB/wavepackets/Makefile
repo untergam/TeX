@@ -45,9 +45,7 @@ basis_eval_stencil.pdf: basis_eval_stencil.svg
 	$(SVG2PDF) $@ $<
 
 manual.pdf: basis_eval_stencil.pdf grad_gather_stencil.pdf grad_scatter_stencil.pdf shape_enumerator.pdf shape_example.pdf shape_extension.pdf shape_slicing.pdf hawp_inheritance.pdf
-	pdflatex $(LATEX_FLAGS) manual
-	bibtex manual
-	pdflatex $(LATEX_FLAGS) manual
-	pdflatex $(LATEX_FLAGS) manual
-#	pdflatex --shell-escape manual.tex	
-
+	pdflatex $(LATEX_FLAGS) main
+	bibtex main
+	pdflatex $(LATEX_FLAGS) main
+	pdflatex $(LATEX_FLAGS) main
