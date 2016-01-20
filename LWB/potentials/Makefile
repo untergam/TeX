@@ -1,21 +1,18 @@
 PDFLATEX = pdflatex
 BIBTEX = bibtex
-SECTIONS = $(wildcard sections/*.tex)
+SECTIONS = $(wildcard Chapters/*.tex)
+FIGURES = $(wildcard Figures/*.pdf Figures/*.eps)
 NAME = main
 
 all: $(NAME).pdf
 
-$(NAME).pdf: $(NAME).tex $(SECTIONS) figs
+$(NAME).pdf: $(NAME).tex $(SECTIONS) $(FIGURES)
 	$(PDFLATEX) $(NAME).tex
 	$(BIBTEX) $(NAME).aux
 	$(PDFLATEX) $(NAME).tex
 	$(PDFLATEX) $(NAME).tex
 
-figs:
-	$(MAKE) -C figures
-
 clean:
-	$(MAKE) clean -C figures
 	rm -f $(NAME).aux
 	rm -f $(NAME).bbl
 	rm -f $(NAME).blg
