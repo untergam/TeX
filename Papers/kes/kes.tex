@@ -100,7 +100,7 @@ number of nested levels, there are only few possible rules left to try.
 
 Quadrature rules that are not nested are a particularly bad starting point
 for the classical Smolyak ansatz that is often used for quadrature in higher
-dimensions. The set of quadrature point is then much larger than necessary
+dimensions. The set of quadrature points is then much larger than necessary
 and can be even larger than a full tensor product.
 
 However, a tower of Kronrod extensions and the Smolyak composition formula
@@ -109,10 +109,10 @@ as the unbounded case of Gauss-Hermite integration. It was proven \cite{novak_ri
 that this construction exactly yields the Genz-Keister quadrature rules \cite{genz}.
 Therefore we have an efficient way to actually build all these rules avoiding
 the explicit Smolyak formula. In the end we provide algorithms for the construction
-of sparse quadrature rules for any of the classical orthogonal polynomials.
+of sparse quadrature rules for any of the classical orthogonal polynomials \cite{B_kes}.
 The rules are evaluated for accuracy as well as effectiveness. These algorithms
-are also implemented in the above mentioned code. The actual implementation follows
-closely the description given here in pseudo code.
+are also implemented in the above mentioned code. The actual implementation \cite{kes}
+follows closely the description given here in pseudo code.
 
 
 \section{Kronrod-Patterson Extensions}
@@ -160,7 +160,7 @@ extend a given set of nodes by a bunch of new nodes.
   $n + 2p -1$.
 \end{theorem}
 
-A simple proof of this theorem is given in the original article \cite{mehrotra-papp}.
+A simple proof of this theorem is given in the article \cite{mehrotra-papp}.
 Some more theoretical background on Kronrod extensions of Gauss quadrature rules
 can be found in \cite{gautschi-rivlin, monegato1978_3} and in the survey article
 \cite{monegato1982}.
@@ -190,7 +190,7 @@ The main algorithm consists of three steps building upon each other.
   \item Compute the weights $\{\omega^\prime_i\}_{i=1}^{n+p}$ for the new
     quadrature rule. It is important to note that the weights of the old
     unextended rule usually will change too. Hence it is not possible to
-    compute only new weights $\{\omega^\prime_i\}_{i=n+1}^{p}$ but we must
+    compute only new weights $\{\omega^\prime_i\}_{i=n+1}^{n+p}$ but we must
     recompute all $n+p$ weights at once. For the unified final set of nodes:
     \begin{equation}
       \{\gamma_i\}_{i=1}^{n+p} := \{\gamma_i\}_{i=1}^{n} \cup \{\gamma^\prime_i\}_{i=1}^{p}
@@ -222,7 +222,7 @@ written as:
 
 and we need to determine the set of coefficients $\{a_i\}_{i=0}^{p-1}$.
 The theorem \ref{th:defining_extension} from above and the integral formulation
-\eqref{eq:defining_extension} gives:
+\eqref{eq:defining_extension} give:
 
 \begin{equation}
 \begin{split}
@@ -422,7 +422,7 @@ We start with the equation \eqref{eq:linsys_for_weights} shown above:
 
 \begin{equation}
   \sum_{i=1}^{n} \omega_i \gamma_i^k = \int_{\Omega} t^k \omega(t) \di{t} \,
-  \quad k = 0, \ldots, n-1
+  \quad k = 0, \ldots, n-1 \,.
 \end{equation}
 
 This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \vec{r}$:
@@ -707,7 +707,7 @@ always an extension with $p = n + 1$ \cite{szegoe}. This is recovered by our
 computation and shows up in Figure \ref{fig:map_leg_100_100} as the first upper
 diagonal line. Additionally to their existence, these rules also have positive
 weights in all cases as shown in \cite{monegato1978}. The existence theorems can
-be generalized to hold also for Chebyshev, Gegenbauer and ultimatively Jacobi
+be generalized to hold also for Chebyshev, Gegenbauer and ultimately Jacobi
 polynomials \cite{gautschi-notaris, gautschi, notaris1990, monegato1978_2}.
 
 \begin{figure}
@@ -775,7 +775,7 @@ authors of the aforementioned papers.
 \section{Recursive Enumeration of nested Extensions}
 
 
-In the last section we computed a single extensions $E_p$ over a
+In the last section we computed single extensions $E_p$ over a
 given rule $P_n$. This is enough in case of adaptive quadrature where all one
 wants is to make an error estimate of the Gaussian quadrature by evaluation
 of another quadrature rule having higher order. In that case the property of
@@ -862,7 +862,7 @@ in \ref{alg:exhaustive_recursive_search}.
 
 We denote by $\mathcal{Q}[p_0, \ldots, p_k]$ the quadrature rule and explicitly
 the nodes and weights that can be computed from the nested Kronrod extension
-$\mathcal{K} = (p_0, \ldots, p_k)$. Of course $\mathcal{Q}[n]$ is simple the
+$\mathcal{K} = (p_0, \ldots, p_k)$. Of course $\mathcal{Q}[n]$ is simply the
 original quadrature rule we started with. In all cases considered here this
 will be a Gauss rule of order $n$ having $n$ points.
 
