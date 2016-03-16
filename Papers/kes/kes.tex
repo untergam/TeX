@@ -178,7 +178,7 @@ The main algorithm consists of three steps building upon each other.
     \begin{equation}
       \int_{\Omega} P_n(t) \, E_p(t) \, t^i \, \omega(t) \, \di{t} = 0
     \end{equation}
-    for all $i = 0, \ldots, p-1$, see theorem \ref{th:defining_extension}.
+    for all $i = 0, \ldots, p-1$, see theorem~\ref{th:defining_extension}.
     We require that $E_p$ is monic and obtain a square linear system.
     If this system is solvable, then the extension $E_p$ exists.
     Otherwise we can \emph{not} extend the given $n$ point rule by
@@ -206,8 +206,8 @@ The main algorithm consists of three steps building upon each other.
 \end{itemize}
 
 The steps for computing a single extension $E_p$ of $P_n$ are shown in pseudo-code
-in Algorithm \ref{alg:find_extension}. Another version computing iteratively
-multiple nested extensions is shown in \ref{alg:find_multiextension}.
+in Algorithm~\ref{alg:find_extension}. Another version computing iteratively
+multiple nested extensions is shown in~\ref{alg:find_multiextension}.
 
 
 \subsection{Find extensions}
@@ -220,7 +220,7 @@ written as:
 \end{equation}
 
 and we need to determine the set of coefficients $\{a_i\}_{i=0}^{p-1}$.
-The theorem \ref{th:defining_extension} from above and the integral formulation
+The theorem~\ref{th:defining_extension} from above and the integral formulation
 \eqref{eq:defining_extension} give:
 
 \begin{equation}
@@ -269,10 +269,10 @@ this vector can be computed very easily.
 
 \subsection{Rational moments}
 
-A limitation of our current implementation (see section \ref{sec:implementation_aspects})
+A limitation of our current implementation (see section~\ref{sec:implementation_aspects})
 is that we can work only with distributions $\omega(t)$ that have rational moments.
 However, in case of the most important distributions used as weight functions
-(see Table \ref{eq:orthogonal_polynomials}) for defining the Legendre, Chebyshev, Laguerre
+(see Table~\ref{eq:orthogonal_polynomials}) for defining the Legendre, Chebyshev, Laguerre
 and Hermite orthogonal polynomials this is a well known truth.
 
 \begin{savenotes}
@@ -454,7 +454,7 @@ This yields the following inhomogeneous linear system $\mat{A} \vec{\omega} = \v
 
 where $k = 0, \ldots, n-1$ is the row index and $i = 1, \ldots, n$
 is the column index of the matrix $\mat{A}$. This system is square
-and of shape $n \times n$. Theorem \ref{th:existence_weights} ensures that there is
+and of shape $n \times n$. Theorem~\ref{th:existence_weights} ensures that there is
 a unique solution. Given that the nodes are in general algebraic numbers,
 we compute approximations by complex balls.
 Even in case we knew the nodes in closed form, there is obviously
@@ -473,7 +473,7 @@ $b_{\gamma}^{\prime} := 2 b_{\gamma}$ and recompute the nodes first. After
 that we can retry to solve this system and see if the precision goal is met.
 If not yet, we let the algorithm iterate until the goal of $b_{\omega}$ bits
 is eventually fulfilled or an upper bound on the number of bits is hit.
-The procedure is shown in pseudo-code in listing \ref{alg:compute_weights}.
+The procedure is shown in pseudo-code in listing~\ref{alg:compute_weights}.
 
 \begin{algorithm}
   \caption{Compute the weights up to a given precision $b_{\omega}$}
@@ -502,8 +502,8 @@ The procedure is shown in pseudo-code in listing \ref{alg:compute_weights}.
 
 Validation of the extensions computed is necessary and happens in
 two separate steps where the second one is optional. Even if we
-can solve equation \eqref{eq:linsys_for_extension} and Algorithm
-\ref{alg:find_extension} does return a non-vanishing polynomial $E_p$,
+can solve equation \eqref{eq:linsys_for_extension} and
+Algorithm~\ref{alg:find_extension} does return a non-vanishing polynomial $E_p$,
 this does not guarantee we have found a suitable extension.
 As an example we look at possible extensions $E_p$ of the Gauss-Laguerre rule
 given by the polynomial $L_2 = \frac{1}{2}t^2 - 2t + 1$, having two quadrature
@@ -585,7 +585,7 @@ we will find that all its roots are on the positive real axis and all weights ar
 To validate an extension $E_p$ of $P_n$ we first check that the roots $\{\gamma_i\}_{i=1}^p$ of
 this polynomial $E_p$ actually lie within the region $\Omega$.
 The subset $\Omega$ of $\mathbb{R}$ is the region where the original polynomials $P_n$ are orthogonal
-and where we want the quadrature to happen, see Table \ref{eq:orthogonal_polynomials} for details.
+and where we want the quadrature to happen, see Table~\ref{eq:orthogonal_polynomials} for details.
 We require that:
 \begin{equation}
   \{\gamma_i\}_{i=1}^p \subset \Omega \,.
@@ -653,8 +653,8 @@ roots to a high working precision can still take some time.
 
 We consider now only single Kronrod extensions. Given a polynomial
 $P_n$ of either Legendre, Chebyshev, Laguerre or Hermite type and of degree $n$, we compute
-the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of Algorithm
-\ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
+the extension $E_p$ of order $p$ for some suitable choice of $p$. We make use of
+Algorithm~\ref{alg:find_extension} to obtain the polynomial $E_p$ defining the extension in
 the first place. Next, we compute nodes and weights. If requested, validity checks
 are performed to ensure that the nodes are within the region of integration
 and that all the weights are positive.
@@ -692,8 +692,8 @@ of node-weight pairs.
 \end{algorithm}
 
 The output of this algorithm applied to the three polynomial classes mentioned
-above is shown in the Figures \ref{fig:map_leg_100_100}, \ref{fig:map_lag_20_100}
-and \ref{fig:map_herm_50_100}.
+above is shown in the Figures~\ref{fig:map_leg_100_100},~\ref{fig:map_lag_20_100}
+and~\ref{fig:map_herm_50_100}.
 
 
 \subsection{Existence and non-existence results}
@@ -703,7 +703,7 @@ existence results for Kronrod-Patterson extensions.
 
 In the Legendre case there is a proof that for each $n$ there is
 always an extension with $p = n + 1$ \cite{szegoe}. This is recovered by our
-computation and shows up in Figure \ref{fig:map_leg_100_100} as the first upper
+computation and shows up in Figure~\ref{fig:map_leg_100_100} as the first upper
 diagonal line. Additionally to their existence, these rules also have positive
 weights in all cases as shown in \cite{monegato1978}. The existence theorems can
 be generalized to hold also for Chebyshev, Gegenbauer and ultimately Jacobi
@@ -753,7 +753,7 @@ rules would probably be of no practical use anyway.
 
 In the case of Hermite polynomials our computation indeed reveals the three possible
 classical Kronrod rules for $n=1, p=2$ and $n = 2, p = 3$ and $n = 4, p = 5$. This
-can be seen in the very top left corner of Figure \ref{fig:map_herm_50_100} and is
+can be seen in the very top left corner of Figure~\ref{fig:map_herm_50_100} and is
 in perfect agreement with the literature \cite{monegato1976, kahaner-monegato, vladislav}.
 In fact if we examine the three rules more closely, we will find that the case
 $n = 4, p = 5$ does not have positive weights and is in turn ruled out by the
@@ -800,11 +800,11 @@ by $\mathcal{K} = (n, p_1, \ldots, p_{k_{\textrm{max}}}) \in \mathbb{N}^{{k_{\te
 
 Given the polynomial $P_{k-1}(x) := \prod_{i=0}^{k-1} E_{p_i}(x)$ that defines the
 lower part $E_{p_0} \subset \ldots \subset E_{p_{k-1}}$ of this tower,
-we can call Algorithm \ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
+we can call Algorithm~\ref{alg:recursive_search} with $P_{k-1}$ to compute recursively the remaining
 upper layers $k, \ldots, k_{\textrm{max}}$ as far as they exist. This algorithm will perform a
 flat exhaustive search on layer $k$ and then call itself for the next layer $k+1$. To get this
 process started, we make an initial call for $k=1$ with $P_{0} := P_n \equiv E_{p_0}$ as shown
-in \ref{alg:exhaustive_recursive_search}.
+in~\ref{alg:exhaustive_recursive_search}.
 
 \begin{algorithm}
   \caption{Recursive search for extensions over $P_{k-1}$ on layer $k$}
@@ -882,9 +882,9 @@ Jacobi polynomials, we find the most regular structure which displays a vast num
 of extensions. For other polynomials like the Laguerre polynomials there are almost
 no extensions and the average nesting level is very low. From this large zoo of
 possible $\mathcal{K}$ tuples, some of the more interesting ones are summarized
-in the Tables \ref{tab:legendre_extensions}, \ref{tab:chebyshevt_extensions},
-\ref{tab:chebyshevu_extensions}, \ref{tab:laguerre_extensions} and \ref{tab:hermite_extensions}
-in the appendix \ref{app:tables_extensions}.
+in the Tables~\ref{tab:legendre_extensions},~\ref{tab:chebyshevt_extensions}
+,~\ref{tab:chebyshevu_extensions},~\ref{tab:laguerre_extensions}
+and~\ref{tab:hermite_extensions} in the appendix~\ref{app:tables_extensions}.
 
 
 \FloatBarrier
@@ -931,7 +931,7 @@ with $K \geq 0$ as:
   \,.
 \end{equation}
 A method for computing that set $\mathcal{P}$
-is shown in Algorithm \ref{alg:ca_enumerate_integer_partitions}.
+is shown in Algorithm~\ref{alg:ca_enumerate_integer_partitions}.
 Before we look deeper into the details of this construction,
 we need to introduce the set $\Lambda$ of so called \emph{generators}:
 \begin{equation}
@@ -974,7 +974,7 @@ where $\Gamma_\mathbf{p}$ stands for a whole set of nodes given by:
 \end{equation}
 and $\mathcal{S}_\mathbf{p}$ is the set of all permutations of the $D$
 elements of $\mathbf{p} \in \mathcal{P}$. An algorithm for the enumeration
-of all permutations is given in \ref{alg:ca_enumerate_permutations}.
+of all permutations is given in~\ref{alg:ca_enumerate_permutations}.
 Finally we find:
 \begin{equation}
   f\left(\Gamma_\mathbf{p}\right) \assign
@@ -1003,7 +1003,7 @@ where we define the denominator:
 \end{equation}
 and use the multi-index $\mathbf{k} \in \mathbb{N}_{0}^{D}$. Note that the
 prefactor is exactly $1 / |\overline{\gamma_\mathbf{k}}|$.
-Algorithm \ref{alg:ca_enumerate_lattice_points} implements a procedure
+Algorithm~\ref{alg:ca_enumerate_lattice_points} implements a procedure
 for enumeration of all relevant multi-indices.
 This formula above presents us with several parts we need to compute.
 Some of these parts can even be tabulated once for a maximal and
@@ -1101,8 +1101,8 @@ ever need the upper right triangular part:
 \end{center}
 
 Given the list $\Lambda$ of generators and all the values $a_{i}$ collected into
-the list $\vec{A}$, we can compute the table $\mat{T}$ efficiently by Algorithm
-\ref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
+the list $\vec{A}$, we can compute the table $\mat{T}$ efficiently by
+Algorithm~\ref{alg:gk_compute_weight_factors}. By the use of this table, the implementation
 of formula \eqref{eq:gk_weight_def} transforms into a series of trivial table
 look-up steps. However, precomputation of $\mat{T}$ is expensive for larger $J$,
 on the other hand it needs to be done only once for each $\Lambda$ and $w(x)$.
@@ -1136,8 +1136,8 @@ values during usual floating point computations.
   \end{algorithmic}
 \end{algorithm}
 
-At the end of the day we arrive at the following two Algorithms
-\ref{alg:gk_compute_nodes} and \ref{alg:gk_compute_weights}
+At the end of the day we arrive at the following two
+Algorithms~\ref{alg:gk_compute_nodes} and~\ref{alg:gk_compute_weights}
 for computing the node set $\Gamma_\mathbf{p}$ and weights $\omega_\mathbf{p}$
 for an arbitrary given partition $\mathbf{p} \in \mathcal{P}$.
 
@@ -1203,7 +1203,7 @@ equation \eqref{eq:gk_basic_formula}. Looking at the definition of the weights
 in equation \eqref{eq:gk_weight_def} we have a sum-product structure. A single
 product becomes zero if the numerator $a_{\mathbf{k}_d+\mathbf{p}_d} = 0$. This
 then must happen for all summands in the sum. A simple algorithm to find $\vec{z}$
-is given in \ref{alg:gk_compute_zsequence} below. It is limited in rigor because
+is given in~\ref{alg:gk_compute_zsequence} below. It is limited in rigor because
 of the zero test on floating point numbers.
 
 \begin{algorithm}[h!]
@@ -1237,7 +1237,7 @@ Finally, we cite theorem 3.1 from \cite{genz} but omit the proof:
 
 This theorem tells us which partitions $\mathbf{p}$ we can omit when assembling
 the quadrature rule. The full algorithm for the construction of fully symmetric quadrature
-rules in $D$ dimensions and of level $K$ is shown in \ref{alg:gk_construction}.
+rules in $D$ dimensions and of level $K$ is shown in~\ref{alg:gk_construction}.
 The whole procedure is general in the sense that we can apply it to both the Legendre and
 Hermite cases as it was already done in \cite{genz} and \cite{genz_keister} respectively.
 Further we can repeat the very same computations for both kinds of Gauss-Chebyshev
@@ -1295,7 +1295,7 @@ can be used during the Genz-Keister construction. In the programming
 language \texttt{python} they can be implemented very efficiently by
 the use of \texttt{yield} statements inside so called \emph{generator expressions}.
 
-The Algorithm \ref{alg:ca_enumerate_integer_partitions} can
+The Algorithm~\ref{alg:ca_enumerate_integer_partitions} can
 be used for enumeration of the set $\mathcal{P}$ defined in
 \eqref{eq:partition_set_def}. This works for any given value
 of $D \geq 1$ and maximal element size $K \geq 0$. The elements
@@ -1339,7 +1339,7 @@ of $|\mathbf{p}|$ until the boundary $K$ is hit.
 
 An algorithm to enumerate the set $\mathcal{S}$ of all entry-wise
 permutations of a given vector $\mathbf{p} \in \mathbb{N}_{0}^{D}$
-is shown next in \ref{alg:ca_enumerate_permutations}. This algorithm
+is shown next in~\ref{alg:ca_enumerate_permutations}. This algorithm
 will generate the permutations in reverse lexicographic order,
 starting with $\mathbf{p}$.
 
@@ -1389,7 +1389,7 @@ starting with $\mathbf{p}$.
 In the definition of the weights in formula \eqref{eq:gk_weight_def}
 we need to iterate over the set $\mathcal{L} := \{\mathbf{k_{i}}\}$ of all
 lattice points $\mathbf{k} \in \mathbb{N}_{0}^{D}$ up to some maximal value of
-the $l_{1}$ norm. The Algorithm \ref{alg:ca_enumerate_lattice_points}
+the $l_{1}$ norm. The Algorithm~\ref{alg:ca_enumerate_lattice_points}
 shows an efficient method for the enumeration of all such points. It
 is well known that the cardinality of $\mathcal{L}$ is:
 \begin{equation}
@@ -1480,9 +1480,9 @@ the same node-weight pairs. The order os this rule is then $2\cdot 14 + 1 = 29$.
 
 Lemma 4.1 in \cite{holtz} gives conditions on the one-dimensional rules
 such that the Smolyak construction of level $K$ from these rules has
-order at least $2K-1$. It can be seen from Figures \ref{fig:number_nodes_legendre},
-\ref{fig:number_nodes_chebyshevt}, \ref{fig:number_nodes_chebyshevu} and
-\ref{fig:number_nodes_hermitephy} that the rules discussed here fulfill the
+order at least $2K-1$. It can be seen from Figures~\ref{fig:number_nodes_legendre}
+,~\ref{fig:number_nodes_chebyshevt},~\ref{fig:number_nodes_chebyshevu}
+and~\ref{fig:number_nodes_hermitephy} that the rules discussed here fulfill the
 required conditions as their orders are always large enough.
 
 % Finally, corollary 7 from \cite{novak_ritter} gives the degree of exactness
@@ -1501,20 +1501,20 @@ sequence:
 where a large number of non-zero elements occur. Also we can in principle
 arbitrarily extend $\mathcal{K}$ by doubling the degree. If we use this
 extension we get the one-dimensional quadrature nodes with a constellation
-as in Figure \ref{fig:gk_legendre_nodes_cmp} and weights shown in Figure
-\ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$ the weights
+as in Figure~\ref{fig:gk_legendre_nodes_cmp} and weights shown in
+Figure~\ref{fig:gk_legendre_nodes_1d}. For most values of the level $K$ the weights
 behave well but for some they start oscillating and even become negative.
 These special values of $K$ correlate with extra zeros in the $\vec{z}$ sequence.
 The number of nodes relative to Gauss-Legendre Quadrature is shown
-in Figure \ref{fig:number_nodes_legendre} for one dimension and
-compared across dimensions in Figure \ref{fig:number_nodes_levdim_legendre}.
-Figure \ref{fig:gk_legendre_nodes_2d} shows the sparse node distribution
+in Figure~\ref{fig:number_nodes_legendre} for one dimension and
+compared across dimensions in Figure~\ref{fig:number_nodes_levdim_legendre}.
+Figure~\ref{fig:gk_legendre_nodes_2d} shows the sparse node distribution
 in the plane for two-dimensional quadrature rules.
 
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz. This
-fact is examined in Figures \ref{fig:gk_legendre_ratio} and \ref{fig:gk_legendre_ratio_large}.
-The other Figure \ref{fig:smol_legendre_ratio} displays the same comparison,
+fact is examined in Figures~\ref{fig:gk_legendre_ratio} and~\ref{fig:gk_legendre_ratio_large}.
+The other Figure~\ref{fig:smol_legendre_ratio} displays the same comparison,
 this time with respect to the Smolyak construction.
 
 For testing the quadrature rules in $D$ dimensions, the following integral
@@ -1525,9 +1525,9 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
   \prod_{d=1}^D \frac{1 + (-1)^{n_d}}{1 + n_d}
 \end{equation}
 where we know the exact solution in closed form. The results are shown in
-Figure \ref{fig:monomial_errors_legendre} for $D=1$ and for $2 \leq D \leq 6$
-in Figure \ref{fig:monomial_errors_legendre_multivariate}. Finally, the Figure
-\ref{fig:monomial_errors_legendre_2D} shows the minimal level $K$ necessary to
+Figure~\ref{fig:monomial_errors_legendre} for $D=1$ and for $2 \leq D \leq 6$
+in Figure~\ref{fig:monomial_errors_legendre_multivariate}. Finally, the
+Figure~\ref{fig:monomial_errors_legendre_2D} shows the minimal level $K$ necessary to
 correctly integrate the term $x^m y^n$.
 
 \begin{figure}
@@ -1619,9 +1619,9 @@ correctly integrate the term $x^m y^n$.
   which perfectly agrees with the figure.
   Starting with the $31$ point rule, the rules become somewhat unstable
   and do not reach the machine epsilon error level. This can be explained
-  by growing oscillations in the weights for some of the rules. (Refer to Figure
-  \ref{fig:gk_legendre_nodes_1d} though the rules affected are beyond the range
-  of that plot.) The rule having $63$ nodes is very stable again.}
+  by growing oscillations in the weights for some of the rules. (Refer to
+  Figure~\ref{fig:gk_legendre_nodes_1d} though the rules affected are beyond
+  the range of that plot.) The rule having $63$ nodes is very stable again.}
   \label{fig:monomial_errors_legendre}
 \end{figure}
 
@@ -1680,20 +1680,19 @@ we choose $\mathcal{K} = (1, 2, 4, 6, 12, 24)$ with the $\vec{z}$ sequence:
 \end{equation*}
 Again we can in principle extend $\mathcal{K}$ by doubling the degree.
 Using this extension we get the one-dimensional quadrature nodes
-with a constellation as in Figure \ref{fig:gk_chebyshevt_nodes_cmp}
-and weights shown in Figure \ref{fig:gk_chebyshevt_nodes_1d}.
+with a constellation as in Figure~\ref{fig:gk_chebyshevt_nodes_cmp}
+and weights shown in Figure~\ref{fig:gk_chebyshevt_nodes_1d}.
 The number of nodes relative to Gauss-Chebyshev Quadrature is shown
-in Figure \ref{fig:number_nodes_chebyshevt} for one dimension and
-compared across dimensions in Figure \ref{fig:number_nodes_levdim_chebyshevt}.
+in Figure~\ref{fig:number_nodes_chebyshevt} for one dimension and
+compared across dimensions in Figure~\ref{fig:number_nodes_levdim_chebyshevt}.
 
-Figure \ref{fig:gk_chebyshevt_nodes_2d} shows the sparse
+Figure~\ref{fig:gk_chebyshevt_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz, however there
-are some exceptions. This fact is examined in Figures \ref{fig:gk_chebyshevt_ratio}
-and \ref{fig:gk_chebyshevt_ratio_large}. The other Figure
-\ref{fig:smol_chebyshevt_ratio} displays the same comparison,
-this time with respect to the Smolyak construction.
+are some exceptions. This fact is examined in Figures~\ref{fig:gk_chebyshevt_ratio}
+and~\ref{fig:gk_chebyshevt_ratio_large}. The other Figure~\ref{fig:smol_chebyshevt_ratio}
+displays the same comparison, this time with respect to the Smolyak construction.
 
 For testing the quadrature rules in $D$ dimensions, the following integral
 over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
@@ -1706,9 +1705,9 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
        {\Gamma\left(\frac{n_d}{2}+1\right)}
 \end{equation}
 where we know the exact solution in closed form. The results are shown in
-Figure \ref{fig:monomial_errors_chebyshevt} for $D=1$ and for $2 \leq D \leq 6$
-in Figure \ref{fig:monomial_errors_chebyshevt_multivariate}. Finally, the Figure
-\ref{fig:monomial_errors_chebyshevt_2D} shows the minimal level $K$ necessary to
+Figure~\ref{fig:monomial_errors_chebyshevt} for $D=1$ and for $2 \leq D \leq 6$
+in Figure~\ref{fig:monomial_errors_chebyshevt_multivariate}. Finally, the
+Figure~\ref{fig:monomial_errors_chebyshevt_2D} shows the minimal level $K$ necessary to
 correctly integrate the term $x^m y^n$.
 
 \begin{figure}[h]
@@ -1851,19 +1850,19 @@ $\mathcal{K} = (1, 2, 4, 8, 16, 32)$ with the $\vec{z}$ sequence:
 \end{equation*}
 Once more we could extend $\mathcal{K}$ by doubling the degree.
 Using this extension we get the one-dimensional quadrature nodes
-with a constellation as in Figure \ref{fig:gk_chebyshevu_nodes_cmp}
-and weights shown in Figure \ref{fig:gk_chebyshevu_nodes_1d}.
+with a constellation as in Figure~\ref{fig:gk_chebyshevu_nodes_cmp}
+and weights shown in Figure~\ref{fig:gk_chebyshevu_nodes_1d}.
 The number of nodes relative to Gauss-Chebyshev Quadrature is shown
-in Figure \ref{fig:number_nodes_chebyshevu} for one dimension and
-compared across dimensions in Figure \ref{fig:number_nodes_levdim_chebyshevu}.
-Figure \ref{fig:gk_chebyshevu_nodes_2d} shows the sparse
+in Figure~\ref{fig:number_nodes_chebyshevu} for one dimension and
+compared across dimensions in Figure~\ref{fig:number_nodes_levdim_chebyshevu}.
+Figure~\ref{fig:gk_chebyshevu_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 
 For $D = 2$ there are levels where Genz-Keister is better than
 Gauss-Chebyshev tensor products but there are also levels where
-it behaves the other way round. The details are shown in Figures
-\ref{fig:gk_chebyshevu_ratio} and \ref{fig:gk_chebyshevu_ratio_large}.
-The third Figure \ref{fig:smol_chebyshevu_ratio} shows the same
+it behaves the other way round. The details are shown in
+Figures~\ref{fig:gk_chebyshevu_ratio} and~\ref{fig:gk_chebyshevu_ratio_large}.
+The third Figure~\ref{fig:smol_chebyshevu_ratio} shows the same
 comparison with respect to the Smolyak construction.
 
 For testing the quadrature rules in $D$ dimensions, the following integral
@@ -1877,9 +1876,9 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
        {\Gamma\left(\frac{n_d}{2}+2\right)}
 \end{equation}
 where we know the exact solution in closed form. The results are shown in
-Figure \ref{fig:monomial_errors_chebyshevu} for $D=1$ and for $2 \leq D \leq 6$
-in Figure \ref{fig:monomial_errors_chebyshevu_multivariate}. Finally, the Figure
-\ref{fig:monomial_errors_chebyshevu_2D} shows the minimal level $K$ necessary to
+Figure~\ref{fig:monomial_errors_chebyshevu} for $D=1$ and for $2 \leq D \leq 6$
+in Figure~\ref{fig:monomial_errors_chebyshevu_multivariate}. Finally, the
+Figure~\ref{fig:monomial_errors_chebyshevu_2D} shows the minimal level $K$ necessary to
 correctly integrate the term $x^m y^n$.
 
 \begin{figure}[h]
@@ -2021,7 +2020,7 @@ correctly integrate the term $x^m y^n$.
 \FloatBarrier
 \subsection{Hermite Quadrature}
 
-Figure \ref{fig:smol_hermitephy_ratio} shows the comparison of a full tensor
+Figure~\ref{fig:smol_hermitephy_ratio} shows the comparison of a full tensor
 and a Smolyak construction based on the usual Gauss-Hermite points. Obviously the region
 where Smolyak is disadvantageous extends to higher dimensions and this at even relatively
 low levels. This is clearly an issue and should give some motivation for studying the
@@ -2035,15 +2034,15 @@ $\mathcal{K} = (1, 2, 6, 10, 16, 68)$ with the $z$ sequence:
              %0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
 \end{equation*}
 Using this extension we get the one-dimensional quadrature nodes
-with a constellation as in Figure \ref{fig:gk_hermitephy_nodes_cmp}
-and weights shown in Figure \ref{fig:gk_hermitephy_nodes_1d}.
+with a constellation as in Figure~\ref{fig:gk_hermitephy_nodes_cmp}
+and weights shown in Figure~\ref{fig:gk_hermitephy_nodes_1d}.
 The number of nodes relative to Gauss-Hermite Quadrature is shown
-in Figure \ref{fig:number_nodes_hermitephy} for one dimension and
-compared across dimensions in Figure \ref{fig:number_nodes_levdim_hermitephy}.
-Figure \ref{fig:gk_hermitephy_nodes_2d} shows the sparse
+in Figure~\ref{fig:number_nodes_hermitephy} for one dimension and
+compared across dimensions in Figure~\ref{fig:number_nodes_levdim_hermitephy}.
+Figure~\ref{fig:gk_hermitephy_nodes_2d} shows the sparse
 node distribution in the plane for two-dimensional quadrature rules.
 
-By comparing to Figure \ref{fig:conv_monom_hermite} we can confirm that the
+By comparing to Figure~\ref{fig:conv_monom_hermite} we can confirm that the
 rules with $K < 18$ are stable. The rule obtained with $K=17$ has $35$ nodes
 and is of order $51$. In the range $18 < K \leq 25$ we get no new rules but
 rather the same nodes and weights as with $K = 17$. Rules with even higher
@@ -2051,9 +2050,9 @@ $K > 25$ were found to be highly unstable.
 
 Notice that for $D < 3$, using the Genz-Keister construction results
 in more quadrature points than the full tensor product Ansatz. This
-can be read off from Figures \ref{fig:gk_hermitephy_ratio}
-and \ref{fig:gk_hermitephy_ratio_large}. The last Figure
-\ref{fig:smol_hermitephy_ratio} displays the same comparison,
+can be read off from Figures~\ref{fig:gk_hermitephy_ratio}
+and~\ref{fig:gk_hermitephy_ratio_large}. The last
+Figure~\ref{fig:smol_hermitephy_ratio} displays the same comparison,
 this time with respect to the Smolyak construction.
 
 For testing the quadrature rules in $D$ dimensions, the following integral
@@ -2064,8 +2063,8 @@ over multi-variate monomials with $\vec{n} \in \mathbb{N}_0^D$ is used:
   \frac{1}{2^D} \prod_{d=1}^D \left(1 + (-1)^{n_d}\right) \Gamma\left(\frac{n_d + 1}{2}\right)
 \end{equation}
 where we know the exact solution in closed form. The results are shown
-for $2 \leq D \leq 6$ in Figure \ref{fig:monomial_errors_hermitephy_multivariate}.
-Finally, the Figure \ref{fig:monomial_errors_hermitephy_2D} shows the minimal
+for $2 \leq D \leq 6$ in Figure~\ref{fig:monomial_errors_hermitephy_multivariate}.
+Finally, the Figure~\ref{fig:monomial_errors_hermitephy_2D} shows the minimal
 level $K$ necessary to correctly integrate the term $x^m y^n$.
 
 \begin{figure}[h]
@@ -2826,7 +2825,7 @@ in the simulation of the Schr\"odinger equation \cite{tucker}.
 \section{Computed Generators}
 
 The tables in this appendix contain the generator sets $\Lambda$ for all default
-rules examined in section \ref{sec:nested_rules_for_op}. The generators are
+rules examined in section~\ref{sec:nested_rules_for_op}. The generators are
 ordered in the above-mentioned alternating order.
 
 \begin{table}[h]
