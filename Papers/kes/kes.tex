@@ -310,8 +310,8 @@ form expressions for the moments hold:
   \int_{-1}^{1} t^n \frac{1}{\sqrt{1-t^2}} \di{t} & =
   \begin{cases}
     \frac{2 \sqrt{\pi}}{n} \frac{\Gamma\left(\frac{n+1}{2}\right)}
-                                {\Gamma\left(\frac{n}{2}\right)} & \quad n \quad \mathrm{even}
-                                                                   \footnote{For $n=0$ one takes the limes
+                                {\Gamma\left(\frac{n}{2}\right)} & \quad n \quad \mathrm{even}\footnote{For
+                                                                   $n=0$ one takes the limes
                                                                    or replaces $n\Gamma\left(\frac{n}{2}\right)$
                                                                    by $2\Gamma\left(\frac{n}{2}+1\right)$} \\
     0                                                            & \quad n \quad \mathrm{odd}
@@ -2239,9 +2239,9 @@ the most expensive part already.
 
 By having efficient root isolation and counting algorithms in \texttt{flint} we would
 not have to compute all roots of $E_p$ numerically to high precision just for answering
-the question if some of them are complex hence marking the whole extension invalid
-\footnote{This solution is also not fully satisfying since we can only
-decide that a complex root is really complex but not if a candidate is for sure real.}.
+the question if some of them are complex hence marking the whole extension invalid\footnote{This
+solution is also not fully satisfying since we can only decide that a complex root is really
+complex but not if a candidate is for sure real.}.
 
 Finally, this work is based on empirical studies on the outcome of algorithmic searches.
 It would be desirable to have a rigorous mathematical foundation for the claims made.
