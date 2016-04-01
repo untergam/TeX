@@ -49,7 +49,7 @@ we compute the integral:
 
 \begin{equation} \label{eq:hoi}
  I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty}
-      f(\vec{x}) \, \exp(i \omega g(\vec{x}))
+      f(\vec{x}) \, \exp(\imath \omega g(\vec{x}))
       \, \mathrm{d} \vec{x}
 \end{equation}
 
@@ -379,7 +379,7 @@ For our problem at hand, computing overlap integrals, we will need to integrate
 over the whole space in $N$ dimensions and hence set $\Omega = \mathbb{R}^N$ in
 \eqref{eq:hoi}.
 There are two essential observations to be made about the
-oscillatory part $\exp\left(i\omega g\left(\vec{x}\right) \right)$
+oscillatory part $\exp\left(\imath \omega g\left(\vec{x}\right) \right)$
 of any such integral. First, this expression does decay exponentially
 fast for increasing $\Im g(z)$ and second, it does not oscillate for
 constant $\Re g(z)$. This can easily be seen by expanding complex numbers:
@@ -487,9 +487,9 @@ will give a bunch of new integrals, one or two for each $\xi$:
 \end{equation}
 We continue by applying Cauchy's theorem:
 \begin{equation} \label{eq:cauchy}
-      I = e^{\imath\omega g(a)} J[a]
+      I = e^{\imath \omega g(a)} J[a]
         + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
-        - e^{\imath\omega g(b)} J[b]
+        - e^{\imath \omega g(b)} J[b]
 \end{equation}
 which is valid for the correct choice of paths. We glue together all the paths
 to a single long path connecting the endpoints $a$ and $b$ while wandering around
@@ -598,7 +598,7 @@ where we set $\omega = 2$. The path is given by the expression:
 \end{equation}
 After the change of variables the integral takes the following ugly form:
 \begin{equation}
-  I = 200 \, e^{\imath\omega}
+  I = 200 \, e^{\imath \omega}
       \int_0^{\infty}
         \frac{\imath \log(1+\imath\tau) e^{-\omega\tau}}
              {(1 + \imath\tau)\left(100+\log^4(1+\imath\tau)\right)}
@@ -669,7 +669,7 @@ i.e.:
 \end{equation}
 The integral we want to compute is:
 \begin{equation} \label{eq:mv_original_integral}
-  I = \iiint_{-\infty}^{\infty} f\left(\vec{x}\right) \exp\left(i \omega g\left(\vec{x}\right) \right) \mathrm{d}\vec{x}
+  I = \iiint_{-\infty}^{\infty} f\left(\vec{x}\right) \exp\left(\imath \omega g\left(\vec{x}\right) \right) \mathrm{d}\vec{x}
     = \iiint_{-\infty}^{\infty} i\left(x_1, x_2, x_3\right) \mathrm{d}x_1 \mathrm{d}x_2 \mathrm{d}x_3
 \end{equation}
 where we collapsed the internals into a single function $i\left(x_1, x_2, x_3\right)$
@@ -677,16 +677,16 @@ for reasons of notation. By using the expanded form of $g$ the integral can be w
 \begin{equation}
 \begin{alignedat}{2}
  I & = \iiint f\left(\vec{x}\right)
-             & & \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right) \\
-             & & & \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right) \\
-             & & & \exp\left(i \omega \left(t_{3,3} x_3^2 \right) \right)
+             & & \exp\left(\imath \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right) \\
+             & & & \exp\left(\imath \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right) \\
+             & & & \exp\left(\imath \omega \left(t_{3,3} x_3^2 \right) \right)
        \mathrm{d}\vec{x} \\
    & = \iiint f\left(\vec{x}\right)
-             & & \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
+             & & \exp\left(\imath \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
             \mathrm{d}x_1 \\
-             & & & \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
+             & & & \exp\left(\imath \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
             \mathrm{d}x_2 \\
-             & & & \exp\left(i \omega \left(t_{3,3} x_3^2 \right) \right)
+             & & & \exp\left(\imath \omega \left(t_{3,3} x_3^2 \right) \right)
             \mathrm{d}x_3 \,.
 \end{alignedat}
 \end{equation}
@@ -700,7 +700,7 @@ Beginning with the inner most one, we can resolve these onion-like
 nested integrals one by one. From:
 \begin{equation}
  \int_{-\infty}^{\infty} f\left(\vec{x}\right)
-   \exp\left(i \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
+   \exp\left(\imath \omega \left(t_{1,1} x_1^2 + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3\right) \right)
  \mathrm{d}x_1
 \end{equation}
 we find the relevant oscillator $g_1(x_1, x_2, x_3)$ to be:
@@ -715,12 +715,12 @@ Actually, $x_i^{*}$ is not a \emph{point}.
 It depends on $x_{i+1}$ up to $x_N$, so $x_i^{*}$ is rather a $N-i$
 dimensional object.} of $g_1$. The path equation then is:
 \begin{equation}
-  g_1\left(h_1(\tau_1)\right) = g_1\left(x_1^{*}\right) + i \tau_1
+  g_1\left(h_1(\tau_1)\right) = g_1\left(x_1^{*}\right) + \imath \tau_1
 \end{equation}
 which, expanded out, is:
 \begin{gather}
-  t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 = k_1(x_2, x_3) + i \tau_1 \\
-  t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 - k_1(x_2, x_3) - i \tau_1 = 0 \,.
+  t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 = k_1(x_2, x_3) + \imath \tau_1 \\
+  t_{1,1} h_1^2 + t_{1,2} h_1 x_2 + t_{1,3} h_1 x_3 - k_1(x_2, x_3) - \imath \tau_1 = 0 \,.
 \end{gather}
 
 Since the expression $g_1\left(x_1^{*}\right)$ depends parametrically on
@@ -735,7 +735,7 @@ Note that, at this point $h_1$ still depends on $x_2$ and $x_3$.
 Transforming the integrand of this first integral we find:
 \begin{equation*}
  i_1\left(\tau_1, x_2, x_3\right) := f\left(h_1(\tau_1, x_2, x_3), x_2, x_3\right)
-                                     \exp\left(i \omega k_1\left(x_2, x_3\right) \right)
+                                     \exp\left(\imath \omega k_1\left(x_2, x_3\right) \right)
                                      \exp\left(- \omega \tau_1 \right)
                                      \pdiff{h_1\left(\tau_1, x_2, x_3\right)}{\tau_1}
 \end{equation*}
@@ -743,21 +743,21 @@ and for the integral itself:
 \begin{equation*}
 \begin{split}
   I_1\left(x_2, x_3\right) & = \int_0^{\infty} i_1\left(\tau_1, x_2, x_3\right) \mathrm{d}\tau_1 \\
-                           & = \exp\left(i \omega \,k_1\!\left(x_2, x_3\right) \right)
+                           & = \exp\left(\imath \omega \,k_1\!\left(x_2, x_3\right) \right)
                                \int_0^{\infty} f\left(h_1(\tau_1, x_2, x_3), x_2, x_3\right)
                                                \exp\left(- \omega \tau_1 \right)
                                                \pdiff{h_1\left(\tau_1, x_2, x_3\right)}{\tau_1}
                                \mathrm{d}\tau_1 \,.
 \end{split}
 \end{equation*}
-We pull out the prefactor $\exp\left(i \omega \,k_1\!\left(x_2, x_3\right) \right)$
+We pull out the prefactor $\exp\left(\imath \omega \,k_1\!\left(x_2, x_3\right) \right)$
 constant with respect to $x_1$ and call it $p_1\left(x_2, x_3\right)$.
 Then we continue with the second integral where we have to merge parts of
 $p_1$ into $g_2$ (we will show the details later):
 \begin{equation}
   \int_{-\infty}^{\infty} I_1\left(x_2, x_3\right)
-                          \exp\left(i \omega \,k_1\!\left(x_2, x_3\right) \right)
-                          \exp\left(i \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
+                          \exp\left(\imath \omega \,k_1\!\left(x_2, x_3\right) \right)
+                          \exp\left(\imath \omega \left(t_{2,2} x_2^2 + t_{2,3} x_2 x_3\right) \right)
   \mathrm{d}x_2 \,.
 \end{equation}
 The oscillator is given now by:
@@ -766,21 +766,21 @@ The oscillator is given now by:
 \end{equation}
 and depends parametrically on $x_3$. For the path we have:
 \begin{equation}
-  g_2\left(h_2(\tau_2)\right) = g_2\left(x_2^{*}\right) + i \tau_2
+  g_2\left(h_2(\tau_2)\right) = g_2\left(x_2^{*}\right) + \imath \tau_2
 \end{equation}
 which in turn can be resolved to:
 \begin{equation}
-  t_{2,2} h_2^2 + t_{2,3} h_2 x_3 + k_1(h_2, x_3) = k_2(x_3) + i \tau_2
+  t_{2,2} h_2^2 + t_{2,3} h_2 x_3 + k_1(h_2, x_3) = k_2(x_3) + \imath \tau_2
 \end{equation}
 and then:
 \begin{equation}
-  t_{2,2} h_2^2 + t_{2,3} h_2 x_3 + k_1(h_2, x_3) - k_2(x_3) - i \tau_2 = 0 \,.
+  t_{2,2} h_2^2 + t_{2,3} h_2 x_3 + k_1(h_2, x_3) - k_2(x_3) - \imath \tau_2 = 0 \,.
 \end{equation}
 Using this path $h_2$ obtained from solving the quadratic
 path equation we get the new integrand as:
 \begin{equation}
   i_2\left(\tau_2, x_3\right) := I_1\left(h_2(\tau_2, x_3), x_3\right)
-                                 \exp\left(i \omega \,k_2\!\left(x_3\right) \right)
+                                 \exp\left(\imath \omega \,k_2\!\left(x_3\right) \right)
                                  \exp\left(- \omega \tau_2 \right)
                                  \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2} \,.
 \end{equation}
@@ -788,19 +788,19 @@ And then in turn we write for the integral:
 \begin{equation*}
 \begin{split}
   I_2\left(x_3\right) & = \int_0^{\infty} i_2\left(\tau_2, x_3\right) \mathrm{d}\tau_2 \\
-                      & = \exp\left(i \omega \,k_2\!\left(x_3\right) \right)
+                      & = \exp\left(\imath \omega \,k_2\!\left(x_3\right) \right)
                           \int_0^{\infty} I_1\left(h_2(\tau_2, x_3), x_3\right)
                                           \exp\left(- \omega \tau_2 \right)
                                           \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2}
                           \mathrm{d}\tau_2 \,.
 \end{split}
 \end{equation*}
-where we pull out $p_2 \assign \exp\left(i \omega k_2\left(x_3\right) \right)$.
+where we pull out $p_2 \assign \exp\left(\imath \omega k_2\left(x_3\right) \right)$.
 For the third and outer-most integral we can write:
 \begin{equation}
   \int_{-\infty}^{\infty} I_2\left(x_3\right)
-                          \exp\left(i \omega k_2\left(x_3\right) \right)
-                          \exp\left(i \omega t_{3,3} x_3^2\right)
+                          \exp\left(\imath \omega k_2\left(x_3\right) \right)
+                          \exp\left(\imath \omega t_{3,3} x_3^2\right)
   \mathrm{d}x_3 \,.
 \end{equation}
 Once more, we first extract the oscillator expression:
@@ -810,22 +810,22 @@ Once more, we first extract the oscillator expression:
 The corresponding path equation is:
 \begin{equation}
 \begin{split}
-  g_3\left(h_3\left(\tau_3\right)\right) & = g_3(x_3^{*}) + i \tau_3 \\
-  t_{3,3} h_3^2 + k_2(h_3) & = k_3 + i \tau_3 \\
-  t_{3,3} h_3^2 + k_2(h_3) - k_3 - i \tau_3 & = 0 \,.
+  g_3\left(h_3\left(\tau_3\right)\right) & = g_3(x_3^{*}) + \imath \tau_3 \\
+  t_{3,3} h_3^2 + k_2(h_3) & = k_3 + \imath \tau_3 \\
+  t_{3,3} h_3^2 + k_2(h_3) - k_3 - \imath \tau_3 & = 0 \,.
 \end{split}
 \end{equation}
 Note that the variable $k_3$ does not depend on any $x_i$ anymore.
 With the solution $h_3$ our integrand reads:
 \begin{equation}
- i_3\left(\tau_3\right) := I_2\left(h_3(\tau_3)\right) \exp\left(i \omega k_3 \right)
+ i_3\left(\tau_3\right) := I_2\left(h_3(\tau_3)\right) \exp\left(\imath \omega k_3 \right)
                            \exp\left(- \omega \tau_3 \right) \pdiff{h_3\left(\tau_3\right)}{\tau_3}
 \end{equation}
 and the integral becomes:
 \begin{equation}
 \begin{split}
   I_3 & = \int_0^{\infty} i_3\left(\tau_3\right) \mathrm{d}\tau_3 \\
-      & = \exp\left(i \omega k_3\right)
+      & = \exp\left(\imath \omega k_3\right)
           \int_0^{\infty} I_2\left(h_3(\tau_3)\right)
                           \exp\left(- \omega \tau_3 \right)
                           \pdiff{h_3\left(\tau_3\right)}{\tau_3}
@@ -969,12 +969,12 @@ To begin with, the full path equation including all dependencies for the
 oscillator $g_i$ and the corresponding path $h_i$ reads:
 \begin{equation*}
   g_i\left(h_i\left(p_i, x_{i+1}, \ldots, x_N\right), x_{i+1}, \ldots, x_N\right)
-  = g_i\left(x_i^{*}\left(x_{i+1}, \ldots, x_N\right), x_{i+1}, \ldots, x_N\right) + i p_i \,.
+  = g_i\left(x_i^{*}\left(x_{i+1}, \ldots, x_N\right), x_{i+1}, \ldots, x_N\right) + \imath p_i \,.
 \end{equation*}
 Keeping only the most important dependencies we drop the dependence
 of $g_i$, $h_i$ and $x_i^{*}$ on $x_j$ for $j>i$ and simply write:
 \begin{equation} \label{eq:general_path_eqn}
-  g_i\left(h_i\left(p_i\right)\right) = g_i\left(x_i^*\right) + i p_i \,.
+  g_i\left(h_i\left(p_i\right)\right) = g_i\left(x_i^*\right) + \imath p_i \,.
 \end{equation}
 Expanding the left hand side by using \eqref{eq:general_partial_gi} we find:
 \begin{equation}
@@ -991,7 +991,7 @@ combining both sides one obtains:
   +
   h_i \underbrace{\sum_{j=i+1}^{N} t_{i,j} x_j}_{B}
   +
-  \underbrace{\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - i p_i}_{C}
+  \underbrace{\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - \imath p_i}_{C}
   = 0 \,.
 \end{equation}
 What we got is a simple quadratic equation for the path $h_i$.
@@ -1007,17 +1007,17 @@ The discriminant seems to be complicated at the first sight:
 \begin{split}
   \Delta & = B^2 - 4 A C
   = \left(\sum_{j=i+1}^{N} t_{i,j} x_j\right)^2
-    - 4 t_{i,i} \left(\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - i p_i\right) \\
+    - 4 t_{i,i} \left(\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - \imath p_i\right) \\
   & = \left(\sum_{j=i+1}^{N} t_{i,j} x_j\right)^2
       - 4 t_{i,i} \frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2
-      + 4 t_{i,i} i p_i \\
-  & = 4 t_{i,i} i p_i
+      + 4 t_{i,i} \imath p_i \\
+  & = 4 t_{i,i} \imath p_i
 \end{split}
 \end{equation}
 but actually it is surprisingly simple!
 For the complete path we then get:
 \begin{equation}
-  h_i = \frac{-\sum_{j=i+1}^{N} t_{i,j} x_j \pm \sqrt{4 t_{i,i} i p_i}}
+  h_i = \frac{-\sum_{j=i+1}^{N} t_{i,j} x_j \pm \sqrt{4 t_{i,i} \imath p_i}}
              {2 t_{i,i}}
 \end{equation}
 which transforms into a nicer version:
@@ -1025,7 +1025,7 @@ which transforms into a nicer version:
 \boxed{
   h_i\left(p_i, x_{i+1}, \ldots, x_N\right)
   =
-  \pm \sqrt{\frac{i p_i}{t_{i,i}}}
+  \pm \sqrt{\frac{\imath p_i}{t_{i,i}}}
   -\frac{1}{2 t_{i,i}} \sum_{j=i+1}^{N} t_{i,j} x_j
   \,.
 }
@@ -1040,8 +1040,8 @@ In a next step we can now easily compute the derivative of any path:
 \begin{split}
   \pdiff{h_i}{p_i}
   & = \pdiff{}{p_i}
-      \left(\pm \sqrt{\frac{i p_i}{t_{i,i}}} -\frac{1}{2 t_{i,i}} \sum_{j=i+1}^{N} t_{i,j} x_j\right) \\
-  & = \pm \pdiff{}{p_i} \sqrt{\frac{i p_i}{t_{i,i}}}
+      \left(\pm \sqrt{\frac{\imath p_i}{t_{i,i}}} -\frac{1}{2 t_{i,i}} \sum_{j=i+1}^{N} t_{i,j} x_j\right) \\
+  & = \pm \pdiff{}{p_i} \sqrt{\frac{\imath p_i}{t_{i,i}}}
 \end{split}
 \end{equation}
 and find this simple expression:
@@ -1117,7 +1117,7 @@ in Algorithm \ref{al:precompose_paths}.
   \label{al:precompose_paths}
   \begin{algorithmic}
     \ForAll {$i \in [N, N-1, \ldots, 1]$}
-      \State {$h_i = \sqrt{\frac{i p_i}{t_{i,i}}}$}
+      \State {$h_i = \sqrt{\frac{\imath p_i}{t_{i,i}}}$}
       \ForAll {$j \in [i+1, \ldots, N]$}
         \State {$h_i = h_i - \frac{t_{i,j}}{2 t_{i,i}} h_j$}
       \EndFor
@@ -1136,7 +1136,7 @@ In the first step, we completely denest the integral from
 We start with the inner-most integrand (note that we already
 have split the oscillator):
 \begin{equation}
-  i_1\left(x_1,\ldots,x_N\right) \assign f\left(\vec{x}\right) \exp\left(i\omega g_1\left(x_1,\ldots,x_N\right)\right)
+  i_1\left(x_1,\ldots,x_N\right) \assign f\left(\vec{x}\right) \exp\left(\imath \omega g_1\left(x_1,\ldots,x_N\right)\right)
 \end{equation}
 and compute its integral as:
 \begin{equation}
@@ -1145,7 +1145,7 @@ and compute its integral as:
 Then we continue with the second shell:
 \begin{equation}
 \begin{split}
-  i_2\left(x_2,\ldots,x_N\right) & \assign I_1\left(x_2,\ldots,x_N\right) \exp\left(i\omega g_2\left(x_2,\ldots,x_N\right)\right) \\
+  i_2\left(x_2,\ldots,x_N\right) & \assign I_1\left(x_2,\ldots,x_N\right) \exp\left(\imath \omega g_2\left(x_2,\ldots,x_N\right)\right) \\
   I_2\left(x_3,\ldots,x_N\right) & = \int_{-\infty}^\infty i_2\left(x_2,\ldots,x_N\right) \mathrm{d}x_2 \,.
 \end{split}
 \end{equation}
@@ -1153,7 +1153,7 @@ This process continues recursively until no more integration
 variables are left:
 \begin{equation}
 \begin{split}
-  i_N\left(x_N\right) & \assign I_{N-1}\left(x_N\right) \exp\left(i\omega g_N\left(x_N\right)\right) \\
+  i_N\left(x_N\right) & \assign I_{N-1}\left(x_N\right) \exp\left(\imath \omega g_N\left(x_N\right)\right) \\
   I_N\left(\right)    & = \int_{-\infty}^\infty i_N\left(x_N\right) \mathrm{d}x_N \,.
 \end{split}
 \end{equation}
@@ -1172,14 +1172,14 @@ $g_i\left(h_i\right)$ is constant and for the composition we have:
 \begin{equation}
   g_i\left(h_i\left(p_i, x_{i+1},\ldots,x_N\right)\right)
   = k_i\left(x_{i+1},\ldots,x_N\right)
-  + i p_i \,.
+  + \imath p_i \,.
 \end{equation}
 Plugging this into the exponential yields:
 \begin{equation}
 \begin{split}
-  \exp\left(i\omega g_i\left(x_i,\ldots,x_N\right)\right)
-  & = \exp\left(i\omega \left(k_i\left(x_{i+1},\ldots,x_N\right) + i p_i\right)\right) \\
-  & = \exp\left(i\omega k_i\left(x_{i+1},\ldots,x_N\right)\right)
+  \exp\left(\imath \omega g_i\left(x_i,\ldots,x_N\right)\right)
+  & = \exp\left(\imath \omega \left(k_i\left(x_{i+1},\ldots,x_N\right) + \imath p_i\right)\right) \\
+  & = \exp\left(\imath \omega k_i\left(x_{i+1},\ldots,x_N\right)\right)
       \exp\left(- \omega p_i\right)
 \end{split}
 \end{equation}
@@ -1198,7 +1198,7 @@ to make a variable transformation going from $x_i$ to $p_i$. The first
 integral $I_i^{(1)}[h_i^{+}]$ therefore reads:
 \begin{multline}
   I_i^{(1)}[h_i^{+}]\left(x_{i+1},\ldots,x_N\right) =
-  \exp\left(i\omega k_i\left(x_{i+1},\ldots,x_N\right)\right)
+  \exp\left(\imath \omega k_i\left(x_{i+1},\ldots,x_N\right)\right)
   \\
   \cdot
   \int_0^\infty
@@ -1318,7 +1318,7 @@ rules.
 \subsection{Handling oscillatory prefactors}
 
 
-The prefactor term $P_i \assign \exp\left(i\omega k_i\left(x_{i+1},\ldots,x_N\right)\right)$
+The prefactor term $P_i \assign \exp\left(\imath \omega k_i\left(x_{i+1},\ldots,x_N\right)\right)$
 appearing in the integral $I_i$ is oscillatory. Hence the next
 enclosing integral is again of oscillatory type and therefore we
 have to merge the factor $P_i$ with the next-level oscillator
