@@ -47,7 +47,7 @@
 Consider smooth functions $f(\vec{x})$ and $g(\vec{x})$ with $\vec{x} \in \mathbb{R}^N$,
 we compute the integral:
 
-\begin{equation} \label{eq:hoi}
+\begin{equation}\label{eq:hoi}
  I := \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty}
       f(\vec{x}) \, \exp(\imath \omega g(\vec{x}))
       \, \mathrm{d} \vec{x}
@@ -59,7 +59,7 @@ Usually one calls the function $g$ the \emph{oscillator} and the function $f$ th
 \emph{amplitude} or \emph{envelope}.
 
 Computing the integral above by direct standard numerical quadrature schemes
-would look like depicted in Figure \ref{fig:transformation_chain_1} where we apply a
+would look like depicted in Figure~\ref{fig:transformation_chain_1} where we apply a
 suitable quadrature rule, in our specific case Gauss-Hermite rules, directly to the
 integral $I$. Since our interests stem from quantum mechanics, we anticipate the
 integrand in $I$ being composed of wavepackets $\phi$ and
@@ -81,9 +81,9 @@ kind of integrals and obtain mathematically correct results.
 The theory of \emph{numerical steepest descent} was developed about ten
 years ago exactly for these integrals. For more details on the mathematical theory
 see the work by Huybrechs, Vandewalle and others. The main technique
-is described in \cite{HV_hoq} for the one-dimensional case and in \cite{HV_cub}
-for multivariate integrands. Semi-finite intervals appear in \cite{H_nsd_sii}.
-Other bits and pieces can be found in \cite{AH_cgq} and \cite{AH_cgq_it}.
+is described in~\cite{HV_hoq} for the one-dimensional case and in~\cite{HV_cub}
+for multivariate integrands. Semi-finite intervals appear in~\cite{H_nsd_sii}.
+Other bits and pieces can be found in~\cite{AH_cgq} and~\cite{AH_cgq_it}.
 
 In this text we will concentrate on the application of this theory on
 the computation of some overlap integrals from quantum mechanics.
@@ -96,7 +96,7 @@ Semiclassical wavepackets in $D$ dimensions are constructed from a groundstate:
 \begin{align*}
   \phi_{\vec{0}}\left(\vec{x}\right)
   =
-  (\pi\varepsilon^2)^{-\frac{D}{4}} (\det\mat{Q})^{-\frac{1}{2}}
+  {(\pi\varepsilon^2)}^{-\frac{D}{4}} {(\det\mat{Q})}^{-\frac{1}{2}}
   \exp \left( \frac{\imath}{2\varepsilon^2}
   \dotp{(\vec{x}-\vec{q})}{\mat{P}\mat{Q}\inv(\vec{x}-\vec{q})}
   + \frac{\imath}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
@@ -116,8 +116,8 @@ Implied by these constraints, the matrix $\mat{P}\mat{Q}\inv$ is complex symmetr
 (but not Hermitian) and has positive definite imaginary part.
 We collect all these parameters in the set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
 Further there is the semiclassical scaling parameter $1 \gg \varepsilon > 0$.
-For many more details describing these wavepackets, see \cite{H_ladder_operators}
-and \cite{B_master_thesis}.
+For many more details describing these wavepackets, see~\cite{H_ladder_operators}
+and~\cite{B_master_thesis}.
 What matters most here is, that each wavepacket $\phi$ is of the form:
 \begin{equation}
   \phi[\Pi](\vec{x}) \sim p\left(\vec{x}\right)
@@ -125,7 +125,7 @@ What matters most here is, that each wavepacket $\phi$ is of the form:
 \end{equation}
 with $p(\vec{x})$ a multivariate polynomial.
 This form is sufficient for the steepest descent technique to be applicable.
-Indeed, comparing to the integrand in \eqref{eq:hoi},
+Indeed, comparing to the integrand in~\eqref{eq:hoi},
 we find that $\omega = \frac{1}{\varepsilon^2}$ which means that the oscillator
 frequency increases very fast for small scaling parameters $\varepsilon$.
 The steepest descent method which we will look at in the next section becomes
@@ -139,7 +139,7 @@ the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of 
 \end{equation}
 We are interested in overlap integrals\footnote{For one-dimensional wavepackets there
 exists an exact formula which is very expensive to evaluate numerically, see the original work
-\cite{H_R_quantization_rules} and \cite{B_bachelor_thesis} for compatible notation.} like
+\cite{H_R_quantization_rules} and~\cite{B_bachelor_thesis} for compatible notation.} like
 $\dotp{\phi_k}{\phi_l}$. These integrals become even more difficult in case the parameters
 sets $\Pi_k$ and $\Pi_l$ differ. In any case the integral is still of the same oscillatory
 structure like a single wavepacket:
@@ -164,7 +164,7 @@ structure like a single wavepacket:
 The next step to take is to combine both oscillators $g_k$ and $g_l$ into a
 single one such that we get back a formal expression like the one in
 \eqref{eq:hoi} we started with. But first we would like to
-show in Figure \ref{fig:overlap_example} a concrete example of how the
+show in Figure~\ref{fig:overlap_example} a concrete example of how the
 wavepackets involved and the integrand look like.
 
 \begin{figure}[h!]
@@ -296,7 +296,7 @@ normal form
 % $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c$
 $g(\vec{x}) = \vec{x}\H \mat{A} \vec{x} + \vec{b}\T \vec{x} + c$
 where careful computation gives:
-\begin{equation} \label{eq:combined_oscillators}
+\begin{equation}\label{eq:combined_oscillators}
 \begin{split}
   \mat{A} & = \frac{1}{2} \left(\mat{\Gamma_l} - \mat{\Gamma_k}\H \right) \\
 %   \vec{b} & = \left(\frac{1}{2} \left(
@@ -362,15 +362,15 @@ asymptotic behavior for $\omega \rightarrow \infty$. In our setting
 this parameter $\omega$ has a fixed and finite value.
 Finally there is the domain of integration denoted by $\Omega \subset \mathbb{R}^N$.
 In the theory shown so far this is a bounded subset of $\mathbb{R}^N$.
-Figure \ref{fig:oscillatory_example_2d} shows a particular
+Figure~\ref{fig:oscillatory_example_2d} shows a particular
 example of such a nasty integrand.
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.6\linewidth]{fig/oscillatory_example_2d.png}
   \caption{Oscillatory integrand of the integral
-  $\int_{-2}^3 \int_{-2}^3 \frac{e^{5 \imath (x^2-x y-y^2)}}{1 + (x+y)^2} \di{x} \di{y}  $
-  with envelope $f(x,y) = \frac{1}{1 + (x+y)^2}$ and a quadratic oscillator
+  $\int_{-2}^3 \int_{-2}^3 \frac{e^{5 \imath (x^2-x y-y^2)}}{1 + {(x+y)}^2} \di{x} \di{y}  $
+  with envelope $f(x,y) = \frac{1}{1 + {(x+y)}^2}$ and a quadratic oscillator
   $g(x,y) = x^2 - x y - y^2$ at low frequency of $\omega = 5$.}
   \label{fig:oscillatory_example_2d}
 \end{figure}
@@ -398,7 +398,7 @@ transformation $z = h(\tau)$ such that the \emph{real} part of $g(z)$
 is constant. In a second step we then apply Cauchy's Theorem for contour
 integrals along the path $h(\tau)$.
 
-Let us look again at the plot in Figure \ref{fig:oscillatory_example_2d}
+Let us look again at the plot in Figure~\ref{fig:oscillatory_example_2d}
 and ask the question in which regions of $\Omega$ the integrand contributes most
 to the value of the integral. By intuition one would say, at least asymptotically
 for $\omega \rightarrow \infty$, that oscillations in the integrand generally approximately
@@ -413,14 +413,14 @@ $\mathbb{R}^N$.
 
 In the following we briefly consider the one-dimensional integral over the interval
 $[a,b]$ and walk through the major steps involved in the procedure. We can find all
-stationary points $\{x_{j}^{*}\}_{j}$ from equating the gradient to zero (assuming
+stationary points ${\{x_{j}^{*}\}}_{j}$ from equating the gradient to zero (assuming
 the equation is indeed solvable):
 \begin{equation}
   \nabla_{x} \, g(x) = 0 \,.
 \end{equation}
 The set of contributing points is then:
 \begin{equation}
-  \Theta := \{a, b\} \cup \{x^{*}_j\}_j \,.
+  \Theta := \{a, b\} \cup {\{x^{*}_j\}}_j \,.
 \end{equation}
 Next, we set up the so called \emph{path equation} to compute the coordinate
 transformation $h(\tau)$ or equivalently the path of integration. This has to
@@ -434,7 +434,7 @@ In case of multi-valued inverses of $g$ at the point $\xi$ it can happen that
 $h_\xi(0) \neq \xi$. With $g (x)= x^2$ and $\xi = 3$ we find $h_3(\tau) = \pm \sqrt{9+\imath\tau}$
 and $h_3(0) = \pm 3 \neq 3$.}
 and parametrised by $\tau \in \mathbb{R}_0^{+}$.
-Refer to Figure \ref{fig:nsd_path_example} for a simple example having only a single
+Refer to Figure~\ref{fig:nsd_path_example} for a simple example having only a single
 stationary point.
 
 \begin{figure}
@@ -460,16 +460,16 @@ Then we have to make sure that the outgoing path of one stationary point
 and the incoming of the next one will lead to the same \emph{valley}. This guarantees
 that we can concatenate all paths in the end and obtain a closed contour for integration.
 We will not bother too much with these details as they are not relevant for our problem.
-Many more details can be found in the original papers \cite{HV_hoq} and \cite{HV_cub} by
+Many more details can be found in the original papers~\cite{HV_hoq} and~\cite{HV_cub} by
 Huybrechs and Vandewalle. If the path equation can not be solved analytically, not
-all is lost as it is possible to work with numerical path approximations, see \cite{AH_nsd_pa}.
+all is lost as it is possible to work with numerical path approximations, see~\cite{AH_nsd_pa}.
 By the formal structure of the semiclassical wavepackets, the path equation in our case is always
 a multivariate quadratic form which we can solve explicitly.
 
 Now it is time to assemble the parts. For each path attached at a point $\xi \in \Theta$
 we perform the transformation $x \mapsto h_{\xi}(\tau)$. Doing this change of variable
 will give a bunch of new integrals, one or two for each $\xi$:
-\begin{equation} \label{eq:single_path_integral}
+\begin{equation}\label{eq:single_path_integral}
 \begin{split}
   J[\xi] & := e^{\imath \omega g(\xi)}
               \int_{0}^{\infty}
@@ -486,7 +486,7 @@ will give a bunch of new integrals, one or two for each $\xi$:
 \end{split}
 \end{equation}
 We continue by applying Cauchy's theorem:
-\begin{equation} \label{eq:cauchy}
+\begin{equation}\label{eq:cauchy}
       I = e^{\imath \omega g(a)} J[a]
         + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
         - e^{\imath \omega g(b)} J[b]
@@ -498,10 +498,10 @@ be very careful, avoid crossing branch cuts and be aware of all potential poles.
 In our case there is no danger around because $f$ is simply a polynomial.
 
 Up to now we just transformed the problem, nothing more. The new task is to
-compute by quadrature all the integrals \eqref{eq:single_path_integral} and
+compute by quadrature all the integrals~\eqref{eq:single_path_integral} and
 there can be exponentially many of these in higher dimensions. For this type of
-semi-finite integrals Gauss-Laguerre quadrature with nodes $\{\gamma_k\}_{k}$
-and weights $\{w_k\}_{k}$ seems to be most appropriate:
+semi-finite integrals Gauss-Laguerre quadrature with nodes ${\{\gamma_k\}}_{k}$
+and weights ${\{w_k\}}_{k}$ seems to be most appropriate:
 \begin{equation}
   J[\xi] \approx \frac{e^{\imath \omega g(\xi)}}{\omega}
                  \sum_{k}
@@ -517,10 +517,10 @@ points.
 
 For our problem we will find that we can always glue together the two opposite
 straight line paths at the single stationary point, apply one further transformation and
-finally use Gauss-Hermite quadrature. The whole process for computing \eqref{eq:hoi}
-then looks like shown in Figure \ref{fig:transformation_chain_2}. Performing these
-transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from Figure
-\ref{fig:overlap_example} we can make the plot shown in \ref{fig:hawp_trafo_example}.
+finally use Gauss-Hermite quadrature. The whole process for computing~\eqref{eq:hoi}
+then looks like shown in Figure~\ref{fig:transformation_chain_2}. Performing these
+transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from
+Figure~\ref{fig:overlap_example} we can make the plot shown in~\ref{fig:hawp_trafo_example}.
 
 \begin{figure}
   \centering
@@ -544,22 +544,22 @@ transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from 
 
 In the last part we have walked through the very basic concepts of the numerical steepest
 descent method. Under some broad assumptions this was proven to work for finite intervals
-and an arbitrary number of real stationary points \cite{HV_hoq}. The extension into higher
-dimensions has been worked out \cite{HV_cub}.
+and an arbitrary number of real stationary points~\cite{HV_hoq}. The extension into higher
+dimensions has been worked out~\cite{HV_cub}.
 However, the state of the theory is too narrow for our setting. First we need to consider
 complex stationary points too. If such a point is near to the real line, it will influence
-the oscillator enough to become relevant. Figure \ref{fig:oscillatory_integral_complex_sp}
+the oscillator enough to become relevant. Figure~\ref{fig:oscillatory_integral_complex_sp}
 for example shows the integrand of:
-\begin{equation} \label{eq:nsd_csp_integral_example}
+\begin{equation}\label{eq:nsd_csp_integral_example}
   \int_{-2}^{2} \left(2+x^2\right) e^{50 \imath \left(\delta x + \frac{x^3}{3}\right)} \di{x}
 \end{equation}
 for different values of the parameter $\delta$. One stationary point is located on the imaginary axis
 at $x^{*} = \imath \sqrt{\delta}$ and comes close to the real line. The influence is clearly present
 for small values of $\delta$ and soon becomes negligible for larger values.
 The general advise for complex stationary points is that the contour should pass through
-this point as shown in Figure \ref{fig:oscillatory_integral_complex_sp_paths},
-see section 4.3 in \cite{HV_hoq}. This will then give an exact
-decomposition in the sense of \eqref{eq:cauchy}. It turns out this works very well for our setting.
+this point as shown in Figure~\ref{fig:oscillatory_integral_complex_sp_paths},
+see section 4.3 in~\cite{HV_hoq}. This will then give an exact
+decomposition in the sense of~\eqref{eq:cauchy}. It turns out this works very well for our setting.
 Actually, the \emph{only} thing we have is a single stationary point.
 
 \begin{figure}
@@ -574,7 +574,7 @@ Actually, the \emph{only} thing we have is a single stationary point.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\linewidth]{./fig/nsd_path_csp_figure.pdf}
-  \caption{Paths of the integral \eqref{eq:nsd_csp_integral_example}.
+  \caption{Paths of the integral~\eqref{eq:nsd_csp_integral_example}.
   The two additional paths $h_{x^{*},{\pm}}(\tau)$ go through the complex
   stationary point $x_0^{*}$. The contribution stemming from these two paths
   varies with $\delta$. For $\delta = 1$ it is $\bigO{10^{-16}}$ and the whole
@@ -586,7 +586,7 @@ Actually, the \emph{only} thing we have is a single stationary point.
 Another direction to extend the theory are infinite regions $\Omega$. In our case we will
 need $\Omega = \mathbb{R}^N$. Before we take this step, we look at semi-finite intervals.
 For semi-finite intervals $[a, \infty [$ we attach only one single path $h_a(\tau)$ an the
-finite endpoint $a$. Details are described by Majidian and can be found in \cite{H_nsd_sii}. If there
+finite endpoint $a$. Details are described by Majidian and can be found in~\cite{H_nsd_sii}. If there
 are stationary points, they can be split off into sub-problems over finite intervals.
 As an example, we look at the following integral:
 \begin{equation}
@@ -594,7 +594,7 @@ As an example, we look at the following integral:
 \end{equation}
 where we set $\omega = 2$. The path is given by the expression:
 \begin{equation}
-  h_a(\tau) = \log(1 + \imath\tau)^2 \,.
+  h_a(\tau) = {\log(1 + \imath\tau)}^2 \,.
 \end{equation}
 After the change of variables the integral takes the following ugly form:
 \begin{equation}
@@ -668,7 +668,7 @@ i.e.:
                              + t_{1,2} x_1 x_2 + t_{1,3} x_1 x_3 + t_{2,3} x_2 x_3 \,.
 \end{equation}
 The integral we want to compute is:
-\begin{equation} \label{eq:mv_original_integral}
+\begin{equation}\label{eq:mv_original_integral}
   I = \iiint_{-\infty}^{\infty} f\left(\vec{x}\right) \exp\left(\imath \omega g\left(\vec{x}\right) \right) \mathrm{d}\vec{x}
     = \iiint_{-\infty}^{\infty} i\left(x_1, x_2, x_3\right) \mathrm{d}x_1 \mathrm{d}x_2 \mathrm{d}x_3
 \end{equation}
@@ -883,7 +883,7 @@ the last section.
 Given a general, probably complex, upper triangular
 matrix $\mat{T}$ of dimension $N \times N$ we look at
 the oscillator given by:
-\begin{equation} \label{eq:triangular_oscillator}
+\begin{equation}\label{eq:triangular_oscillator}
   g\left(\vec{x}\right) = \vec{x}\H \mat{T} \vec{x} \,.
 \end{equation}
 The process of pulling out from each integral parts that do not
@@ -895,7 +895,7 @@ additive decomposition of $g$:
 At each shell $i$ of the onion we exclusively work with the
 partial oscillator $g_i$. In general the coefficients of this
 oscillator are given by the $i$-th row of $\mat{T}$:
-\begin{equation} \label{eq:general_partial_gi}
+\begin{equation}\label{eq:general_partial_gi}
 \boxed{
   g_i\left(x_i, x_{i+1}, \ldots, x_N\right)
   \assign t_{i,i} x_i^2 + \sum_{j=i+1}^{N} t_{i,j} x_i x_j \,.
@@ -920,41 +920,41 @@ The location of the stationary point is implicitly specified by:
   \dot{g}_i = 0 \,.
 \end{equation}
 Solving this equation for the stationary point $x^*_i$ explicitly we get:
-\begin{equation} \label{eq:stationary_point_xi}
+\begin{equation}\label{eq:stationary_point_xi}
 \boxed{
   x_i^*
   \assign x_i^{*}\left(x_{i+1}, \ldots, x_N\right)
-  = - \frac{ \sum_{j=i+1}^{N} t_{i,j} x_j }{ 2 t_{i,i} } \,.
+  = - \frac{\sum_{j=i+1}^{N} t_{i,j} x_j}{2 t_{i,i}} \,.
 }
 \end{equation}
 It is important to remember that at level $i$ the point $x_i^*$
 is stationary with respect to the coordinate $x_i$ but
 depends on the variables $x_{i+1}$ through $x_N$.
 
-Plugging this solution $x_i^*$ into $g_i$ from \eqref{eq:general_partial_gi}
+Plugging this solution $x_i^*$ into $g_i$ from~\eqref{eq:general_partial_gi}
 we can compute the expressions $k_i$ explicitly:
 \begin{equation*}
 \begin{split}
   g_i(x_i^*, x_{i+1}, \ldots, x_N)
   & =
-  t_{i,i} \left(
-    - \frac{ \sum_{j=i+1}^{N} t_{i,j} x_j }{ 2 t_{i,i} }
-  \right)^2
+  t_{i,i} {\left(
+    - \frac{\sum_{j=i+1}^{N} t_{i,j} x_j}{2 t_{i,i}}
+  \right)}^2
   + \sum_{j=i+1}^{N} t_{i,j} \left(
-                                   - \frac{ \sum_{k=i+1}^{N} t_{i,k} x_k }{ 2 t_{i,i} }
+                                   - \frac{\sum_{k=i+1}^{N} t_{i,k} x_k}{2 t_{i,i}}
                              \right) x_j \\
   & =
   \frac{1}{4 t_{i,i}}
-  \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2
+  {\left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)}^2
   - \frac{1}{2 t_{i,i}} \Biggl(\sum_{j=i+1}^{N} t_{i,j} x_j\Biggr) \Biggl(\sum_{k=i+1}^{N} t_{i,k} x_k\Biggr)
 \end{split}
 \end{equation*}
 and finally:
-\begin{equation} \label{eq:general_ki}
+\begin{equation}\label{eq:general_ki}
 \boxed{
   k_i\left(x_{i+1}, \ldots, x_N\right)
   \assign
-  g_i\left(x_i^*, x_{i+1}, \ldots, x_N\right) = - \frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 \,.
+  g_i\left(x_i^*, x_{i+1}, \ldots, x_N\right) = - \frac{1}{4 t_{i,i}} {\left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)}^2 \,.
 }
 \end{equation}
 
@@ -963,8 +963,8 @@ and finally:
 
 
 Central to this subsection is the path equation for $g_i$ and how to
-solve it. We will use formula \eqref{eq:general_partial_gi} in combination
-with \eqref{eq:stationary_point_xi} and \eqref{eq:general_ki} for this task.
+solve it. We will use formula~\eqref{eq:general_partial_gi} in combination
+with~\eqref{eq:stationary_point_xi} and~\eqref{eq:general_ki} for this task.
 To begin with, the full path equation including all dependencies for the
 oscillator $g_i$ and the corresponding path $h_i$ reads:
 \begin{equation*}
@@ -973,10 +973,10 @@ oscillator $g_i$ and the corresponding path $h_i$ reads:
 \end{equation*}
 Keeping only the most important dependencies we drop the dependence
 of $g_i$, $h_i$ and $x_i^{*}$ on $x_j$ for $j>i$ and simply write:
-\begin{equation} \label{eq:general_path_eqn}
+\begin{equation}\label{eq:general_path_eqn}
   g_i\left(h_i\left(p_i\right)\right) = g_i\left(x_i^*\right) + \imath p_i \,.
 \end{equation}
-Expanding the left hand side by using \eqref{eq:general_partial_gi} we find:
+Expanding the left hand side by using~\eqref{eq:general_partial_gi} we find:
 \begin{equation}
 \begin{split}
   g_i\left(h_i\right)
@@ -984,14 +984,14 @@ Expanding the left hand side by using \eqref{eq:general_partial_gi} we find:
     = t_{i,i} h_i^2 +  h_i \sum_{j=i+1}^{N} t_{i,j} x_j \,.
 \end{split}
 \end{equation}
-Using formula \eqref{eq:general_ki} for the right hand side and
+Using formula~\eqref{eq:general_ki} for the right hand side and
 combining both sides one obtains:
 \begin{equation}
   \underbrace{t_{i,i}}_{A} h_i^2
   +
   h_i \underbrace{\sum_{j=i+1}^{N} t_{i,j} x_j}_{B}
   +
-  \underbrace{\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - \imath p_i}_{C}
+  \underbrace{\frac{1}{4 t_{i,i}} {\left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)}^2 - \imath p_i}_{C}
   = 0 \,.
 \end{equation}
 What we got is a simple quadratic equation for the path $h_i$.
@@ -1006,10 +1006,10 @@ The discriminant seems to be complicated at the first sight:
 \begin{equation}
 \begin{split}
   \Delta & = B^2 - 4 A C
-  = \left(\sum_{j=i+1}^{N} t_{i,j} x_j\right)^2
-    - 4 t_{i,i} \left(\frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 - \imath p_i\right) \\
-  & = \left(\sum_{j=i+1}^{N} t_{i,j} x_j\right)^2
-      - 4 t_{i,i} \frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2
+  = {\left(\sum_{j=i+1}^{N} t_{i,j} x_j\right)}^2
+    - 4 t_{i,i} \left(\frac{1}{4 t_{i,i}} {\left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)}^2 - \imath p_i\right) \\
+  & = {\left(\sum_{j=i+1}^{N} t_{i,j} x_j\right)}^2
+      - 4 t_{i,i} \frac{1}{4 t_{i,i}} {\left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)}^2
       + 4 t_{i,i} \imath p_i \\
   & = 4 t_{i,i} \imath p_i
 \end{split}
@@ -1021,7 +1021,7 @@ For the complete path we then get:
              {2 t_{i,i}}
 \end{equation}
 which transforms into a nicer version:
-\begin{equation} \label{eq:general_path_formula}
+\begin{equation}\label{eq:general_path_formula}
 \boxed{
   h_i\left(p_i, x_{i+1}, \ldots, x_N\right)
   =
@@ -1045,7 +1045,7 @@ In a next step we can now easily compute the derivative of any path:
 \end{split}
 \end{equation}
 and find this simple expression:
-\begin{equation} \label{eq:general_path_derivative_formula}
+\begin{equation}\label{eq:general_path_derivative_formula}
 \boxed{
   \dot{h}_i \assign \pdiff{h_i\left(p_i\right)}{p_i}
   = \pm \frac{\sqrt{\imath}}{2 \sqrt{t_{i,i}}\sqrt{p_i}} \,.
@@ -1053,7 +1053,7 @@ and find this simple expression:
 \end{equation}
 It is obvious that for these formulae to be valid
 $t_{i,i}$ must never be zero.
-Formula \eqref{eq:general_path_formula} allows us now to compute explicitly
+Formula~\eqref{eq:general_path_formula} allows us now to compute explicitly
 starting with $h_N$ all the paths $h_{N-1}$, $h_{N-2}$ up to $h_1$ in
 this reversed order.
 For later usage we denote the paths resulting from this
@@ -1111,15 +1111,15 @@ this is the implicit choice.
 
 If we stack all the paths $h_i$ into a vector $\vec{h}$, then
 this composition of all paths can be done easily as shown
-in Algorithm \ref{al:precompose_paths}.
+in Algorithm~\ref{al:precompose_paths}.
 \begin{algorithm}
   \caption{Procedure for composing the path}
   \label{al:precompose_paths}
   \begin{algorithmic}
-    \ForAll {$i \in [N, N-1, \ldots, 1]$}
-      \State {$h_i = \sqrt{\frac{\imath p_i}{t_{i,i}}}$}
-      \ForAll {$j \in [i+1, \ldots, N]$}
-        \State {$h_i = h_i - \frac{t_{i,j}}{2 t_{i,i}} h_j$}
+    \ForAll{$i \in [N, N-1, \ldots, 1]$}
+      \State{$h_i = \sqrt{\frac{\imath p_i}{t_{i,i}}}$}
+      \ForAll{$j \in [i+1, \ldots, N]$}
+        \State{$h_i = h_i - \frac{t_{i,j}}{2 t_{i,i}} h_j$}
       \EndFor
     \EndFor
   \end{algorithmic}
@@ -1186,8 +1186,8 @@ Plugging this into the exponential yields:
 where the first term is still oscillatory but does not depend on $x_i$
 and the second term became exponentially decaying. Next, at stage $i$, we
 transform the whole integral $I_i$. Here we have to pay attention to the
-fact that formula \eqref{eq:general_path_formula} yields two paths $h_i^{+}$
-and $h_i^{-}$ with different signs. From the general theory in \cite{AH_cgq}
+fact that formula~\eqref{eq:general_path_formula} yields two paths $h_i^{+}$
+and $h_i^{-}$ with different signs. From the general theory in~\cite{AH_cgq}
 we know, that we have to use both and that the transformed integral $I_i$
 consists of two integrals, one for each path:
 \begin{equation}
@@ -1216,7 +1216,7 @@ This integral above is singular for $p_i \rightarrow 0$ because of
 the square root of $p_i$ in the denominator of the path derivative.
 We can fix this by the substitution $q = \sqrt{p}$, hence $p = q^2$
 and $\mathrm{d}p = 2 q \mathrm{d}q$. Applying this first to the path
-in \eqref{eq:general_path_formula} and the path derivative in
+in~\eqref{eq:general_path_formula} and the path derivative in
 \eqref{eq:general_path_derivative_formula} we obtain:
 \begin{equation}
   h_i\left(q_i, x_{i+1}, \ldots, x_N\right)
@@ -1301,7 +1301,7 @@ oscillatory and well suited for Gauss-Hermite quadrature.
 Applying the corresponding path transformation and variable substitutions
 to each of the $I_i$ and putting together the results we find at the end
 of the day:
-\begin{equation} \label{eq:transformed_integral}
+\begin{equation}\label{eq:transformed_integral}
 \boxed{
  I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
        f\left(\vec{\tilde{h}}(\vec{\tau})\right)
@@ -1325,7 +1325,7 @@ have to merge the factor $P_i$ with the next-level oscillator
 $g_{i+1}\left(x_{i+1},\ldots,x_N\right)$.
 Mathematically, this means we compute an update $\grave{g}_{i+1}$
 such that:
-\begin{equation} \label{eq:update_equation}
+\begin{equation}\label{eq:update_equation}
   \grave{g}_{i+1}\left(x_{i+1}, \ldots ,x_N\right)
   \assign g_{i+1}\left(x_{i+1}, \ldots ,x_N\right)
         + k_i\left(x_{i+1}, \ldots ,x_N\right) \,.
@@ -1338,7 +1338,7 @@ Remembering the general form of $k_i$ shown in
 \begin{equation}
 \begin{split}
   k_i(x_{i+1}, \ldots, x_N)
-  & = - \frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)^2 \\
+  & = - \frac{1}{4 t_{i,i}} {\left( \sum_{j=i+1}^{N} t_{i,j} x_j \right)}^2 \\
   & = - \frac{1}{4 t_{i,i}} \left( \sum_{j=i+1}^{N} t_{i,j}^2 x_j^2
                                + 2 \sum_{j=i+1}^{N} \sum_{k=j+1}^{N} t_{i,j} x_j t_{i,k} x_k
                             \right) \,.
@@ -1369,8 +1369,8 @@ into two groups:
          \right) \,.
 \end{split}
 \end{equation*}
-Taking now formula \eqref{eq:general_partial_gi} for $g_{i+1}$
-we can compute $\grave{g}_{i+1}$ from \eqref{eq:update_equation} as:
+Taking now formula~\eqref{eq:general_partial_gi} for $g_{i+1}$
+we can compute $\grave{g}_{i+1}$ from~\eqref{eq:update_equation} as:
 \begin{equation*}
 \begin{split}
   \grave{g}_{i+1}
@@ -1385,7 +1385,7 @@ we can compute $\grave{g}_{i+1}$ from \eqref{eq:update_equation} as:
 All terms that we decided to move out are labeled as \emph{junk} here and dealt
 with below.
 On the last line we see that we can write the partial oscillator $\grave{g}_{i+1}$
-again in the standard form from \eqref{eq:general_partial_gi}, just the
+again in the standard form from~\eqref{eq:general_partial_gi}, just the
 entries in the $i+1$-th row of the triangular matrix $\mat{T}$ have changed.
 We take into account the junk terms now. First notice that it is possible
 to split them once more into terms to keep and new junk terms:
@@ -1416,7 +1416,7 @@ rows of $\mat{T}$ below the $i$-th one.
 
 The general formulae to accomplish this update for a fixed $i$ and
 with $j > i$ and $k > j$ read:
-\begin{equation} \label{eq:matrix_update_formulae}
+\begin{equation}\label{eq:matrix_update_formulae}
 \boxed{
 \begin{aligned}
   \grave{t}_{j,j} & \assign t_{j,j} - \frac{t_{i,j}^2}{4 t_{i,i}} \\
@@ -1432,8 +1432,8 @@ handling the factor $p_{i+1}$.
 
 Starting from $\mat{T_1} \equiv \mat{T}$ we compute one after the other
 $\mat{T_2}$, $\mat{T_3}$ until $\mat{T_N}$ which is the final oscillator
-matrix. The following Figures \ref{fig:oscillator_update_T1}, \ref{fig:oscillator_update_T2}
-and  \ref{fig:oscillator_update_T3} show the flow of information during this
+matrix. The following Figures~\ref{fig:oscillator_update_T1},~\ref{fig:oscillator_update_T2}
+and~\ref{fig:oscillator_update_T3} show the flow of information during this
 step-wise updates for a schematic matrix.
 
 \begin{figure}
@@ -1469,8 +1469,8 @@ step-wise updates for a schematic matrix.
   \label{fig:oscillator_update_T3}
 \end{figure}
 
-This whole procedure is written out in pseudo code in Algorithm
-\ref{al:oscillator_update} below. For this to work the diagonal
+This whole procedure is written out in pseudo code in
+Algorithm~\ref{al:oscillator_update} below. For this to work the diagonal
 matrix elements $\mat{T}_{i,i}$ must never become zero. Otherwise
 we would divide by zero. We can interpret this failure as a
 case where the oscillator is not quadratic anymore but behaves
@@ -1480,15 +1480,15 @@ as a conic degenerated along at least one direction.
   \caption{Procedure for updating the oscillator matrix $\mat{T}$}
   \label{al:oscillator_update}
   \begin{algorithmic}
-    \ForAll {$i \in [2, 3, \ldots, N]$}
-      \State \Comment Diagonal elements
-      \ForAll {$j \in [i, i+1, \ldots, N]$}
-        \State $\mat{T}_{j,j} \assign \mat{T}_{j,j} - \frac{\mat{T}_{i,j}^2}{4 \mat{T}_{i,i}}$
+    \ForAll{$i \in [2, 3, \ldots, N]$}
+      \State{} \Comment{Diagonal elements}
+      \ForAll{$j \in [i, i+1, \ldots, N]$}
+        \State{$\mat{T}_{j,j} \assign \mat{T}_{j,j} - \frac{\mat{T}_{i,j}^2}{4 \mat{T}_{i,i}}$}
       \EndFor
-      \State \Comment Upper triangular elements
-      \ForAll {$r \in [i, i+1, \ldots, N]$}
-        \ForAll {$c \in [r+1, r+2, \ldots, N]$}
-          \State $\mat{T}_{r,c} \assign \mat{T}_{r,c} - \frac{\mat{T}_{i,r} \mat{T}_{i,c}}{2 \mat{T}_{i,i}}$
+      \State{} \Comment{Upper triangular elements}
+      \ForAll{$r \in [i, i+1, \ldots, N]$}
+        \ForAll{$c \in [r+1, r+2, \ldots, N]$}
+          \State{$\mat{T}_{r,c} \assign \mat{T}_{r,c} - \frac{\mat{T}_{i,r} \mat{T}_{i,c}}{2 \mat{T}_{i,i}}$}
         \EndFor
       \EndFor
     \EndFor
@@ -1504,7 +1504,7 @@ in this chapter.
 
 
 The quadrature rules necessary for evaluating the integral
-in \eqref{eq:transformed_integral} are the well known
+in~\eqref{eq:transformed_integral} are the well known
 classical Gauss-Hermite rules. The Gauss-Hermite quadrature
 is built to approximate integrals of the form:
 \begin{equation}
@@ -1522,7 +1522,7 @@ order $n$ are given by the roots of the Hermite polynomial $H_n(x)$
 which is defined as:
 \begin{equation}
   H_n(x) \assign \sum_{i=0}^{\lfloor\frac{n}{2}\rfloor}
-                   \frac{(-1)^i n!}{i!(n-2i)!} (2x)^{n-2i}
+                   \frac{{(-1)}^i n!}{i!(n-2i)!} {(2x)}^{n-2i}
 \end{equation}
 % \begin{equation}
 % %   L_n^{\alpha}(x) \assign \sum_{i=0}^n (-1)^i {n+\alpha \choose n-i} \frac{x^i}{i!} \,.
@@ -1533,7 +1533,7 @@ which is defined as:
 % \end{equation}
 The weights are given by the expression:
 \begin{equation}
-  \vec{w}_k \assign \frac{2^{n-1} n! \sqrt{\pi}}{n^2 \left(H_{n-1}(x_i)\right)^2}
+  \vec{w}_k \assign \frac{2^{n-1} n! \sqrt{\pi}}{n^2 {\left(H_{n-1}(x_i)\right)}^2}
 \end{equation}
 % \begin{equation}
 %   \vec{w}_k \assign
@@ -1548,7 +1548,7 @@ For multi-dimensional quadrature we can use a tensor product ansatz:
   \vec{W} = \bigotimes_{i=1}^N \vec{w_i} \,.
 \end{equation}
 Another possibility would be to use sparse Smolyak grids.
-Looking again at the full dimensional integral from \eqref{eq:transformed_integral}:
+Looking again at the full dimensional integral from~\eqref{eq:transformed_integral}:
 \begin{equation}
  I = \int_{-\infty}^\infty \cdots \int_{-\infty}^\infty
        f\left(\vec{\tilde{h}}(\vec{\tau})\right)
@@ -1580,7 +1580,7 @@ we first remove the $\omega$ from all the exponential functions:
 \end{equation*}
 and then apply the standard rule to find $Q \approx I$. At the end
 of the day, the quadrature we will use to approximate $I$ looks like:
-\begin{equation} \label{eq:final_quadrature}
+\begin{equation}\label{eq:final_quadrature}
 \boxed{
   Q \assign
   \prod_{j=1}^N \sqrt{\frac{\imath}{\omega t_{j,j}}}
@@ -1604,7 +1604,7 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 %         \cdots
 %     \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
 % \end{equation}
-% Because of the form of the path derivatives from \eqref{eq:general_path_derivative_formula}
+% Because of the form of the path derivatives from~\eqref{eq:general_path_derivative_formula}
 % with the square root in the denominator the integrand is
 % weakly singular for all $\tau_i \rightarrow 0$ in our case.
 % Therefore we use the regularizing property of the generalized
@@ -1614,15 +1614,15 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 % \subsection{Summing over paths and pieces}
 %
 %
-% Note that $I$ as in \eqref{eq:transformed_integral} and \eqref{eq:final_quadrature}
-% is not yet the full integral from \eqref{eq:mv_original_integral} we started with.
+% Note that $I$ as in~\eqref{eq:transformed_integral} and~\eqref{eq:final_quadrature}
+% is not yet the full integral from~\eqref{eq:mv_original_integral} we started with.
 % We still have to sum over $2^N$ such contributions. We neglected this fact
 % in all of the above sections in chapter. As we have seen all path equations are
 % fully quadratic with non-zero discriminant hence having two distinct solutions
 % with opposite signs.
 % Each contribution to $I$ differs then only in the combination of the signs in
 % front of all the square roots inside the paths and their derivatives. Recall formula
-% \eqref{eq:general_path_formula} and \eqref{eq:general_path_derivative_formula}
+%~\eqref{eq:general_path_formula} and~\eqref{eq:general_path_derivative_formula}
 % to see the details. Each sign is either positive or negative and hence we appear at
 % this sum:
 %
@@ -1630,7 +1630,7 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 %  I = \sum_{\vec{\sigma} \in \{-1,1\}^N} I_{\vec{\sigma}} \,.
 % \end{equation}
 %
-% where each $I_{\vec{\sigma}}$ is an expression of the form of \eqref{eq:final_quadrature}
+% where each $I_{\vec{\sigma}}$ is an expression of the form of~\eqref{eq:final_quadrature}
 % having appropriate signs.
 %
 % % \begin{equation}
@@ -1660,9 +1660,9 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 
 
 In this section we consider a more general oscillator term
-than the one from equation \eqref{eq:triangular_oscillator}.
+than the one from equation~\eqref{eq:triangular_oscillator}.
 This time we try to solve the full quadratic problem:
-\begin{equation} \label{eq:general_oscillator}
+\begin{equation}\label{eq:general_oscillator}
   g\left(\vec{x}\right) \assign \vec{x}\H \mat{A} \vec{x} + \vec{b}\H \vec{x} + c
 \end{equation}
 where we do not make any assumptions on $\mat{A} \in \mathbb{C}^{N \times N}$.
@@ -1710,7 +1710,7 @@ and finally:
   \vec{u} = - \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \,.
 \end{equation}
 With the explicit value of $u$ we can rewrite our $\chi$ in a final form:
-\begin{equation} \label{eq:transform_chi}
+\begin{equation}\label{eq:transform_chi}
 \begin{split}
  \vec{x}^{\prime} & = \chi^{-1}\left(\vec{x}\right) := \vec{x} + \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} \\
  \quad \leftrightarrow \quad
@@ -1791,7 +1791,7 @@ where we can pack all the constant terms into the definition of $c^{\prime}$:
 \end{split}
 \end{equation}
 Therefore:
-\begin{equation} \label{eq:linearless_operator}
+\begin{equation}\label{eq:linearless_operator}
   g^{\prime}\left(\vec{x}^{\prime}\right) = \vec{x}^{\prime}\H \mat{A} \vec{x}^{\prime}
 %                                            -\frac{1}{2} \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} + c
                                             + c^{\prime}
@@ -1801,10 +1801,10 @@ Therefore:
 \subsection{Triangularize the oscillator}
 
 
-Given an oscillator like \eqref{eq:linearless_operator} above
+Given an oscillator like~\eqref{eq:linearless_operator} above
 with an arbitrary matrix $\mat{A}$ of full rank. We seek a coordinate
 transformation $\rho$ that makes the matrix $\mat{A}$ (upper) triagonal.
-This is achieved by the Schur decomposition \cite{matcomp}:
+This is achieved by the Schur decomposition~\cite{matcomp}:
 \begin{equation}
  \mat{A} = \mat{U}\H \mat{T} \mat{U}
 \end{equation}
@@ -1820,7 +1820,7 @@ where:
 and the matrix $\mat{U}$ is even unitary.
 (The decomposition is not necessarily unique but this does not matter for our purpose.)
 The variable transformation is then given by the following mapping:
-\begin{equation} \label{eq:transform_rho}
+\begin{equation}\label{eq:transform_rho}
  \vec{x}^{\prime\prime} = \rho^{-1}\left(\vec{x}^{\prime}\right) := \mat{U} \vec{x}^{\prime}
  \quad \leftrightarrow \quad
  \vec{x}^{\prime} = \rho\left(\vec{x}^{\prime\prime}\right) = \mat{U}\inv \vec{x}^{\prime\prime} = \mat{U}\H \vec{x}^{\prime\prime} \,.
@@ -1866,12 +1866,12 @@ composition of $\chi$ and $\rho$:
 \end{split}
 \end{equation*}
 With the help of $\zeta$ we can transform any oscillator of
-the form \eqref{eq:general_oscillator} into a triangular
-one like shown in \eqref{eq:triangular_oscillator}.
+the form~\eqref{eq:general_oscillator} into a triangular
+one like shown in~\eqref{eq:triangular_oscillator}.
 
 In this variable transformation we need also to include
 the Jacobi determinant.
-Writing the first transformation as in \eqref{eq:transform_chi} we have:
+Writing the first transformation as in~\eqref{eq:transform_chi} we have:
 \begin{equation}
   J\chi = \pdiff{\chi\left( \vec{x}^{\prime} \right)}{\vec{x}^{\prime}} = \id
 \end{equation}
@@ -1899,8 +1899,8 @@ nothing to prove. We rely on an intelligent change of variables to obtain a tame
 non-oscillatory integral. Only the harder case for general $V(x)$ is still left open.
 Despite comprehensive numerical evidence, we would like a full proof showing the
 validity of our extension to the theory of numerical steepest descent to infinite
-intervals.\footnote{The idea was to use the work from \cite{HV_hoq}
-on finite intervals and from \cite{H_nsd_sii} on semi-finite intervals
+intervals.\footnote{The idea was to use the work from~\cite{HV_hoq}
+on finite intervals and from~\cite{H_nsd_sii} on semi-finite intervals
 to construct a solution for infinite intervals by gluing together three regions,
 one finite and two semi-finite ones. It turned out that the proof
 given in the latter reference is flawed. As is stands now we can not even assume
@@ -1908,7 +1908,7 @@ the semi-finite part to be correct.}
 
 The next question is about the correct handling of stationary points since our
 single stationary point $x^{*}$ is in general complex. There are some comments on
-that situation in the original reference \cite{HV_hoq}. The central observation made
+that situation in the original reference~\cite{HV_hoq}. The central observation made
 there is that the integration path should pass through the stationary point even if
 it is abroad in the complex plane. In our implementation we shift the whole oscillator
 such that $x^{*} = 0$. Having this point is essential for the reason that we need to
@@ -1920,8 +1920,8 @@ degree of the polynomial part of any wavepacket $\phi$. The Hermite polynomials
 stay in the envelope part $f$ and are not treated by numerical steepest descent which
 targets only the oscillator $g$ explicitly. In case of high degrees, the polynomials
 themselves become rapidly oscillatory and we end up with another oscillatory integral,
-this time \emph{not} of a form like \eqref{eq:hoi} where a steepest descend transformation
-is applicable. Figure \ref{fig:polynomials_oscillations} shows a typical example of
+this time \emph{not} of a form like~\eqref{eq:hoi} where a steepest descend transformation
+is applicable. Figure~\ref{fig:polynomials_oscillations} shows a typical example of
 such a polynomial oscillatory integrand.
 
 \begin{figure}[h!]
@@ -1939,7 +1939,7 @@ In the end, the values $k$ and $l$ set the lower bound on the number of Gauss-He
 quadrature nodes that we have to use for correct integration. This is very unfortunate
 and can diminish the gain in number of nodes obtained through the steepest descent
 transformation. However, with modern algorithms it is easily possible to compute
-Gaussian quadrature with hundreds or even thousands of quadrature points \cite{GLR,TTS}.
+Gaussian quadrature with hundreds or even thousands of quadrature points~\cite{GLR,TTS}.
 This makes the problem accessible for direct computation. Some work in this direction
 will be shown in a future report.
 
@@ -1948,7 +1948,7 @@ of what we did so far. Rewriting the Hermite polynomials into their integral for
 \begin{equation*}
   \operatorname{H}_n(x) =
   \frac{\exp\left(\frac{3\pi \imath n}{2}\right) 2^n}{\sqrt{\pi}}
-  \int_{-\infty}^{\infty} t^n e^{-(t - \imath x)^2} \di{t}
+  \int_{-\infty}^{\infty} t^n e^{-{(t - \imath x)}^2} \di{t}
 \end{equation*}
 does not solve the problem as there is still a troublesome factor $t^n$.
 If we would apply the steepest descent transformation to this integral, computing
@@ -1989,7 +1989,7 @@ $\Pi \approx \Pi^{\prime}$.
 
 The initial motivation for this research originates from the computation of autocorrelations
 of wavepackets $\Psi$ like:
-\begin{equation} \label{eq:compute_ac_wavepackets}
+\begin{equation}\label{eq:compute_ac_wavepackets}
   I = \Braket{\Psi[\Pi] | \Psi[\Pi^{\prime}]}
     = \idotsint_{\mathbb{R}^{D}} \conj{\Psi[\Pi]} \Psi[\Pi^{\prime}] \mathrm{d}\vec{x} \,.
 \end{equation}
@@ -2002,7 +2002,7 @@ non-physical correlations.
 
 For example we studied the time-dependent Schr\"odinger equation with a wave\-packet $\Psi$
 propagating in a Morse potential $V(x)$. The potential was fit to experimental data which
-are taken from \cite{SIZ_hg2}. The semiclassical scaling parameter $\varepsilon = 0.048360$
+are taken from~\cite{SIZ_hg2}. The semiclassical scaling parameter $\varepsilon = 0.048360$
 representing mass ratio between nuclei and electrons matches the nuclear dynamics of the
 mercury compound \ce{Hg2}.
 
@@ -2017,27 +2017,27 @@ mercury compound \ce{Hg2}.
 \end{figure}
 
 Gauss-Hermite quadrature with any number of nodes shows high spurious autocorrelation bumps,
-compare to Figure \ref{fig:ac_mercurial_morse}. Using the steepest descent transformation
+compare to Figure~\ref{fig:ac_mercurial_morse}. Using the steepest descent transformation
 before applying a quadrature scheme gives correct results for an even smaller number of nodes.
 
 In the following we will perform a number of different numerical simulations and show
 the robustness as well as pleasant convergence properties of this new technique.
 All simulations shown here were carried out by our implementation in the \texttt{WaveBlocks}
-simulation code \cite{waveblocksnd}.
+simulation code~\cite{waveblocksnd}.
 
 
 \subsection{Two-Packet Experiment}
 
 
 In this section we show the insufficiency of the Gauss-Hermite quadrature
-for computing the integral in \eqref{eq:compute_ac_wavepackets}. The setup
+for computing the integral in~\eqref{eq:compute_ac_wavepackets}. The setup
 of this experiment consists of two wavepackets $\phi[\Pi]$ and $\phi[\Pi^\prime]$.
 Both are fixed in space at positions $q$ and $q^\prime$. Next we direct the
 momenta $p$ and $p^\prime$ towards each other ($p^\prime = -p$) and start
 increasing their magnitude $|p|$. (Note that for all figures below, the values
 of the $p$ axis are multiplicative factors on top of the wavepacket' original
 values $p$ and $p^\prime$.)
-The procedure is shown also in Figure \ref{fig:convergence_setup}.
+The procedure is shown also in Figure~\ref{fig:convergence_setup}.
 
 \begin{figure}[h!]
   \centering
@@ -2063,13 +2063,13 @@ the formula for general Gaussian integrals in case we look at ground states
 $\phi_{\vec{0}}$ only. Otherwise we take the computation including the steepest
 descent transformation using the largest number of quadrature nodes as reference.
 
-The whole process of computing the integral works as shown in the Figure
-\ref{fig:transformation_chain_2}. Especially in the multi-dimensional case
+The whole process of computing the integral works as shown in the
+Figure~\ref{fig:transformation_chain_2}. Especially in the multi-dimensional case
 we still need a full tensor product of $N$ Gauss-Hermite quadrature nodes in the end.
 This results in $N^D$ quadrature nodes, which scales exponentially with the
 dimension $D$. The important bit is however that the value of $N$ is \emph{much}
 smaller compared to direct application of traditional quadrature schemes as done
-in \ref{fig:transformation_chain_1}.
+in~\ref{fig:transformation_chain_1}.
 The only oscillations that remain are caused by the degree of the polynomial part
 of the integrand for large state index $k$. There, the order bounds of Gauss
 quadrature of course still apply.
@@ -2782,7 +2782,7 @@ to compute but still accurate. The Smolyak approach is an obvious candidate.
 If it really is well-suited depends also on the multi-indices $\vec{k}$ and
 $\vec{l}$ of the wavepackets $\phi$ and $\phi^\prime$ which have to be sparse
 enough. But we assume that this is the case for now. Then we end up in a chain
-as shown in Figure \ref{fig:transformation_chain_3}, first performing the steepest
+as shown in Figure~\ref{fig:transformation_chain_3}, first performing the steepest
 descent transformation to get rid of the oscillations then using the Smolyak
 construction to lessen the curse of dimensionality.
 
@@ -2798,7 +2798,7 @@ version such that in can act as a simple transformation of a set of Gauss-Hermit
 quadrature nodes connecting to the numerical steepest descent step. The Smolyak
 construction of level $k \geq 1$ in $D$ dimensions can be written as:
 \begin{equation*}
-  S_{D,k} \assign \sum_{q=k-D}^{k-1} (-1)^{k-1-q} \binom{D-1}{k-1-q}
+  S_{D,k} \assign \sum_{q=k-D}^{k-1} {(-1)}^{k-1-q} \binom{D-1}{k-1-q}
                   \sum_{\substack{\vec{l} \in \mathbb{N}^D \\
                                   \|\vec{l}\|_1 = D+q}}
                   \left(Q_{l_1} \otimes \cdots \otimes Q_{l_D}\right)
@@ -2806,9 +2806,9 @@ construction of level $k \geq 1$ in $D$ dimensions can be written as:
 which is known as the combination technique. The formula was first derived in
 \cite{Wasilkowski_Wozniakowski_95}. This version stresses that the Smolyak
 construction is nothing more than a certain sum of specific smaller tensor
-products of one-dimensional quadrature rules $\{Q_i\}_{i \in\mathbb{N}}$.
+products of one-dimensional quadrature rules ${\{Q_i\}}_{i \in\mathbb{N}}$.
 Our own implementation is based mainly on the details explained in
-\cite{Heiss_Winschel_08} and \cite{Gerstner_Griebel_98}.
+\cite{Heiss_Winschel_08} and~\cite{Gerstner_Griebel_98}.
 
 However, this setup as shown will not work too well and, even worse, yield
 a much \emph{larger} number of nodes compared to the simple full tensor
@@ -2820,9 +2820,9 @@ To resolve this issue, we look for sets of nested points that can be fed
 into the Smolyak construction. Luckily there exist the so-called Genz-Keister
 quadrature points which can be build for the case of a Gaussian integral, too.
 For further details on the Genz-Keister construction, see the original paper
-\cite{genz_keister} as well as our own work \cite{B_kes} and references there in.
+\cite{genz_keister} as well as our own work~\cite{B_kes} and references there in.
 Using these points instead of the Gauss-Hermite nodes will result in a chain
-as shown in Figure \ref{fig:transformation_chain_4}.
+as shown in Figure~\ref{fig:transformation_chain_4}.
 
 \begin{figure}[h!]
   \centering
@@ -2833,11 +2833,11 @@ as shown in Figure \ref{fig:transformation_chain_4}.
 
 These Genz-Keister quadrature nodes can be constructed not only
 for the one-dimensional case but in any number of dimensions
-with moderate effort. Even better, one can prove \cite{novak_ritter} that
+with moderate effort. Even better, one can prove~\cite{novak_ritter} that
 the resulting multi-dimensional Genz-Keister construction is equivalent to the
 Smolyak construction starting from one-dimensional Genz-Keister nodes.
 Since there are much less Genz-Keister nodes compared to the full tensor
-of Gauss-Hermite nodes, as shown in Figure \ref{fig:gk_hermitephy_ratio},
+of Gauss-Hermite nodes, as shown in Figure~\ref{fig:gk_hermitephy_ratio},
 we can largely reduce the computational effort. Note however that for $D \leq 2$
 they are unprofitable because they encompass more nodes that a simple Gauss-Hermite
 tensor product.
@@ -2855,8 +2855,8 @@ tensor product.
 
 Inside the algorithm producing these nodes we can at the same time also
 explicitly compute the necessary matching weights for quadrature.
-At the end of the day we obtain the relatively simple chain shown in
-\ref{fig:transformation_chain_5} where we plug the set of multi-dimensional
+At the end of the day we obtain the relatively simple chain shown
+in~\ref{fig:transformation_chain_5} where we plug the set of multi-dimensional
 Genz-Keister nodes $\gamma_i \in \mathbb{R}^D$ directly into the steepest
 descent transformation. However, we should keep in mind that this reduction
 is not always applicable or profitable, depending on $\vec{k}$ and $\vec{l}$.
