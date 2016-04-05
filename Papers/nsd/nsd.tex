@@ -913,7 +913,7 @@ to do this by a straight forward computation.
 First we take the partial derivative of $g_i$, in fact we have:
 \begin{equation}
  \dot{g}_i \assign \pdiff{g_i}{x_i}
-              = 2 t_{i,i} x_i + \sum_{j=i+1}^{N} t_{i,j} x_j
+              = 2 t_{i,i} x_i + \sum_{j=i+1}^{N} t_{i,j} x_j \,.
 \end{equation}
 The location of the stationary point is implicitly specified by:
 \begin{equation}
@@ -1101,7 +1101,7 @@ We can collect all the paths into a single vector like:
   \vdots \\
   \tilde{h}_{N-1}(p_{N-1}) \\
   \tilde{h}_{N}(p_N) \\
- \end{bmatrix}
+ \end{bmatrix} \,.
 \end{equation}
 The last relation is of course a notational shortcut and
 not a mathematical equality in general. For reasons which
@@ -1154,7 +1154,7 @@ variables are left:
 \begin{equation}
 \begin{split}
   i_N\left(x_N\right) & \assign I_{N-1}\left(x_N\right) \exp\left(\imath \omega g_N\left(x_N\right)\right) \\
-  I_N\left(\right)    & = \int_{-\infty}^\infty i_N\left(x_N\right) \mathrm{d}x_N \,.
+  I_N\left(\right)    & = \int_{-\infty}^\infty i_N\left(x_N\right) \mathrm{d}x_N
 \end{split}
 \end{equation}
 and we obtain the final result $I \equiv I_N$. Each of the integrals $I_i$
@@ -1271,7 +1271,7 @@ $I_i^{(2)}[h_i^{-}]$ only:
   \mathrm{d}r_i \\
 \end{split}
 \end{equation}
-At this point we can return to the complete integral $I_i$
+At this point we can return to the complete integral $I_i$:
 \begin{equation}
 \begin{split}
   I_i[h_i] & = I_i^{(1)}[h_i^{+}] - I_i^{(2)}[h_i^{-}] = I_i^{(1)}[h_i^{+}] + I_i^{(2)}[h_i^{+}] \\
@@ -1514,19 +1514,19 @@ is built to approximate integrals of the form:
 \begin{equation}
   \int_{-\infty}^\infty f\left(x\right) \exp(-x^2) \mathrm{d}x
   \approx
-  \sum_{k=1}^n f\bigl(\vec{\gamma}_k\bigr) \vec{w}_k \,.
+  \sum_{k=1}^n f\bigl(\vec{x}_k\bigr) \vec{w}_k \,.
 \end{equation}
 % \begin{equation}
 %   \int_0^\infty f\left(x\right) x^\alpha \exp(-x) \mathrm{d}x
 %   \approx
 %   \sum_{k=1}^n f\bigl(\vec{\gamma}_k\bigr) \vec{w}_k \,.
 % \end{equation}
-In one dimension the quadrature nodes $\vec{\gamma}$ of a rule of
+In one dimension the quadrature nodes $\vec{x}$ of a rule of
 order $n$ are given by the roots of the Hermite polynomial $H_n(x)$
 which is defined as:
 \begin{equation}
   H_n(x) \assign \sum_{i=0}^{\lfloor\frac{n}{2}\rfloor}
-                   \frac{{(-1)}^i n!}{i!(n-2i)!} {(2x)}^{n-2i}
+                   \frac{{(-1)}^i n!}{i!(n-2i)!} {(2x)}^{n-2i} \,.
 \end{equation}
 % \begin{equation}
 % %   L_n^{\alpha}(x) \assign \sum_{i=0}^n (-1)^i {n+\alpha \choose n-i} \frac{x^i}{i!} \,.
@@ -1537,7 +1537,7 @@ which is defined as:
 % \end{equation}
 The weights are given by the expression:
 \begin{equation}
-  \vec{w}_k \assign \frac{2^{n-1} n! \sqrt{\pi}}{n^2 {\left(H_{n-1}(x_i)\right)}^2}
+  \vec{w}_k \assign \frac{2^{n-1} n! \sqrt{\pi}}{n^2 {\left(H_{n-1}(x_i)\right)}^2} \,.
 \end{equation}
 % \begin{equation}
 %   \vec{w}_k \assign
@@ -1588,7 +1588,7 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 \boxed{
   Q \assign
   \prod_{j=1}^N \sqrt{\frac{\imath}{\omega t_{j,j}}}
-  \sum_{k_1}^n \cdots \sum_{k_N}^n
+  \sum_{k_1=1}^n \cdots \sum_{k_N=1}^n
     f\left(\tilde{h}_1\left(\frac{x_{k_1}}{\sqrt{\omega}}\right),
            \ldots,
            \tilde{h}_N\left(\frac{x_{k_N}}{\sqrt{\omega}}\right)
@@ -1798,7 +1798,7 @@ Therefore:
 \begin{equation}\label{eq:linearless_operator}
   g^{\prime}\left(\vec{x}^{\prime}\right) = \vec{x}^{\prime}\H \mat{A} \vec{x}^{\prime}
 %                                            -\frac{1}{2} \vec{b}\H \left(\mat{A} + \mat{A}\H\right)\inv \vec{b} + c
-                                            + c^{\prime}
+                                            + c^{\prime} \,.
 \end{equation}
 
 
@@ -2798,7 +2798,7 @@ construction to lessen the curse of dimensionality.
 \end{figure}
 
 For this to work out we rewrite the Smolyak construction into a less well known
-version such that in can act as a simple transformation of a set of Gauss-Hermite
+version such that it can act as a simple transformation of a set of Gauss-Hermite
 quadrature nodes connecting to the numerical steepest descent step. The Smolyak
 construction of level $k \geq 1$ in $D$ dimensions can be written as:
 \begin{equation*}
@@ -2860,7 +2860,7 @@ tensor product.
 Inside the algorithm producing these nodes we can at the same time also
 explicitly compute the necessary matching weights for quadrature.
 At the end of the day we obtain the relatively simple chain shown
-in~\ref{fig:transformation_chain_5} where we plug the set of multi-dimensional
+in Figure~\ref{fig:transformation_chain_5} where we plug the set of multi-dimensional
 Genz-Keister nodes $\gamma_i \in \mathbb{R}^D$ directly into the steepest
 descent transformation. However, we should keep in mind that this reduction
 is not always applicable or profitable, depending on $\vec{k}$ and $\vec{l}$.
