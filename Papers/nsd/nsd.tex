@@ -792,7 +792,7 @@ And then in turn we write for the integral:
                           \int_0^{\infty} I_1\left(h_2(\tau_2, x_3), x_3\right)
                                           \exp\left(- \omega \tau_2 \right)
                                           \pdiff{h_2\left(\tau_2, x_3\right)}{\tau_2}
-                          \mathrm{d}\tau_2 \,.
+                          \mathrm{d}\tau_2
 \end{split}
 \end{equation*}
 where we pull out $p_2 \assign \exp\left(\imath \omega k_2\left(x_3\right) \right)$.
@@ -858,7 +858,7 @@ Finally we obtain the solution of the original integral:
                              \right)
             \ldots \mathrm{d}\tau_1
           \ldots \mathrm{d}\tau_2
-        \ldots \mathrm{d}\tau_3 \\
+        \ldots \mathrm{d}\tau_3 \,.
 \end{split}
 \end{equation*}
 This is the nasty return of the recursive scheme here.
@@ -1081,7 +1081,7 @@ becomes very nasty soon:
                 \ldots,
                 h_{N-1}(p_{N-1}, h_N(p_N)),
                 h_N(p_N)
-               )
+               ) \,.
 \end{split}
 \end{equation*}
 We can collect all the paths into a single vector like:
@@ -1191,7 +1191,7 @@ and $h_i^{-}$ with different signs. From the general theory in~\cite{AH_cgq}
 we know, that we have to use both and that the transformed integral $I_i$
 consists of two integrals, one for each path:
 \begin{equation}
-  I_i[h_i] = I_i^{(1)}[h_i^{+}] - I_i^{(2)}[h_i^{-}]
+  I_i[h_i] = I_i^{(1)}[h_i^{+}] - I_i^{(2)}[h_i^{-}] \,.
 \end{equation}
 Given the integrand $i_i(x_i, \ldots, x_N)$ we use the path $h_i$
 to make a variable transformation going from $x_i$ to $p_i$. The first
@@ -1237,7 +1237,7 @@ left with:
     i_i\left(h_i^{+}\left(q_i\right), x_{i+1},\ldots,x_N\right)
     \sqrt{\frac{\imath}{t_{i,i}}}
     \exp\left(- \omega q_i^2\right)
-  \mathrm{d}q_i
+  \mathrm{d}q_i \,.
 \end{equation}
 The combination of the $\exp(q_i^2)$ factor and the integration range
 $[0, \infty[$ is a bit unfortunate for our goal of applying a quadrature.
@@ -1268,7 +1268,7 @@ $I_i^{(2)}[h_i^{-}]$ only:
     i_i\left(h_i^{+}\left(r_i\right), x_{i+1},\ldots,x_N\right)
     \sqrt{\frac{\imath}{t_{i,i}}}
     \exp\left(- \omega r_i^2\right)
-  \mathrm{d}r_i \\
+  \mathrm{d}r_i \,.
 \end{split}
 \end{equation}
 At this point we can return to the complete integral $I_i$:
@@ -1308,7 +1308,7 @@ of the day:
        f\left(\vec{\tilde{h}}(\vec{\tau})\right)
        \prod_{i=1}^N \sqrt{\frac{\imath}{t_{i,i}}}
                      \exp\left(-\omega \tau_i^2\right)
-    \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N
+    \mathrm{d}\tau_1 \cdots \mathrm{d}\tau_N \,.
 }
 \end{equation}
 This integral posses a quadratic exponential decay in all variables and
@@ -1770,7 +1770,7 @@ In a next step, try to unify the linear terms having only one $\vec{x}^{\prime}$
       \vec{x}^{\prime}
     + \vec{b}\H \vec{x}^{\prime} \\
  = &- \vec{b}\H \vec{x}^{\prime}
-    + \vec{b}\H \vec{x}^{\prime} = 0 \,.
+    + \vec{b}\H \vec{x}^{\prime} = 0
 \end{split}
 \end{equation*}
 and indeed we find that they vanish. This confirms that the
@@ -1853,7 +1853,7 @@ we get the following pullback:
 \begin{equation}
   g\left(\vec{x}\right)
   = g\left(\chi\left(\rho\left(\vec{x}^{\prime\prime}\right)\right)\right)
-  = g\left(\zeta\left(\vec{x}^{\prime\prime}\right)\right)
+  = g\left(\zeta\left(\vec{x}^{\prime\prime}\right)\right) \,.
 \end{equation}
 The related transformation $\zeta$ is the explicit
 composition of $\chi$ and $\rho$:
@@ -1948,7 +1948,7 @@ This makes the problem accessible for direct computation. Some work in this dire
 will be shown in a future report.
 
 One might try to resolve these oscillations by another method on top
-of what we did so far. Rewriting the Hermite polynomials into their integral formulation
+of what we did so far. Rewriting the Hermite polynomials into their integral formulation:
 \begin{equation*}
   \operatorname{H}_n(x) =
   \frac{\exp\left(\frac{3\pi \imath n}{2}\right) 2^n}{\sqrt{\pi}}
