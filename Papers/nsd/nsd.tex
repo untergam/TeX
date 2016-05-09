@@ -102,23 +102,23 @@ Semiclassical wavepackets in $D$ dimensions are constructed from a groundstate:
   + \frac{\imath}{\varepsilon^2} \dotp{\vec{p}}{(\vec{x}-\vec{q})}
   \right)
 \end{align*}
-by raising and lowering operators $\mathcal{R}$ and $\mathcal{L}$
-and enumerated by a multi-index vector $\vec{k} \in \mathbb{N}_0^D$.
+with the help of raising and lowering operators $\mathcal{R}$ and $\mathcal{L}$
+and are enumerated by a multi-index vector $\vec{k} \in \mathbb{N}_0^D$.
 There are the parameters for average position $\vec{q} \in \mathbb{R}^D$
 and momentum $\vec{p} \in \mathbb{R}^D$. Additionally there are two invertible
 complex matrices $\mat{Q} \in \mathbb{C}^{D \times D}$ and $\mat{P} \in \mathbb{C}^{D \times D}$
-satisfying the Conditions:
+satisfying the compatibility conditions:
 \begin{align}
   \mat{Q}\T\mat{P} - \mat{P}\T\mat{Q} &= \mat{0} \\
   \mat{Q}\H\mat{P} - \mat{P}\H\mat{Q} &= 2\imath\mat{I} \,.
 \end{align}
 Implied by these constraints, the matrix $\mat{P}\mat{Q}\inv$ is complex symmetric
-(but not Hermitian) and has positive definite imaginary part.
+(not Hermitian) and has positive definite imaginary part.
 We collect all these parameters in the set $\Pi \assign \{\vec{q}, \vec{p}, \mat{Q}, \mat{P}\}$.
 Further there is the semiclassical scaling parameter $1 \gg \varepsilon > 0$.
 For many more details describing these wavepackets, see~\cite{H_ladder_operators}
 and~\cite{B_master_thesis}.
-What matters most here is, that each wavepacket $\phi$ is of the form:
+Each wavepacket $\phi$ is of the form:
 \begin{equation}
   \phi[\Pi](\vec{x}) \sim p\left(\vec{x}\right)
                           \exp\left(\frac{\imath}{\varepsilon^2} g\left(\vec{x}\right)\right)
@@ -126,10 +126,10 @@ What matters most here is, that each wavepacket $\phi$ is of the form:
 with $p(\vec{x})$ a multivariate polynomial.
 This form is sufficient for the steepest descent technique to be applicable.
 Indeed, comparing to the integrand in~\eqref{eq:hoi},
-we find that $\omega = \frac{1}{\varepsilon^2}$ which means that the oscillator
+we find that $\omega = \frac{1}{\varepsilon^2}$. The oscillator
 frequency increases very fast for small scaling parameters $\varepsilon$.
-The steepest descent method which we will look at in the next section becomes
-the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of the form:
+In contrast to standard quadrature rules, the steepest descent method becomes
+the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ has the particular form:
 \begin{equation}
   g\left(\vec{x}\right)
   \assign
@@ -140,7 +140,7 @@ the \emph{better} the smaller $\varepsilon$ is. The actual oscillator $g$ is of 
 We are interested in overlap integrals\footnote{For one-dimensional wavepackets there
 exists an exact formula which is very expensive to evaluate numerically, see the original work
 \cite{H_R_quantization_rules} and~\cite{B_bachelor_thesis} for compatible notation.} like
-$\dotp{\phi_k}{\phi_l}$. These integrals become even more difficult in case the parameters
+$\dotp{\phi_k}{\phi_l}$. These integrals become even more difficult to deal with in case the parameters
 sets $\Pi_k$ and $\Pi_l$ differ. In any case the integral is still of the same oscillatory
 structure like a single wavepacket:
 \begin{equation}
@@ -165,7 +165,7 @@ The next step to take is to combine both oscillators $g_k$ and $g_l$ into a
 single one such that we get back a formal expression like the one in
 \eqref{eq:hoi} we started with. But first we would like to
 show in Figure~\ref{fig:overlap_example} a concrete example of how the
-wavepackets involved and the integrand look like.
+involved wavepackets and the integrand look like.
 
 \begin{figure}[h!]
   \begin{subfigure}[t]{0.5\linewidth}
@@ -205,9 +205,8 @@ wavepackets involved and the integrand look like.
 \subsection{Combining different oscillators}
 
 
-Combining the two oscillators is actually a straight-forward computation,
-however it is very error prone, big chances are that we miss a transpose
-or conjugate somewhere. To simplify the notation we define the matrix:
+Combining the two oscillators is actually a straight-forward but error-prone computation.
+To simplify the notation we define the matrix:
 \begin{equation}
   \mat{\Gamma_i} \assign \mat{P_i}\mat{Q_i}\inv
 \end{equation}
@@ -336,13 +335,13 @@ where careful computation gives:
         + \left(\vec{q_k}\H \vec{p_k} - \vec{p_l}\H \vec{q_l}\right)
 \end{split}
 \end{equation}
-and we assumed that $\vec{x}$ is real. Be sure to pay attention to
-the fact that here we have $\vec{b}\T$ only instead of $\vec{b}\H$.
+and we assumed that $\vec{x}$ is real. We stress that in the
+expanded normal form we have $\vec{b}\T$ only instead of $\vec{b}\H$.
 The matrix $\mat{A}$ has a special property, both its real and
 imaginary parts are symmetric while the matrix itself is in general
 \emph{not} Hermitian. This places the matrix right outside the convenient
 set of normal matrices, which implies that it is not diagonalizable
-by unitary matrices,  an important  consequence as we will see later.
+by unitary matrices, an important consequence as we will see later.
 
 
 \section{Numerical steepest descent}
@@ -379,8 +378,8 @@ For our problem at hand, computing overlap integrals, we will need to integrate
 over the whole space in $N$ dimensions and hence set $\Omega = \mathbb{R}^N$ in
 \eqref{eq:hoi}.
 There are two essential observations to be made about the
-oscillatory part $\exp\left(\imath \omega g\left(\vec{x}\right) \right)$
-of any such integral. First, this expression does decay exponentially
+oscillatory part $\exp\left(\imath \omega g\left(\vec{x}\right) \right)$.
+First, this expression does decay exponentially
 fast for increasing $\Im g(z)$ and second, it does not oscillate for
 constant $\Re g(z)$. This can easily be seen by expanding complex numbers:
 \begin{equation*}
@@ -413,26 +412,25 @@ $\mathbb{R}^N$.
 
 In the following we briefly consider the one-dimensional integral over the interval
 $[a,b]$ and walk through the major steps involved in the procedure. We can find all
-stationary points ${\{x_{j}^{*}\}}_{j}$ from equating the gradient to zero (assuming
-the equation is indeed solvable):
+stationary points ${\{x_{j}^{*}\}}_{j}$ from:
 \begin{equation}
   \nabla_{x} \, g(x) = 0 \,.
 \end{equation}
-The set of contributing points is then:
+The set of contributing points to the value of the integral will be:
 \begin{equation}
   \Theta := \{a, b\} \cup {\{x^{*}_j\}}_j \,.
 \end{equation}
 Next, we set up the so called \emph{path equation} to compute the coordinate
-transformation $h(\tau)$ or equivalently the path of integration. This has to
-be done locally at all contributing points. Hence, for all $\xi \in \Theta$:
+transformation $h(\tau)$ or, equivalently, the path of integration. This has to
+be done locally at all contributing points:
 \begin{equation}
-  g(h_\xi(\tau)) = g(\xi) + \imath \tau \,.
+  g(h_\xi(\tau)) = g(\xi) + \imath \tau
 \end{equation}
+for each $\xi \in \Theta$.
 Solving these equations yields a bunch of paths $h_{\xi}(\tau)$. Each one is
-indexed by the point $\xi$ it starts at\footnote{Note that this is not the full truth.
-In case of multi-valued inverses of $g$ at the point $\xi$ it can happen that
-$h_\xi(0) \neq \xi$. With $g (x)= x^2$ and $\xi = 3$ we find $h_3(\tau) = \pm \sqrt{9+\imath\tau}$
-and $h_3(0) = \pm 3 \neq 3$.}
+indexed by the point $\xi$ it starts at\footnote{In case of multi-valued inverses
+of $g$ at the point $\xi$, it can happen that $h_\xi(0) \neq \xi$. For example $g (x)= x^2$
+and $\xi = 3$ gives $h_3(\tau) = \pm \sqrt{9+\imath\tau}$ and $h_3(0) = \pm 3 \neq 3$.}
 and parametrised by $\tau \in \mathbb{R}_0^{+}$.
 Refer to Figure~\ref{fig:nsd_path_example} for a simple example having only a single
 stationary point.
@@ -456,17 +454,17 @@ path chosen to be really attached to the point $a$. At the stationary points we 
 to choose two paths, $h_{x^{*}_j,+}$ and $h_{x^{*}_j,-}$, one of which is considered
 incoming and the other outgoing (note that this is not reflected by the parametrisation
 in $\tau$), such that the integration contour passes through each stationary point once.
-Then we have to make sure that the outgoing path of one stationary point
+Then, we have to make sure that the outgoing path of one stationary point
 and the incoming of the next one will lead to the same \emph{valley}. This guarantees
 that we can concatenate all paths in the end and obtain a closed contour for integration.
 We will not bother too much with these details as they are not relevant for our problem.
-Many more details can be found in the original papers~\cite{HV_hoq} and~\cite{HV_cub} by
-Huybrechs and Vandewalle. If the path equation can not be solved analytically, not
-all is lost as it is possible to work with numerical path approximations, see~\cite{AH_nsd_pa}.
+Many more details can be found in the papers~\cite{HV_hoq} and~\cite{HV_cub}.
+If the path equation can not be solved analytically, it is possible to work
+with numerical path approximations, see~\cite{AH_nsd_pa}.
 By the formal structure of the semiclassical wavepackets, the path equation in our case is always
 a multivariate quadratic form which we can solve explicitly.
 
-Now it is time to assemble the parts. For each path attached at a point $\xi \in \Theta$
+Now, it is time to assemble the parts. For each path attached at a point $\xi \in \Theta$
 we perform the transformation $x \mapsto h_{\xi}(\tau)$. Doing this change of variable
 will give a bunch of new integrals, one or two for each $\xi$:
 \begin{equation}\label{eq:single_path_integral}
@@ -499,7 +497,7 @@ In our case there is no danger around because $f$ is simply a polynomial.
 
 Up to now we just transformed the problem, nothing more. The new task is to
 compute by quadrature all the integrals~\eqref{eq:single_path_integral} and
-there can be exponentially many of these in higher dimensions. For this type of
+there can be exponentially many of these in higher dimensions. In case of this type of
 semi-finite integrals Gauss-Laguerre quadrature with nodes ${\{\gamma_k\}}_{k}$
 and weights ${\{w_k\}}_{k}$ seems to be most appropriate:
 \begin{equation}
@@ -509,18 +507,18 @@ and weights ${\{w_k\}}_{k}$ seems to be most appropriate:
                    h_{\xi}^{\prime}\left(\frac{\gamma_k}{\omega}\right)
                    w_k \,.
 \end{equation}
-Depending on the oscillator and in turn the path $h_{\xi}$ these integrals can be
+Depending on the oscillator (and hence on the path $h_{\xi}$) these integrals can be
 weakly singular (to be precise, having roots in the denominator) which can in turn
 be accounted for by the generalized Gauss-Laguerre quadrature. These singularities
 originate from roots involved in the multi-valued inverses of $g$ at some stationary
 points.
 
-For our problem we will find that we can always glue together the two opposite
+However, in our case we can always glue together the two opposite
 straight line paths at the single stationary point, apply one further transformation and
 finally use Gauss-Hermite quadrature. The whole process for computing~\eqref{eq:hoi}
-then looks like shown in Figure~\ref{fig:transformation_chain_2}. Performing these
+then looks like shown in Figure~\ref{fig:transformation_chain_2}. The relevant information for these
 transformations on the first two example wavepackets $\phi_k$ and $\phi_l$ from
-Figure~\ref{fig:overlap_example} we can make the plot shown in~\ref{fig:hawp_trafo_example}.
+Figure~\ref{fig:overlap_example} are shown in Figure~\ref{fig:hawp_trafo_example}.
 
 \begin{figure}
   \centering
@@ -546,7 +544,7 @@ In the last part we have walked through the very basic concepts of the numerical
 descent method. Under some broad assumptions this was proven to work for finite intervals
 and an arbitrary number of real stationary points~\cite{HV_hoq}. The extension into higher
 dimensions has been worked out~\cite{HV_cub}.
-However, the state of the theory is too narrow for our setting. First we need to consider
+However, the state of the theory is too narrow for our setting. First, we need to consider
 complex stationary points too. If such a point is near to the real line, it will influence
 the oscillator enough to become relevant. Figure~\ref{fig:oscillatory_integral_complex_sp}
 for example shows the integrand of:
@@ -557,8 +555,7 @@ for different values of the parameter $\delta$. One stationary point is located 
 at $x^{*} = \imath \sqrt{\delta}$ and comes close to the real line. The influence is clearly present
 for small values of $\delta$ and soon becomes negligible for larger values.
 The general advise for complex stationary points is that the contour should pass through
-this point as shown in Figure~\ref{fig:oscillatory_integral_complex_sp_paths},
-see section 4.3 in~\cite{HV_hoq}. This will then give an exact
+this point as explained in section 4.3 of~\cite{HV_hoq}. This will then give an exact
 decomposition in the sense of~\eqref{eq:cauchy}. It turns out this works very well for our setting.
 Actually, the \emph{only} thing we have is a single stationary point.
 
@@ -628,14 +625,13 @@ We just split the overall interval $]-\infty, \infty[$ into a union of three
 intervals: $]-\infty, a]$, $[a,b]$ and $[b,\infty[$. The reason to choose three
 instead of only two semi-finite intervals is the stationary point which we know
 to exist in our specific case. With this splitting we can put it into the finite
-interval and know that it gets handled correctly. Of course the paths at the points
+interval and know that it gets handled correctly. The paths at the points
 $a$ and $b$ will be traversed two times in reversed directions and hence cancel out.
 The only thing that remains is the pair of paths attached to the single complex stationary
 point $x^{*}$. This works the same in any number of dimensions where we resolve the nested
 integrals one after the other. By gluing together the two paths of opposite direction
 we end up with a cross of exactly $N$ straight paths. Therefore the number and nesting
 depth of integrals to perform does \emph{not} grow compared to direct integration.
-This is of course very fortunate.
 
 
 \section{A first exemplary computation}
