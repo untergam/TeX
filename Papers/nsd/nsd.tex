@@ -394,7 +394,7 @@ The main idea behind the \emph{numerical steepest descent} method is therefore
 to transform the integrand such that it is no longer oscillatory but
 rather exponentially decaying. For this we need to find a coordinate
 transformation $z = h(\tau)$ such that the \emph{real} part of $g(z)$
-is constant. In a second step we then apply Cauchy's Theorem for contour
+is \emph{constant}. In a second step we then apply Cauchy's Theorem for contour
 integrals along the path $h(\tau)$.
 
 Let us look again at the plot in Figure~\ref{fig:oscillatory_example_2d}
@@ -483,7 +483,7 @@ will give a bunch of new integrals, one or two for each $\xi$:
               \mathrm{d}\tau \,.
 \end{split}
 \end{equation}
-We continue by applying Cauchy's theorem:
+We apply Cauchy's theorem:
 \begin{equation}\label{eq:cauchy}
       I = e^{\imath \omega g(a)} J[a]
         + \sum_{j} \left(J[x_{j,+}^{*}] - J[x_{j,-}^{*}]\right)
