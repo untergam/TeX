@@ -42,9 +42,11 @@ The hierarchy of these classes is depicted in the following diagramm:
 For our purposes we need to save a Hagedorn wave packet in every time step which consists of matrices and vectors. For these we need a DataSpace which allows us to write matrices and vectors in a time-dimension. In our case the time-dimension is arbitrarily chosen depending on the kind of the simulation. As such we need a DSetCreatePropList which is used to describe properties such as chunk-dimension for matrices used in our case for time-dimension. Attribute are used to save additional information such as the used time-step $\delta t$ in the simulation. For constructing a HDF5 binary file we need to use the File class which simply uses a string argument as the filename. For neatness we want to have a intern structure for our data. For this we use the Group class which is very similar to the file system and its folders for structuring. Last but not least we need the defined DataSet class to store our Eigen-matrices within and to write these we have to use the HDF5 DataTypes.
 
 \subsection{Intern used data-types}
-Often we make function calls with arguments to the HDF5 library. These arguments have to be of an intern data type. 
+Often we make function calls with arguments to the HDF5 library. These arguments have to be of an intern data type which the library expects. For our needs we mostly need hsize\_t and H5std\_string and every class mentioned in the previous section.
 \subsubsection{hsize$\_$t}
+
 \subsubsection{H5std$\_$string}
+
 \subsection{DataType}
 \subsection{DataSpace}
 \subsection{DataSet}
