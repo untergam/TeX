@@ -1,0 +1,23 @@
+# extensions
+*.pyc
+*.log
+*.old
+*.out
+*.~
+*.*~
+*.aux
+*.bbl
+*.blg
+*.brf
+*.pdf
+*.synctex.gz
+*.toc
+
+# folders
+build*
+
+# specific files
+CMakeLists.txt.user
+.clang_complete
+python/*.npy
+python/*.pdf
