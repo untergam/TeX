@@ -28,31 +28,58 @@
 This thesis is about the continuation of the C++ implementation \cite{libwaveblocks} and allows a comparison to the Python implementation \cite{waveblocksnd}. The already existing framework is sufficient to generate simulations of different kind of Hagedorn wavepackets. The data produced is written in HDF5 binary format whereas the data from the C++ implementation is not easily comparable to the generated data from python. The writing process in the C++ implementation is currently done by using an extern project \cite{eigen3-hdf5}. The new implementation for writing binary HDF format in C++ will be explained in this thesis and also the new implementation allows easy comparison between Python and C++. It also incorporates a testing file which takes two HDF binary data files as arguments and compares the coinciding data. The testing file uses the well-known GoogleTest interface\cite{googletest}.
 
 \section{HDF5 C++ Interface}
+HDF stands for hierarchical data format which allows internal structure similar to a file system.
 \subsection{Overview}
-From the documentation we can conclude that the C++ interface is just a nice wrapper of the C interface. The corresponding classes and wrappers are shown in the following table:
-\begin{figure}[!h]
-\includegraphics[width=1.2\textwidth]{c_vs_cpp.png}
-\caption{Relation of the C und C++ library}
-\end{figure}
-The hierarchy of these classes is depicted in the following diagramm:
-\begin{figure}[!h]
+From the documentation we can conclude that the C++ interface is just a nice wrapper of the C interface. The corresponding classes and wrappers are shown in the following table:\\
+\\
+\begin{tabular}{|l|l|}
+\hline
+HDF5 C APIs&C++ Classes\\
+\hline
+Attribute Interface (H5A)&Attribute\\
+Datasets Interface (H5D)&DataSet\\
+Error Interface (H5E)&Exception\\
+File Interface (H5F)&H5File\\
+Group Interface(H5G)&Group\\
+Identifier Interface (H5I)&IdComponent\\
+Property List Interface (H5P)&PropList and subclasses\\
+Dataspace Interface (H5S)&DataSpace\\
+Datatype Interface (H5T)&DataType and subclasses\\
+\hline
+\end{tabular}\\
+\\
+The hierarchy of these classes is depicted in the following diagramm:\\
+\begin{figure}[H]
 \includegraphics[width=1.2\textwidth]{inheritance_diagramm.png}
 \caption{Inheritance diagram of IdComponent}
 \end{figure}
-For our purposes we need to save a Hagedorn wave packet in every time step which consists of matrices and vectors. For these we need a DataSpace which allows us to write matrices and vectors in a time-dimension. In our case the time-dimension is arbitrarily chosen depending on the kind of the simulation. As such we need a DSetCreatePropList which is used to describe properties such as chunk-dimension for matrices used in our case for time-dimension. Attribute are used to save additional information such as the used time-step $\delta t$ in the simulation. For constructing a HDF5 binary file we need to use the File class which simply uses a string argument as the filename. For neatness we want to have a intern structure for our data. For this we use the Group class which is very similar to the file system and its folders for structuring. Last but not least we need the defined DataSet class to store our Eigen-matrices within and to write these we have to use the HDF5 DataTypes.
+
+Throughout this thesis we will ignore the "H5" namespace and will always directly refer to the name of the object.\\
+For our purposes we need to save a Hagedorn wave packet in every time step which consists of matrices and vectors. For these we need a DataSpace which allows us to write matrices and vectors in a time-dimension. In our case the time-dimension is arbitrarily chosen depending on the kind of the simulation. As such we need a DSetCreatePropList which is used to describe properties such as chunk-dimension for matrices used in our case for time-dimension. Attribute are used to save additional information such as the used time-step $\delta t$ in the simulation. For constructing a HDF5 binary file we need to use the File class which simply uses a string argument as the filename. For neatness we want to have a intern structure for our data. For this we use the Group class which is very similar to the file system and its folders for structuring. To write Eigen-matrices we need the DataType class which defines how to write these data types. Last but not least we need a DataSet for every object we want to write to our binary file.
 
 \subsection{Intern used data-types}
 Often we make function calls with arguments to the HDF5 library. These arguments have to be of an intern data type which the library expects. For our needs we mostly need hsize\_t and H5std\_string and every class mentioned in the previous section.
 \subsubsection{hsize$\_$t}
-
+Variables of this type represent native multiple-precision integer. 
 \subsubsection{H5std$\_$string}
-
+H5std\_string is just an alias for the std::string type.
 \subsection{DataType}
+The DataType class describes how to write different kind of types and handles writing options. Every DataType is given a name which is stored in a string used as its representation. As we can see from the previous figure DataType is derived from H5Object and is further decomposable in ArrayType, AtomType, CompType, EnumType and VarLenType. For example when we want to write a native double and we don't care how it is represented on our system we would use a PredType from AtomType because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the FloatType from AtomType. For cases where our data type is a struct of atomic types we would use the a CompType. For interested parties and further explanations we refer to the HDF5 official documentation\cite{hdf5doc}.
+
 \subsection{DataSpace}
+
 \subsection{DataSet}
+%overwork
+A Dataset is a higher level object and contains a string used to identify it, an optional array with between one and four dimensions, an array of Datatypes, and an array of Attributes.
+A Dataset is an appropriate object for storing profile (transect) or image data, and it can be used to store time series of a given variable. 
+
 \subsection{Attribute}
+%overwork
+An Attribute contains a string used to identify it, an array with up to four dimensions, and a number of Datatypes describing that Attribute.
+An Attribute is an appropriate object for storing point values, for example, and storing time series of them is enabled in the Attribute object. 
 \subsection{DSetCreatePropList}
 \subsection{Group}
+A Group is the highest level object and consists of a string used to identify it and an arbitrary combination of any of the Datatype, Attribute, Dataset, and Group building blocks. The root of any HDF5 file (denoted with "." or "/") is always a Group. 
 \subsection{File}
 
 \section{Eigen Interface}
