@@ -145,7 +145,7 @@ Variables of this type represent native multiple-precision integer.
 \subsubsection{H5std$\_$string}
 H5std\_string is just an alias for the std::string type.
 \subsection{DataType}
-The \textit{DataType} class describes how to write different kind of types and handles writing options. Every \textit{DataType} is given a name which is stored in a string used as its representation. As we can see from the previous graph \textit{DataType} is derived from \textit{H5Object} and is further decomposable in \textit{ArrayType}, \textit{AtomType}, \textit{CompType}, \textit{EnumType} and \textit{VarLenType}. For example when we want to write a native double and we don't care how it is represented on our system we would use a \textit{PredType} from \textit{AtomType} because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the \textit{FloatType} from \textit{AtomType}. For cases where our data type is a struct of atomic types we would use the \textit{CompType}. For interested parties and further explanations we refer to the HDF5 official documentation\cite{hdf5doc}.
+The \textit{DataType} class describes how to write different kind of types and handles writing options. Every \textit{DataType} is given a name which is stored in a string used as its representation. As we can see from the previous graph \textit{DataType} is derived from \textit{H5Object} and is further decomposable in \textit{ArrayType}, \textit{AtomType}, \textit{CompType}, \textit{EnumType} and \textit{VarLenType}. For example when we want to write a native double and we don't care how it is represented on our system we would use a \textit{PredType} from \textit{AtomType} because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the \textit{FloatType} from \textit{AtomType}. For cases where our data type is a struct of atomic types we would use the \textit{CompType}. For interested parties and further explanations we refer to the HDF5 official C++ documentation\cite{hdf5cppdoc} an C documentation \cite{hdf5cdoc}.
 \subsection{DataSpace}
 To write in a \textit{DataSet} the HDF5-library needs minimal four arguments. First is a pointer to the buffer of the source. Second is the type which is written which has to be a \textit{DataType} from before. Third and fourth is the source and destination space respectively which has to be a \textit{DataSpace} which will be explained in this section. There can be additional arguments such as which compression should be used for writing etc. A simple way to construct such a \textit{DataSpace} is to call the constructor with two arguments. The first one is the \textbf{rank} of the space, which indicates the number of dimension the space will have. Following as the second argument is an \textbf{array} of type \textbf{hsize\_t} with dimensionality of the previous declared \textbf{rank}. In each entry is the number of elements we want in this dimension. For example for a time grid \textit{DataSpace} the following code is sufficient:\\
 
@@ -200,10 +200,26 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
 \end{tikzpicture}\\
 This can be done with relatively easily when we use for every leaf a \textit{DataSet} and for every intermediate node a \textit{Group}. When a \textit{File} is created by default the root \textit{Group} has name "/" in the file. For enforcing the above structure one just needs to include the parents in the name during creation. For example the name for the coefficients \textit{Group} we would use "/wavepacket/coefficents" as name and for c0 \textit{DataSet} "/wavepacket/coefficents/c0".
 \subsection{File}
-
+As already mentioned a \textit{File} with default construction has already a group root "/". To construct a \textit{File}  a minimal number of two arguments are needed. Two optional arguments are the \textit{FileCreatPropList} and \textit{FileAccPropList} which allow further specification which is in our case not needed and the \textit{DEFAULT} is sufficient. First is the filename represented as a std::string or H5std\_string and the second argument defines the type of creation. There are just two possible values \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file and if it already exists erase all data previously stored in the file. The latter fails if the file already exists. We will work with \textit{H5F\_ACC\_TRUNC} because if the filename already exists means there is data for this experimental setup which will  be overwritten which is not fatal because the conclusion should stay the same.
 \section{Eigen Interface}
-
+For our purposes we need the storage format in \textit{Eigen/Core} for storing the subparts of the \textit{Hagedorn} wave packet. \textit{Eigen} is a template with minimal three arguments. The first argument is the type which is stored. Second and third are the dimension of the matrix respectively.The forth argument is relevant if we want to change from default row-wise storage format to column-wise storage format.
+\begin{lstlisting}
+Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
+\end{lstlisting}
+For writing \textit{Eigen} matrices we will use functions which will explicit transform these matrices in \textit{DataTypes} who are writable in the HDF library.
 \section{HDF5 Writer template}
+\subsection{DataType Declaration}
+\subsection{SetUp write-options}
+\subsection{SetUp write-paths}
+\subsection{Pre-structure}
+\subsection{Selection}
+\subsection{Transformation}
+\subsection{Writing}
+\subsection{Update}
+\subsection{Extension}
+\subsection{Post-structure}
+
+
 
 \section{Datatest with GoogleTest Framework}
 \subsection{Initialization}
