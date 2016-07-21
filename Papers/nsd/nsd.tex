@@ -32,7 +32,7 @@
 \maketitle
 
 \begin{abstract}
-  In this report we show that classical Gauss quadrature is not adequate for a large
+  In this report we show that classical Gauss quadrature is not adequate for a
   class of correlation and overlap integrals originating from quantum mechanics. These
   integrals are usually highly oscillatory and therefore special methods are necessary
   for accurate computations. We develop and test a new, highly efficient method based
@@ -533,8 +533,8 @@ Figure~\ref{fig:overlap_example} are shown in Figure~\ref{fig:hawp_trafo_example
   \centering
   \includegraphics[width=0.8\textwidth]{./fig/stationary_point_example.pdf}
   \caption{Contour levels and zeros (blue) of $|\conj{\phi_{\vec{l}}} \phi_{\vec{k}}|$,
-  Gradient field and zeros of $|g|$ (yellow), Path of steepest descent with 9 Gauss Hermite
-  quadrature nodes (red), in complex plane.}
+  gradient field and zeros of $|g|$ (yellow), path of steepest descent with 9 Gauss Hermite
+  quadrature nodes (red) in complex plane.}
   \label{fig:hawp_trafo_example}
 \end{figure}
 
@@ -543,9 +543,9 @@ Figure~\ref{fig:overlap_example} are shown in Figure~\ref{fig:hawp_trafo_example
 
 
 In the last part we have walked through the very basic concepts of the numerical steepest
-descent method. Under some broad assumptions this was proven to work for finite intervals
-and an arbitrary number of real stationary points~\cite{HV_hoq}. The extension into higher
-dimensions has been worked out~\cite{HV_cub}.
+descent method. Under some broad assumptions for $f$ and $g$ in~\eqref{eq:hoi} this was proven
+to work for finite intervals and an arbitrary number of real stationary points~\cite{HV_hoq}.
+The extension into higher dimensions has been worked out~\cite{HV_cub}.
 However, the state of the theory is too narrow for our setting. First, we need to consider
 complex stationary points too. If such a point is near to the real line, it will influence
 the oscillator enough to become relevant. Figure~\ref{fig:oscillatory_integral_complex_sp}
@@ -974,7 +974,7 @@ of $g_i$, $h_i$ and $x_i^{*}$ on $x_j$ for $j>i$ and simply write:
 \begin{equation}\label{eq:general_path_eqn}
   g_i\left(h_i\left(p_i\right)\right) = g_i\left(x_i^*\right) + \imath p_i \,.
 \end{equation}
-Expanding the left hand side by using~\eqref{eq:general_partial_gi} we find:
+The definition~\eqref{eq:general_partial_gi} yields the left hand side:
 \begin{equation}
 \begin{split}
   g_i\left(h_i\right)
@@ -1101,7 +1101,7 @@ We can collect all the paths into a single vector like:
   \tilde{h}_{N}(p_N) \\
  \end{bmatrix} \,.
 \end{equation}
-The last relation is of course a notational shortcut and
+The last relation is only a notational shortcut and
 not a mathematical equality in general. For reasons which
 will become clear later we are in the end only interested
 in the paths with positive sign. If not specified otherwise,
@@ -1122,8 +1122,8 @@ in Algorithm~\ref{al:precompose_paths}.
     \EndFor
   \end{algorithmic}
 \end{algorithm}
-By employing some matrix algebra, then the inner loop
-can even be avoided.
+Some matrix algebra and vectorisation techniques allow us to
+avoid the inner loop.
 
 
 \subsection{Transforming the integrand}
@@ -1186,7 +1186,7 @@ and the second term became exponentially decaying. Next, at stage $i$, we
 transform the whole integral $I_i$. Here we have to pay attention to the
 fact that formula~\eqref{eq:general_path_formula} yields two paths $h_i^{+}$
 and $h_i^{-}$ with different signs. From the general theory in~\cite{AH_cgq}
-we know, that we have to use both and that the transformed integral $I_i$
+we know that we have to use both and that the transformed integral $I_i$
 consists of two integrals, one for each path:
 \begin{equation}
   I_i[h_i] = I_i^{(1)}[h_i^{+}] - I_i^{(2)}[h_i^{-}] \,.
@@ -1238,7 +1238,7 @@ left with:
   \mathrm{d}q_i \,.
 \end{equation}
 The combination of the $\exp(-\omega q_i^2)$ factor and the integration range
-$[0, \infty[$ is a bit unfortunate for our goal of applying a quadrature.
+$[0, \infty[$ seems unfortunate for our goal of applying a quadrature.
 
 This combination corresponds to none of the classical Gaussian quadratures
 and one would have to build a custom rule for computing nodes and weights~\cite{Shizgal}.
@@ -1286,7 +1286,7 @@ At this point we can return to the complete integral $I_i$:
   \mathrm{d}r_i \\
 \end{split}
 \end{equation}
-and after gluing together the two parts, the final integral is:
+and glue together the two parts, so the final integral is:
 \begin{equation}
   I_i\left(x_{i+1},\ldots,x_N\right) =
   \int_{-\infty}^\infty
@@ -1314,7 +1314,7 @@ hence can be computed easily by classical Gauss-Hermite quadrature
 rules.
 
 
-\subsection{Handling oscillatory prefactors}
+\subsection{Oscillatory prefactors}
 
 
 The prefactor term $P_i \assign \exp\left(\imath \omega k_i\left(x_{i+1},\ldots,x_N\right)\right)$
@@ -1658,7 +1658,7 @@ of the day, the quadrature we will use to approximate $I$ looks like:
 % in $N$ dimensions.
 
 
-\section{General quadratic oscillator}
+\subsection{General quadratic oscillator}
 
 
 In this section we consider a more general oscillator term
@@ -1672,7 +1672,7 @@ The general strategy we follow is to reduce this problem back to the
 triangular oscillator we studied in much detail and know how to solve.
 
 
-\subsection{Removing the linear term}
+\subsubsection{Removing the linear term}
 
 
 First we want to get rid of the linear term $\vec{b}\H \vec{x}$.
@@ -1800,7 +1800,7 @@ Therefore:
 \end{equation}
 
 
-\subsection{Triangularize the oscillator}
+\subsubsection{Triangularize the oscillator}
 
 
 Given an oscillator like~\eqref{eq:linearless_operator} above
@@ -1887,7 +1887,7 @@ Because $\mat{U}$ is unitary we finally have $|\det\mat{U}| = 1$ and no
 additional factors appear in the integrals.
 
 
-\section{Some open issues}
+\section{Open issues}
 
 
 There are some yet unanswered questions in theory as well as in practical use.
@@ -2020,7 +2020,7 @@ mercury compound \ce{Hg2}.
 
 Gauss-Hermite quadrature with any number of nodes shows high spurious autocorrelation bumps,
 compare to Figure~\ref{fig:ac_mercurial_morse}. Using the steepest descent transformation
-before applying a quadrature scheme gives correct results for an even smaller number of nodes.
+before applying a quadrature scheme gives correct results for a much smaller number of nodes.
 
 In the following we will perform a number of different numerical simulations and show
 the robustness as well as pleasant convergence properties of this new technique.
@@ -2773,7 +2773,7 @@ quadrature of course still apply.
 
 
 \FloatBarrier
-\subsection{Going to higher dimensions}
+\subsection{Higher dimensions}
 
 
 As seen in the last section, after the steepest descent transformation we still
