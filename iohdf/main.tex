@@ -161,6 +161,8 @@ A \textit{DataSet} is used as the location and representation for an object of i
 \subsection{Attribute}
 An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} we need three arguments. First is a string for the name of the attribute. Second is the used \textit{DataType} of the \textit{Attribute}. Third and last is the \textit{DataSpace} of the attribute. In our case we want to add for example an \textit{Attribute} to the root \textit{Group} "/" which stores the time step used in this \textit{File}.
 \subsection{DSetCreatePropList}
+
+
 We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. When default constructed a \textit{DataSet} is simple meaning it has fixed dimension but this doesn't allow us easy extension of the \textit{DataSet}. For this we change the property of how raw data is organized. When we define a chunk dimension for our data which is fixed we can easily extend the \textit{DataSet} later on in size of the chunk which also corresponds to a time step.
 \subsection{Group}
 We use \textit{Groups} to further structure our data in the file. Suppose we have a \textit{Hagedorn} wave packet and the corresponding energies with a time series then we would like to structure these in the file in a sub folder manner such as:
@@ -207,9 +209,28 @@ For our purposes we need the storage format in \textit{Eigen/Core} for storing t
 Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
 \end{lstlisting}
 For writing \textit{Eigen} matrices we will use functions which will explicit transform these matrices in \textit{DataTypes} who are writable in the HDF library.
+
 \section{HDF5 Writer template}
+The \textit{Eigen} matrices are templates with type and dimension. We will handle the type in the matrix with transformation functions. When the matrices have arbitrary dimension we also have to consider to define our writer class as template over dimension $D$. To construct our writer-class only one string argument is needed which is used as the filename. Internally also the \textit{DataType} will be automatically constructed which we will discuss in the next section.
 \subsection{DataType Declaration}
+To be compatible with the python HDF we use the following struct as declaration of a complex number:
+\begin{lstlisting}
+struct ctype
+{
+  double real;
+  double imag;
+} instance_of_ctype;
+\end{lstlisting}
+Which will be used by the \texttt{CompType} class to construct an internal data type representation which is writable in HDF format. To construct a composite type with the right size the \texttt{sizeof} operator is needed. The following code shows how our \textit{DataType} is constructed:
+\begin{lstlisting}
+CompType nctp(sizeof(instance_of_ctype));
+nctp.insertMember("r",HOFFSET(ctype,real),PredType::NATIVE_DOUBLE);
+nctp.insertMember("i",HOFFSET(ctype,imag),PredType::NATIVE_DOUBLE);
+\end{lstlisting}
+Worth noting is we don't use the \texttt{std::complex<double>} type which would in theory achieve the same result. The problem herein lies that the \texttt{HOFFSET} function has no direct access to the internal address of \texttt{real} and \texttt{imag} variables. The real part of \texttt{std::complex<double>} is accessed with a \texttt{real()} function which returns the value but not the address. As such in our case it becomes unusable. Also note that we insert \textit{PredType} doubles and not directly C++ internal doubles. Now if we create an array of \texttt{ctype} the pointer is automatically writable if we use \texttt{nctp} as argument in the function call.
+
 \subsection{SetUp write-options}
+
 \subsection{SetUp write-paths}
 \subsection{Pre-structure}
 \subsection{Selection}
