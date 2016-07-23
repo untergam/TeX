@@ -51,9 +51,21 @@ basicstyle=\footnotesize\ttfamily,
 keywordstyle=\bfseries\color{blue!60!black},
 escapechar=@,
 commentstyle=\itshape\color{purple!60!black},
+numberstyle=\bfseries\color{red!60!black},
 showstringspaces=false,
 morekeywords={hsize_t},
-breaklines=true}
+breaklines=true,
+literate=%
+    {0}{{{\color{red}0}}}1
+    {1}{{{\color{red}1}}}1
+    {2}{{{\color{red}2}}}1
+    {3}{{{\color{red}3}}}1
+    {4}{{{\color{red}4}}}1
+    {5}{{{\color{red}5}}}1
+    {6}{{{\color{red}6}}}1
+    {7}{{{\color{red}7}}}1
+    {8}{{{\color{red}8}}}1
+    {9}{{{\color{red}9}}}1}
 
 
 \begin{document}
@@ -136,34 +148,18 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
 
 
 %Throughout this thesis we will ignore the "H5" namespace and will always directly refer to the name of the object.\\
-For our purposes we need to save a \textit{Hagedorn} wave packet in every time step which consists of matrices and vectors. For these we need a \textit{DataSpace} which allows us to write matrices and vectors in a time-dimension. In our case the time-dimension is arbitrarily chosen depending on the kind of the simulation. As such we need a \textit{DSetCreatePropList} which is used to describe properties such as chunk-dimension for matrices used in our case for time-dimension.\textit{Attributes} are used to save additional information such as the used time-step $\delta t$ in the simulation. For constructing a HDF5 binary file we need to use the \textit{File} class which simply uses a string argument as the filename. For neatness we want to have a intern structure for our data. For this we use the \textit{Group} class which is very similar to the file system and its folders for structuring. To write \textit{Eigen}-matrices we need the \textit{DataType} class which defines how to write these data types. Last but not least we need a \textit{DataSet} for every object we want to write to our binary file.
+For our purposes we need to save a \textit{Hagedorn} wave packet in chosen time steps which consists of matrices and vectors. 
+%overwork
+For these we need a \textit{DataSpace} which allows us to write matrices and vectors in a time-dimension. In our case the time-dimension is arbitrarily chosen depending on the kind of the simulation. As such we need a \textit{DSetCreatePropList} which is used to describe properties such as chunk-dimension for matrices used in our case for time-dimension.\textit{Attributes} are used to save additional information such as the used time-step $\delta t$ in the simulation. For constructing a HDF5 binary file we need to use the \textit{File} class which simply uses a string argument as the filename. For neatness we want to have a intern structure for our data. For this we use the \textit{Group} class which is very similar to the file system and its folders for structuring. To write \textit{Eigen}-matrices we need the \textit{DataType} class which defines how to write these data types. Last but not least we need a \textit{DataSet} for every object we want to write to our binary file.
 
-\subsection{Intern used data-types}
-Often we make function calls with arguments to the HDF5 library. These arguments have to be of an intern data type which the library expects. For our needs we mostly need hsize\_t and H5std\_string and every class mentioned in the previous section.
+\subsection{Internally used types and states}
+To work with the HDF5 library or an interface in general one needs to use the declared functions and types. Function arguments also have to be of an internal data type or class which the library expects at this position and sometimes these arguments also only have some valid states. All these are wrapped in a \texttt{namespace H5} which will be omitted thereafter. Therefore we will discuss in the next sections which objects and types are relevant for our purposes. For further information we refer to the official documentations \cite{hdf5cppdoc} \cite{hdf5cdoc}.
 \subsubsection{hsize$\_$t}
 Variables of this type represent native multiple-precision integer. 
 \subsubsection{H5std$\_$string}
-H5std\_string is just an alias for the std::string type.
-\subsection{DataType}
-The \textit{DataType} class describes how to write different kind of types and handles writing options. Every \textit{DataType} is given a name which is stored in a string used as its representation. As we can see from the previous graph \textit{DataType} is derived from \textit{H5Object} and is further decomposable in \textit{ArrayType}, \textit{AtomType}, \textit{CompType}, \textit{EnumType} and \textit{VarLenType}. For example when we want to write a native double and we don't care how it is represented on our system we would use a \textit{PredType} from \textit{AtomType} because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the \textit{FloatType} from \textit{AtomType}. For cases where our data type is a struct of atomic types we would use the \textit{CompType}. For interested parties and further explanations we refer to the HDF5 official C++ documentation\cite{hdf5cppdoc} an C documentation \cite{hdf5cdoc}.
-\subsection{DataSpace}
-To write in a \textit{DataSet} the HDF5-library needs minimal four arguments. First is a pointer to the buffer of the source. Second is the type which is written which has to be a \textit{DataType} from before. Third and fourth is the source and destination space respectively which has to be a \textit{DataSpace} which will be explained in this section. There can be additional arguments such as which compression should be used for writing etc. A simple way to construct such a \textit{DataSpace} is to call the constructor with two arguments. The first one is the \textbf{rank} of the space, which indicates the number of dimension the space will have. Following as the second argument is an \textbf{array} of type \textbf{hsize\_t} with dimensionality of the previous declared \textbf{rank}. In each entry is the number of elements we want in this dimension. For example for a time grid \textit{DataSpace} the following code is sufficient:\\
-
-\begin{lstlisting}
-const int RANK = 1;
-hsize_t size[RANK];
-size[0]=number_of_timesteps;
-\end{lstlisting}
-
-The problem herein lies in the number of time steps which is unknown when we construct our \textit{DataSpace}. This leads to another approach which is to extend continuously which will be explained later on.
-\subsection{DataSet}
-A \textit{DataSet} is used as the location and representation for an object of interest which will be written. To construct a \textit{DataSet} we need four arguments. First argument is a string which represents the name and also the inner location in the file which will be explained later. The second argument describes the used \textit{DataType} to write data to this set. The third argument is a \textit{DataSpace} which describes the dimension of the \textit{DataSet}. The forth and last argument is a \textit{DSetCreatPropList} which describes inner properties of the DataSet for example the default fill value or the extensibility of the set.
-\subsection{Attribute}
-An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} we need three arguments. First is a string for the name of the attribute. Second is the used \textit{DataType} of the \textit{Attribute}. Third and last is the \textit{DataSpace} of the attribute. In our case we want to add for example an \textit{Attribute} to the root \textit{Group} "/" which stores the time step used in this \textit{File}.
-\subsection{DSetCreatePropList}
-
-
-We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. When default constructed a \textit{DataSet} is simple meaning it has fixed dimension but this doesn't allow us easy extension of the \textit{DataSet}. For this we change the property of how raw data is organized. When we define a chunk dimension for our data which is fixed we can easily extend the \textit{DataSet} later on in size of the chunk which also corresponds to a time step.
+\texttt{H5std\_string} is just an alias for the \texttt{std::string} type.
+\subsection{H5File}
+As already mentioned a \textit{H5File} with default construction has already a group root "/". To construct a \textit{H5File}  a minimal number of two arguments are needed. Two optional arguments are the \textit{FileCreatPropList} and \textit{FileAccPropList} which allow further specification which is in our case not needed and the \textit{DEFAULT} is sufficient. First is the filename represented as a std::string or H5std\_string and the second argument defines the type of creation. There are just two possible values \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file and if it already exists erase all data previously stored in the file. The latter fails if the file already exists. We will work with \textit{H5F\_ACC\_TRUNC} because if the filename already exists means there is data for this experimental setup which will  be overwritten which is not fatal because the conclusion should stay the same.
 \subsection{Group}
 We use \textit{Groups} to further structure our data in the file. Suppose we have a \textit{Hagedorn} wave packet and the corresponding energies with a time series then we would like to structure these in the file in a sub folder manner such as:
 \begin{tikzpicture}[
@@ -200,9 +196,33 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
     child[xshift=0.5cm]{node{timegrid}} 
 	};
 \end{tikzpicture}\\
-This can be done with relatively easily when we use for every leaf a \textit{DataSet} and for every intermediate node a \textit{Group}. When a \textit{File} is created by default the root \textit{Group} has name "/" in the file. For enforcing the above structure one just needs to include the parents in the name during creation. For example the name for the coefficients \textit{Group} we would use "/wavepacket/coefficents" as name and for c0 \textit{DataSet} "/wavepacket/coefficents/c0".
-\subsection{File}
-As already mentioned a \textit{File} with default construction has already a group root "/". To construct a \textit{File}  a minimal number of two arguments are needed. Two optional arguments are the \textit{FileCreatPropList} and \textit{FileAccPropList} which allow further specification which is in our case not needed and the \textit{DEFAULT} is sufficient. First is the filename represented as a std::string or H5std\_string and the second argument defines the type of creation. There are just two possible values \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file and if it already exists erase all data previously stored in the file. The latter fails if the file already exists. We will work with \textit{H5F\_ACC\_TRUNC} because if the filename already exists means there is data for this experimental setup which will  be overwritten which is not fatal because the conclusion should stay the same.
+This can be done with relatively easily when we use for every leaf a \textit{DataSet} and for every intermediate node a \textit{Group}. When a \textit{H5File} is created by default the root \textit{Group} has name "/" in the file. For enforcing the above structure one just needs to include the parents in the name during creation. For example the name for the coefficients \textit{Group} we would use "/wavepacket/coefficents" as name and for c0 \textit{DataSet} "/wavepacket/coefficents/c0".
+
+
+\subsection{DataSet}
+To create a \textit{DataSet} the HDF5-library needs four arguments. First is the name declared as \texttt{std::string} or \texttt{H5std\_string} which represents the set in the program for further use in other function calls. Second is the type used internally which has to be a \textit{DataType} explained in the previous section. The third is the dimension which has to be a \textit{DataSpace} who will be explained in this section. The last is a \textit{DSetCreatPropList} which will be explained later.
+
+A \textit{DataSet} is used as the location and representation for an object of interest which will be written. To construct a \textit{DataSet} we need four arguments. First argument is a string which represents the name and also the inner location in the file which will be explained later. The second argument describes the used \textit{DataType} to write data to this set. The third argument is a \textit{DataSpace} which describes the dimension of the \textit{DataSet}. The forth and last argument is a \textit{DSetCreatPropList} which describes inner properties of the DataSet for example the default fill value or the extensibility of the set.
+\subsection{DataType}
+The \textit{DataType} class describes how to write different kind of types and handles writing options. Every \textit{DataType} is given a name which is stored in a string used as its representation. As we can see from the previous graph \textit{DataType} is derived from \textit{H5Object} and is further decomposable in \textit{ArrayType}, \textit{AtomType}, \textit{CompType}, \textit{EnumType} and \textit{VarLenType}. For example when we want to write a native double and we don't care how it is represented on our system we would use a \textit{PredType} from \textit{AtomType} because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the \textit{FloatType} from \textit{AtomType}. For cases where our data type is a struct of atomic types we would use the \textit{CompType}. For interested parties and further explanations we refer to the HDF5 official C++ documentation\cite{hdf5cppdoc} an C documentation \cite{hdf5cdoc}.
+\subsection{DataSpace}
+ A simple way to construct such a \textit{DataSpace} is to call the constructor with two arguments. The first one is the \texttt{rank} of the space, which indicates the number of dimension the space will have. Following as the second argument is an \texttt{array} of type \texttt{hsize\_t} with dimensionality of length \texttt{rank}. In each entry is the number of elements we want in this dimension. For example for a time grid \textit{DataSpace} the following code is sufficient:\\
+
+\begin{lstlisting}
+const int rank = 1;
+hsize_t size[rank];
+size[0]=number_of_timesteps;
+DataSpace timespace(rank,size);
+\end{lstlisting}
+The problem herein lies in the number of time steps which is unknown when we construct our \textit{DataSpace}. This leads to another approach which is to define a unlimited \textit{DataSpace}. The library allows this if we add an additional argument in the creation. This argument is also an \texttt{array} of type \texttt{hsize\_t} and contains the maximum size of each dimension. This size has to be greater or equal than the used one previously as \texttt{size}. Here it is allowed to use the \texttt{H5S\_UNLIMITED} value in the \texttt{maxdims}-array to indicate an unlimited \textit{DataSpace}.
+
+\subsection{DSetCreatePropList}
+We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. When default constructed a \textit{DataSet} is simple meaning it has fixed dimension but this doesn't allow us easy extension of the \textit{DataSet}. For this we change the property of how raw data is organized. When we define a chunk dimension for our data which is fixed we can easily extend the \textit{DataSet} later on in size of the chunk which also corresponds to a time step.
+\subsection{Attribute}
+An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} we need three arguments. First is a string for the name of the attribute. Second is the used \textit{DataType} of the \textit{Attribute}. Third and last is the \textit{DataSpace} of the attribute. In our case we want to add for example an \textit{Attribute} to the root \textit{Group} "/" which stores the time step used in this \textit{H5File}.
+
+
+
 \section{Eigen Interface}
 For our purposes we need the storage format in \textit{Eigen/Core} for storing the subparts of the \textit{Hagedorn} wave packet. \textit{Eigen} is a template with minimal three arguments. The first argument is the type which is stored. Second and third are the dimension of the matrix respectively.The forth argument is relevant if we want to change from default row-wise storage format to column-wise storage format.
 \begin{lstlisting}
@@ -230,9 +250,29 @@ nctp.insertMember("i",HOFFSET(ctype,imag),PredType::NATIVE_DOUBLE);
 Worth noting is we don't use the \texttt{std::complex<double>} type which would in theory achieve the same result. The problem herein lies that the \texttt{HOFFSET} function has no direct access to the internal address of \texttt{real} and \texttt{imag} variables. The real part of \texttt{std::complex<double>} is accessed with a \texttt{real()} function which returns the value but not the address. As such in our case it becomes unusable. Also note that we insert \textit{PredType} doubles and not directly C++ internal doubles. Now if we create an array of \texttt{ctype} the pointer is automatically writable if we use \texttt{nctp} as argument in the function call.
 
 \subsection{SetUp write-options}
+To enable a customization of writing the binary file we add an additional layer before the writing process to allow writing options. First of all we can choose what should be written. The default is that the \textit{Hagedorn} wave packet is always written in contrast to the observables as energies and the norm. These can also be enabled with a \texttt{set\_write\_energy(true)} or \texttt{set\_write\_norm(true)} function call. We could also disable the wave packet with \texttt{set\_write\_packet(false)}. The next question would be how much should be written. We have four time grids respectively for the packet, norm, ekin and epot. The default choice is to write these in every time step which can changed with a \texttt{set\_timestep\_packet($\delta t$)}, \texttt{set\_timestep\_norm($\delta t$)}, \texttt{set\_timestep\_ekin($\delta t$)} or \texttt{set\_timestep\_epot($\delta t$)} function call with the desired time step as argument. The next and last option is discussed in the next section. 
+
 
 \subsection{SetUp write-paths}
+The last option which can be changed are the paths internally meaning the \textit{Group} names can be set. The default values are depicted in graph (reference) and can be changed with:
+\begin{lstlisting}
+set_datablockstring(name);
+set_wavepacketstring(name);
+set_packetgroupstring(name);
+set_coefficientgroupstring(name);
+set_energiesgroupstring(name);
+set_normsgroupstring(name):
+\end{lstlisting}
+function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
+
 \subsection{Pre-structure}
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the writing process. First the dimensionality of the coefficients is calculated given this particular wave packet. When the dimension is known it can be allocated in a \textit{DataSet}. The next step is to allocate the group structure defined in the previous section. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to its dimensionality. 
+
+
+
+
+
+
 \subsection{Selection}
 \subsection{Transformation}
 \subsection{Writing}
