@@ -82,8 +82,9 @@ This thesis is about the continuation of the C++ implementation \cite{libwaveblo
 \section{HDF5 C++ Interface}
 HDF stands for hierarchical data format which allows internal structure similar to a file system.
 \subsection{Overview}
-From the documentation we can conclude that the C++ interface is just a nice wrapper of the C interface. The corresponding classes and wrappers are shown in the following table:\\
-\\
+From the documentation we can conclude that the C++ interface is just a nice wrapper of the C interface. The corresponding classes and wrappers are shown in the table \ref{table:corrs}.\\
+\begin{figure}[!h]
+\centering
 \begin{tabular}{|l|l|}
 \hline
 HDF5 C APIs&C++ Classes\\
@@ -98,9 +99,14 @@ Property List Interface (H5P)&PropList and subclasses\\
 Dataspace Interface (H5S)&DataSpace\\
 Datatype Interface (H5T)&DataType and subclasses\\
 \hline
-\end{tabular}\\
-\\
-The hierarchy of derivation of these classes is depicted in the following graph:\\
+\end{tabular}
+\caption{Table of correspondence between C and C++}
+\label{table:corrs}
+\end{figure}\\
+The hierarchy of derivation of these classes is depicted in figure \ref{graph:hierarchy}.
+\begin{figure}[h!]
+\centering
+\resizebox{\textwidth}{!}{
 \begin{tikzpicture}[
 baseline,
 every node/.style = {shape=rectangle, rounded corners, draw, align=center},
@@ -144,8 +150,11 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
     		child{node{DSetCreatPropList}}
     		}
     		};
-\end{tikzpicture}\\
-
+\end{tikzpicture}
+}
+\caption{Depiction of derivation hierarchy}
+\label{graph:hierarchy}
+\end{figure}\\
 
 %Throughout this thesis we will ignore the "H5" namespace and will always directly refer to the name of the object.\\
 For our purposes we need to save a \textit{Hagedorn} wave packet in chosen time steps which consists of matrices and vectors. 
@@ -162,8 +171,12 @@ Variables of this type represent native multiple-precision integer. This type is
 A \textit{H5File} with default construction has already a \textit{Group} root "/". To construct a \textit{H5File}  a minimal number of two arguments are needed. Two additional optional arguments are the \textit{FileCreatPropList} and \textit{FileAccPropList} which allow further specification which is in our case not needed and the \textit{DEFAULT} is sufficient. First is the filename represented as a string as discussed before and the second argument defines the type of creation. There are just two possible values \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file and if it already exists erase all data previously stored in the file. The latter fails if the file already exists. We will work with \textit{H5F\_ACC\_TRUNC} because if the filename already exists means there is data for this simulation setup which will be overwritten which is not fatal because we can always repeat the simulation from before which results in the same data.
 \subsection{Group}
 We use \textit{Groups} to further structure our data in the file. Suppose we have a \textit{Hagedorn} wave packet and the corresponding energies with a time series then we would like to structure these in the file in a sub folder manner such as:
+\begin{figure}[h!]
+\centering
+\resizebox{\textwidth}{!}{
 \begin{tikzpicture}[
 baseline,
+scale=1.2,
 every node/.style = {shape=rectangle, rounded corners, draw, align=center},
 ]]
   \node {root/\\filename}
@@ -195,7 +208,12 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
     }
     child[xshift=0.5cm]{node{timegrid}} 
 	};
-\end{tikzpicture}\\
+\end{tikzpicture}
+}
+\caption{Depiction of internal structure of a H5File}
+\label{graph:file}
+\end{figure}\\
+
 This can be easily done when we use for every leaf of the above graph a \textit{DataSet} and for every intermediate node a \textit{Group}. As already mentioned before a \textit{H5File} has root \textit{Group} "/" after creation. For implementing the above structure one just needs to include the path in the name during creation. For example the name for the \texttt{coefficients} \textit{Group} we would use "/wavepacket/coefficents" as name and for \texttt{c0} \textit{DataSet} "/wavepacket/coefficents/c0".
 
 
@@ -203,15 +221,16 @@ This can be easily done when we use for every leaf of the above graph a \textit{
 To allocate a \textit{DataSet} the HDF5-library needs four arguments. The order and types are \textit{string}, \textit{DataType}, \textit{DataSpace} and \textit{DSetCreatPropList}. All these will be explained in the following sections. The path as discussed above is the first argument. The type and dimension of the data are defined through the next two arguments. The last argument is property list at creation time to alter the layout of the data set. The \textit{DataSet} has three types of layouts to store raw data. These are \texttt{H5D\_COMPACT}, \texttt{H5D\_CONTIGUOUS} and \texttt{H5D\_CHUNKED}. The following graphic is meant to illustrate the inner workings of these layouts:
 
 \begin{figure}[h!]
-\includegraphics[scale=0.99]{data_layout.pdf}
+\centering
+\includegraphics[width=\textwidth]{data_layout.pdf}
+\caption{The three data layouts in \textit{DataSet}}
 \end{figure}
 
+If the data is not to large we can store it as \texttt{H5D\_COMPACT} meaning the data follows right after the header shown on the left. In case the data is larger but still somehow constant we use the \texttt{H5D\_CONTIGUOUS} layout in the middle meaning the header points to the data block which is stored contiguously in memory. The last case on the right is used if the size of the data is unknown. We store in the header the locations of all chunks meaning to add new data a new chunk will be appended in the header.
 
-If the data is not to large we can store it as \texttt{H5D\_COMPACT} meaning the data follows right after the header. In case the data is larger but still somehow constant we use the \texttt{H5D\_CONTIGUOUS} layout meaning the header points to the data block which is stored contiguous in memory. The last case is used if the size of the data is unknown. We store in the header the locations of the chunks. 
-
-
-A \textit{DataSet} is used as the location and representation for an object of interest. To construct a \textit{DataSet} we need four arguments. First argument is a string which represents the name and also the inner location in the file which will be explained later. The second argument describes the used \textit{DataType} to write data to this set. The third argument is a \textit{DataSpace} which describes the dimension of the \textit{DataSet}. The forth and last argument is a \textit{DSetCreatPropList} which describes inner properties of the DataSet for example the default fill value or the extensibility of the set.
+%A \textit{DataSet} is used as the location and representation for an object of interest. To construct a \textit{DataSet} we need four arguments. First argument is a string which represents the name and also the inner location in the file which will be explained later. The second argument describes the used \textit{DataType} to write data to this set. The third argument is a \textit{DataSpace} which describes the dimension of the \textit{DataSet}. The forth and last argument is a \textit{DSetCreatPropList} which describes inner properties of the DataSet for example the default fill value or the extensibility of the set.
 \subsection{DataType}
+%overwork
 The \textit{DataType} class describes how to write different kind of types and handles writing options. Every \textit{DataType} is given a name which is stored in a string used as its representation. As we can see from the previous graph \textit{DataType} is derived from \textit{H5Object} and is further decomposable in \textit{ArrayType}, \textit{AtomType}, \textit{CompType}, \textit{EnumType} and \textit{VarLenType}. For example when we want to write a native double and we don't care how it is represented on our system we would use a \textit{PredType} from \textit{AtomType} because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the \textit{FloatType} from \textit{AtomType}. For cases where our data type is a struct of atomic types we would use the \textit{CompType}. For interested parties and further explanations we refer to the HDF5 official C++ documentation\cite{hdf5cppdoc} an C documentation \cite{hdf5cdoc}.
 \subsection{DataSpace}
  A simple way to construct such a \textit{DataSpace} is to call the constructor with two arguments. The first one is the \texttt{rank} of the space, which indicates the number of dimension the space will have. Following as the second argument is an \texttt{array} of type \texttt{hsize\_t} with dimensionality of length \texttt{rank}. In each entry is the number of elements we want in this dimension. For example for a time grid \textit{DataSpace} the following code is sufficient:\\
@@ -274,7 +293,7 @@ set_normsgroupstring(name):
 function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 
 \subsection{Pre-structure}
-In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the writing process. First the dimensionality of the coefficients is calculated given this particular wave packet. When the dimension is known it can be allocated in a \textit{DataSet}. The next step is to allocate the group structure defined in the previous section. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to its dimensionality. 
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet. Remember only when the dimension is known can it then be allocated later in a \textit{DataSet}. The next step is to allocate the group structure defined in the graph \ref{graph:file}. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to its dimensionality. 
 
 
 
