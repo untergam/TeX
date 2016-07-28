@@ -164,13 +164,14 @@ For these we need a \textit{DataSpace} which allows us to write matrices and vec
 \subsection{Internally used types and states}
 To work with the HDF5 library or an interface in general one needs to use the declared functions and types. Function arguments also have to be of an internal data type or class which the library expects at this position and sometimes these arguments also only have some valid states. All these are wrapped in a \texttt{namespace H5} which will be omitted thereafter. Therefore we will discuss in the next sections which objects and types are relevant for our purposes. For further information we refer to the official documentations \cite{hdf5cppdoc} \cite{hdf5cdoc}.
 \subsubsection{hsize$\_$t}
-Variables of this type represent native multiple-precision integer. This type is commonly used as an argument for library functions.
+Variables of this type represent native multiple-precision integer. This type is commonly used as an argument for library functions and substitutes mostly the internal \texttt{int} C++ type.
 \subsubsection{H5std$\_$string}
-\texttt{H5std\_string} is just an alias for the \texttt{std::string} type. This type is always used for naming library specific object such as \textit{DataTypes} or \textit{DataSets}. Meaning to address this object its name is used as the representation.
+\texttt{H5std\_string} is just an alias for the \texttt{std::string} type. This type is always used for naming library specific objects such as the name of a\textit{DataSet} or internal members of an \textit{DataType}.
 \subsection{H5File}
-A \textit{H5File} with default construction has already a \textit{Group} root "/". To construct a \textit{H5File}  a minimal number of two arguments are needed. Two additional optional arguments are the \textit{FileCreatPropList} and \textit{FileAccPropList} which allow further specification which is in our case not needed and the \textit{DEFAULT} is sufficient. First is the filename represented as a string as discussed before and the second argument defines the type of creation. There are just two possible values \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file and if it already exists erase all data previously stored in the file. The latter fails if the file already exists. We will work with \textit{H5F\_ACC\_TRUNC} because if the filename already exists means there is data for this simulation setup which will be overwritten which is not fatal because we can always repeat the simulation from before which results in the same data.
+A \textit{H5File} with default construction has already a \textit{Group} root "/". To construct a \textit{H5File}  a minimal number of two arguments are needed. Two additional optional arguments are the \textit{FileCreatPropList} and \textit{FileAccPropList} which allow further specification which is in our case not needed and the \texttt{H5P\_DEFAULT} is sufficient. First is the filename represented as a string as discussed before and the second argument defines the type of creation. There are just two possible values \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file and if it already exists erase all data previously stored in the file. The latter fails if the file already exists. We will work with \textit{H5F\_ACC\_TRUNC} because if the filename already exists means there is data for this simulation setup which will be overwritten which is not fatal because we can always repeat the simulation from before which results in the same data.
 \subsection{Group}
-We use \textit{Groups} to further structure our data in the file. Suppose we have a \textit{Hagedorn} wave packet and the corresponding energies with a time series then we would like to structure these in the file in a sub folder manner such as:
+We use \textit{Groups} to further structure our data in the file. Suppose we have a \textit{Hagedorn} wave packet and the corresponding energies with a time series then we would like to structure these in the file in a sub folder manner such as in figure \ref{graph:file}.
+
 \begin{figure}[h!]
 \centering
 \resizebox{\textwidth}{!}{
@@ -212,9 +213,8 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
 }
 \caption{Depiction of internal structure of a H5File}
 \label{graph:file}
-\end{figure}\\
-
-This can be easily done when we use for every leaf of the above graph a \textit{DataSet} and for every intermediate node a \textit{Group}. As already mentioned before a \textit{H5File} has root \textit{Group} "/" after creation. For implementing the above structure one just needs to include the path in the name during creation. For example the name for the \texttt{coefficients} \textit{Group} we would use "/wavepacket/coefficents" as name and for \texttt{c0} \textit{DataSet} "/wavepacket/coefficents/c0".
+\end{figure}
+This can be easily done when we use for every leaf of the graph in figure \ref{graph:file} a \textit{DataSet} and for every intermediate node a \textit{Group}. As already mentioned before a \textit{H5File} has root \textit{Group} "/" after creation. For implementing the structure in figure \ref{graph:file} one just needs to include the path in the name during creation. For example the name for the \texttt{coefficients} \textit{Group} we would use "/wavepacket/coefficents" as name and for \texttt{c0} \textit{DataSet} "/wavepacket/coefficents/c0".
 
 
 \subsection{DataSet}
@@ -224,13 +224,14 @@ To allocate a \textit{DataSet} the HDF5-library needs four arguments. The order 
 \centering
 \includegraphics[width=\textwidth]{data_layout.pdf}
 \caption{The three data layouts in \textit{DataSet}}
+\label{fig:datalayout}
 \end{figure}
 
 If the data is not to large we can store it as \texttt{H5D\_COMPACT} meaning the data follows right after the header shown on the left. In case the data is larger but still somehow constant we use the \texttt{H5D\_CONTIGUOUS} layout in the middle meaning the header points to the data block which is stored contiguously in memory. The last case on the right is used if the size of the data is unknown. We store in the header the locations of all chunks meaning to add new data a new chunk will be appended in the header.
 
 %A \textit{DataSet} is used as the location and representation for an object of interest. To construct a \textit{DataSet} we need four arguments. First argument is a string which represents the name and also the inner location in the file which will be explained later. The second argument describes the used \textit{DataType} to write data to this set. The third argument is a \textit{DataSpace} which describes the dimension of the \textit{DataSet}. The forth and last argument is a \textit{DSetCreatPropList} which describes inner properties of the DataSet for example the default fill value or the extensibility of the set.
 \subsection{DataType}
-For writing HDF format a \textit{DataType} object is needed as argument in the writing process. As shown in graph \ref{graph:hierarchy} \textit{DataType} is derived from an \textit{H5Object} and is further decomposed into various types for different usage. For writing floating point numbers for example the \textit{FloatType} is used. One could further change the characteristic of the default IEE representation to other definitions if desired. It is obvious that for writing one uses \textit{IntType} for \texttt{int}, \textit{StrType} for \texttt{std::string}, \textit{PredType} for C++ intrinsic defined types such as \texttt{double}, \texttt{int}, \texttt{float} etc., \textit{ArrayType} for fixed sized arrays, \textit{VarLenType} for variable sized arrays, \textit{EnumType} for \texttt{enum}, and \textit{CompType} for simple compositions of atom types. In our case it is sufficient to use a \textit{CompType} default constructed because we will define our complex data type as a \texttt{struct} composed of two \texttt{doubles}.
+For writing HDF format a \textit{DataType} object is needed as argument in the writing process. As shown in graph \ref{graph:hierarchy} \textit{DataType} is derived from an \textit{H5Object} and is further decomposed into various types for different usage. For writing floating point numbers for example the \textit{FloatType} is used. One could further change the characteristic of the default IEEE representation to other definitions if desired. It is obvious that for writing one uses \textit{IntType} for \texttt{int}, \textit{StrType} for \texttt{std::string}, \textit{PredType} for C++ intrinsic defined types such as \texttt{double}, \texttt{int}, \texttt{float} etc., \textit{ArrayType} for fixed sized arrays, \textit{VarLenType} for variable sized arrays, \textit{EnumType} for \texttt{enum}, and \textit{CompType} for simple compositions of atom types. In our case it is sufficient to use a \textit{CompType} default constructed because we will define our complex data type as a \texttt{struct} composed of two \texttt{doubles}.
 %overwork
 %The \textit{DataType} class describes how to write different kind of types and handles writing options. Every \textit{DataType} is given a name which is stored in a string used as its representation. As we can see from figure \ref{graph:hierarchy} \textit{DataType} is derived from \textit{H5Object} and is further decomposable in \textit{ArrayType}, \textit{AtomType}, \textit{CompType}, \textit{EnumType} and \textit{VarLenType}. For example when we want to write a native double and we don't care how it is represented on our system we would use a \textit{PredType} from \textit{AtomType} because it will use the definition from the operating system. When we would like to choose or define ourself how to write a double we would use the \textit{FloatType} from \textit{AtomType}. For cases where our data type is a struct of atomic types we would use the \textit{CompType}. For interested parties and further explanations we refer to the HDF5 official C++ documentation\cite{hdf5cppdoc} an C documentation \cite{hdf5cdoc}.
 \subsection{DataSpace}
@@ -250,11 +251,16 @@ hsize_t maxsize[rank]={H5S_UNLIMITED};
 DataSpace unlimited_timespace(rank,size,maxsize);
 \end{lstlisting}
 
+\subsection{PropList}
+This class is used to create a new property as an instance of some property class. These constructed default classes are: \texttt{H5P\_FILE\_CREATE} for \textit{H5FILE} creation, \texttt{H5P\_FILE\_ACCESS} for \textit{H5FILE} access, \texttt{H5P\_DATASET\_CREATE} for \textit{DataSet} creation, \texttt{H5P\_DATASET\_XFER} for raw data transfer and \texttt{H5P\_MOUNT} for \textit{H5File} mounting.
+
+
 \subsection{DSetCreatePropList}
-We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. When default constructed a \textit{DataSet} is simple meaning it has fixed dimension but this doesn't allow us easy extension of the \textit{DataSet}. For this we change the property of how raw data is organized. When we define a chunk dimension for our data which is fixed we can easily extend the \textit{DataSet} later on in size of the chunk which also corresponds to a time step.
+This property list is used to change the mentioned data layout in figure \ref{fig:datalayout}. %We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. 
+When default constructed a \textit{DataSet} is simple meaning \texttt{H5D\_COMPACT} but this doesn't allow us easy extension of the \textit{DataSet}. For allowing unlimited extension we change the property of how raw data is organized by creating this property list and changing the chunk dimension to the time step size.
 
 \subsection{Attribute}
-An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} we need three arguments. First is a string for the name of the attribute. Second is the used \textit{DataType} of the \textit{Attribute}. Third and last is the \textit{DataSpace} of the attribute. In our case we want to add for example an \textit{Attribute} to the root \textit{Group} "/" which stores the time step used in this \textit{H5File}.
+An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} it has to be attached to an extisting \textit{Group} or \textit{DataSet}. The creation is similar to a \textit{DataSet} because the same arguments are needed except for the \textit{DSetCreatPropList} only the \texttt{H5P\_DEFAULT} is allowed.
 
 
 
@@ -301,7 +307,7 @@ set_normsgroupstring(name):
 function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 
 \subsection{Pre-structure}
-In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet. Remember only when the dimension is known can it then be allocated later in a \textit{DataSet}. The next step is to allocate the group structure defined in the graph \ref{graph:file}. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to its dimensionality. 
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet. Remember only when the dimension is known can it then be allocated later in a \textit{DataSet}. The next step is to allocate the group structure defined in the graph \ref{graph:file}. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to its dimensionality.
 
 
 
