@@ -306,20 +306,15 @@ set_normsgroupstring(name):
 \end{lstlisting}
 function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 
-\subsection{Pre-structure}
-In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet. Remember only when the dimension is known can it then be allocated later in a \textit{DataSet}. The next step is to allocate the group structure defined in the graph \ref{graph:file}. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to its dimensionality.
-
-
-
-
-
-
+\subsection{Prestructure}
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same dimension. This is done by defining elementary \textit{DataSpaces} for each variable written corresponding to the chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count, start, stride and block-size. 
 \subsection{Selection}
+
 \subsection{Transformation}
 \subsection{Writing}
 \subsection{Update}
 \subsection{Extension}
-\subsection{Post-structure}
+\subsection{Poststructure}
 
 
 
