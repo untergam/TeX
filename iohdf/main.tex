@@ -83,7 +83,7 @@ This thesis is about the continuation of the C++ implementation \cite{libwaveblo
 HDF stands for hierarchical data format which allows internal structure similar to a file system.
 \subsection{Overview}
 From the documentation we can conclude that the C++ interface is just a nice wrapper of the C interface. The corresponding classes and wrappers are shown in the table \ref{table:corrs}.\\
-\begin{figure}[!h]
+\begin{figure}[ht!]
 \centering
 \begin{tabular}{|l|l|}
 \hline
@@ -104,7 +104,7 @@ Datatype Interface (H5T)&DataType and subclasses\\
 \label{table:corrs}
 \end{figure}\\
 The hierarchy of derivation of these classes is depicted in figure \ref{graph:hierarchy}.
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \resizebox{\textwidth}{!}{
 \begin{tikzpicture}[
@@ -172,7 +172,7 @@ A \textit{H5File} with default construction has already a \textit{Group} root "/
 \subsection{Group}
 We use \textit{Groups} to further structure our data in the file. Suppose we have a \textit{Hagedorn} wave packet and the corresponding energies with a time series then we would like to structure these in the file in a sub folder manner such as in figure \ref{graph:file}.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \resizebox{\textwidth}{!}{
 \begin{tikzpicture}[
@@ -220,7 +220,7 @@ This can be easily done when we use for every leaf of the graph in figure \ref{g
 \subsection{DataSet}
 To allocate a \textit{DataSet} the HDF5-library needs four arguments. The order and types are \textit{string}, \textit{DataType}, \textit{DataSpace} and \textit{DSetCreatPropList}. All these will be explained in the following sections. The path as discussed above is the first argument. The type and dimension of the data are defined through the next two arguments. The last argument is property list at creation time to alter the layout of the data set. The \textit{DataSet} has three types of layouts to store raw data. These are \texttt{H5D\_COMPACT}, \texttt{H5D\_CONTIGUOUS} and \texttt{H5D\_CHUNKED}. The following graphic is meant to illustrate the inner workings of these layouts:
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \includegraphics[width=\textwidth]{data_layout.pdf}
 \caption{The three data layouts in \textit{DataSet}}
@@ -307,18 +307,31 @@ set_normsgroupstring(name):
 function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 
 \subsection{Prestructure}
-In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same dimension. This is done by defining elementary \textit{DataSpaces} for each variable written corresponding to the chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size. 
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same size. This is done by defining elementary \textit{DataSpaces} which corresponds to this chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size which will be further explained in the next section. 
 \subsection{Selection}
 The \textit{DataSpace} from the data source is a constant sized chunk defined through the time step. In contrast the destination space and its hyper-slab selection is changing every set time step size since it gets extended dynamically after every write. The next figure should demonstrate how this selection process work for two dimensional matrices.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 \centering
 \includegraphics[scale=2.0]{selection.pdf}
-\label{fig:hyperslab}
 \caption{hyper-slab illustration}
+\label{fig:hyperslab}
 \end{figure}
-   
+The first entry is always reserved for the time point. The next two dimensions is used as the basis for the matrix. The corresponding code to figure \ref{fig:hyperslab} could look like this:
+\begin{lstlisting}
+hsize_t start[3] = {time_step,1,1};
+hsize_t count[3] = {time_step,3,2};
+hsize_t block[3] = {time_step,1,1};
+hsize_t stride[3] = {time_step,2,2};
+\end{lstlisting}
+Thus in every time step the hyper-slab has to be reselected if we want to write this data. This is done internally with an \texttt{time\_index} which indicates in which time step the simulation is at the moment. The dimension written is always the chunk dimension by construction as such this selection is constant over time and such can be set at the beginning as described in the previous section.
+The selection process is one function statement used on a corresponding \textit{DataSpace}:
+\begin{lstlisting}
+dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
+\end{lstlisting}
+
 \subsection{Transformation}
+As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector\<ctype\>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call. 
 
 \subsection{Writing}
 
