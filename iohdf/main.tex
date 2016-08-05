@@ -306,6 +306,15 @@ set_normsgroupstring(name):
 \end{lstlisting}
 function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 
+\subsection{Noname}
+\begin{figure}[ht!]
+\resizebox{\textwidth}{!}{
+\includegraphics[scale=1.0]{writing_dataset.pdf}
+}
+\caption{Illustration of inner workings for a \textit{DataSet}}
+\label{fig:illustration}
+\end{figure}
+
 \subsection{Prestructure}
 In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same size. This is done by defining elementary \textit{DataSpaces} which corresponds to this chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size which will be further explained in the next section. 
 \subsection{Selection}
@@ -331,13 +340,15 @@ dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
 \end{lstlisting}
 
 \subsection{Transformation}
-As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector\<ctype\>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call. 
+As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector<ctype>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call. 
 
 \subsection{Writing}
 
+\subsection{Extension}
+
 \subsection{Update}
 
-\subsection{Extension}
+
 
 \subsection{Poststructure}
 
