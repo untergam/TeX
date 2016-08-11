@@ -36,7 +36,7 @@
   showstringspaces=false,
   basicstyle=\footnotesize\ttfamily,
   keywordstyle=\bfseries\color{blue!40!black},
-  morekeywords={hsize_t},
+  morekeywords={hsize_t,real_t},
   commentstyle=\itshape\color{purple!40!black},
   identifierstyle=\color{black},
   numberstyle=\color{red},
@@ -254,15 +254,12 @@ DataSpace unlimited_timespace(rank,size,maxsize);
 \subsection{PropList}
 This class is used to create a new property as an instance of some property class. These constructed default classes are: \texttt{H5P\_FILE\_CREATE} for \textit{H5FILE} creation, \texttt{H5P\_FILE\_ACCESS} for \textit{H5FILE} access, \texttt{H5P\_DATASET\_CREATE} for \textit{DataSet} creation, \texttt{H5P\_DATASET\_XFER} for raw data transfer and \texttt{H5P\_MOUNT} for \textit{H5File} mounting.
 
-
 \subsection{DSetCreatePropList}
 This property list is used to change the mentioned data layout in figure \ref{fig:datalayout}. %We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. 
 When default constructed a \textit{DataSet} is simple meaning \texttt{H5D\_COMPACT} but this doesn't allow us easy extension of the \textit{DataSet}. For allowing unlimited extension we change the property of how raw data is organized by creating this property list and changing the chunk dimension to the time step size.
 
 \subsection{Attribute}
 An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} it has to be attached to an extisting \textit{Group} or \textit{DataSet}. The creation is similar to a \textit{DataSet} because the same arguments are needed except for the \textit{DSetCreatPropList} only the \texttt{H5P\_DEFAULT} is allowed.
-
-
 
 \section{Eigen Interface}
 For our purposes we need the storage format in \textit{Eigen/Core} for storing the subparts of the \textit{Hagedorn} wave packet. \textit{Eigen} is a template with minimal three arguments. The first argument is the type which is stored. Second and third are the dimension of the matrix respectively.The forth argument is relevant if we want to change from default row-wise storage format to column-wise storage format.
@@ -340,7 +337,7 @@ The writing function call from the HDF library has the following form:
 \begin{lstlisting}
 datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
 \end{lstlisting}
-We already have all tools available to use this function. The \texttt{src} is delivered from the transformation section, \texttt{type} from the declaration section and \texttt{srcspace}, \texttt{dstspace} from the prestucturing or selection respectively. 
+We already have all tools available to use this function. The \texttt{src} is delivered from the transformation section, \texttt{type} from the declaration section and \texttt{srcspace}, \texttt{dstspace} from the prestucturing sectoin or selection section respectively.
 
 \subsection{Extension}
 For extending a \textit{DataSet} we need the new dimension in a \texttt{hsize\_t} array which is used as the extension. Note here that only chunked \textit{DataSets} are possible to extend with the following call:
@@ -357,7 +354,7 @@ dataspacename = datasetname.getSpace();
 which is done for every existing \textit{DataSet} in the file.
 
 \subsection{Poststructure}
-After the last time step of the simulation we have to finalize our \textit{DataSet} and structures used. This is done in this section. From our implementation we know that also in the last time step we did extend the \textit{DataSet}. As such the last extension will be reversed. Afterwards every structure from the library has to be freed from memory. The system does this automatically for all structures allocated on the stack. For structures which are on the heap because they were allocated with the \texttt{new} operator we have to free them ourselves. This step can be cumbersome because mostly we don't know anymore which object has internally somewhere a reference to it and therefore it is unsafe data management. The implementation avoids this problem by using the \texttt{new} operator to allocate \texttt{std::shared_ptr} objects which will be managed by the standard library the same as the \texttt{std::vector}. As such the data management is primarily done by the system and not by the implementation.
+After the last time step of the simulation we have to finalize our \textit{DataSet} and structures used. This is done in this section. From our implementation we know that also in the last time step we did extend the \textit{DataSet}. As such the last extension will be reversed. Afterwards every structure from the library has to be freed from memory. The system does this automatically for all structures allocated on the stack. For structures which are on the heap because they were allocated with the \texttt{new} operator we have to free them ourselves. This step can be cumbersome because mostly we don't know anymore which object has internally somewhere a reference to it and therefore it is unsafe data management. The implementation avoids this problem by using the \texttt{new} operator to allocate \texttt{std::shared\_ptr} objects which will be managed by the standard library the same as the \texttt{std::vector}. As such the data management is primarily done by the system and not by the implementation.
 
 \subsection{Code in a Picture}
 The following figure \ref{fig:illustration} shows the lifetime of a \textit{DataSet} in this implementation. The start signalizes the use of the constructor to allocate the object.
@@ -365,13 +362,87 @@ The following figure \ref{fig:illustration} shows the lifetime of a \textit{Data
 \resizebox{\textwidth}{!}{
 \includegraphics[scale=1.0]{writing_dataset.pdf}
 }
-\caption{Illustration of inner workings for a \textit{DataSet}}
+\caption{Illustration of inner workings for a \textit{DataSet} in the simulation}
 \label{fig:illustration}
 \end{figure}
 
+\subsection{Usage in Simulation}
+Note that this implementation is only able to write scalar \textit{Hagedorn} wave packets with the normal \textit{Hagedorn} parameter set for the moment. Further work includes to either extend this HDF5 writer template with matching functions for more complicated \textit{Hagedorn} wave packets or to generalize the template on these packets. In the simulation the packet and its parameter set is constructed in the following form:
+\begin{lstlisting}
+...
+wavepackets::HaWpParamSet<D> param_set(q,p,Q,P,S);
+...
+wavepackets::ScalarHaWp<D,MultiIndex> packet;
+...
+\end{lstlisting}
+Hence our HDF5 writer template is constructed and used in the following way:
+\begin{lstlisting}
+... //setting simulation variables, options etc.
+
+//constructor of this template implementation
+io::hdf5writer<D> writer("simulation_filename.hdf5");
+
+//optional setup write options
+bool write_packet,write_energy,write_norm;
+write_packet=true;//default value
+write_energy=false;//default value
+write_norm=false;//default value
+writer.set_write_energy(write_packet);
+writer.set_write_norm(write_energy);
+writer.set_write_packet(write_norm);
+int packet_stepsize,energy_stepsize,norm_stepsize;
+packet_stepsize=1;//default value writing every time step
+energy_stepsize=1;//default value writing every time step
+norm_stepsize=1;//default value writing every time step
+writer.set_timestep_packet(packet_stepsize)
+writer.set_timestep_energy(energy_stepsize)
+writer.set_timestep_norm(norm_stepsize)
+
+//optional setup write paths
+std::string datablockstring,wavepacktstring,packetgroupstring;
+std::string coefficientgroupstring,energiesgroupstring;
+std::string normsgroupstring,observablesgroupstring;
+//default paths see figure @\ref{graph:file}@
+datablockstring="/datablock_0";
+wavepacktstring="/wavepacket";
+packetgroupstring="/Pi";
+coefficientgroupstring="/coefficients"
+energiesgroupstring="/energies"
+normsgroupstring="/norm";
+observablesgroupstring="/observables";
+writer.set_datablockstring(datablockstring);
+writer.set_wavepacketstring(wavepacktstring);
+writer.set_packetgroupstring(packetgroupstring);
+writer.set_coefficientgroupstring(coefficientgroupstring);
+writer.set_energiesgroupstring(energiesgroupstring);
+writer.set_normsgroupstring(normsgroupstring);
+writer.set_observablesgroupstring(observablesgroupstring);
+
+//prestructuring step
+writer.prestructuring<MultiIndex>(packet,dt);
+
+//simulation loop body
+for(real_t t = 0; t < T; t += dt)
+{
+	real_t ekin=observables::kinetic_energy<D,MultiIndex>(packet);
+	real_t epot=observables::potential_energy<ScalarMatrixPotential<D>,D,MultiIndex,TQR>(packet,V);
+	writer.store_packet(packet); //function call for storing packet in file
+	writer.store_energies(epot,ekin); //function call for storing energies in file
+	writer.store_norm(packet); //function call for storing norm in file	
+}
+
+//finalization with postructure
+writer.poststructuring();
+\end{lstlisting}
+Remember that only the constructor, prestructuring and poststructuring are always mandatory independent of the simulation. Also note that if write option of norm and/or energies is set to true but the \texttt{.store\_...} function call is missing that an error message will be printed without aborting the simulation. 
+
+
 \section{Datatest with GoogleTest Framework}
+
 \subsection{Initialization}
+
 \subsection{Testfissure}
+
 \subsection{Testclass including HDF5 Interface}
 
 
