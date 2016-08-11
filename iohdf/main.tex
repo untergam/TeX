@@ -306,17 +306,10 @@ set_normsgroupstring(name):
 \end{lstlisting}
 function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 
-\subsection{Noname}
-\begin{figure}[ht!]
-\resizebox{\textwidth}{!}{
-\includegraphics[scale=1.0]{writing_dataset.pdf}
-}
-\caption{Illustration of inner workings for a \textit{DataSet}}
-\label{fig:illustration}
-\end{figure}
 
 \subsection{Prestructure}
-In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same size. This is done by defining elementary \textit{DataSpaces} which corresponds to this chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size which will be further explained in the next section. 
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same size. This is done by defining elementary \textit{DataSpaces} which corresponds to this chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size which will be further explained in the next section.
+
 \subsection{Selection}
 The \textit{DataSpace} from the data source is a constant sized chunk defined through the time step. In contrast the destination space and its hyper-slab selection is changing every set time step size since it gets extended dynamically after every write. The next figure should demonstrate how this selection process work for two dimensional matrices.
 
@@ -343,16 +336,38 @@ dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
 As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector<ctype>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call. 
 
 \subsection{Writing}
+The writing function call from the HDF library has the following form:
+\begin{lstlisting}
+datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
+\end{lstlisting}
+We already have all tools available to use this function. The \texttt{src} is delivered from the transformation section, \texttt{type} from the declaration section and \texttt{srcspace}, \texttt{dstspace} from the prestucturing or selection respectively. 
 
 \subsection{Extension}
+For extending a \textit{DataSet} we need the new dimension in a \texttt{hsize\_t} array which is used as the extension. Note here that only chunked \textit{DataSets} are possible to extend with the following call:
+\begin{lstlisting}
+datasetname.extend(hsize_t extension);
+\end{lstlisting}
+Also note this function call can also be used to reduce the dimension if the used array \texttt{extension} is smaller then the existing \textit{DataSet}. To know the current position of the data an \texttt{int index} is used for every existing \textit{DataSet}. This index is also used in setting the dimension of the \texttt{hsize\_t extension} array.
 
 \subsection{Update}
-
-
+After the extension of a \textit{DataSet} the library doesn't automatically also update the corresponding \textit{DataSpace} which was used in the selection section. As such this is done in this update section. Also the corresponding \texttt{index} to the \textit{DataSet} is incremented in this step. The library provides an easy way to use the extended \textit{DataSet} to set the new \textit{DataSpace} namely:
+\begin{lstlisting}
+dataspacename = datasetname.getSpace();
+\end{lstlisting}
+which is done for every existing \textit{DataSet} in the file.
 
 \subsection{Poststructure}
+After the last time step of the simulation we have to finalize our \textit{DataSet} and structures used. This is done in this section. From our implementation we know that also in the last time step we did extend the \textit{DataSet}. As such the last extension will be reversed. Afterwards every structure from the library has to be freed from memory. The system does this automatically for all structures allocated on the stack. For structures which are on the heap because they were allocated with the \texttt{new} operator we have to free them ourselves. This step can be cumbersome because mostly we don't know anymore which object has internally somewhere a reference to it and therefore it is unsafe data management. The implementation avoids this problem by using the \texttt{new} operator to allocate \texttt{std::shared_ptr} objects which will be managed by the standard library the same as the \texttt{std::vector}. As such the data management is primarily done by the system and not by the implementation.
 
-
+\subsection{Code in a Picture}
+The following figure \ref{fig:illustration} shows the lifetime of a \textit{DataSet} in this implementation. The start signalizes the use of the constructor to allocate the object.
+\begin{figure}[ht!]
+\resizebox{\textwidth}{!}{
+\includegraphics[scale=1.0]{writing_dataset.pdf}
+}
+\caption{Illustration of inner workings for a \textit{DataSet}}
+\label{fig:illustration}
+\end{figure}
 
 \section{Datatest with GoogleTest Framework}
 \subsection{Initialization}
