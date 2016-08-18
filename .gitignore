@@ -3,6 +3,9 @@
 *.log
 *.old
 *.out
+*.dvi
+*.ps
+*.thm
 *.~
 *.*~
 *.aux
