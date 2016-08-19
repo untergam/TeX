@@ -4,12 +4,10 @@
 *.old
 *.out
 *.dvi
-*.ps
 *.thm
 *.aux
 *.bbl
 *.blg
 *.brf
-*.pdf
 *.synctex.gz
 *.toc
