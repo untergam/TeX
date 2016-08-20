@@ -5,6 +5,7 @@
 *.out
 *.dvi
 *.thm
+*.pdf
 *.aux
 *.bbl
 *.blg
