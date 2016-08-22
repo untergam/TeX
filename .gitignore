@@ -1,14 +1,9 @@
-# extensions
-*.pyc
-*.log
-*.old
-*.out
-*.dvi
-*.thm
 *.pdf
-*.aux
 *.bbl
+*.aux
 *.blg
 *.brf
+*.out
 *.synctex.gz
 *.toc
+*.log
