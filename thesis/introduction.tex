@@ -8,11 +8,62 @@ To test an algorithm or approach such as semiclassical wavepackets \cite{B_bache
 
 \section{Background}
 
-%explaining semiclassical wavepackets
+In quantum physics the most prominent problems are governed by the time-dependent
+Schr\"odinger equation \ref{eq:basics_tdse_simple}
 
 \begin{equation} \label{eq:basics_tdse_simple}
   i \hbar \frac{\partial}{\partial t} \Ket{\varphi} = H \Ket{\varphi}
 \end{equation}
+
+where $H$ is the Hamiltonian, $\varphi(x,t)$ represents the wave function dependent on position $x$ and
+time $t$ and $\langle \varphi | \varphi  \rangle$ is the probability density of electrons. This equation can be reformulated in a semiclassical setting for nuclei as: \
+\begin{equation}
+\label{eq:tdse_sc_nuclei}
+ i\hbar \partial_{t}\psi = \left( -\frac{\hbar^{2}}{2} \Delta_{x} + V(\vec{x}) \right) \psi\,.
+\end{equation}
+
+Challenges:
+\begin{itemize}
+\item high dimension $d$ ($\mathrm{CO_{2}}$ has $d=9$);
+\item multiple scales governed by the small parameter
+      $\hbar = \varepsilon^{2}$ (the square root of the ratio between the electron mass and the mass of the
+      heaviest nucleus in the model; $\mathrm{CO_{2}}$ has $\hbar \approx 0.0058$);
+\item actual solution has frequencies of order $1/\hbar$ which are hard to reproduce for small $\hbar$
+      on a finite uniform grid as required by a Fourier based approach;
+\item long time evolution.
+\end{itemize}
+
+Advantages:
+
+
+
+%hagedorn packet
+\cite{H_ladder_operators}
+
+%basic algorithmisch mit hagedorn 
+%mit splitting methoden P Q p q klassische probagation 
+%quantum corrections
+\cite{FGL_semiclassical_dynamics}
+
+%second generation algorithmus Grad + Hagedorn
+%[62]
+
+%waveblocks python master arbeit R.Bour
+%diversitaet
+\cite{B_master_thesis}
+%cite WaveblocksND
+
+%application of code
+%tunneling dynamics Gradinaru
+\cite{GHJ_tunneling_spawning}
+%non adiabatic 
+\cite{BGH_natac}
+
+%C++ beginning
+%intoduction
+%cite libwaveblocks
+
+
 
 
 
