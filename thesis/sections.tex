@@ -83,6 +83,7 @@ every node/.style = {shape=rectangle, rounded corners, draw, align=center},
 As stated in the background this project is about the simulation of \textit{Hagedorn} wavepackets over a fixed time horizon. To keep track and possibly reproduce the results the wavepackets have to be saved in every time step $\Delta t$ of the simulation. This has to be achieved with the classes shown in figure \ref{graph:hierarchy}. To understand the functionality of these classes they will be explained in the following sections.
 
 \section{Internal types and states}
+\label{seq:internaltypes}
 An interface in general has supported objects and functions. These functions also have preconditions and postconditions whereas objects have valid states. In case of the HDF5 library when these are not fulfilled an exception is thrown which could abort or interrupt the program execution. Therefore it is important to always use valid objects and function calls. There are two noteworthy types which are also used the most. These are \texttt{hsize\_t} and \texttt{H5std\_string}. Variable of type \texttt{hsize\_t} represent native multiple-precision integer. This type substitutes the C++ internal \texttt{int} data type. The \texttt{H5std\_string} type is just an alias for the \texttt{std::string} data type from the standard library. Internal valid states are represented in only uppercase letters and with the C prefix as in table \ref{table:corrs}. For example a valid property list state is \texttt{H5P\_DEFAULT}.
 
 \section{H5File}
@@ -138,7 +139,7 @@ To create a \textit{Group} only a \texttt{string} argument is required which act
 
 \section{DataSet}
 \label{seq:dataset}
-The constructor of the \textit{DataSet} class demands four arguments with individual type \textit{string}, \textit{DataType}, \textit{DataSpace} and \textit{DSetCreatPropList}. The first argument analogous to \textit{Group} is the name with its path included. For example the \textit{DataSet} "ekin" has the complete name "/observables/energies/ekin". As the name suggest the second and third argument specifies the type and space of the data. Lastly the forth argument defines the properties at creation. This incorporates which data layout is chosen. The \textit{DataSet} has three types of layouts to store raw data. These are \texttt{H5D\_COMPACT}, \texttt{H5D\_CONTIGUOUS} and \texttt{H5D\_CHUNKED}. Figure \ref{fig:datalayout} should illustrate the inner workings of these layouts.
+The constructor of the \textit{DataSet} class demands four arguments with individual type \textit{string}, \textit{DataType}, \textit{DataSpace} and \textit{DSetCreatPropList}. The first argument analogous to \textit{Group} is the name with its path included. For example the \textit{DataSet} "ekin" has the complete name "/observables/energies/ekin". As the name indicates the second and the third argument specifies the type and space of the data. Lastly the forth argument defines the properties at creation. This incorporates which data layout is chosen. The \textit{DataSet} has three types of layouts to store raw data. These are \texttt{H5D\_COMPACT}, \texttt{H5D\_CONTIGUOUS} and \texttt{H5D\_CHUNKED}. Figure \ref{fig:datalayout} should illustrate the inner workings of these layouts.
 
 %\begin{figure}[ht!]
 %\centering
@@ -152,23 +153,46 @@ The constructor of the \textit{DataSet} class demands four arguments with indivi
 \label{fig:datalayout}
 \end{figure}
 
-
-If the data is not to large we can store it as \texttt{H5D\_COMPACT} meaning the data follows right after the header shown on the left. In case the data is larger but still somehow constant we use the \texttt{H5D\_CONTIGUOUS} layout in the middle meaning the header points to the data block which is stored contiguously in memory. The last case on the right is used if the size of the data is unknown. We store in the header the locations of all chunks meaning to add new data a new chunk will be appended in the header.
-
-
+If the data is sufficiently small \texttt{H5D\_COMPACT} will be used. In this layout the data address follows right after the header as shown on the left. When the data is bigger but still has a constant size \texttt{H5D\_CONTIGUOUS} is the right layout. This one allows that the address of the data can be arbitrary in memory and is saved in the header. The last layout \texttt{H5D\_CHUNKED} on the right is useful assuming the size of the data is unknown. The data will be divided continuously into chunks with constant size where the address will be saved in the header. This means when a chunk is full a new one gets allocated with its address saved into the header. As the perceptive reader can guess the last layout is of most relevance for this project. A simulation generates new data in each time step which in essence is ideal for the size of a chunk because it further allows to label each chunk to its corresponding time step. This will be later used to match data according to its time label.
 
 \section{DataType}
-The language C++ itself supports data types such as int, double, char etc. but these cannot be used directly in a binary data format. The reason for this 
-\section{DataSpace}
-\section{PropList}
-\subsection{DSetCreatePropList}
-\section{Attribute}
+The language C++ itself supports data types such as int, double, char etc. but these cannot be used directly in a binary data format.
+This is caused by different data representation which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used. In this object further changes of characteristics can be done such as changing from default IEEE representation. In this project the \textit{PredType} and \textit{CompType} are of most relevance. The \textit{PredType} is predetermined meaning there is no explicit constructor needed. From this class \textit{NATIVE_INT} is used to write the respective time labels for the data. The \textit{CompType} class is utilized for writing complex numbers and also this class has to be explicit constructed which will be explained in section \ref{seq:datatypedec}.
 
+\section{DataSpace}
+To describe the dimensionality of our data the \textit{DataSpace} class is required. The construction of such a \textit{DataSpace} is straightforward. Firstly the library needs to know the number of dimensions of the desired space. Secondly it has know the number of elements in each dimension. For the second argument an array of \texttt{hsize\_t} is expected instead of \texttt{int} as described in section \ref{seq:internaltypes}. To give the reader an idea the following code depicts the \textit{DataSpace} of a time grid.
+
+\begin{lstlisting}
+int rank = 1;
+hsize_t size[rank];
+size[0]=number_of_timesteps;
+DataSpace limited_timespace(rank,size);
+\end{lstlisting}
+The problem herein lies in the number of time steps which is known only at runtime but the constructor expects it at compiletime. This leads to another approach which is to define a unlimited \textit{DataSpace}. The library allows this if an additional optional argument is added. This argument has to be of the same data type as the second argument and contains the maximum size of each dimension. The library expects that this argument has to be greater or equal than the previous argument otherwise an exception is thrown. For an unlimited space a special state is used namely \texttt{H5S\_UNLIMITED}. The above example code changes to the following if an unlimited space is desired:
+\begin{lstlisting}
+int rank = 1;
+hsize_t size[rank] = {1};
+hsize_t maxsize[rank]={H5S_UNLIMITED};
+DataSpace unlimited_timespace(rank,size,maxsize);
+\end{lstlisting}
+
+\section{PropList}
+%%%
+This class is used to create a new property as an instance of some property class. These constructed default classes are: \texttt{H5P\_FILE\_CREATE} for \textit{H5FILE} creation, \texttt{H5P\_FILE\_ACCESS} for \textit{H5FILE} access, \texttt{H5P\_DATASET\_CREATE} for \textit{DataSet} creation, \texttt{H5P\_DATASET\_XFER} for raw data transfer and \texttt{H5P\_MOUNT} for \textit{H5File} mounting.
+
+\subsection{DSetCreatePropList}
+This property list is used to change the mentioned data layout in figure \ref{fig:datalayout}. %We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. 
+When default constructed a \textit{DataSet} is simple meaning \texttt{H5D\_COMPACT} but this doesn't allow us easy extension of the \textit{DataSet}. For allowing unlimited extension we change the property of how raw data is organized by creating this property list and changing the chunk dimension to the time step size.
+
+\section{Attribute}
+An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} it has to be attached to an extisting \textit{Group} or \textit{DataSet}. The creation is similar to a \textit{DataSet} because the same arguments are needed except for the \textit{DSetCreatPropList} only the \texttt{H5P\_DEFAULT} is allowed.
 
 
 \chapter{Writer Template}
 
 \section{DataType Declaration}
+\label{seq:datatypedec}
+
 
 \section{Setup write options}
 
