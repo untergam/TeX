@@ -21,54 +21,28 @@ time $t$ and $\langle \varphi | \varphi  \rangle$ is the probability density of 
 \label{eq:tdse_sc_nuclei}
  i\hbar \partial_{t}\psi = \left( -\frac{\hbar^{2}}{2} \Delta_{x} + V(\vec{x}) \right) \psi\,.
 \end{equation}
+Nevertheless there are still much challenges involved to solve this equation \ref{eq:tdse_sc_nuclei}. One of this is the high dimensionality of this equation. A molecule with $N$ nuclei where each of them has three degrees of freedom results in $3N$ unknowns. For example the simple molecule $\mathrm{CO_{2}}$ has already $d=9$ degrees of freedom. Another challenge is the multiple scales governed by the small parameter $\hbar = \varepsilon^{2}$ in case of $\mathrm{CO_{2}}$ it results in $\hbar \approx 0.0058$. Also the actual solution has frequencies of order $1/\hbar$ which are hard to reproduce for small $\hbar$ on a finite uniform grid as required by a Fourier based approach. Further there is the problem of long time evolutions.\\
 
-Challenges:
-\begin{itemize}
-\item high dimension $d$ ($\mathrm{CO_{2}}$ has $d=9$);
-\item multiple scales governed by the small parameter
-      $\hbar = \varepsilon^{2}$ (the square root of the ratio between the electron mass and the mass of the
-      heaviest nucleus in the model; $\mathrm{CO_{2}}$ has $\hbar \approx 0.0058$);
-\item actual solution has frequencies of order $1/\hbar$ which are hard to reproduce for small $\hbar$
-      on a finite uniform grid as required by a Fourier based approach;
-\item long time evolution.
-\end{itemize}
-
-Advantages:
-
-
-
-%hagedorn packet
-\cite{H_ladder_operators}
+In this semiclassical setting \textit{Hagedorn} wavepackets with its operators as described in \cite{H_ladder_operators} is a viable tool to overcome these challenges. Not only will it be gridfree but also a spectral based method which results in fast approximations in space of localized wave-functions. Lastly it further allows highly oscillating functions.\\
 
 %basic algorithmisch mit hagedorn 
 %mit splitting methoden P Q p q klassische probagation 
 %quantum corrections
-\cite{FGL_semiclassical_dynamics}
 
 %second generation algorithmus Grad + Hagedorn
 %[62]
+A basic algorithm of computing quantum mechanics with \textit{Hagedorn} is specified in \cite{FGL_semiclassical_dynamics}. In this algorithm splitting method is used to divide the problem into classical propagation of \{P,Q,p,q\} with quantum correction terms.
+Further improvement was done in \cite{GH_convsemiclassical}.\\
 
 %waveblocks python master arbeit R.Bour
 %diversitaet
-\cite{B_master_thesis}
-%cite WaveblocksND
-
+A diverse implementation was done in python \cite{B_master_thesis} where source code is available on github \cite{waveblocksnd}. This implementation further supports various propagators. Interesting applications of this code can be found in the project about tunneling dynamics \cite{GHJ_tunneling_spawning} and non-adiabatic transitions \cite{BGH_natac}.\\
 %application of code
 %tunneling dynamics Gradinaru
-\cite{GHJ_tunneling_spawning}
 %non adiabatic 
-\cite{BGH_natac}
 
 %C++ beginning
-%intoduction
-%cite libwaveblocks
-
-
-
-
-
-
-
+As python is an interpreted language it is mostly not optimized for execution time. To circumvent this problem a C++ implementation is desired. Until now only the base functionality was transferred to C++. Hagedorn wavepackets was done in \cite{bt_michajab}, inner products in \cite{st_benedekv} and the potentials in \cite{bt_lionelm}. The current base implementation is available on github \cite{libwaveblocks}. In this project the goal was to enlarge the C++ code functionality with intelligent data serialization. This was done with the well-known HDF5 library to reach compatibility with the structure of the data of the two implementation. This further allowed to use the GoogleTest framework to write a test which enabled to check if two simulations with different implementations yield the same data.
 
 
 %This is version \verb-v1.4- of the template.
