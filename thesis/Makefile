@@ -7,7 +7,7 @@ SVG2PDF = inkscape -z -T -A
 all:  thesis
 
 texfiles = $(wildcard *.tex)
-imgfiles = data_layout.pdf selection.pdf
+imgfiles = data_layout.pdf selection.pdf writing_dataset.pdf
 
 .PHONY thesis: thesis.pdf
 
@@ -30,6 +30,8 @@ data_layout.pdf: data_layout.svg
 selection.pdf: selection.svg
 	$(SVG2PDF) $@ $<
 
+writing_dataset.pdf: writing_dataset.svg
+	$(SVG2PDF) $@ $<
 
 clean:
 	rm -rf build/
