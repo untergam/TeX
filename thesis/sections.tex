@@ -157,7 +157,7 @@ If the data is sufficiently small \texttt{H5D\_COMPACT} will be used. In this la
 
 \section{DataType}
 The language C++ itself supports data types such as int, double, char etc. but these cannot be used directly in a binary data format.
-This is caused by different data representation which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used. In this object further changes of characteristics can be done such as changing from default IEEE representation. In this project the \textit{PredType} and \textit{CompType} are of most relevance. The \textit{PredType} is predetermined meaning there is no explicit constructor needed. From this class \textit{NATIVE_INT} is used to write the respective time labels for the data. The \textit{CompType} class is utilized for writing complex numbers and also this class has to be explicit constructed which will be explained in section \ref{seq:datatypedec}.
+This is caused by different data representation which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used. In this object further changes of characteristics can be done such as changing from default IEEE representation. In this project the \textit{PredType} and \textit{CompType} are of most relevance. The \textit{PredType} is predetermined meaning there is no explicit constructor needed. From this class \textit{NATIVE\_INT} is used to write the respective time labels for the data. The \textit{CompType} class is utilized for writing complex numbers and also this class has to be explicit constructed which will be explained in section \ref{seq:datatypedec}.
 
 \section{DataSpace}
 To describe the dimensionality of our data the \textit{DataSpace} class is required. The construction of such a \textit{DataSpace} is straightforward. Firstly the library needs to know the number of dimensions of the desired space. Secondly it has know the number of elements in each dimension. For the second argument an array of \texttt{hsize\_t} is expected instead of \texttt{int} as described in section \ref{seq:internaltypes}. To give the reader an idea the following code depicts the \textit{DataSpace} of a time grid.
@@ -177,52 +177,261 @@ DataSpace unlimited_timespace(rank,size,maxsize);
 \end{lstlisting}
 
 \section{PropList}
-%%%
-This class is used to create a new property as an instance of some property class. These constructed default classes are: \texttt{H5P\_FILE\_CREATE} for \textit{H5FILE} creation, \texttt{H5P\_FILE\_ACCESS} for \textit{H5FILE} access, \texttt{H5P\_DATASET\_CREATE} for \textit{DataSet} creation, \texttt{H5P\_DATASET\_XFER} for raw data transfer and \texttt{H5P\_MOUNT} for \textit{H5File} mounting.
+Most classes require a specific property list at the moment of construction which include additional information. Depending on the object a different property list is required. All these lists have a common base class namely \textit{PropList} as presented in figure \ref{graph:hierarchy}. The possibilities of these property lists excel the scope of this project easily therefore the default value is enough. The default values are shortly described in table \ref{table:default}.
+
+\begin{figure}[ht!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Default name value&Influence\\
+\hline
+\texttt{H5P\_FILE\_CREATE}&\textit{H5FILE} creation\\
+\texttt{H5P\_FILE\_ACCESS}&\textit{H5FILE} access\\
+\texttt{H5P\_DATASET\_CREATE}&\textit{DataSet} creation\\
+\texttt{H5P\_DATASET\_XFER}&raw data transfer\\
+\texttt{H5P\_MOUNT}&\textit{H5File} mounting\\
+\texttt{H5P\_DEFAULT}&base value for all the above\\
+\hline
+\end{tabular}
+\caption{Table of property list default values and their influence}
+\label{table:default}
+\end{figure}
+
+Noteworthy for this project is only the \textit{DSetCreatePropList} mentioned in section \ref{seq:dataset} which will be explained in the next section \ref{seq:dscpl}.
 
 \subsection{DSetCreatePropList}
-This property list is used to change the mentioned data layout in figure \ref{fig:datalayout}. %We use a \textit{DSetCreatPropList} to change the properties of how raw data is organized on disk and how the raw data is compressed. 
-When default constructed a \textit{DataSet} is simple meaning \texttt{H5D\_COMPACT} but this doesn't allow us easy extension of the \textit{DataSet}. For allowing unlimited extension we change the property of how raw data is organized by creating this property list and changing the chunk dimension to the time step size.
+\label{seq:dscpl}
+From section \ref{seq:dataset} a \textit{DSetCreatePropList} object is demanded for creating a \textit{DataSet}. As the perceptive reader can guess this property list is used to determine the data layout shown in figure \ref{fig:datalayout}. The property list is responsible for setting the layout to \texttt{H5D\_COMPACT}. This is important because only data with this layout can be dynamically extended later on during a simulation. 
 
 \section{Attribute}
-An \textit{Attribute} is used to write additional information to an existing \textit{Group} or \textit{DataSet} to describe the nature and/or the intended usage or the object. To create an \textit{Attribute} it has to be attached to an extisting \textit{Group} or \textit{DataSet}. The creation is similar to a \textit{DataSet} because the same arguments are needed except for the \textit{DSetCreatPropList} only the \texttt{H5P\_DEFAULT} is allowed.
-
+Additionally to writing data in binary format it should also incorporate saving corresponding meta data. This can be easily done with \textit{Attributes} which must be attached to an affiliated \textit{Group} or \textit{DataSet}. The allocation of such an \textit{Attribute} is similar to a \textit{DataSet} meaning a \textit{DataType} and \textit{DataSpace} is also demanded. For its property list only the \texttt{H5P\_DEFAULT} is allowed which the library enforces otherwise an exception is thrown.
 
 \chapter{Writer Template}
+\section{Link to Eigen library}
+%TODO
+For our purposes we need the storage format in \textit{Eigen/Core} for storing the subparts of the \textit{Hagedorn} wave packet. \textit{Eigen} is a template with minimal three arguments. The first argument is the type which is stored. Second and third are the dimension of the matrix respectively.The forth argument is relevant if we want to change from default row-wise storage format to column-wise storage format.
+\begin{lstlisting}
+Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
+\end{lstlisting}
+For writing \textit{Eigen} matrices we will use functions which will explicit transform these matrices in \textit{DataTypes} who are writable in the HDF library.\\
+
+The \textit{Eigen} matrices are templates with type and dimension. We will handle the type in the matrix with transformation functions. When the matrices have arbitrary dimension we also have to consider to define our writer class as template over dimension $D$. To construct our writer-class only one string argument is needed which is used as the filename. Internally also the \textit{DataType} will be automatically constructed which we will discuss in the next section.
 
 \section{DataType Declaration}
 \label{seq:datatypedec}
+To be compatible with the python HDF we use the following struct as declaration of a complex number:
+\begin{lstlisting}
+struct ctype
+{
+  double real;
+  double imag;
+} instance_of_ctype;
+\end{lstlisting}
+Which will be used by the \texttt{CompType} class to construct an internal data type representation which is writable in HDF format. To construct a composite type with the right size the \texttt{sizeof} operator is needed. The following code shows how our \textit{DataType} is constructed:
+\begin{lstlisting}
+CompType nctp(sizeof(instance_of_ctype));
+nctp.insertMember("r",HOFFSET(ctype,real),PredType::NATIVE_DOUBLE);
+nctp.insertMember("i",HOFFSET(ctype,imag),PredType::NATIVE_DOUBLE);
+\end{lstlisting}
+Worth noting is we don't use the \texttt{std::complex<double>} type which would in theory achieve the same result. The problem herein lies that the \texttt{HOFFSET} function has no direct access to the internal address of \texttt{real} and \texttt{imag} variables. The real part of \texttt{std::complex<double>} is accessed with a \texttt{real()} function which returns the value but not the address. As such in our case it becomes unusable. Also note that we insert \textit{PredType} doubles and not directly C++ internal doubles. Now if we create an array of \texttt{ctype} the pointer is automatically writable if we use \texttt{nctp} as argument in the function call.
 
 
 \section{Setup write options}
+To enable a customization of writing the binary file we add an additional layer before the writing process to allow writing options. First of all we can choose what should be written. The default is that the \textit{Hagedorn} wave packet is always written in contrast to the observables as energies and the norm. These can also be enabled with a \texttt{set\_write\_energy(true)} or \texttt{set\_write\_norm(true)} function call. We could also disable the wave packet with \texttt{set\_write\_packet(false)}. The next question would be how much should be written. We have four time grids respectively for the packet, norm, ekin and epot. The default choice is to write these in every time step which can changed with a \texttt{set\_timestep\_packet($\delta t$)}, \texttt{set\_timestep\_norm($\delta t$)}, \texttt{set\_timestep\_ekin($\delta t$)} or \texttt{set\_timestep\_epot($\delta t$)} function call with the desired time step as argument. The next and last option is discussed in the next section. 
 
 \section{Setup write hierarchy}
-
+The last option which can be changed are the paths internally meaning the \textit{Group} names can be set. The default values are depicted in graph (reference) and can be changed with:
+\begin{lstlisting}
+set_datablockstring(name);
+set_wavepacketstring(name);
+set_packetgroupstring(name);
+set_coefficientgroupstring(name);
+set_energiesgroupstring(name);
+set_normsgroupstring(name):
+\end{lstlisting}
+function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
 \section{Prestructure}
+In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same size. This is done by defining elementary \textit{DataSpaces} which corresponds to this chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size which will be further explained in the next section.
 
 \section{Selection}
+The \textit{DataSpace} from the data source is a constant sized chunk defined through the time step. In contrast the destination space and its hyper-slab selection is changing every set time step size since it gets extended dynamically after every write. The next figure should demonstrate how this selection process work for two dimensional matrices.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=2.0]{selection.pdf}
+\caption{hyper-slab illustration}
+\label{fig:hyperslab}
+\end{figure}
+The first entry is always reserved for the time point. The next two dimensions is used as the basis for the matrix. The corresponding code to figure \ref{fig:hyperslab} could look like this:
+\begin{lstlisting}
+hsize_t start[3] = {time_step,1,1};
+hsize_t count[3] = {time_step,3,2};
+hsize_t block[3] = {time_step,1,1};
+hsize_t stride[3] = {time_step,2,2};
+\end{lstlisting}
+Thus in every time step the hyper-slab has to be reselected if we want to write this data. This is done internally with an \texttt{time\_index} which indicates in which time step the simulation is at the moment. The dimension written is always the chunk dimension by construction as such this selection is constant over time and such can be set at the beginning as described in the previous section.
+The selection process is one function statement used on a corresponding \textit{DataSpace}:
+\begin{lstlisting}
+dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
+\end{lstlisting}
 
 \section{Transformation}
+As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector<ctype>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call.
 
 \section{Writing}
+The writing function call from the HDF library has the following form:
+\begin{lstlisting}
+datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
+\end{lstlisting}
+We already have all tools available to use this function. The \texttt{src} is delivered from the transformation section, \texttt{type} from the declaration section and \texttt{srcspace}, \texttt{dstspace} from the prestucturing sectoin or selection section respectively.
 
 \section{Extension}
+For extending a \textit{DataSet} we need the new dimension in a \texttt{hsize\_t} array which is used as the extension. Note here that only chunked \textit{DataSets} are possible to extend with the following call:
+\begin{lstlisting}
+datasetname.extend(hsize_t extension);
+\end{lstlisting}
+Also note this function call can also be used to reduce the dimension if the used array \texttt{extension} is smaller then the existing \textit{DataSet}. To know the current position of the data an \texttt{int index} is used for every existing \textit{DataSet}. This index is also used in setting the dimension of the \texttt{hsize\_t extension} array.
 
 \section{Update}
-
+After the extension of a \textit{DataSet} the library doesn't automatically also update the corresponding \textit{DataSpace} which was used in the selection section. As such this is done in this update section. Also the corresponding \texttt{index} to the \textit{DataSet} is incremented in this step. The library provides an easy way to use the extended \textit{DataSet} to set the new \textit{DataSpace} namely:
+\begin{lstlisting}
+dataspacename = datasetname.getSpace();
+\end{lstlisting}
+which is done for every existing \textit{DataSet} in the file.
 \section{Poststructure}
-
+After the last time step of the simulation we have to finalize our \textit{DataSet} and structures used. This is done in this section. From our implementation we know that also in the last time step we did extend the \textit{DataSet}. As such the last extension will be reversed. Afterwards every structure from the library has to be freed from memory. The system does this automatically for all structures allocated on the stack. For structures which are on the heap because they were allocated with the \texttt{new} operator we have to free them ourselves. This step can be cumbersome because mostly we don't know anymore which object has internally somewhere a reference to it and therefore it is unsafe data management. The implementation avoids this problem by using the \texttt{new} operator to allocate \texttt{std::shared\_ptr} objects which will be managed by the standard library the same as the \texttt{std::vector}. As such the data management is primarily done by the system and not by the implementation.
 \section{Inner workings in a picture}
+The following figure \ref{fig:illustration} shows the lifetime of a \textit{DataSet} in this implementation. The start signalizes the use of the constructor to allocate the object.
+\begin{figure}[ht!]
+\resizebox{\textwidth}{!}{
+\includegraphics[scale=1.0]{writing_dataset.pdf}
+}
+\caption{Illustration of inner workings for a \textit{DataSet} in the simulation}
+\label{fig:illustration}
+\end{figure}
 
 \section{Usage in a simulation main file}
+Note that this implementation is only able to write scalar \textit{Hagedorn} wave packets with the normal \textit{Hagedorn} parameter set for the moment. Further work includes to either extend this HDF5 writer template with matching functions for more complicated \textit{Hagedorn} wave packets or to generalize the template on these packets. In the simulation the packet and its parameter set is constructed in the following form:
+\begin{lstlisting}
+...
+wavepackets::HaWpParamSet<D> param_set(q,p,Q,P,S);
+...
+wavepackets::ScalarHaWp<D,MultiIndex> packet;
+...
+\end{lstlisting}
+%
+%TODO reference zu Michja wie ScalarHawp implementiert isch
+%
+Hence our HDF5 writer template is constructed and used in the following way:
+\begin{lstlisting}
+... //setting simulation variables, options etc.
 
+//constructor of this template implementation
+io::hdf5writer<D> writer("simulation_filename.hdf5");
+
+//optional setup write options
+bool write_packet,write_energy,write_norm;
+write_packet=true;//default value
+write_energy=false;//default value
+write_norm=false;//default value
+writer.set_write_energy(write_packet);
+writer.set_write_norm(write_energy);
+writer.set_write_packet(write_norm);
+int packet_stepsize,energy_stepsize,norm_stepsize;
+packet_stepsize=1;//default value writing every time step
+energy_stepsize=1;//default value writing every time step
+norm_stepsize=1;//default value writing every time step
+writer.set_timestep_packet(packet_stepsize)
+writer.set_timestep_energy(energy_stepsize)
+writer.set_timestep_norm(norm_stepsize)
+
+//optional setup write paths
+std::string datablockstring,wavepacktstring,packetgroupstring;
+std::string coefficientgroupstring,energiesgroupstring;
+std::string normsgroupstring,observablesgroupstring;
+//default paths see figure @\ref{graph:file}@
+datablockstring="/datablock_0";
+wavepacktstring="/wavepacket";
+packetgroupstring="/Pi";
+coefficientgroupstring="/coefficients"
+energiesgroupstring="/energies"
+normsgroupstring="/norm";
+observablesgroupstring="/observables";
+writer.set_datablockstring(datablockstring);
+writer.set_wavepacketstring(wavepacktstring);
+writer.set_packetgroupstring(packetgroupstring);
+writer.set_coefficientgroupstring(coefficientgroupstring);
+writer.set_energiesgroupstring(energiesgroupstring);
+writer.set_normsgroupstring(normsgroupstring);
+writer.set_observablesgroupstring(observablesgroupstring);
+
+//prestructuring step
+writer.prestructuring<MultiIndex>(packet,dt);
+
+//simulation loop body
+for(real_t t = 0; t < T; t += dt)
+{
+	real_t ekin=observables::kinetic_energy<D,MultiIndex>(packet);
+	real_t epot=observables::potential_energy<ScalarMatrixPotential<D>,D,MultiIndex,TQR>(packet,V);
+	writer.store_packet(packet); //function call for storing packet in file
+	writer.store_energies(epot,ekin); //function call for storing energies in file
+	writer.store_norm(packet); //function call for storing norm in file	
+}
+
+//finalization with postructure
+writer.poststructuring();
+\end{lstlisting}
+Remember that only the constructor, prestructuring and poststructuring are always mandatory independent of the simulation. Also note that if write option of norm and/or energies is set to true but the \texttt{.store\_...} function call is missing that an error message will be printed without aborting the simulation. 
 
 \chapter{Data Test}
 
 \section{Introduction to GoogleTest}
+There are two main ways to test objects with this framework. For the interested reader a more detailed documentation can be found in the git repository \cite{googletestdoc} where the Primer.md and AdvancedGuide.md examples are strongly suggested. Of importance is to define a test class for reusing certain objects for all tests. These objects in this case are the two \textit{H5Files}, the \textit{DataType} used in the writing process and the \textit{Attributes} saved in the root group of the two files. One of these \textit{Attributes} is the used time step $\Delta t$ in the simulation which will be needed later for a data matching.
 
 \section{The Main C++ File}
+The data test main file is of the following structure:
+\begin{lstlisting}
+#include "gtest/gtest.h"
+int global_argc;
+char** global_argv;
+...
 
+class TestHDF : public ::testing::Test
+{
+	protected:
+	TestHDF();
+	virtual ~TestHDF();
+	void SetUp();
+	void TearDown();
+	void time_matching(...);
+	
+	struct ctype{...};
+	H5File cppfile;
+	H5File pyfile;
+	CompType nctp;
+	double dt_cpp;
+	double dt_py;
+	...
+};
+
+TEST_F(TestHDF,Testpacket)
+{...}
+TEST_F(TestHDF,Testenergies)
+{...}
+TEST_F(TestHDF,Testnorm)
+{...}
+
+int main(int argc,char* argv[])
+{
+	global_argc=argc;
+	global_argv=argv;
+	::testing::InitGoogleTest(&argc,argv);
+	return RUN_ALL_TESTS();
+}
+\end{lstlisting}
+
+%TODO overwork
+Note that \texttt{TEST\_F} are test fissures which uses the same class object \texttt{TestHDF}. In the constructor the filenames are loaded in the \texttt{H5File} objects and the \textit{CompType} is also set the same as in section \textit{DataType} declaration. For each test fissure the \texttt{SetUp} function is used for further construction and at the end cleaned with \texttt{TearDown} function. To transfer the filenames, which are delivered over the command line arguments, global variables are used. In the respective test fissures the data of the two files will be compared relative to an absolute tolerance error. Hereby it has to be known which time points can be compared to in a general case. This is done with the \texttt{time\_matching} function which saves the matching time points in vector, where every entry are two indices, and as arguments two paths, represented as strings with the same form as in group section, to the respective time grid \textit{DataSet}.
 
 \chapter{Conclusion}
 
