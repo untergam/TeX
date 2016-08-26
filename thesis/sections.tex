@@ -87,6 +87,7 @@ As stated in the background this project is about the simulation of \textit{Hage
 An interface in general has supported objects and functions. These functions also have preconditions and postconditions whereas objects have valid states. In case of the HDF5 library when these are not fulfilled an exception is thrown which could abort or interrupt the program execution. Therefore it is important to always use valid objects and function calls. There are two noteworthy types which are also used the most. These are \texttt{hsize\_t} and \texttt{H5std\_string}. Variable of type \texttt{hsize\_t} represent native multiple-precision integer. This type substitutes the C++ internal \texttt{int} data type. The \texttt{H5std\_string} type is just an alias for the \texttt{std::string} data type from the standard library. Internal valid states are represented in only uppercase letters and with the C prefix as in table \ref{table:corrs}. For example a valid property list state is \texttt{H5P\_DEFAULT}.
 
 \section{H5File}
+\label{seq:h5file}
 As the name already suggest this class is used to manage the binary file object. When a \textit{H5File} is default constructed it also allocates a default \textit{Group} root named "/". To construct a \textit{H5File} a minimal number of two arguments is needed. The two additional optional arguments are a \textit{FileCreatPropList} and a \textit{FileAccPropList} which would allow further specification. These would be creation and access properties as suggested by the names. In case of this project they are not needed and the \texttt{H5P\_DEFAULT} is sufficient. For the first mandatory argument, which is the filename, a \texttt{H5std\_string} or as discussed before a string required. The second mandatory argument defines the type of creation which at default has two valid values. These possible values are \textit{H5F\_ACC\_TRUNC} and \textit{H5F\_ACC\_EXCL} which are mutually exclusive. The former truncates the file meaning if it already exists erase all data previously stored in the file. The latter fails if the file already exists under the specified name which ends in an exception. It is advised to work with \textit{H5F\_ACC\_TRUNC} because it is simpler and thus errors will less frequently occur.
 
 \section{Group}
@@ -156,6 +157,7 @@ The constructor of the \textit{DataSet} class demands four arguments with indivi
 If the data is sufficiently small \texttt{H5D\_COMPACT} will be used. In this layout the data address follows right after the header as shown on the left. When the data is bigger but still has a constant size \texttt{H5D\_CONTIGUOUS} is the right layout. This one allows that the address of the data can be arbitrary in memory and is saved in the header. The last layout \texttt{H5D\_CHUNKED} on the right is useful assuming the size of the data is unknown. The data will be divided continuously into chunks with constant size where the address will be saved in the header. This means when a chunk is full a new one gets allocated with its address saved into the header. As the perceptive reader can guess the last layout is of most relevance for this project. A simulation generates new data in each time step which in essence is ideal for the size of a chunk because it further allows to label each chunk to its corresponding time step. This will be later used to match data according to its time label.
 
 \section{DataType}
+\label{seq:datatype}
 The language C++ itself supports data types such as int, double, char etc. but these cannot be used directly in a binary data format.
 This is caused by different data representation which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used. In this object further changes of characteristics can be done such as changing from default IEEE representation. In this project the \textit{PredType} and \textit{CompType} are of most relevance. The \textit{PredType} is predetermined meaning there is no explicit constructor needed. From this class \textit{NATIVE\_INT} is used to write the respective time labels for the data. The \textit{CompType} class is utilized for writing complex numbers and also this class has to be explicit constructed which will be explained in section \ref{seq:datatypedec}.
 
@@ -208,18 +210,15 @@ Additionally to writing data in binary format it should also incorporate saving 
 
 \chapter{Writer Template}
 \section{Link to Eigen library}
-%TODO
-For our purposes we need the storage format in \textit{Eigen/Core} for storing the subparts of the \textit{Hagedorn} wave packet. \textit{Eigen} is a template with minimal three arguments. The first argument is the type which is stored. Second and third are the dimension of the matrix respectively.The forth argument is relevant if we want to change from default row-wise storage format to column-wise storage format.
+As mentioned in background \ref{seq:background} the simulation boils down to propagating the set \{P,Q,p,q\} where each element is a matrix. A possible interface to manage these matrices is the Eigen library. The definition of an Eigen matrix has the following form:
 \begin{lstlisting}
 Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
 \end{lstlisting}
-For writing \textit{Eigen} matrices we will use functions which will explicit transform these matrices in \textit{DataTypes} who are writable in the HDF library.\\
-
-The \textit{Eigen} matrices are templates with type and dimension. We will handle the type in the matrix with transformation functions. When the matrices have arbitrary dimension we also have to consider to define our writer class as template over dimension $D$. To construct our writer-class only one string argument is needed which is used as the filename. Internally also the \textit{DataType} will be automatically constructed which we will discuss in the next section.
+Note that this is a class template over three parameters namely type, row-dimension and column-dimension. Therefore the overall implementation will also be a template. In the current version only scalar \textit{Hagedorn} wavepackets are supported thus only one dimension parameter $D$ is utilized but the framework can still easily be extended in further works. As discussed in section \ref{seq:datatype} normal types are not writable hence the type is defined through the library. This declared type is not necessarily the same as the template argument from Eigen but is still similar enough to permit basic transformation functions.
 
 \section{DataType Declaration}
 \label{seq:datatypedec}
-To be compatible with the python HDF we use the following struct as declaration of a complex number:
+In this context simulation means manipulating complex numbers. To build a \textit{DataType} the library needs access to its members thus the standard \texttt{complex} class cannot be utilized. Therefore a \texttt{struct} is most suitable for defining the fundamental structure since all its members are by default public accessible. Hence the declaration of complex numbers looks like this:
 \begin{lstlisting}
 struct ctype
 {
@@ -227,16 +226,32 @@ struct ctype
   double imag;
 } instance_of_ctype;
 \end{lstlisting}
-Which will be used by the \texttt{CompType} class to construct an internal data type representation which is writable in HDF format. To construct a composite type with the right size the \texttt{sizeof} operator is needed. The following code shows how our \textit{DataType} is constructed:
+This can now be used by the library to create the corresponding \textit{DataType} which in this case the \textit{CompType} is most suitable because \texttt{ctype} is a composition of simple data types. To be compatible with python the same labels for its members has to be used which result in the following code:
 \begin{lstlisting}
-CompType nctp(sizeof(instance_of_ctype));
-nctp.insertMember("r",HOFFSET(ctype,real),PredType::NATIVE_DOUBLE);
-nctp.insertMember("i",HOFFSET(ctype,imag),PredType::NATIVE_DOUBLE);
+CompType nctp_(sizeof(instance_of_ctype));
+nctp_.insertMember("r",HOFFSET(ctype,real), PredType::NATIVE_DOUBLE);
+nctp_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
 \end{lstlisting}
-Worth noting is we don't use the \texttt{std::complex<double>} type which would in theory achieve the same result. The problem herein lies that the \texttt{HOFFSET} function has no direct access to the internal address of \texttt{real} and \texttt{imag} variables. The real part of \texttt{std::complex<double>} is accessed with a \texttt{real()} function which returns the value but not the address. As such in our case it becomes unusable. Also note that we insert \textit{PredType} doubles and not directly C++ internal doubles. Now if we create an array of \texttt{ctype} the pointer is automatically writable if we use \texttt{nctp} as argument in the function call.
+Worth noting is that the constructor of \textit{CompType} relies on the \texttt{sizeof} operator which tells how many bytes for an instance of this type is needed. The string labels "r" and "i" are utilized for the real respective the imaginary part of a complex number. \texttt{HOFFSET} is a simple function which returns at which position counted in bytes the second argument is located in the first argument. In this simple case because one double is saved in $8$ Bytes \texttt{real} is at position "0" and \texttt{imag} is at position "8". Finally the last argument is the type inserted at this position. Since already discussed in section \ref{seq:datatype} \texttt{double} cannot be used directly but the library provides these definitions through the \textit{PredType} class. The members of \textit{PredType} are constant and are fixed through the C++ language itself.\\
 
+
+\section{Constructor}
+Since the data type declaration has only to be initialized once it is suitable to pack it into the constructor of this writer template. The constructor only expects one string argument namely the filename. Therefore the the constructor can be written accordingly:
+\begin{lstlisting}
+template<int D>
+...
+//ctor
+hdf5writer(std::string name):filename_(name), nctp_(sizeof(instanceof)),file_(filename_,H5F_ACC_TRUNC)
+{
+	nctp_.insertMember("r",HOFFSET(ctype,real), PredType::NATIVE_DOUBLE);
+	nctp_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
+}
+\end{lstlisting}
+Observe that there are two implicit constructor calls after instantiation of the filename. For the former refer to section \ref{seq:datatypedec} for the latter to section \ref{seq:h5file}.
 
 \section{Setup write options}
+To enable customization an additional layer before the prestucuring layer was added. In there through boolean flags of 
+%TODO
 To enable a customization of writing the binary file we add an additional layer before the writing process to allow writing options. First of all we can choose what should be written. The default is that the \textit{Hagedorn} wave packet is always written in contrast to the observables as energies and the norm. These can also be enabled with a \texttt{set\_write\_energy(true)} or \texttt{set\_write\_norm(true)} function call. We could also disable the wave packet with \texttt{set\_write\_packet(false)}. The next question would be how much should be written. We have four time grids respectively for the packet, norm, ekin and epot. The default choice is to write these in every time step which can changed with a \texttt{set\_timestep\_packet($\delta t$)}, \texttt{set\_timestep\_norm($\delta t$)}, \texttt{set\_timestep\_ekin($\delta t$)} or \texttt{set\_timestep\_epot($\delta t$)} function call with the desired time step as argument. The next and last option is discussed in the next section. 
 
 \section{Setup write hierarchy}
