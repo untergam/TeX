@@ -162,6 +162,7 @@ The language C++ itself supports data types such as int, double, char etc. but t
 This is caused by different data representation which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used. In this object further changes of characteristics can be done such as changing from default IEEE representation. In this project the \textit{PredType} and \textit{CompType} are of most relevance. The \textit{PredType} is predetermined meaning there is no explicit constructor needed. From this class \textit{NATIVE\_INT} is used to write the respective time labels for the data. The \textit{CompType} class is utilized for writing complex numbers and also this class has to be explicit constructed which will be explained in section \ref{seq:datatypedec}.
 
 \section{DataSpace}
+\label{seq:dataspace}
 To describe the dimensionality of our data the \textit{DataSpace} class is required. The construction of such a \textit{DataSpace} is straightforward. Firstly the library needs to know the number of dimensions of the desired space. Secondly it has know the number of elements in each dimension. For the second argument an array of \texttt{hsize\_t} is expected instead of \texttt{int} as described in section \ref{seq:internaltypes}. To give the reader an idea the following code depicts the \textit{DataSpace} of a time grid.
 
 \begin{lstlisting}
@@ -210,7 +211,7 @@ Additionally to writing data in binary format it should also incorporate saving 
 
 \chapter{Writer Template}
 \section{Link to Eigen library}
-As mentioned in background \ref{seq:background} the simulation boils down to propagating the set \{P,Q,p,q\} where each element is a matrix. A possible interface to manage these matrices is the Eigen library. The definition of an Eigen matrix has the following form:
+As mentioned in background \ref{seq:background} the simulation boils down to propagating the set \{q,p,Q,P,S\} where q and p are $D$ dimensional real-valued vectors, Q and P complex $DxD$ matrices and S the global complex phase. A possible interface to manage these matrices and vectors is the Eigen library. The definition of an Eigen matrix has the following form:
 \begin{lstlisting}
 Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
 \end{lstlisting}
@@ -234,7 +235,6 @@ nctp_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
 \end{lstlisting}
 Worth noting is that the constructor of \textit{CompType} relies on the \texttt{sizeof} operator which tells how many bytes for an instance of this type is needed. The string labels "r" and "i" are utilized for the real respective the imaginary part of a complex number. \texttt{HOFFSET} is a simple function which returns at which position counted in bytes the second argument is located in the first argument. In this simple case because one double is saved in $8$ Bytes \texttt{real} is at position "0" and \texttt{imag} is at position "8". Finally the last argument is the type inserted at this position. Since already discussed in section \ref{seq:datatype} \texttt{double} cannot be used directly but the library provides these definitions through the \textit{PredType} class. The members of \textit{PredType} are constant and are fixed through the C++ language itself.\\
 
-
 \section{Constructor}
 Since the data type declaration has only to be initialized once it is suitable to pack it into the constructor of this writer template. The constructor only expects one string argument namely the filename. Therefore the the constructor can be written accordingly:
 \begin{lstlisting}
@@ -249,26 +249,39 @@ hdf5writer(std::string name):filename_(name), nctp_(sizeof(instanceof)),file_(fi
 \end{lstlisting}
 Observe that there are two implicit constructor calls after instantiation of the filename. For the former refer to section \ref{seq:datatypedec} for the latter to section \ref{seq:h5file}.
 
-\section{Setup write options}
-To enable customization an additional layer before the prestucuring layer was added. In there through boolean flags of 
-%TODO
-To enable a customization of writing the binary file we add an additional layer before the writing process to allow writing options. First of all we can choose what should be written. The default is that the \textit{Hagedorn} wave packet is always written in contrast to the observables as energies and the norm. These can also be enabled with a \texttt{set\_write\_energy(true)} or \texttt{set\_write\_norm(true)} function call. We could also disable the wave packet with \texttt{set\_write\_packet(false)}. The next question would be how much should be written. We have four time grids respectively for the packet, norm, ekin and epot. The default choice is to write these in every time step which can changed with a \texttt{set\_timestep\_packet($\delta t$)}, \texttt{set\_timestep\_norm($\delta t$)}, \texttt{set\_timestep\_ekin($\delta t$)} or \texttt{set\_timestep\_epot($\delta t$)} function call with the desired time step as argument. The next and last option is discussed in the next section. 
-
-\section{Setup write hierarchy}
-The last option which can be changed are the paths internally meaning the \textit{Group} names can be set. The default values are depicted in graph (reference) and can be changed with:
+\section{Write options}
+To enable customization about what and when something is written an additional layer was inserted. This was done with functions which set the desired configuration. In the current implementation there are three choices to make. By default writing \textit{Hagedorn} wavepackets is enabled and writing norm and energies are disabled with a boolean. As already mentioned in section \ref{seq:dataset} for each chunk written also a time label is attached. This was achieved by writing for each important \textit{DataSet} an additional \textit{DataSet} at the same level with the same length where each entry is an \texttt{int} symbolizing the number of time steps passed since the beginning of the simulation. These are shown in figure \ref{graph:file} where "timegrid" was used in its name. The corresponding customization thereof is to set the difference between two consecutive entries. More precisely it is the choice if a \textit{DataSet} should be written in each time step($d=1$) or every second time step($d=2$) etc. The supported functions are listed subsequently:
 \begin{lstlisting}
-set_datablockstring(name);
-set_wavepacketstring(name);
-set_packetgroupstring(name);
-set_coefficientgroupstring(name);
-set_energiesgroupstring(name);
-set_normsgroupstring(name):
+set_write_packet(true|false);
+set_write_norm(true|false);
+set_write_energies(true|false);
+set_timestep_packet(1|2|3|...);
+set_timestep_norm(1|2|3|...);
+set_timestep_energies(1|2|3|...);
+set_timestep_ekin(1|2|3|...);
+set_timestep_epot(1|2|3|...);
 \end{lstlisting}
-function calls with the desired \texttt{name} as argument. Worth noting is that these can also be changed independent of the \texttt{bool} values described in the previous section. Also the names don't have to be different the structure of the graph stays the same though it makes more sense to use descriptive names.
+
+\section{DataSet paths}
+The structure in figure \ref{graph:file} is fixed in the implementation as it is analogous to the python generated data. Furthermore the names of all \textit{Groups} and \textit{DataSets} are also already determined. The data test is build on these as well. This can be problematic once a change happens in the python or C++ implementation where the structure is affected. Luckily the library throws an invalid path exception if such a change occurs where the paths are no longer valid. Future work could include to make data test path independent for \textit{DataSets}.
+
 \section{Prestructure}
-In the \texttt{prestructuring(packet,dt)} function there has a lot to be done before the actual writing process. First the dimensionality of the coefficients is calculated given this particular wave packet to allocate easily its corresponding \textit{DataSet}. In the next step the group structure defined in the figure \ref{graph:file} is allocated. Also four \textit{Attributes} are attached to the root \textit{Group} "/". Namely which data should be in this file and also the time step size $\Delta t$ used in this simulation. Furthermore to easily extend the existing \textit{DataSets} later on we have to set the corresponding chunk-dimension according to a time step dimension. The chunked data layout allows now the declaration of all unlimited \textit{DataSpaces} for allocating all \textit{DataSets} next. Working with a chunked data layout assumes that the data is divided in chunks of the same size. This is done by defining elementary \textit{DataSpaces} which corresponds to this chunk dimension. The library expects a selection when writing data so an elementary hyper-slab is set as the selection for each individual \textit{DataSpace}. A hyper-slab is defined by four \texttt{hsize\_t} arrays namely count-, start-, stride- and block-size which will be further explained in the next section.
+This function is a bundle of steps which either have to be done prior or are constant during the writing process. The function definition is shown subsequently:
+\begin{lstlisting}
+template<class MultiIndex>
+prestructuring(ScalarHaWp<D,MultiIndex> packet,double dt);
+\end{lstlisting}
+The dimension $D$ and the class \texttt{MultiIndex} are prerequisite for constructing a scalar \textit{Hagedorn} wavepacket and is detailed explained in the thesis of Michaja B\"osch \cite{bt_michajab}. A scalar \textit{Hagedorn} wavepacket includes a matrix of coefficients and the set \{q,p,Q,P,S\}. The coefficient dimension is dependent on $D$ and \texttt{MultiIndex} therefore the number of coefficients is calculated and stored first in this function. Next the \textit{Groups} of figure \ref{graph:file} is set. Additionally some \textit{Attributes} are attached to the root group such as the time step $dt$. As discussed in section \ref{seq:dataset} each \textit{DataSet} has to be chunked according to a time step. Hence this chunk dimension is set in the next step for all \textit{DataSets} specified in the write options. E.g. for a packet the chunk-dimension for the coefficients, q, p, Q, P, and S have to be set into a instance of \textit{DSetCreatPropList} individually. 
+For instance a chunk-dimension is declared in the following form:
+\begin{lstlisting}
+hsize_t chunk[3] = {1,2,2};
+\end{lstlisting}
+Before it is possible to allocate all \textit{DataSets} according to figure \ref{graph:file} also individual \textit{DataSpaces} have to be declared. Luckily it is possible to reuse all chunk-arrays as arguments for their own \textit{DataSpace} with the additional array argument according to section \ref{seq:dataspace}. Now all building blocks are ready to allocate the \textit{DataSets}. It can be observed that there is a source and destination \textit{DataSpace} with their respective selection in each time step. The destination \textit{DataSpace} grows over time within the file and thus is not constant. Different from the destination the source \textit{DataSpace} and its selection is constant and therefore can be fixed for the whole simulation in this step. 
 
 \section{Selection}
+\label{seq:selection}
+The destination \textit{DataSpace} with its selection has to be continuously adjusted. The selection is the actual location in the \textit{DataSpace} where data will be written to. 
+%TODO
 The \textit{DataSpace} from the data source is a constant sized chunk defined through the time step. In contrast the destination space and its hyper-slab selection is changing every set time step size since it gets extended dynamically after every write. The next figure should demonstrate how this selection process work for two dimensional matrices.
 
 \begin{figure}[ht!]
@@ -293,7 +306,7 @@ dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
 \section{Transformation}
 As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector<ctype>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call.
 
-\section{Writing}
+\section{Writing} 
 The writing function call from the HDF library has the following form:
 \begin{lstlisting}
 datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
