@@ -266,6 +266,7 @@ set_timestep_epot(1|2|3|...);
 The structure in figure \ref{graph:file} is fixed in the implementation as it is analogous to the python generated data. Furthermore the names of all \textit{Groups} and \textit{DataSets} are also already determined. The data test is build on these as well. This can be problematic once a change happens in the python or C++ implementation where the structure is affected. Luckily the library throws an invalid path exception if such a change occurs where the paths are no longer valid. Future work could include to make data test path independent for \textit{DataSets}.
 
 \section{Prestructure}
+\label{seq:prestructure}
 This function is a bundle of steps which either have to be done prior or are constant during the writing process. The function definition is shown subsequently:
 \begin{lstlisting}
 template<class MultiIndex>
@@ -274,34 +275,38 @@ prestructuring(ScalarHaWp<D,MultiIndex> packet,double dt);
 The dimension $D$ and the class \texttt{MultiIndex} are prerequisite for constructing a scalar \textit{Hagedorn} wavepacket and is detailed explained in the thesis of Michaja B\"osch \cite{bt_michajab}. A scalar \textit{Hagedorn} wavepacket includes a matrix of coefficients and the set \{q,p,Q,P,S\}. The coefficient dimension is dependent on $D$ and \texttt{MultiIndex} therefore the number of coefficients is calculated and stored first in this function. Next the \textit{Groups} of figure \ref{graph:file} is set. Additionally some \textit{Attributes} are attached to the root group such as the time step $dt$. As discussed in section \ref{seq:dataset} each \textit{DataSet} has to be chunked according to a time step. Hence this chunk dimension is set in the next step for all \textit{DataSets} specified in the write options. E.g. for a packet the chunk-dimension for the coefficients, q, p, Q, P, and S have to be set into a instance of \textit{DSetCreatPropList} individually. 
 For instance a chunk-dimension is declared in the following form:
 \begin{lstlisting}
-hsize_t chunk[3] = {1,2,2};
+hsize_t chunk[3] = {1,2,2};//{time_dim,row_dim,column_dim}
 \end{lstlisting}
-Before it is possible to allocate all \textit{DataSets} according to figure \ref{graph:file} also individual \textit{DataSpaces} have to be declared. Luckily it is possible to reuse all chunk-arrays as arguments for their own \textit{DataSpace} with the additional array argument according to section \ref{seq:dataspace}. Now all building blocks are ready to allocate the \textit{DataSets}. It can be observed that there is a source and destination \textit{DataSpace} with their respective selection in each time step. The destination \textit{DataSpace} grows over time within the file and thus is not constant. Different from the destination the source \textit{DataSpace} and its selection is constant and therefore can be fixed for the whole simulation in this step. 
+Before it is possible to allocate all \textit{DataSets} according to figure \ref{graph:file} also individual \textit{DataSpaces} have to be declared. Luckily it is possible to reuse all chunk-arrays as arguments for their own \textit{DataSpace} with the additional array argument according to section \ref{seq:dataspace}. Now all building blocks are ready to allocate in the next step all \textit{DataSets}. It can be observed that there is a source and destination \textit{DataSpace} with a selection in each time step. The \textit{DataSpace} is the space of possible positions where data can be written to whereas the a hyperslab is used for the actual selection within the space. The destination \textit{DataSpace} grows over time within the file and thus is not constant. Different from the destination, the source \textit{DataSpace} and its selection is constant and therefore can be fixed in this step for the whole simulation. The workings of a hyperslab as selection is explained in the next section \ref{seq:selection}.
 
 \section{Selection}
 \label{seq:selection}
-The destination \textit{DataSpace} with its selection has to be continuously adjusted. The selection is the actual location in the \textit{DataSpace} where data will be written to. 
-%TODO
-The \textit{DataSpace} from the data source is a constant sized chunk defined through the time step. In contrast the destination space and its hyper-slab selection is changing every set time step size since it gets extended dynamically after every write. The next figure should demonstrate how this selection process work for two dimensional matrices.
+As already mentioned in the previous section \ref{seq:prestructure} a selection within a \textit{DataSpace} is represented with a hyperslab. A hyperslab consists of four arrays namely:
+\begin{lstlisting}
+hsize_t start[3] = {time_label,1,1};
+hsize_t count[3] = {time_label,3,2};
+hsize_t block[3] = {time_label,1,1};
+hsize_t stride[3] = {time_label,2,2};
+\end{lstlisting}
+Notice that the first dimension is always reserved for the time dimension. The implementation has an internal index for storing the current simulation step which is used as the label. Thus only the index for the next time step has to be incremented without altering the code for the selection. The following figure \ref{fig:hyperslab} illustrates why four arrays are required to represent a hyperslab.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[scale=2.0]{selection.pdf}
+\includegraphics[scale=1.8]{selection.pdf}
 \caption{hyper-slab illustration}
 \label{fig:hyperslab}
 \end{figure}
-The first entry is always reserved for the time point. The next two dimensions is used as the basis for the matrix. The corresponding code to figure \ref{fig:hyperslab} could look like this:
-\begin{lstlisting}
-hsize_t start[3] = {time_step,1,1};
-hsize_t count[3] = {time_step,3,2};
-hsize_t block[3] = {time_step,1,1};
-hsize_t stride[3] = {time_step,2,2};
-\end{lstlisting}
-Thus in every time step the hyper-slab has to be reselected if we want to write this data. This is done internally with an \texttt{time\_index} which indicates in which time step the simulation is at the moment. The dimension written is always the chunk dimension by construction as such this selection is constant over time and such can be set at the beginning as described in the previous section.
-The selection process is one function statement used on a corresponding \textit{DataSpace}:
+%TODO explaining figure
+
+The selection is done by the \textit{DataSpace} itself whereas the \texttt{H5S\_SELECT\_SET} argument is recommended to overwrite the old selection.
 \begin{lstlisting}
 dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
 \end{lstlisting}
+In case that a continuous block of data is written the last two arguments can be omitted.
+\begin{lstlisting}
+dataspacename.selectHyperslab(H5S_SELECT_SET, count, start);
+\end{lstlisting}
+
 
 \section{Transformation}
 As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector<ctype>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call.
