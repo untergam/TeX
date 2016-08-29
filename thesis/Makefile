@@ -27,7 +27,7 @@ image: $(imgfiles)
 data_layout.pdf: data_layout.svg
 	$(SVG2PDF) $@ $<
 
-selection.pdf: selection.svg
+selection.pdf: selection2.svg
 	$(SVG2PDF) $@ $<
 
 writing_dataset.pdf: writing_dataset.svg
