@@ -211,6 +211,7 @@ Additionally to writing data in binary format it should also incorporate saving 
 
 \chapter{Writer Template}
 \section{Link to Eigen library}
+\label{seq:linkeigen}
 As mentioned in background \ref{seq:background} the simulation boils down to propagating the set \{q,p,Q,P,S\} where q and p are $D$ dimensional real-valued vectors, Q and P complex $DxD$ matrices and S the global complex phase. A possible interface to manage these matrices and vectors is the Eigen library. The definition of an Eigen matrix has the following form:
 \begin{lstlisting}
 Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
@@ -236,6 +237,7 @@ nctp_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
 Worth noting is that the constructor of \textit{CompType} relies on the \texttt{sizeof} operator which tells how many bytes for an instance of this type is needed. The string labels "r" and "i" are utilized for the real respective the imaginary part of a complex number. \texttt{HOFFSET} is a simple function which returns at which position counted in bytes the second argument is located in the first argument. In this simple case because one double is saved in $8$ Bytes \texttt{real} is at position "0" and \texttt{imag} is at position "8". Finally the last argument is the type inserted at this position. Since already discussed in section \ref{seq:datatype} \texttt{double} cannot be used directly but the library provides these definitions through the \textit{PredType} class. The members of \textit{PredType} are constant and are fixed through the C++ language itself.\\
 
 \section{Constructor}
+\label{seq:ctor}
 Since the data type declaration has only to be initialized once it is suitable to pack it into the constructor of this writer template. The constructor only expects one string argument namely the filename. Therefore the the constructor can be written accordingly:
 \begin{lstlisting}
 template<int D>
@@ -307,9 +309,11 @@ dataspacename.selectHyperslab(H5S_SELECT_SET, count, start);
 
 
 \section{Transformation}
-As previously discussed to write data we use our own created data type \textit{nctp}. To write a buffer we need now a pointer of \texttt{ctype}. As such our transformation functions take an \texttt{Eigen::Matrix} with arbitrary template arguments and copies the raw data into a \texttt{std::vector<ctype>} reference. An important implementation detail for data management is the usage of \texttt{std::vector} because the operation system assumes the allocation and deallocation of \texttt{std} objects. Thus our code is much safer in respect to data leaks and data corruption. The \textit{Eigen} library self-manages its matrix objects. To extract \texttt{ctype} pointer from the \texttt{std::vector} object is simple by using the \texttt{.data()} function call.
+As indicated in section \ref{seq:linkeigen} basic transformations is applied to the \textit{Eigen} matrices. The internal data in a \textit{Eigen} matrix can be extracted with \texttt{matrix.data()} function. Either the data is of type \texttt{std::complex<double>} or \texttt{double} which can transfered to \texttt{ctype} as described in section \ref{seq:datatypedec}. After this step all data originally saved in a \textit{Eigen} matrix are now stored in vectors of \texttt{ctype}. Later on the data is again extracted with \texttt{std::vector.data()} function and passed on to HDF library for writing. The reason for this transformation from \texttt{complex<double>} or \texttt{double} to \texttt{ctype} is that in the writing function call \texttt{ntcp\_} will be used as type argument. Since \texttt{ntcp\_} is constructed from \texttt{ctype}, see section \ref{seq:ctor}, it can be safely assumed that the library can write pointers of \texttt{ctype}.
 
 \section{Writing} 
+
+%TODO
 The writing function call from the HDF library has the following form:
 \begin{lstlisting}
 datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
