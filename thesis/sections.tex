@@ -212,11 +212,11 @@ Additionally to writing data in binary format it should also incorporate saving 
 \chapter{Writer Template}
 \section{Link to Eigen library}
 \label{seq:linkeigen}
-As mentioned in background \ref{seq:background} the simulation boils down to propagating the set \{q,p,Q,P,S\} where q and p are $D$ dimensional real-valued vectors, Q and P complex $DxD$ matrices and S the global complex phase. A possible interface to manage these matrices and vectors is the Eigen library. The definition of an Eigen matrix has the following form:
+As mentioned in background \ref{seq:background} the simulation boils down to propagating the set \{q,p,Q,P,S\} where q and p are $D$ dimensional real-valued vectors, Q and P complex $D \times D$ matrices and S the global complex phase. A possible interface to manage these matrices and vectors is the \textit{Eigen} library. The definition of an \textit{Eigen} matrix has the following form:
 \begin{lstlisting}
 Eigen::Matrix<std::complex<double>,row_dim,column_dim> mat;
 \end{lstlisting}
-Note that this is a class template over three parameters namely type, row-dimension and column-dimension. Therefore the overall implementation will also be a template. In the current version only scalar \textit{Hagedorn} wavepackets are supported thus only one dimension parameter $D$ is utilized but the framework can still easily be extended in further works. As discussed in section \ref{seq:datatype} normal types are not writable hence the type is defined through the library. This declared type is not necessarily the same as the template argument from Eigen but is still similar enough to permit basic transformation functions.
+Note that this is a class template over three parameters namely type, row-dimension and column-dimension. Therefore the overall implementation will also be a template. In the current version only scalar \textit{Hagedorn} wavepackets are supported thus only one dimension parameter $D$ is utilized but the framework can still easily be extended in further works. As discussed in section \ref{seq:datatype} normal types are not writable hence the type is defined through the library. This declared type is not necessarily the same as the template argument from \textit{Eigen} but is still similar enough to permit basic transformation functions which are discussed in section \ref{seq:transform}.
 
 \section{DataType Declaration}
 \label{seq:datatypedec}
@@ -230,9 +230,9 @@ struct ctype
 \end{lstlisting}
 This can now be used by the library to create the corresponding \textit{DataType} which in this case the \textit{CompType} is most suitable because \texttt{ctype} is a composition of simple data types. To be compatible with python the same labels for its members has to be used which result in the following code:
 \begin{lstlisting}
-CompType nctp_(sizeof(instance_of_ctype));
-nctp_.insertMember("r",HOFFSET(ctype,real), PredType::NATIVE_DOUBLE);
-nctp_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
+CompType hdfctype_(sizeof(instance_of_ctype));
+hdfctype_.insertMember("r",HOFFSET(ctype,real), PredType::NATIVE_DOUBLE);
+hdfctype_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
 \end{lstlisting}
 Worth noting is that the constructor of \textit{CompType} relies on the \texttt{sizeof} operator which tells how many bytes for an instance of this type is needed. The string labels "r" and "i" are utilized for the real respective the imaginary part of a complex number. \texttt{HOFFSET} is a simple function which returns at which position counted in bytes the second argument is located in the first argument. In this simple case because one double is saved in $8$ Bytes \texttt{real} is at position "0" and \texttt{imag} is at position "8". Finally the last argument is the type inserted at this position. Since already discussed in section \ref{seq:datatype} \texttt{double} cannot be used directly but the library provides these definitions through the \textit{PredType} class. The members of \textit{PredType} are constant and are fixed through the C++ language itself.\\
 
@@ -243,10 +243,10 @@ Since the data type declaration has only to be initialized once it is suitable t
 template<int D>
 ...
 //ctor
-hdf5writer(std::string name):filename_(name), nctp_(sizeof(instanceof)),file_(filename_,H5F_ACC_TRUNC)
+hdf5writer(std::string name):filename_(name), hdfctype_(sizeof(instanceof)),file_(filename_,H5F_ACC_TRUNC)
 {
-	nctp_.insertMember("r",HOFFSET(ctype,real), PredType::NATIVE_DOUBLE);
-	nctp_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
+	hdfctype_.insertMember("r",HOFFSET(ctype,real), PredType::NATIVE_DOUBLE);
+	hdfctype_.insertMember("i",HOFFSET(ctype,imag), PredType::NATIVE_DOUBLE);
 }
 \end{lstlisting}
 Observe that there are two implicit constructor calls after instantiation of the filename. For the former refer to section \ref{seq:datatypedec} for the latter to section \ref{seq:h5file}.
@@ -309,18 +309,18 @@ dataspacename.selectHyperslab(H5S_SELECT_SET, count, start);
 
 
 \section{Transformation}
-As indicated in section \ref{seq:linkeigen} basic transformations is applied to the \textit{Eigen} matrices. The internal data in a \textit{Eigen} matrix can be extracted with \texttt{matrix.data()} function. Either the data is of type \texttt{std::complex<double>} or \texttt{double} which can transfered to \texttt{ctype} as described in section \ref{seq:datatypedec}. After this step all data originally saved in a \textit{Eigen} matrix are now stored in vectors of \texttt{ctype}. Later on the data is again extracted with \texttt{std::vector.data()} function and passed on to HDF library for writing. The reason for this transformation from \texttt{complex<double>} or \texttt{double} to \texttt{ctype} is that in the writing function call \texttt{ntcp\_} will be used as type argument. Since \texttt{ntcp\_} is constructed from \texttt{ctype}, see section \ref{seq:ctor}, it can be safely assumed that the library can write pointers of \texttt{ctype}.
+\label{seq:transform}
+As indicated in section \ref{seq:linkeigen} basic transformations is applied to the \textit{Eigen} matrices. The internal data in a \textit{Eigen} matrix can be extracted with \texttt{matrix.data()} function. Either the data is of type \texttt{std::complex<double>} or \texttt{double} which can transfered to \texttt{ctype} as described in section \ref{seq:datatypedec}. After this step all data originally saved in a \textit{Eigen} matrix are now stored in vectors of \texttt{ctype}. Later on the data is again extracted with \texttt{std::vector.data()} function and passed on to HDF library for writing. The reason for this transformation from \texttt{complex<double>} or \texttt{double} to \texttt{ctype} is that in the writing function call \texttt{hdfctype\_} will be used as type argument. Since \texttt{hdfctype\_} is constructed from \texttt{ctype}, see section \ref{seq:ctor}, it can be safely assumed that the library can write pointers of \texttt{ctype}.
 
 \section{Writing} 
-
-%TODO
-The writing function call from the HDF library has the following form:
+All tools are ready to look at the actual writing function call which is element in the \textit{DataSet} class:
 \begin{lstlisting}
 datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
 \end{lstlisting}
-We already have all tools available to use this function. The \texttt{src} is delivered from the transformation section, \texttt{type} from the declaration section and \texttt{srcspace}, \texttt{dstspace} from the prestucturing sectoin or selection section respectively.
+Notable is that the size of \texttt{src} is hidden in the selection of \texttt{srcspace}. Furthermore the destination is implicit given by the \texttt{datasetname} where the function call occurred. When the selection of \texttt{srcspace} and \texttt{dstspace} does not match in size an exception is thrown. There are only two types used as \textit{DataType}. For actual data \texttt{hdfctype\_} is utilized and \texttt{PredType::NATIVE\_INT} for time labels. 
 
 \section{Extension}
+%TODO
 For extending a \textit{DataSet} we need the new dimension in a \texttt{hsize\_t} array which is used as the extension. Note here that only chunked \textit{DataSets} are possible to extend with the following call:
 \begin{lstlisting}
 datasetname.extend(hsize_t extension);
