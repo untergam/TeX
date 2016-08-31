@@ -337,8 +337,7 @@ dataspacename = datasetname.getSpace();
 Now all outdated \textit{DataSpaces} are updated with the help of the extended \textit{DataSets}. This function also represent the last action done in the current time step. All actions from \ref{seq:selection} to \ref{seq:update} are repeated in each time step of the simulation. Remember the transformation is included because in each time step the \textit{Hagedorn} wavepacket is propagated according to the chosen scheme and thus was modified.
 
 \section{Poststructure}
-%TODO
-After the last time step of the simulation we have to finalize our \textit{DataSet} and structures used. This is done in this section. From our implementation we know that also in the last time step we did extend the \textit{DataSet}. As such the last extension will be reversed. Afterwards every structure from the library has to be freed from memory. The system does this automatically for all structures allocated on the stack. For structures which are on the heap because they were allocated with the \texttt{new} operator we have to free them ourselves. This step can be cumbersome because mostly we don't know anymore which object has internally somewhere a reference to it and therefore it is unsafe data management. The implementation avoids this problem by using the \texttt{new} operator to allocate \texttt{std::shared\_ptr} objects which will be managed by the standard library the same as the \texttt{std::vector}. As such the data management is primarily done by the system and not by the implementation.
+After the time loop of the simulation it is important to finalize all structures from the library. Furthermore the last extension has to be reversed since no new data will be written. This is easily done with the same function but with a smaller index as explained before in \ref{seq:update}. All variables allocated on the stack are deleted automatically by the operating system and thus can be neglected. The others allocated with the \texttt{new} operator should be freed manually. Sensibly in this project all these pointer objects are forwarded to the standard library through \texttt{std::shared\_ptr} container. Likewise \texttt{std::vector} is managed also by the standard library and thus the library guarantees that these objects will be freed correctly. To use the standard library for all objects is always a good approach because it can prevent data corruption or data loss.
 
 \section{Inner workings in a picture}
 The following figure \ref{fig:illustration} shows the lifetime of a \textit{DataSet} in this implementation. The start signalizes the use of the constructor to allocate the object.
@@ -396,6 +395,8 @@ for(real_t t = 0; t < T; t += dt)
 	writer.store_packet(packet); //function call for storing packet in file
 	writer.store_energies(epot,ekin); //function call for storing energies in file
 	writer.store_norm(packet); //function call for storing norm in file	
+		
+	...
 }
 
 //finalization with postructure
