@@ -312,7 +312,8 @@ dataspacename.selectHyperslab(H5S_SELECT_SET, count, start);
 \label{seq:transform}
 As indicated in section \ref{seq:linkeigen} basic transformations is applied to the \textit{Eigen} matrices. The internal data in a \textit{Eigen} matrix can be extracted with \texttt{matrix.data()} function. Either the data is of type \texttt{std::complex<double>} or \texttt{double} which can transfered to \texttt{ctype} as described in section \ref{seq:datatypedec}. After this step all data originally saved in a \textit{Eigen} matrix are now stored in vectors of \texttt{ctype}. Later on the data is again extracted with \texttt{std::vector.data()} function and passed on to HDF library for writing. The reason for this transformation from \texttt{complex<double>} or \texttt{double} to \texttt{ctype} is that in the writing function call \texttt{hdfctype\_} will be used as type argument. Since \texttt{hdfctype\_} is constructed from \texttt{ctype}, see section \ref{seq:ctor}, it can be safely assumed that the library can write pointers of \texttt{ctype}.
 
-\section{Writing} 
+\section{Writing}
+\label{seq:writing}
 All tools are ready to look at the actual writing function call which is element in the \textit{DataSet} class:
 \begin{lstlisting}
 datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
@@ -320,6 +321,7 @@ datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace)
 Notable is that the size of \texttt{src} is hidden in the selection of \texttt{srcspace}. Furthermore the destination is implicit given by the \texttt{datasetname} where the function call occurred. When the selection of \texttt{srcspace} and \texttt{dstspace} does not match in size an exception is thrown. There are only two types used as \textit{DataType}. For actual data \texttt{hdfctype\_} is utilized and \texttt{PredType::NATIVE\_INT} for timegrids. Remember also that all \texttt{srcspaces} are constant and therefore set in section \ref{seq:prestructure}.
 
 \section{Extension}
+\label{seq:extension}
 The \textit{DataSets} in section \ref{seq:dataset} were explicitly constructed such that they have a chunked memory layout. This is useful now because the library can only extend this type of layout with the succeeding function call: 
 \begin{lstlisting}
 datasetname.extend(hsize_t* dimension);
@@ -327,15 +329,17 @@ datasetname.extend(hsize_t* dimension);
 The new dimension is as expected an array of \texttt{hsize\_t} where there are two effects. When an entry in the array is smaller than the \textit{DataSet} it will get shrunk in this direction. Alternatively if an entry is larger than the \textit{DataSet} it will get extended in this direction. There will be no effect in case the argument is of the same size as the \textit{DataSet} itself. It is obvious that the \textit{DataSets} in this project only grow in the direction of time per construction. Thereby the chunk dimension can be reused except for the first(time) entry. For this entry an index for each individual \textit{DataSet} is utilized to keep track of the current size. Bear in mind that this index is not the same as the current time index which is used to write timegrids.
 
 \section{Update}
-%TODO
-After the extension of a \textit{DataSet} the library doesn't automatically also update the corresponding \textit{DataSpace} which was used in the selection section. As such this is done in this update section. Also the corresponding \texttt{index} to the \textit{DataSet} is incremented in this step. The library provides an easy way to use the extended \textit{DataSet} to set the new \textit{DataSpace} namely:
+\label{seq:update}
+Naturally since all \textit{DataSets} were extended the corresponding \textit{DataSpace} used as the destination is outdated. Furthermore each individual index used to keep track of the number of chunks used in section \ref{seq:extension} has to be incremented. Conveniently the library provides a function to extract the \textit{DataSpace} from a \textit{DataSet} namely:
 \begin{lstlisting}
 dataspacename = datasetname.getSpace();
 \end{lstlisting}
-which is done for every existing \textit{DataSet} in the file.
+Now all outdated \textit{DataSpaces} are updated with the help of the extended \textit{DataSets}. This function also represent the last action done in the current time step. All actions from \ref{seq:selection} to \ref{seq:update} are repeated in each time step of the simulation. Remember the transformation is included because in each time step the \textit{Hagedorn} wavepacket is propagated according to the chosen scheme and thus was modified.
 
 \section{Poststructure}
+%TODO
 After the last time step of the simulation we have to finalize our \textit{DataSet} and structures used. This is done in this section. From our implementation we know that also in the last time step we did extend the \textit{DataSet}. As such the last extension will be reversed. Afterwards every structure from the library has to be freed from memory. The system does this automatically for all structures allocated on the stack. For structures which are on the heap because they were allocated with the \texttt{new} operator we have to free them ourselves. This step can be cumbersome because mostly we don't know anymore which object has internally somewhere a reference to it and therefore it is unsafe data management. The implementation avoids this problem by using the \texttt{new} operator to allocate \texttt{std::shared\_ptr} objects which will be managed by the standard library the same as the \texttt{std::vector}. As such the data management is primarily done by the system and not by the implementation.
+
 \section{Inner workings in a picture}
 The following figure \ref{fig:illustration} shows the lifetime of a \textit{DataSet} in this implementation. The start signalizes the use of the constructor to allocate the object.
 \begin{figure}[ht!]
@@ -380,26 +384,6 @@ norm_stepsize=1;//default value writing every time step
 writer.set_timestep_packet(packet_stepsize)
 writer.set_timestep_energy(energy_stepsize)
 writer.set_timestep_norm(norm_stepsize)
-
-//optional setup write paths
-std::string datablockstring,wavepacktstring,packetgroupstring;
-std::string coefficientgroupstring,energiesgroupstring;
-std::string normsgroupstring,observablesgroupstring;
-//default paths see figure @\ref{graph:file}@
-datablockstring="/datablock_0";
-wavepacktstring="/wavepacket";
-packetgroupstring="/Pi";
-coefficientgroupstring="/coefficients"
-energiesgroupstring="/energies"
-normsgroupstring="/norm";
-observablesgroupstring="/observables";
-writer.set_datablockstring(datablockstring);
-writer.set_wavepacketstring(wavepacktstring);
-writer.set_packetgroupstring(packetgroupstring);
-writer.set_coefficientgroupstring(coefficientgroupstring);
-writer.set_energiesgroupstring(energiesgroupstring);
-writer.set_normsgroupstring(normsgroupstring);
-writer.set_observablesgroupstring(observablesgroupstring);
 
 //prestructuring step
 writer.prestructuring<MultiIndex>(packet,dt);
