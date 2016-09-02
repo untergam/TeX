@@ -380,12 +380,14 @@ A more detailed version can be found in the appendix. How generate the mandatory
 There are two main ways to test objects with this framework. For the interested reader a more detailed documentation can be found in the git repository \cite{googletestdoc} where the Primer.md and AdvancedGuide.md examples are strongly suggested. Of importance is to define a test class for reusing certain objects for all tests. These objects in this case are the two \textit{H5Files}, the \textit{DataType} used in the writing process and the \textit{Attributes} saved in the root group of the two files. One of these \textit{Attributes} is the time step $\Delta t$ in the simulation which is important for the data matching. When there are two simulations they do not have necessarily the same time step size. However they can have data which with the timegrid translate to the same point in time and therefore can be compared. A time matching function at the beginning tests if two \textit{DataSets} have overlapping timegrid points which correspond to the same time point. If there is a match it will be compared otherwise a non-matching message is printed.  
 
 \section{The Main File}
+\label{seq:testmain}
 The main file consists of the test class for the shared objects, all test fissures which are based on the test class and the main function which invokes the test itself. The subsequent code snipped shows the core base structure described before:
 
 \begin{lstlisting}
 #include "gtest/gtest.h"
 int global_argc;
 char** global_argv;
+#define abstol 1e-6
 ...
 
 class TestHDF : public ::testing::Test
@@ -421,8 +423,7 @@ int main(int argc,char* argv[])
 	return RUN_ALL_TESTS();
 }
 \end{lstlisting}
-First the TestHDF class gets constructed where we use global argc and argv arguments to transfer the filenames from the console. Then in the main function the test fissures are invoked with \texttt{RUN\_ALL\_TESTS()} call. For each test fissure \texttt{TEST\_F()} first the \texttt{SetUp()} function is called. This allows to set additional parameters or variables for this test. Afterwards it gets cleaned up with the \texttt{TearDown()} function. In the test fissure itself the data test takes place. First the time matching function is invoked with the timegrids of both files as arguments. If this list is not empty than the correct values are loaded from the files. These values then are compared with \texttt{EXPECT\_NEAR(...)} function provided by the test framework which compares the difference of two \textit{doubles} to an absolute tolerance. This process will be repeated for each matching \textit{DataSet} in these two files until \texttt{RUN\_ALL\_TESTS()} returns $1$ which indicate successful termination. 
-
+First the TestHDF class gets constructed where we use global argc and argv arguments to transfer the filenames from the console to the class. Then in the main function the test fissures are invoked with \texttt{RUN\_ALL\_TESTS()} call. For each test fissure \texttt{TEST\_F()} initially the \texttt{SetUp()} function is called. This allows to set additional parameters or variables for this test. Afterwards it gets cleaned up with the \texttt{TearDown()} function. In the test fissure itself the data test takes place. First the time matching function is invoked with the timegrids of both files as arguments. If this list is not empty than the correct values are loaded from the files. These values then are compared with \texttt{EXPECT\_NEAR(...)} function provided by the test framework which compares the difference of two \textit{doubles} to an absolute tolerance. This process will be repeated for each matching \textit{DataSet} in these two files until \texttt{RUN\_ALL\_TESTS()} returns $1$ which indicate successful termination. If the difference two \textit{doubles} is larger than the defined absolute tolerance they will be printed out but the test will proceed anyway.
 
 \chapter{Conclusion}
-
+This project enabled easy data testing between the current python and C++ implementation which propagate scalar \textit{Hagedorn} wavepackets. It is no longer dependent on the external project \cite{eigen3-hdf5} and does no longer derive types from \textit{Eigen} matrices. The writing type and the hierarchy is fixed throughout but compatible with the current python implementation. At this moment only scalar \textit{Hagedorn} wavepackets can be written and tested but the template can easily be extended. 
