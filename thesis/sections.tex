@@ -339,8 +339,8 @@ Now all outdated \textit{DataSpaces} are updated with the help of the extended \
 \section{Poststructure}
 After the time loop of the simulation it is important to finalize all structures from the library. Furthermore the last extension has to be reversed since no new data will be written. This is easily done with the same function but with a smaller index as explained before in \ref{seq:update}. All variables allocated on the stack are deleted automatically by the operating system and thus can be neglected. The others allocated with the \texttt{new} operator should be freed manually. Sensibly in this project all these pointer objects are forwarded to the standard library through \texttt{std::shared\_ptr} container. Likewise \texttt{std::vector} is managed also by the standard library and thus the library guarantees that these objects will be freed correctly. To use the standard library for all objects is always a good approach because it can prevent data corruption or data loss.
 
-\section{Inner workings in a picture}
-The following figure \ref{fig:illustration} shows the lifetime of a \textit{DataSet} in this implementation. The start signalizes the use of the constructor to allocate the object.
+\section{Simulation in a picture}
+The functionality of this writer template can be easily visualized, shown in figure \ref{fig:illustration}, when only one \textit{DataSet} is considered.
 \begin{figure}[ht!]
 \resizebox{\textwidth}{!}{
 \includegraphics[scale=1.0]{writing_dataset.pdf}
@@ -348,69 +348,40 @@ The following figure \ref{fig:illustration} shows the lifetime of a \textit{Data
 \caption{Illustration of inner workings for a \textit{DataSet} in the simulation}
 \label{fig:illustration}
 \end{figure}
+The start symbolizes the constructor of this class. The cycle is element of the main time loop where section \ref{seq:selection} through \ref{seq:update} are in this order executed.
 
-\section{Usage in a simulation main file}
-Note that this implementation is only able to write scalar \textit{Hagedorn} wave packets with the normal \textit{Hagedorn} parameter set for the moment. Further work includes to either extend this HDF5 writer template with matching functions for more complicated \textit{Hagedorn} wave packets or to generalize the template on these packets. In the simulation the packet and its parameter set is constructed in the following form:
-\begin{lstlisting}
-...
-wavepackets::HaWpParamSet<D> param_set(q,p,Q,P,S);
-...
-wavepackets::ScalarHaWp<D,MultiIndex> packet;
-...
-\end{lstlisting}
-%
-%TODO reference zu Michja wie ScalarHawp implementiert isch
-%
-Hence our HDF5 writer template is constructed and used in the following way:
-\begin{lstlisting}
-... //setting simulation variables, options etc.
+\section{Usage in Simulation}
+The following code snippet shows the key functionality to use this class for writing \textit{Hagedorn} wavepackets:
 
-//constructor of this template implementation
+\begin{lstlisting}
+//Simulation settings
+...
 io::hdf5writer<D> writer("simulation_filename.hdf5");
 
-//optional setup write options
-bool write_packet,write_energy,write_norm;
-write_packet=true;//default value
-write_energy=false;//default value
-write_norm=false;//default value
-writer.set_write_energy(write_packet);
-writer.set_write_norm(write_energy);
-writer.set_write_packet(write_norm);
-int packet_stepsize,energy_stepsize,norm_stepsize;
-packet_stepsize=1;//default value writing every time step
-energy_stepsize=1;//default value writing every time step
-norm_stepsize=1;//default value writing every time step
-writer.set_timestep_packet(packet_stepsize)
-writer.set_timestep_energy(energy_stepsize)
-writer.set_timestep_norm(norm_stepsize)
-
-//prestructuring step
 writer.prestructuring<MultiIndex>(packet,dt);
 
-//simulation loop body
+//Time loop(propagation)
 for(real_t t = 0; t < T; t += dt)
 {
-	real_t ekin=observables::kinetic_energy<D,MultiIndex>(packet);
-	real_t epot=observables::potential_energy<ScalarMatrixPotential<D>,D,MultiIndex,TQR>(packet,V);
-	writer.store_packet(packet); //function call for storing packet in file
-	writer.store_energies(epot,ekin); //function call for storing energies in file
-	writer.store_norm(packet); //function call for storing norm in file	
-		
-	...
+	//Write wavepacket
+	writer.store_norm(packet);
+	
+	//Propagate wavepacket
+   	propagator.propagate(packet,dt,V);
 }
 
-//finalization with postructure
 writer.poststructuring();
 \end{lstlisting}
-Remember that only the constructor, prestructuring and poststructuring are always mandatory independent of the simulation. Also note that if write option of norm and/or energies is set to true but the \texttt{.store\_...} function call is missing that an error message will be printed without aborting the simulation. 
+A more detailed version can be found in the appendix. How generate the mandatory settings indicated with \texttt{...} it is advised to consult preceding works found in \cite{bt_michajab}, \cite{st_benedekv} and \cite{bt_lionelm} or their corresponding documentation.
 
 \chapter{Data Test}
 
 \section{Introduction to GoogleTest}
-There are two main ways to test objects with this framework. For the interested reader a more detailed documentation can be found in the git repository \cite{googletestdoc} where the Primer.md and AdvancedGuide.md examples are strongly suggested. Of importance is to define a test class for reusing certain objects for all tests. These objects in this case are the two \textit{H5Files}, the \textit{DataType} used in the writing process and the \textit{Attributes} saved in the root group of the two files. One of these \textit{Attributes} is the used time step $\Delta t$ in the simulation which will be needed later for a data matching.
+There are two main ways to test objects with this framework. For the interested reader a more detailed documentation can be found in the git repository \cite{googletestdoc} where the Primer.md and AdvancedGuide.md examples are strongly suggested. Of importance is to define a test class for reusing certain objects for all tests. These objects in this case are the two \textit{H5Files}, the \textit{DataType} used in the writing process and the \textit{Attributes} saved in the root group of the two files. One of these \textit{Attributes} is the time step $\Delta t$ in the simulation which is important for the data matching. When there are two simulations they do not have necessarily the same time step size. However they can have data which with the timegrid translate to the same point in time and therefore can be compared. A time matching function at the beginning tests if two \textit{DataSets} have overlapping timegrid points which correspond to the same time point. If there is a match it will be compared otherwise a non-matching message is printed.  
 
-\section{The Main C++ File}
-The data test main file is of the following structure:
+\section{The Main File}
+The main file consists of the test class for the shared objects, all test fissures which are based on the test class and the main function which invokes the test itself. The subsequent code snipped shows the core base structure described before:
+
 \begin{lstlisting}
 #include "gtest/gtest.h"
 int global_argc;
@@ -429,7 +400,7 @@ class TestHDF : public ::testing::Test
 	struct ctype{...};
 	H5File cppfile;
 	H5File pyfile;
-	CompType nctp;
+	CompType hdfctype_;
 	double dt_cpp;
 	double dt_py;
 	...
@@ -450,9 +421,8 @@ int main(int argc,char* argv[])
 	return RUN_ALL_TESTS();
 }
 \end{lstlisting}
+First the TestHDF class gets constructed where we use global argc and argv arguments to transfer the filenames from the console. Then in the main function the test fissures are invoked with \texttt{RUN\_ALL\_TESTS()} call. For each test fissure \texttt{TEST\_F()} first the \texttt{SetUp()} function is called. This allows to set additional parameters or variables for this test. Afterwards it gets cleaned up with the \texttt{TearDown()} function. In the test fissure itself the data test takes place. First the time matching function is invoked with the timegrids of both files as arguments. If this list is not empty than the correct values are loaded from the files. These values then are compared with \texttt{EXPECT\_NEAR(...)} function provided by the test framework which compares the difference of two \textit{doubles} to an absolute tolerance. This process will be repeated for each matching \textit{DataSet} in these two files until \texttt{RUN\_ALL\_TESTS()} returns $1$ which indicate successful termination. 
 
-%TODO overwork
-Note that \texttt{TEST\_F} are test fissures which uses the same class object \texttt{TestHDF}. In the constructor the filenames are loaded in the \texttt{H5File} objects and the \textit{CompType} is also set the same as in section \textit{DataType} declaration. For each test fissure the \texttt{SetUp} function is used for further construction and at the end cleaned with \texttt{TearDown} function. To transfer the filenames, which are delivered over the command line arguments, global variables are used. In the respective test fissures the data of the two files will be compared relative to an absolute tolerance error. Hereby it has to be known which time points can be compared to in a general case. This is done with the \texttt{time\_matching} function which saves the matching time points in vector, where every entry are two indices, and as arguments two paths, represented as strings with the same form as in group section, to the respective time grid \textit{DataSet}.
 
 \chapter{Conclusion}
 
