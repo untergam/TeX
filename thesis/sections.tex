@@ -160,12 +160,13 @@ If the data is sufficiently small \texttt{H5D\_COMPACT} will be used. In this la
 
 \section{DataType}
 \label{seq:datatype}
-The language C++ itself supports data types such as int, double, char etc. but these cannot be used directly in a binary data format.
-This is caused by different data representation which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used. In this object further changes of characteristics can be done such as changing from default IEEE representation. In this project the \textit{PredType} and \textit{CompType} are of most relevance. The \textit{PredType} is predetermined meaning there is no explicit constructor needed. From this class \textit{NATIVE\_INT} is used to write the respective time labels for the data. The \textit{CompType} class is utilized for writing complex numbers and also this class has to be explicit constructed which will be explained in section \ref{seq:datatypedec}.
+The language C++ itself supports data types such as \emph{int}, double, char etc. but these cannot be used directly in a binary data format.
+This is caused by the different data representations which are not homogeneous across different operating systems and system architectures. For example the difference between little-endian and big-endian machines. Thus the library has its own definitions which are compatible across platforms which are incorporated into the different classes seen in figure \ref{graph:hierarchy}. It is intuitively clear from their names which classes must be used to describe which data types. For instance for writing floating point numbers the \textit{FloatType} class is used, where it also would be possible to change from IEEE representation to another. In this project the \textit{PredType} and \textit{CompType} are the most relevant classes. From \textit{PredType}, which is predetermined through the C++ language, the \textit{NATIVE\_INT} type is utilized for writing timegrids. The \textit{CompType} class is used for
+writing compositions of simple types such as a \textit{struct} of two \textit{doubles}. This is useful to construct a complex data type which will be explained in section \ref{seq:datatypedec}.
 
 \section{DataSpace}
 \label{seq:dataspace}
-To describe the dimensionality of our data the \textit{DataSpace} class is required. The construction of such a \textit{DataSpace} is straightforward. Firstly the library needs to know the number of dimensions of the desired space. Secondly it has know the number of elements in each dimension. For the second argument an array of \texttt{hsize\_t} is expected instead of \texttt{int} as described in section \ref{seq:internaltypes}. To give the reader an idea the following code depicts the \textit{DataSpace} of a time grid.
+To describe the dimensionality of our data the \textit{DataSpace} class is required. The construction of such a \textit{DataSpace} is straightforward. Firstly the library needs to know the number of dimensions of the desired space. Secondly it has know the number of elements in each dimension. For the second argument an array of \texttt{hsize\_t} is expected instead of \texttt{int} as described in section \ref{seq:internaltypes}. To give the reader an idea the following code depicts the \textit{DataSpace} of a timegrid.
 
 \begin{lstlisting}
 int rank = 1;
@@ -173,7 +174,7 @@ hsize_t size[rank];
 size[0]=number_of_timesteps;
 DataSpace limited_timespace(rank,size);
 \end{lstlisting}
-The problem herein lies in the number of time steps which is known only at runtime but the constructor expects it at compiletime. This leads to another approach which is to define a unlimited \textit{DataSpace}. The library allows this if an additional optional argument is added. This argument has to be of the same data type as the second argument and contains the maximum size of each dimension. The library expects that this argument has to be greater or equal than the previous argument otherwise an exception is thrown. For an unlimited space a special state is used namely \texttt{H5S\_UNLIMITED}. The above example code changes to the following if an unlimited space is desired:
+The problem herein lies in the number of time steps which is known only at runtime. This leads to another approach which is to define a unlimited \textit{DataSpace}. The library allows this if an additional optional argument is added. This argument has to be of the same data type as the second argument and contains the maximum size of each dimension. The library expects that this argument has to be greater or equal than the previous argument otherwise an exception is thrown. For an unlimited space a special state is used namely \texttt{H5S\_UNLIMITED}. The above example code changes to the following if an unlimited space is desired:
 \begin{lstlisting}
 int rank = 1;
 hsize_t size[rank] = {1};
@@ -182,7 +183,7 @@ DataSpace unlimited_timespace(rank,size,maxsize);
 \end{lstlisting}
 
 \section{PropList}
-Most classes require a specific property list at the moment of construction which include additional information. Depending on the object a different property list is required. All these lists have a common base class namely \textit{PropList} as presented in figure \ref{graph:hierarchy}. The possibilities of these property lists excel the scope of this project easily therefore the default value is enough. The default values are shortly described in table \ref{table:default}.
+Most classes require a specific property list at the moment of construction which include additional information. Depending on the object a different property list is needed. All these lists have a common base class namely \textit{PropList} as presented in figure \ref{graph:hierarchy}. The possibilities of these property lists excel the scope of this project easily therefore the default value is enough. The default values are shortly described in table \ref{table:default}.
 
 \begin{figure}[ht!]
 \centering
@@ -207,10 +208,25 @@ Noteworthy for this project is only the \textit{DSetCreatePropList} mentioned in
 \subsection{DSetCreatePropList}
 \label{seq:dscpl}
 From section \ref{seq:dataset} a \textit{DSetCreatePropList} object is demanded for creating a \textit{DataSet}. As the perceptive reader can guess this property list is used to determine the data layout shown in figure \ref{fig:datalayout}. The property list is responsible for setting the layout to \texttt{H5D\_COMPACT}. This is important because only data with this layout can be dynamically extended later on during a simulation. 
+\begin{lstlisting}
+//create default H5P_DATASET_CREATE
+DSetCreatePropList list;
+//set chunked data layout
+list.setChunk(int number_of_dim,hsize_t* dim);
+//setting the fill value after allocation
+list.setFillValue(DataType type,void* default_value);
+\end{lstlisting}
+The above code achieves to set chunked layout into the property list for the construction of a \textit{DataSet}. Furthermore a default fill value can be defined which is utilized to fill new allocated memory.
 
 \section{Attribute}
 \label{seq:attribute}
-Additionally to writing data in binary format it should also incorporate saving corresponding meta data. This can be easily done with \textit{Attributes} which must be attached to an affiliated \textit{Group} or \textit{DataSet}. The allocation of such an \textit{Attribute} is similar to a \textit{DataSet} meaning a \textit{DataType} and \textit{DataSpace} is also demanded. For its property list only the \texttt{H5P\_DEFAULT} is allowed which the library enforces otherwise an exception is thrown.
+Additionally to writing data in binary format it should also incorporate saving corresponding meta data. This can be easily done with \textit{Attributes} which must be attached to an affiliated \textit{Group} or \textit{DataSet}. The allocation of such an \textit{Attribute} is similar to a \textit{DataSet} meaning a \textit{DataType} and \textit{DataSpace} is also demanded. For its property list only the \texttt{H5P\_DEFAULT} is allowed which the library enforces otherwise an exception is thrown. For illustration see the subsequent code.
+\begin{lstlisting}
+//group attribute
+group.createAttribute(string "attributename",DataType type,DataSpace space,PropList plist);
+//dataset attribute
+dataset.createAttribute(string "attributename",DataType type,DataSpace space,PropList plist);
+\end{lstlisting}
 
 \chapter{Writer Template}
 \section{Link to Eigen library}
