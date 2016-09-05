@@ -15,14 +15,11 @@ thesis.pdf: $(texfiles) thesis.bbl $(imgfiles)
 	$(PDFLATEX) -interaction=nonstopmode -file-line-error thesis.tex
 	$(PDFLATEX) -interaction=nonstopmode -file-line-error thesis.tex
 
-thesis.aux: $(texfiles)
+thesis.aux: $(texfiles) $(imgfiles)
 	$(PDFLATEX) -interaction=nonstopmode -file-line-error thesis.tex
 
 thesis.bbl: thesis.aux
 	$(BIBTEX) thesis
-
-image: $(imgfiles)
-    
 
 data_layout.pdf: data_layout.svg
 	$(SVG2PDF) $@ $<
