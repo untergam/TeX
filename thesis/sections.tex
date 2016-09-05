@@ -222,10 +222,11 @@ The above code achieves to set chunked layout into the property list for the con
 \label{seq:attribute}
 Additionally to writing data in binary format it should also incorporate saving corresponding meta data. This can be easily done with \textit{Attributes} which must be attached to an affiliated \textit{Group} or \textit{DataSet}. The allocation of such an \textit{Attribute} is similar to a \textit{DataSet} meaning a \textit{DataType} and \textit{DataSpace} is also demanded. For its property list only the \texttt{H5P\_DEFAULT} is allowed which the library enforces otherwise an exception is thrown. For illustration see the subsequent code.
 \begin{lstlisting}
+Attribute attribute;
 //group attribute
-group.createAttribute(string "attributename",DataType type,DataSpace space,PropList plist);
+attribute = group.createAttribute(string "attributename",DataType type,DataSpace space,PropList plist);
 //dataset attribute
-dataset.createAttribute(string "attributename",DataType type,DataSpace space,PropList plist);
+attribute = dataset.createAttribute(string "attributename",DataType type,DataSpace space,PropList plist);
 \end{lstlisting}
 
 \chapter{Writer Template}
@@ -284,7 +285,7 @@ set_timestep_epot(1|2|3|...);
 \end{lstlisting}
 
 \section{DataSet paths}
-The structure in figure \ref{graph:file} is fixed in the implementation as it is analogous to the python generated data. Furthermore the names of all \textit{Groups} and \textit{DataSets} are also already determined. The data test is build on these as well. This can be problematic once a change happens in the python or C++ implementation where the structure is affected. Luckily the library throws an invalid path exception if such a change occurs where the paths are no longer valid. Future work could include to make data test path independent for \textit{DataSets}.
+The structure in figure \ref{graph:file} is fixed in the implementation as it is analogous to the python generated data. Furthermore the names of all \textit{Groups} and \textit{DataSets} are also already determined. The data test is build on these as well. This can be problematic, once a change happens in the python or C++ implementation, where the structure is affected. Luckily the library throws an invalid path exception if such a change occurs where the paths are no longer valid. Future work could include to make data test path independent for \textit{DataSets}.
 
 \section{Prestructure}
 \label{seq:prestructure}
@@ -293,12 +294,12 @@ This function is a bundle of steps which either have to be done prior or are con
 template<class MultiIndex>
 prestructuring(ScalarHaWp<D,MultiIndex> packet,double dt);
 \end{lstlisting}
-The dimension $D$ and the class \texttt{MultiIndex} are prerequisite for constructing a scalar \textit{Hagedorn} wavepacket and is detailed explained in the thesis of Michaja B\"osch \cite{bt_michajab}. A scalar \textit{Hagedorn} wavepacket includes a matrix of coefficients and the set \{q,p,Q,P,S\}. The coefficient dimension is dependent on $D$ and \texttt{MultiIndex} therefore the number of coefficients is calculated and stored first in this function. Next the \textit{Groups} of figure \ref{graph:file} is set. Additionally some \textit{Attributes} are attached to the root group such as the time step $dt$. As discussed in section \ref{seq:dataset} each \textit{DataSet} has to be chunked according to a time step. Hence this chunk dimension is set in the next step for all \textit{DataSets} specified in the write options. E.g. for a packet the chunk-dimension for the coefficients, q, p, Q, P, and S have to be set into a instance of \textit{DSetCreatPropList} individually. 
+The dimension $D$ and the class \texttt{MultiIndex} are prerequisite for constructing a scalar \textit{Hagedorn} wavepacket and are detailed explained in the thesis of Michaja B\"osch \cite{bt_michajab}. A scalar \textit{Hagedorn} wavepacket includes a matrix of coefficients and the set \{q,p,Q,P,S\}. The coefficient dimension is dependent on $D$ and \texttt{MultiIndex}, therefore the number of coefficients is calculated and stored first in this function. Next the \textit{Groups} of figure \ref{graph:file} is set. Additionally some \textit{Attributes} are attached to the root group such as the time step $dt$. As discussed in section \ref{seq:dataset} each \textit{DataSet} has to be chunked according to a time step. Hence this chunk dimension is set in the next step for all \textit{DataSets} specified in the write options. E.g. for a packet the chunk-dimension for the coefficients, q, p, Q, P, and S have to be set into an instance of \textit{DSetCreatPropList} individually. 
 For instance a chunk-dimension of $2 \times 2$ matrix in time is declared in the following form:
 \begin{lstlisting}
 hsize_t chunk[3] = {1,2,2};//{time_dim,row_dim,column_dim}
 \end{lstlisting}
-Before it is possible to allocate all \textit{DataSets} according to figure \ref{graph:file} also individual \textit{DataSpaces} have to be declared. Luckily it is possible to reuse all chunk-arrays as arguments for their own \textit{DataSpace} with the additional array argument according to section \ref{seq:dataspace}. Now all building blocks are ready to allocate in the next step all \textit{DataSets}. It can be observed that there is a source and destination \textit{DataSpace} with a selection in each time step. The \textit{DataSpace} is the space of possible positions where data can be written to whereas the a hyperslab is used for the actual selection within the space. The destination \textit{DataSpace} grows over time within the file and thus is not constant. Different from the destination, the source \textit{DataSpace} and its selection is constant and therefore can be fixed in this step for the whole simulation. The workings of a hyperslab as selection is explained in the next section \ref{seq:selection}.
+For further instruction see section \ref{seq:dscpl}. Before it is possible to allocate all \textit{DataSets} according to figure \ref{graph:file} also individual \textit{DataSpaces} have to be declared. Luckily it is possible to reuse all chunk-arrays as arguments for their own \textit{DataSpace} with the additional array argument according to section \ref{seq:dataspace}. Now all building blocks are ready to allocate in the next step all \textit{DataSets}. It can be observed that there is a source and destination \textit{DataSpace} with a corresponding selection in each time step. The destination \textit{DataSpace} grows over time within the file and thus is not constant. Different from the destination, the source \textit{DataSpace} and its selection is constant and therefore can be fixed in this step for the whole simulation. Notice that \textit{DataSpace} is the space of possible positions where data can be written to, whereas it needs to be specified which elements in \textit{DataSpace} are utilized. This is done with a selection which is described by a hyperslab and will be explained in the next section \ref{seq:selection}.
 
 \section{Selection}
 \label{seq:selection}
@@ -319,23 +320,25 @@ Notice that the first dimension is always reserved for the time dimension. The i
 \end{figure}
 In figure \ref{fig:hyperslab} the blue plane symbolizes a matrix in three dimension. The first dimension is reserved for time meaning the blue plane depicts a matrix at some fixed time point. One red block represents one element in this matrix. Thus this figure displays the hyperslab from the previous code segment. The selection is done by the \textit{DataSpace} itself whereas the \texttt{H5S\_SELECT\_SET} argument is recommended to overwrite the old selection.
 \begin{lstlisting}
-dataspacename.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
+dataspace.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
 \end{lstlisting}
 In case that a continuous block of data is written the last two arguments can be omitted.
 \begin{lstlisting}
-dataspacename.selectHyperslab(H5S_SELECT_SET, count, start);
+dataspace.selectHyperslab(H5S_SELECT_SET, count, start);
 \end{lstlisting}
 
 
 \section{Transformation}
 \label{seq:transform}
-As indicated in section \ref{seq:linkeigen} basic transformations is applied to the \textit{Eigen} matrices. The internal data in a \textit{Eigen} matrix can be extracted with \texttt{matrix.data()} function. Either the data is of type \texttt{complex<double>} or \texttt{double} which can transfered to \texttt{ctype} as described in section \ref{seq:datatypedec}. After this step all data originally saved in a \textit{Eigen} matrix are now stored in vectors of \texttt{ctype}. Later on the data is again extracted with \texttt{vector.data()} function and passed on to HDF library for writing. The reason for this transformation from \texttt{complex<double>} or \texttt{double} to \texttt{ctype} is that in the writing function call \texttt{hdfctype\_} will be used as type argument. Since \texttt{hdfctype\_} is constructed from \texttt{ctype}, see section \ref{seq:ctor}, it can be safely assumed that the library can write pointers of \texttt{ctype}.
+As indicated in section \ref{seq:linkeigen} basic transformations is applied to the \textit{Eigen} matrices. The internal data in a \textit{Eigen} matrix can be extracted with the \texttt{matrix.data()} function. Either the data is of type \texttt{complex<double>} or \texttt{double} which can be transfered to \texttt{ctype}. From \texttt{complex<double>} its members can be simply copied over whereas for a \textit{double} the imaginary part is simply set to zero. After this step all data originally saved in a \textit{Eigen} matrix are now stored in vectors of \texttt{ctype}. Later on the data is again extracted with \texttt{vector.data()} function and passed on to HDF library for writing. The reason for this transformation from \texttt{complex<double>} or \texttt{double} to \texttt{ctype} is that in the writing function call \texttt{hdfctype\_} will be used as type argument. Since \texttt{hdfctype\_} is constructed from \texttt{ctype}, see section \ref{seq:ctor}, it can be safely assumed that the library can write pointers of type \texttt{ctype}.
 
 \section{Writing}
 \label{seq:writing}
-All tools are ready to look at the actual writing function call which is element in the \textit{DataSet} class:
+All tools are ready to look at the actual writing function call for \textit{DataSets} and \textit{Attributes}:
+ 
 \begin{lstlisting}
-datasetname.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
+dataset.write(void* src,DataType type,DataSpace srcspace,DataSpace dstspace);
+attribute.write(DataType type,void* src);
 \end{lstlisting}
 Notable is that the size of \texttt{src} is hidden in the selection of \texttt{srcspace}. Furthermore the destination is implicit given by the \texttt{datasetname} where the function call occurred. When the selection of \texttt{srcspace} and \texttt{dstspace} does not match in size an exception is thrown. There are only two types used as \textit{DataType}. For actual data \texttt{hdfctype\_} is utilized and \texttt{PredType::NATIVE\_INT} for timegrids. Remember also that all \texttt{srcspaces} are constant and therefore set in section \ref{seq:prestructure}.
 
@@ -343,23 +346,24 @@ Notable is that the size of \texttt{src} is hidden in the selection of \texttt{s
 \label{seq:extension}
 The \textit{DataSets} in section \ref{seq:dataset} were explicitly constructed such that they have a chunked memory layout. This is useful now because the library can only extend this type of layout with the succeeding function call: 
 \begin{lstlisting}
-datasetname.extend(hsize_t* dimension);
+dataset.extend(hsize_t* dimension);
 \end{lstlisting}
-The new dimension is as expected an array of \texttt{hsize\_t} where there are two effects. When an entry in the array is smaller than the \textit{DataSet} it will get shrunk in this direction. Alternatively if an entry is larger than the \textit{DataSet} it will get extended in this direction. There will be no effect in case the argument is of the same size as the \textit{DataSet} itself. It is obvious that the \textit{DataSets} in this project only grow in the direction of time per construction. Thereby the chunk dimension can be reused except for the first(time) entry. For this entry an index for each individual \textit{DataSet} is utilized to keep track of the current size. Bear in mind that this index is not the same as the current time index which is used to write timegrids.
+The new dimension is as expected an array of \texttt{hsize\_t} where there are two effects. When an entry in the array is smaller than the \textit{DataSet} itself, it will get shrunk along this direction. Alternatively if an entry is larger than the \textit{DataSet} itself, it will get extended along this direction. There will be no effect in case the argument is of the same size as the \textit{DataSet} itself. It is obvious that the \textit{DataSets} in this project only grow in the direction of time per construction. Thereby the chunk dimension can be reused except for the first(time) entry. For this entry an index for each individual \textit{DataSet} is utilized to keep track of the current size. Bear in mind that this index is not the same as the current time index which is used to write timegrids.
 
 \section{Update}
 \label{seq:update}
 Naturally since all \textit{DataSets} were extended the corresponding \textit{DataSpace} used as the destination is outdated. Furthermore each individual index used to keep track of the number of chunks used in section \ref{seq:extension} has to be incremented. Conveniently the library provides a function to extract the \textit{DataSpace} from a \textit{DataSet} namely:
 \begin{lstlisting}
-dataspacename = datasetname.getSpace();
+DataSpace newdataspace = dataset.getSpace();
 \end{lstlisting}
 Now all outdated \textit{DataSpaces} are updated with the help of the extended \textit{DataSets}. This function also represent the last action done in the current time step. All actions from \ref{seq:selection} to \ref{seq:update} are repeated in each time step of the simulation. Remember the transformation is included because in each time step the \textit{Hagedorn} wavepacket is propagated according to the chosen scheme and thus was modified.
 
 \section{Poststructure}
+\label{seq:poststructure}
 After the time loop of the simulation it is important to finalize all structures from the library. Furthermore the last extension has to be reversed since no new data will be written. This is easily done with the same function but with a smaller index as explained before in \ref{seq:update}. All variables allocated on the stack are deleted automatically by the operating system and thus can be neglected. The others allocated with the \texttt{new} operator should be freed manually. Sensibly in this project all these pointer objects are forwarded to the standard library through \texttt{shared\_ptr} container. Likewise \texttt{vector} is managed also by the standard library and thus the library guarantees that these objects will be freed correctly. To use the standard library for all objects is always a good approach because it can prevent data corruption or data loss.
 
 \section{Simulation in a picture}
-The functionality of this writer template can be easily visualized, shown in figure \ref{fig:illustration}, when only one \textit{DataSet} is considered.
+The functionality of this writer template can be easily visualized when only one \textit{DataSet} is considered, see figure \ref{fig:illustration}.
 \begin{figure}[ht!]
 \resizebox{\textwidth}{!}{
 \includegraphics[scale=1.0]{writing_dataset.pdf}
@@ -367,7 +371,7 @@ The functionality of this writer template can be easily visualized, shown in fig
 \caption{Illustration of inner workings for a \textit{DataSet} in the simulation}
 \label{fig:illustration}
 \end{figure}
-The start symbolizes the constructor of this class. The cycle is element of the main time loop where section \ref{seq:selection} through \ref{seq:update} are in this order executed.
+The start symbolizes the constructor of this class. The cycle begins with the selection process which sets a hyperslab, indicated by the blue dashed line. The section \ref{seq:selection} through \ref{seq:update} are element of this cycle which halts only when the time step arrived at $T$. Then the simulation gets finished with the function \ref{seq:poststructure}.
 
 \section{Usage in Simulation}
 The following code snippet shows the key functionality to use this class for writing \textit{Hagedorn} wavepackets:
@@ -391,7 +395,7 @@ for(real_t t = 0; t < T; t += dt)
 
 writer.poststructuring();
 \end{lstlisting}
-A more detailed version can be found in the appendix. How generate the mandatory settings indicated with \texttt{...} it is advised to consult preceding works found in \cite{bt_michajab}, \cite{st_benedekv} and \cite{bt_lionelm} or their corresponding documentation.
+A more detailed version can be found in the appendix. How to generate the mandatory settings indicated with \texttt{...}, it is advised to consult the preceding works found in \cite{bt_michajab}, \cite{st_benedekv} and \cite{bt_lionelm}. Additionally most information can be found in the documentation of the C++ implementation \cite{libwaveblocks}.
 
 \chapter{Data Test}
 
