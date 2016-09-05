@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="writing_process.svg">
+   sodipodi:docname="writing_dataset.svg">
   <defs
      id="defs4">
     <marker
@@ -654,11 +654,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.2967557"
-     inkscape:cx="-170.45587"
-     inkscape:cy="487.4975"
+     inkscape:zoom="2.180818"
+     inkscape:cx="130.09846"
+     inkscape:cy="643.80116"
      inkscape:document-units="px"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="g14521"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -1187,15 +1187,15 @@
            sodipodi:nodetypes="cc" />
         <text
            xml:space="preserve"
-           style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           x="163.96321"
+           style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;text-align:end;letter-spacing:0px;word-spacing:0px;text-anchor:end;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           x="257.5423"
            y="503.95001"
            id="text14364-87"
            sodipodi:linespacing="125%"><tspan
              sodipodi:role="line"
              id="tspan14366-1"
-             x="163.96321"
-             y="503.95001">t=tmax</tspan></text>
+             x="257.5423"
+             y="503.95001">t=T</tspan></text>
       </g>
     </g>
     <g
@@ -1316,7 +1316,8 @@
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="boxes"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <path
        style="display:inline;fill:#808000;fill-opacity:0.1372549;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m -494.03783,385.09407 0,25.5 161.54992,0 98.46317,-50.16949 0.22699,-24.83057 -163.09075,0 z"
@@ -1374,8 +1375,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="m1"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <path
        style="display:inline;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m -493.69506,398.09404 98.13053,-50 161.42859,0 -98.13052,50 -161.4286,0"
@@ -1411,8 +1411,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      inkscape:label="vor1"
-     style="display:inline"
-     sodipodi:insensitive="true">
+     style="display:inline">
     <path
        style="display:inline;fill:#ff0080;fill-opacity:0.1372549;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m -493.69505,398.09404 98.13052,-50 161.42859,0 -98.13052,50 -161.42859,0"
@@ -1440,7 +1439,7 @@
        inkscape:connector-curvature="0" />
     <path
        transform="translate(-7.6981848e-8,2.2540696e-6)"
-       style="display:inline;fill:#ff0080;fill-opacity:0.1372549;fill-rule:evenodd;stroke:#0000ff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="display:inline;fill:#ff0080;fill-opacity:0.1372549;fill-rule:evenodd;stroke:#0000ff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:8,8;stroke-dashoffset:0"
        d="m -79.099763,144.838 98.130519,-49.999998 161.428594,0 -98.130523,49.999998 -161.42859,0"
        id="path4261-3-2-6-6"
        inkscape:connector-curvature="0" />
@@ -1454,7 +1453,6 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="m2"
-     sodipodi:insensitive="true"
      style="display:inline">
     <path
        style="display:inline;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1475,8 +1473,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="vor2"
-     sodipodi:insensitive="true">
+     inkscape:label="vor2">
     <path
        style="display:inline;fill:#ff0080;fill-opacity:0.1372549;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 484.1014,372.59404 98.13051,-50 161.42858,0 -98.13052,50 -161.42857,0"
