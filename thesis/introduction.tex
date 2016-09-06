@@ -1,9 +1,20 @@
 \chapter{Introduction}
 
 \section{Motivation}
+To test the reliability of a numerical method or an approximation, e.g. such as in \cite{B_bachelor_thesis}, an implementation in python is sufficient. Python is easy to understand and the code can also be used as a base e.g. for a C++ version. A python framework to solve the time-dependent Schr\"odinger equation with a semiclassical approach with \textit{Hagedorn} wavepackets is already availabla on github \cite{waveblocksnd}. This can be used for example to test different propagation schemes, integration methods or integration partitions. In case longer simulations or solving higher dimensional problems is desired the execution time could increase rapidly in a python implementation. Therefore it is necessary to port the python implementation to C or C++ which are highly time efficient. The core implementation is already available in C++ on github \cite{libwaveblocks} but further improvement is desired. This implementation currently uses an external project \cite{eigen3-hdf5} for writing data in HDF5 format. This project is sufficient if the user supervises the generated data. The goal of this project is to use the HDF5 interface \cite{hdf5cppd} directly to write data in a comparable way to python. This further allows to implement a data test which can compare data files between python and C++. This was done with the well-known \textit{GoogleTest} framework.
 
 
-To test an algorithm or approach such as semiclassical wavepackets \cite{B_bachelor_thesis} for solving the time dependent Schr\"odinger equation a python implementation \cite{waveblocksnd} is at most times sufficient. In case longer simulation times and/or solving higher dimensional problems is demanded the computation time becomes an important factor. As such there is a need for a time efficient implementation which is only doable in languages such as C or C++. A starting implementation in C++ for scalar wavepackets is already done \cite{libwaveblocks} but further improvement is desired. One aspect which has to be taken into account is the storage format of the data but also the speed of these io-operations. As storage format the well-know HDF(hierarchical data format) is most suitable for our case given that it is a binary file format with sufficient io speed. The current form to store data is dependent on a external source \cite{eigen3-hdf5}, which is sufficient for small projects where data is supervised by the user, which uses HDF5 format but doesn't fully use its capabilities. Furthermore the chosen hierarchy is also not compatible with the dual python implementation. In this project a fully compatible hierarchy is implemented in C++ without the usage of an external source. Also for testing simulations under both implementations a data test was implemented using the well-know Google testing framework.
+
+To test an algorithm or approach such as semiclassical wavepackets \cite{B_bachelor_thesis} for solving the time dependent Schr\"odinger equation a python implementation \cite{waveblocksnd} is at most times sufficient. 
+
+In case longer simulation times and/or solving higher dimensional problems is demanded the computation time becomes an important factor. As such there is a need for a time efficient implementation which is only doable in languages such as C or C++. 
+A starting implementation in C++ for scalar wavepackets is already done \cite{libwaveblocks} but further improvement is desired. 
+One aspect which has to be taken into account is the storage format of the data but also the speed of these io-operations. 
+As storage format the well-know HDF(hierarchical data format) is most suitable for our case given that it is a binary file format with sufficient io speed. 
+The current form to store data is dependent on a external source \cite{eigen3-hdf5}, which is sufficient for small projects where data is supervised by the user, which uses HDF5 format but doesn't fully use its capabilities. 
+Furthermore the chosen hierarchy is also not compatible with the dual python implementation. 
+In this project a fully compatible hierarchy is implemented in C++ without the usage of an external source. 
+Also for testing simulations under both implementations a data test was implemented using the well-know Google testing framework.
 
 \section{Background}
 \label{seq:background}
