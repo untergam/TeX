@@ -318,7 +318,7 @@ Notice that the first dimension is always reserved for the time dimension. The i
 \caption{hyper-slab illustration}
 \label{fig:hyperslab}
 \end{figure}
-In figure \ref{fig:hyperslab} the blue plane symbolizes a matrix in three dimension. The first dimension is reserved for time meaning the blue plane depicts a matrix at some fixed time point. One red block represents one element in this matrix. Thus this figure displays the hyperslab from the previous code segment. The selection is done by the \textit{DataSpace} itself whereas the \texttt{H5S\_SELECT\_SET} argument is recommended to overwrite the old selection.
+In figure \ref{fig:hyperslab} the blue dashed plane symbolizes a matrix in three dimension. The first dimension is reserved for time meaning the blue dashed plane depicts a matrix at some fixed time point. One red block represents one element in this matrix. Thus this figure displays the hyperslab from the previous code segment. The selection is done by the \textit{DataSpace} itself whereas the \texttt{H5S\_SELECT\_SET} argument is recommended to overwrite the old selection.
 \begin{lstlisting}
 dataspace.selectHyperslab(H5S_SELECT_SET, count, start, stride, block);
 \end{lstlisting}

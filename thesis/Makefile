@@ -24,7 +24,7 @@ thesis.bbl: thesis.aux
 data_layout.pdf: data_layout.svg
 	$(SVG2PDF) $@ $<
 
-selection.pdf: selection2.svg
+selection.pdf: selection.svg
 	$(SVG2PDF) $@ $<
 
 writing_dataset.pdf: writing_dataset.svg
