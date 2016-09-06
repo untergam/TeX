@@ -669,9 +669,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="26.243919"
-     inkscape:cy="687.42649"
+     inkscape:zoom="1.2968228"
+     inkscape:cx="338.19596"
+     inkscape:cy="630.24176"
      inkscape:document-units="px"
      inkscape:current-layer="layer6"
      showgrid="false"
@@ -698,7 +698,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1471,57 +1471,14 @@
        width="51.51778"
        height="22.223356"
        x="344.79767"
-       y="703.74872" />
+       y="625.06091" />
     <rect
        style="display:inline;opacity:1;fill:#808000;fill-opacity:0.1372549;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect15308-73-6"
        width="51.51778"
        height="22.223356"
        x="344.79767"
-       y="625.06091" />
-    <g
-       id="g15544"
-       transform="translate(-318.62561,480.35252)">
-      <rect
-         y="184.05229"
-         x="663.42328"
-         height="22.223356"
-         width="51.51778"
-         id="rect15308"
-         style="opacity:1;fill:#008080;fill-opacity:0.1372549;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <rect
-         y="184.05229"
-         x="663.42328"
-         height="22.223356"
-         width="51.51778"
-         id="rect15308-73"
-         style="display:inline;opacity:1;fill:#008080;fill-opacity:0.1372549;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <rect
-         y="184.05229"
-         x="663.42328"
-         height="22.223356"
-         width="51.51778"
-         id="rect15308-73-63"
-         style="display:inline;opacity:1;fill:#808000;fill-opacity:0.1372549;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    </g>
-    <g
-       id="g5102"
-       transform="translate(110.30865,-19.091842)">
-      <rect
-         y="604.80884"
-         x="234.48901"
-         height="22.223356"
-         width="51.51778"
-         id="rect15308-73-5-9"
-         style="display:inline;opacity:1;fill:#808000;fill-opacity:0.1372549;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-      <rect
-         y="604.80884"
-         x="234.48901"
-         height="22.223356"
-         width="51.51778"
-         id="rect15308-9-4"
-         style="display:inline;opacity:1;fill:#ff0080;fill-opacity:0.1372549;stroke:none;stroke-width:1;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
-    </g>
+       y="585.71698" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1532,29 +1489,18 @@
          sodipodi:role="line"
          id="tspan15585"
          x="435.37576"
-         y="566.80487">allocated data</tspan></text>
+         y="566.80487">empty data</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="435.82742"
-       y="724.18048"
-       id="text15587"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan15589"
-         x="435.82742"
-         y="724.18048">written data</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="435.37576"
+       x="435.37573"
        y="603.72565"
        id="text15591"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan15593"
-         x="435.37576"
-         y="603.72565">allocated data in selectable space</tspan></text>
+         x="435.37573"
+         y="603.72565">DataSpace</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -1565,18 +1511,7 @@
          sodipodi:role="line"
          id="tspan15597"
          x="435.52225"
-         y="643.06958">selectable space</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="435.82742"
-       y="682.41345"
-       id="text15599"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan15601"
-         x="435.82742"
-         y="682.41345">written data in selectable space</tspan></text>
+         y="643.06958">writte data</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:25px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
