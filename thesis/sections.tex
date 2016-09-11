@@ -160,6 +160,7 @@ If the data is sufficiently small \texttt{H5D\_COMPACT} will be used. In this la
 %bigger change
 The goal is to store the time evolution of a matrix, a vector or simple values into one compact \textit{DataSet}. This can be achieved when the first dimension is reserved for time itself. Therefore a matrix has three dimension where the first dimension is for the time index $T_{index}$ and the others for row and column dimension respectively. Hence the chunk size in this case is defined by the matrix dimension and one chunk corresponds to the matrix belonging to a certain time index. The real time value can be calculated with the following formula:
 \begin{equation}
+\label{eq:mapping}
  T_{real} = T_{start} + T_{index} \cdot \Delta t
 \end{equation}
 This will be used in chapter \ref{chapt:datatest} to match data points between two \textit{H5Files} according to their transformed timegrids.
@@ -177,14 +178,14 @@ To describe the shapes of our data the \textit{DataSpace} class is required. The
 \begin{lstlisting}
 int rank = 1;
 hsize_t size[rank];
-size[0]= number_of_timesteps;
+size[0] = number_of_timesteps;
 DataSpace limited_timespace(rank,size);
 \end{lstlisting}
 The problem herein lies in the number of time steps which is known only at runtime. This leads to another approach which is to define a unlimited \textit{DataSpace}. The library allows this if an additional optional argument is added. This argument has to be of the same data type as the second argument and contains the maximum size of each dimension. The library expects that the values in this argument are greater or equal than in the previous argument otherwise an exception is thrown. For an unlimited space a special state is used namely \texttt{H5S\_UNLIMITED}. The above example code changes to the following if an unlimited space is desired:
 \begin{lstlisting}
 int rank = 1;
 hsize_t size[rank] = {1};
-hsize_t maxsize[rank]={H5S_UNLIMITED};
+hsize_t maxsize[rank] = {H5S_UNLIMITED};
 DataSpace unlimited_timespace(rank, size, maxsize);
 \end{lstlisting}
 
@@ -368,7 +369,7 @@ Now all outdated \textit{DataSpaces} are updated with the help of the extended \
 
 \section{Poststructure}
 \label{seq:poststructure}
-After the time loop of the simulation it is important to finalize all structures from the library. Furthermore the last extension has to be reversed since no new data will be written. This is easily done with the same function but with a smaller index as explained before in \ref{seq:update}. All variables allocated on the stack are deleted automatically by the operating system and thus can be neglected. The others allocated with the \texttt{new} operator should be freed manually. Sensibly in this project all these pointer objects are forwarded to the standard library through \texttt{shared\_ptr} container. Likewise \texttt{vector} is managed also by the standard library and thus the library guarantees that these objects will be freed correctly. To use the standard library for all objects is always a good approach because it can prevent data corruption or data loss.
+After the time loop of the simulation has ended it is important to finalize all structures from the library. Furthermore the last extension has to be reversed since no further data will be written. This is easily done with the same function but with a smaller index as explained before in \ref{seq:update}. All variables allocated on the stack are deleted automatically and thus can be neglected. The others allocated on the heap with the \texttt{new} operator need to be freed manually. Sensibly in this project all these pointer objects are forwarded to the standard library through the \texttt{shared\_ptr} container. Likewise \texttt{vector} is managed also by the standard library and thus the standard library guarantees that these objects will be freed correctly.
 
 \section{Simulation in a picture}
 The functionality of this writer template can be easily visualized when only one \textit{DataSet} is considered, see figure \ref{fig:illustration}.
@@ -379,17 +380,17 @@ The functionality of this writer template can be easily visualized when only one
 \caption{Illustration of inner workings for a \textit{DataSet} in the simulation}
 \label{fig:illustration}
 \end{figure}
-The start symbolizes the constructor of this class. The cycle begins with the selection process which sets a hyperslab, indicated by the blue dashed line. The section \ref{seq:selection} through \ref{seq:update} are element of this cycle which halts only when the time step arrived at $T$. Then the simulation gets finished with the function \ref{seq:poststructure}.
+The start symbolizes the constructor of this class. The cycle begins with the selection process which sets a hyperslab, indicated by the blue dashed line. The sections \ref{seq:selection} through \ref{seq:update} are part of this cycle which halts only when the time step arrived at $T$. Then the simulation gets finalized with the poststructure function as described in section \ref{seq:poststructure}.
 
 \section{Usage in Simulation}
-The following code snippet shows the key functionality to use this class for writing \textit{Hagedorn} wavepackets:
+The following code snippet shows how to use the key functionality of this class for writing \textit{Hagedorn} wavepackets:
 
 \begin{lstlisting}
 //Simulation settings
 ...
 io::hdf5writer<D> writer("simulation_filename.hdf5");
 
-writer.prestructuring<MultiIndex>(packet,dt);
+writer.prestructuring<MultiIndex>(packet, dt);
 
 //Time loop(propagation)
 for(real_t t = 0; t < T; t += dt)
@@ -398,22 +399,22 @@ for(real_t t = 0; t < T; t += dt)
 	writer.store_norm(packet);
 	
 	//Propagate wavepacket
-   	propagator.propagate(packet,dt,V);
+   	propagator.propagate(packet, dt, V);
 }
 
 writer.poststructuring();
 \end{lstlisting}
-A more detailed version can be found in the appendix. How to generate the mandatory settings indicated with \texttt{...}, it is advised to consult the preceding works found in \cite{bt_michajab}, \cite{st_benedekv} and \cite{bt_lionelm}. Additionally most information can be found in the documentation of the C++ implementation \cite{libwaveblocks}.
+A more detailed version can be found in the appendix. The ellipsis there is fully expended and show how to generate the simulation setting for a harmonic $2D$ oscillator. To understand the simulation set up the reader can consult the preceding works online \cite{bt_michajab}, \cite{st_benedekv} and \cite{bt_lionelm} and the documentation therein. Furthermore additional information can be found in the documentation of the C++ implementation \cite{libwaveblocks}.
 
 \chapter{Data Test}
 \label{chapt:datatest}
 
 \section{Introduction to GoogleTest}
-There are two main ways to test objects with \textit{GoogleTest}. For the interested reader a more detailed description can be found in the git repository \cite{googletestdoc}, where the Primer.md and AdvancedGuide.md examples are strongly suggested. Of importance is to define a test class for reusing certain objects for all tests. These objects in this case are the two \textit{H5Files}, the \textit{DataType} used in the writing process and the \textit{Attributes} saved in the root group of the two files. One of these \textit{Attributes} is the time step $\Delta t$ utilized for the data matching. When there are two files in general they do not have necessarily the same time step size. However, mapped with the corresponding timegrid, some of the data match to the same timepoint, and therefore can be compared. This is carried out by a function at the beginning, which tests if two \textit{DataSets} have matching timepoints, which will be stored into a list. If the list is empty a message will be printed and the program continues with the next \textit{DataSet}.
+There are two main ways to test objects with \textit{GoogleTest}. For the interested reader a more detailed description can be found in the git repository \cite{googletestdoc}, where the \emph{Primer.md} and \emph{AdvancedGuide.md} examples are strongly suggested. Of importance is to define a test class for reusing certain objects for all tests. These objects in this case are the two \textit{H5Files}, the \textit{DataType} used in the writing process and the \textit{Attributes} saved in the root group of the two files. One of these \textit{Attributes} is the time step $\Delta t$ utilized for the data matching. When there are two files in general they do not have necessarily the same time step size. However, mapped with the corresponding timegrid according to equation \ref{eq:mapping}, some of the data map to the same timepoint, and therefore can be compared. This is carried out by a function at the beginning, which tests if two \textit{DataSets} have matching timepoints, which will be stored in a list. If the list is empty a message will be printed and the program continues with the next \textit{DataSet}.
 
 \section{The Main File}
 \label{seq:testmain}
-The main file consists of the test class for the shared objects, all test fissures which are based on the test class and the main function which invokes the test itself. The subsequent code snipped shows the core base structure described before:
+The main file consists of the test class for the shared objects, all test fissures which are based on the test class and the main function which invokes the test itself. The subsequent code snipped shows the core of the data test:
 
 \begin{lstlisting}
 #include "gtest/gtest.h"
@@ -440,25 +441,25 @@ class TestHDF : public ::testing::Test
 	...
 };
 
-TEST_F(TestHDF,Testpacket)
+TEST_F(TestHDF, Testpacket)
 {...}
-TEST_F(TestHDF,Testenergies)
+TEST_F(TestHDF, Testenergies)
 {...}
-TEST_F(TestHDF,Testnorm)
+TEST_F(TestHDF, Testnorm)
 {...}
 
 int main(int argc,char* argv[])
 {
-	global_argc=argc;
-	global_argv=argv;
-	::testing::InitGoogleTest(&argc,argv);
+	global_argc = argc;
+	global_argv = argv;
+	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
 \end{lstlisting}
-First the \textit{TestHDF} class gets constructed where we use global argc and argv arguments to transfer the filenames from the console to the class. Notice also that \textit{TestHDF} needs to derive from \texttt{::testing::Test} from \textit{GoogleTest} to work. Then in the main function the test fissures are invoked with the \texttt{RUN\_ALL\_TESTS()} call. For a test fissure \texttt{TEST\_F()} an additional \texttt{SetUp()} function is provided for further specifying test settings. Afterwards each test fissure also gets cleaned up with the \texttt{TearDown()} function. In the test fissure itself the data test takes place. First the time matching function is invoked with the timegrids of both files as arguments. If the prepared list is not empty than the correct values are loaded from the \textit{H5Files}. These values are then compared with \texttt{EXPECT\_NEAR(...)} function provided by the test framework which compares the difference of two \textit{doubles} to an absolute tolerance. This process will be repeated for each matching \textit{DataSet} in these two files until \texttt{RUN\_ALL\_TESTS()} returns $1$ which indicates successful termination. If the difference between two \textit{doubles} is larger than the defined absolute tolerance they will be printed out automatically and the test will proceed anyway.
+First the \textit{TestHDF} class gets constructed where we use global \texttt{argc} and \texttt{argv} arguments to transfer the filenames from the console to the class. Notice also that \textit{TestHDF} needs to derive from \texttt{::testing::Test} from \textit{GoogleTest} to work. Then in the main function the test fissures are invoked with the \texttt{RUN\_ALL\_TESTS()} call. For a test fissure \texttt{TEST\_F()} an additional \texttt{SetUp()} function is provided for further specifying test settings. Afterwards each test fissure also gets cleaned up with the \texttt{TearDown()} function. In the test fissure itself the data test takes place. First the time matching function is invoked with the timegrids of both files as arguments. If the prepared list is not empty then the correct values are loaded from the \textit{H5Files}. These values are then compared with the \texttt{EXPECT\_NEAR(...)} function provided by the test framework which compares the difference of two \textit{doubles} to an absolute tolerance. This process will be repeated for each matching \textit{DataSet} in these two files until non-zero return code in \texttt{RUN\_ALL\_TESTS()} finish the execution. If the difference between two \textit{doubles} is larger than the defined absolute tolerance they will be printed out automatically and the test will proceed.
 
 \chapter{Conclusion}
-This project successfully implemented a more sophisticated way to write \textit{Hagedorn} wavepackets using the HDF5 C++ interface. Hereby the dependence on an external project \cite{eigen3-hdf5} was removed. This implementation handles \textit{Eigen} matrices by transforming the actual data, where complicated type derivation was also eliminated. This was achieved by fixing the type and hierarchy of the data for all simulations determined by the Python implementation. This further allowed to implement a data test, which based on type and hierarchy, can compare C++ and Python generated data. Though a user of \cite{libwaveblocks} has to be now aware that additionally to a compiler, which supports C++11 features, also \textit{Eigen}, \textit{HDF5} and \textit{GoogleTest} have to be installed. This could prevent some users to use \cite{libwaveblocks} since extra effort is required to install those libraries.
+This project successfully implemented a more sophisticated way to serialize \textit{Hagedorn} wavepackets using the HDF5 C++ interface. Hereby the dependence on an external project \cite{eigen3-hdf5} was removed. This implementation handles \textit{Eigen} matrices by transforming the actual data, where complicated type derivation was also eliminated. This was achieved by adapting the type and hierarchy of the data for all simulations to the structure used by the Python code. This further allowed us to implement a data test, which based on type and hierarchy, can compare C++ and Python generated data. Though a user of the software \cite{libwaveblocks} has to be now aware that additionally to a compiler, which supports C++11 features, also \textit{Eigen}, \textit{HDF5} and \textit{GoogleTest} have to be installed. Hopefully this does not prevent some users to use \cite{libwaveblocks} since extra effort is required to install those libraries.
 
 %\section{Outlook}
 
