@@ -1,32 +1,14 @@
 \documentclass[a4paper,10pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsfonts}
+\usepackage{rbstyle}
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}
 \newtheorem{definition}{Definition}
 \newtheorem*{theorem*}{Theorem}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{xcolor}
-\definecolor{linkcol}{rgb}{0,0,0.4}
-\definecolor{citecol}{rgb}{0.5,0,0}
-\usepackage[pagebackref,hyperindex=true]{hyperref}
-\hypersetup{colorlinks=true,linkcolor=linkcol,citecolor=citecol,urlcolor=linkcol}
-\usepackage{graphicx}
 \usepackage{footnote}
-\usepackage{placeins}
-\usepackage{subfloat}
 \usepackage{array}
 \usepackage{ragged2e}
 \newcolumntype{x}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
-\usepackage{microtype}
 
-\input{header_math}
-
-\synctex=1
-\parindent 0pt
 
 \title{Exhaustive search for higher-order Kronrod-Patterson Extensions}
 \author{R. Bourquin}
@@ -139,7 +121,7 @@ $\{\omega_i\}_{i=1}^{n}$ is the ensured by the following theorem from
 \end{theorem}
 
 Next we need another theorem giving the conditions under which we can
-extend a given set of nodes by a bunch of new nodes.
+extend a given set of nodes by some new nodes.
 
 \begin{theorem}
   \label{th:defining_extension}
@@ -262,7 +244,7 @@ for the unknown coefficients $\vec{a} := \{a_i\}_{i=0}^{p-1}$:
 where the first index $i = 0, \ldots, p-1$ runs along a column
 and the second index $k = 0, \ldots, p-1$ runs along any row
 of the $p \times p$ matrix. On the right hand side we have essentially
-a bunch of moments of the probability density distribution $\omega(t)$.
+the moments of the probability density distribution $\omega(t)$.
 Provided a closed form for the moment generating function exists,
 this vector can be computed very easily.
 
