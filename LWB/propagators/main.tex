@@ -1,0 +1,166 @@
+\input{./header.tex}
+
+\begin{document}
+
+\input{sections/title.tex}
+
+\clearemptydoublepage
+
+\mbox{}
+\vfill
+\input{sections/abstract.tex}
+\vfill
+\tableofcontents
+
+\clearpage
+
+\listoffigures
+\listofalgorithms
+
+\clearemptydoublepage
+
+% \input{./introduction.tex}
+% \input{./wavefunction_propagation.tex}
+% \input{./wavepackets.tex}
+% \input{./observables.tex}
+% \input{./wavepacket_propagation.tex}
+% \input{./results.tex}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% TODO: move to separate file when done
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section{Introduction}
+
+Motivation - why is time propagation important?
+Background
+
+\subsection{Quantum Time Propagation and Operator Splitting}
+
+how does one analytically propagate?
+operators don't commute
+operator splitting to the rescue
+
+The search for accurate time propagation schemes has become an area of research by itself, see papers of A and B
+
+
+\clearpage
+\section{Time evolution schemes}
+
+present a selection of propagators
+
+\subsection{Common building blocks for Quantum Time Propagators}
+\subsection{Hagedorn Propagator}
+\subsection{Semiclassical Propagator}
+\subsection{Magnus Propagator}
+\subsection{Pre764 Propagator}
+\subsection{McL Propagators}
+
+
+
+\clearpage
+\section{Implementation in C++}
+
+What was the main challenge? What was controllable (which code could be changed), what not? 
+Quick alternating o
+
+The challenges were twofold: 
+First, identifying of all the common basic building blocks and expressing all algorithms in terms of these components
+Second, implementing all basic building blocks in a generic but efficient manner
+Third, minimize the overhead for switching between function calls
+
+ - encapsulate the functionality in a clean interface without loosing flexibility and 
+ - write efficient/fast code
+
+Tell how each of these challenges were overcome
+
+
+Motivation of software design choices
+
+	- Why class structure/inheritance (explain hierarchy)
+	- CRTP / static polymorphism
+	- recognizing IP
+	- callback function
+	- implementation of intSplit (TU,UT, partial specialization)
+	- polymorphism through enable_if
+
+
+
+
+\clearpage
+\section{Benchmark / Case Study / Example}
+
+
+\clearpage
+\section{Conclusion}
+
+final observations
+suggestions for future work
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\clearemptydoublepage
+
+\appendix
+% \input{./deriv_ew.tex}
+% \input{./color_code.tex}
+% \input{./ack.tex}
+
+\clearemptydoublepage
+
+\bibliographystyle{plain}
+% \bibliography{mt,bt,chem,wp,own}
+
+\end{document}
