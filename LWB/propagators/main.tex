@@ -44,18 +44,19 @@
 Semiclassical time-dependent Schrödinger equation
 %
 \begin{align}
-	\im \eps^2 \; \del_t \psi (\bvec{x},t) = \op{H} (\eps) \; \psi (\bvec{x},t)
+	\label{math:tdse}
+	\im \eps \; \del_t \psi (\bvec{x},t) = \opH (\eps) \; \psi (\bvec{x},t)
 \end{align}
 %
 with wave function $\psi(\bvec{x},t)$ depending on the spatial variables $\bvec{x} = (x_1,\dots,x_D) \in \R^D$ and the time variable $t \in \R$.
 
 Hamiltonian
 \begin{align}
-	\op{H} = \op{T} + \op{V} = \op{T} + \op{U} + \op{W}
+	\opH = \opT + \opV = \opT + \opU + \opW
 \end{align}
 \begin{align}
-	\op{T} &= - \frac{\eps^2}{2} \Delta_x \\
-	\op{V} &= V(x)
+	\opT &= - \sum_{j=1}^D \frac{\eps^2}{2m_j} \frac{\del^2}{\del x_j^2} \\
+	\opV &= V(x)
 \end{align}
 
 Small semiclassical parameter $\eps$ plays an important role in the stability of numerical schemes
@@ -68,10 +69,32 @@ Motivation - why is time propagation important?
 Background
 
 Describe what is going to happen in the rest of the paper
+
+
+Hagedorn wavepackets explained in \cite{FGL_semiclassical_dynamics}
+
+The solution to the Schrödinger equation can be approximated as a finite linear combination if Hagedorn function \cite{FGL_semiclassical_dynamics}
+\begin{align}
+	\label{math:hagedornwp}
+	\psi(x,t) \approx u(x,t)
+	= e^{\im S(t)/\eps} \sum_{k \in \K} c_k(t) \varphi_k^\eps [ q(t),p(t),Q(t),P(t) ] (x)
+\end{align}
+
+$\K$ finite multi index set
+
+As the idea behind the splitting the Hamiltonian operator is so central to the time propagation approach used here, we repeat the most important findings from  \cite{FGL_semiclassical_dynamics}:
+\begin{itemize}
+	\item The free linear Schrödinger equation ($\opV=0$) can be solved exactly and the wavepacket remains in Hagedorn wavepacket form \ref{math:hagedornwp}.
+		For time propagation, only the parameters $\bvec{\Pi},S$ need to be updated, the coefficients $\{c_k\}_{k \in \K}$ remain unchanged.
+	\item The Schrödinger equation \ref{math:tdse} can be solved exactly in a pure quadratic potential, i.e. in a potential $\opV=U(\bvec{x})$ with $\opT=0$.
+		Again, time propagation only affects the parameters $\bvec{\Pi},S$, not the coefficients $\{c_k\}_{k \in \K}$.
+	\item In the case of an arbitrary potential $\opV = W(\bvec{x})$ that is not quadratic, a set of Galerkin functions can be propagated by adapting the coefficients $\{c_k\}_{k \in \K}$ without changing the parameters $\bvec{\Pi},S$.
+\end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Quantum Time Propagation and Operator Splitting}
+\subsection{Quantum Time Propagation, Operator Splitting and Hagedorn Propagator}
 
+check propositions in hagedorn paper.
 
 how does one analytically propagate?
 operators don't commute
@@ -79,9 +102,9 @@ operator splitting to the rescue
 
 
 The Hamiltonian is split into three parts
-where $\op{U}(\bvec{q}(t),\bvec{x})$ is the second order Taylor approximation of the potential $\op{V}$ around $\bvec{q}(t)$ and $\op{W}(\bvec{q}(t),\bvec{x})$ is the corresponding remainder.
+where $\opU(\bvec{q}(t),\bvec{x})$ is the second order Taylor approximation of the potential $\opV$ around $\bvec{q}(t)$ and $\opW(\bvec{q}(t),\bvec{x})$ is the corresponding remainder.
 
-$\op{V} = V(\bvec{x}) = U(\bvec{q},\bvec{x}) + W(\bvec{q},\bvec{x})$
+$\opV = V(\bvec{x}) = U(\bvec{q},\bvec{x}) + W(\bvec{q},\bvec{x})$
 
 \begin{align}
 	U(\bvec{q},\bvec{x}) &:= V(\bvec{q}) + \nabla V(\bvec{q}) (\bvec{x}-\bvec{q})
@@ -89,7 +112,7 @@ $\op{V} = V(\bvec{x}) = U(\bvec{q},\bvec{x}) + W(\bvec{q},\bvec{x})$
 	W(\bvec{q},\bvec{x}) &:= V(\bvec{x}) - U(\bvec{q},\bvec{x})
 \end{align}
 
-The kinetic part $\op{T}$ and the quadratic part of the potential $\op{U}$ can be integrated exactly (see \cite{FGL_semiclassical_dynamics}).
+The kinetic part $\opT$ and the quadratic part of the potential $\opU$ can be integrated exactly (see \cite{FGL_semiclassical_dynamics}).
 
 
 The search for accurate time propagation schemes has become an area of research by itself, see papers of A and B
@@ -101,19 +124,85 @@ The search for accurate time propagation schemes has become an area of research 
 present a selection of propagators
 
 \subsection{Common building blocks for Quantum Time Propagators}
+%
+
+General notes: what variables are accessible?
+
+
+The time stepping with operators $\opT$ and $\opV = U(\op{x})$ follows directly from the propositions in \cite{FGL_semiclassical_dynamics} and is outlined in the algorithms \ref{alg:stepT} and \ref{alg:stepU} respectively.
+
+As pointed out in the introduction, the time propagation for non-quadratic potentials $W(\vec{x})$ can be achieved by updating the coefficients $\{ c_k \}_{k \in \K}$.
+The update rule is
+%
+\begin{align}
+	\bvec{c}(t) = \exp \left( - \frac{\im t}{\eps} \bmat{F} \right) \bvec{c}(0)
+\end{align}
+%
+where the matrix $\bmat{F} = \{ f_{k,l} \}_{k,l \in \K}$ has entries
+%
+\begin{align}
+	f_{k,l} = \matrixel{\varphi_k}{W}{\varphi_l}
+	= \int_{\R^N} \conj{\varphi_k(\bvec{x})} W(\bvec{x}) \varphi_l(\bvec{x}) \; \dif \bvec{x}
+\end{align}
+
+
+\begin{algorithm}[h]
+	\caption{Propagate with Kinetic Energy Operator $\opT$}
+	\label{alg:stepT}
+	\begin{algorithmic}
+	\Procedure{stepT}{$\eta$}
+		\State $q = q + \eta M^{-1} p$
+		\State $Q = Q + \eta M^{-1} P$
+		\State $S = S + \frac{\eta}{2} p^T M^{-1} p$
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+%
+\begin{algorithm}[h]
+	\caption{Propagate with (Quadratic) Potential Energy Operator}
+	\label{alg:stepU}
+	\begin{algorithmic}
+	\Procedure{stepU}{$\eta$}
+		\State $p = p - \eta \nabla V (q)$
+		\State $P = P - \eta \nabla^2 V (q) Q$
+		\State $S = S - \eta V (q)$
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsection{Hagedorn Propagator}
+\label{sub:hagedorn_propagator}
 %
+The Hagedorn propagator, shown in algorithm \ref{alg:hagedorn}, is one of the simplest propagators that can be built by exploiting the numerical aspects discussed above.
+As pointed out in \cite{FGL_semiclassical_dynamics}, this simple time stepping scheme has many beneficial properties like the preservation of the $L^2$ norm of the wavepacket, time reversibility and stability in the classical limit $\eps \rightarrow 0$.
+Also, in the limit of $\K$ approaching the full basis set, the variational approximation used for the propagation with the non-quadratic part $\opW$ becomes exact.
 \begin{algorithm}[h]
 	\caption{Single timestep with Hagedorn propagator}
 	\label{alg:hagedorn}
 	\begin{algorithmic}
-		\Procedure{Hagedorn.propagate}{$\Dt$}
+		\Procedure{Hagedorn.Propagate}{$\Dt$}
+		\State
 			\State \Call{stepT}{$\frac{\Dt}{2}$}
+			\Comment{Step of size $\Dt/2$ with $\opT$}
 			\State \Call{stepU}{$\Dt$}
+			\Comment{Step of size $\Dt$ with $\opU$}
 			\State \Call{stepW}{$\Dt$}
+			\Comment{Step of size $\Dt$ with $\opW$}
 			\State \Call{stepT}{$\frac{\Dt}{2}$}
+			\Comment{Step of size $\Dt/2$ with $\opT$}
+		\State
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
@@ -123,13 +212,9 @@ present a selection of propagators
 \label{sub:semiclassical_propagator}
 %
 The central idea of the semiclassical splitting, as introduced in \cite{GH_convsemiclassical},
-is to reduce the errors in $\Pi$ and $S$ by splitting the propagation with operators
-$\op{T}$ and $\op{U}$ into many smaller, alternating steps.
-Not only does this reduce the dominating error\footnote{for small $\eps$,
-the main source of error lies in the updating of $\Pi$ and $S$},
-but it also does not require any additional, expensive evaluations of the operator $\op{W}$.
-The extra computational cost caused by a higher order splitting for updating $\Pi$ and $S$
-is negligible compared to the propagation with $\op{W}$ which requires numerical integration. 
+is to split the propagation with operators $\opT$ and $\opU$ into many smaller, alternating steps, thereby reducing the dominating error\footnote{for small $\eps$,
+the main source of error lies in the updating of $\Pi$ and $S$} in the update of $\bvec{\Pi}$ and $S$.
+While there is some additional computational cost caused by a higher number of updates for the parameters $\bvec{\Pi}$ and $S$, the extra effort is usually negligible compared to the propagation with $\opW$ which requires numerical evaluation of multi-dimensional integrals. 
 \par\medskip
 %
 In addition, due to the numerical properties of the semiclassical splitting, 
@@ -152,7 +237,7 @@ further details can be found in the original paper \cite{GH_convsemiclassical}.
 	\caption{Single timestep with Semiclassical propagator}
 	\label{alg:semiclassical}
 	\begin{algorithmic}
-	\Procedure{Semiclassical.propagate}{$\Dt$}
+	\Procedure{Semiclassical.Propagate}{$\Dt$}
 		\State
 		\State $M := \lceil 1 + \frac{\sqrt{\Dt}}{\eps^{3/4}} \rceil$
 		\Comment{Divide $\Dt$ into smaller steps}
@@ -170,13 +255,95 @@ further details can be found in the original paper \cite{GH_convsemiclassical}.
 
 
 \subsection{Magnus Propagator}
-
+\label{sub:magnus_propagator}
+%
+TODO: add comments to algorithm
+\begin{algorithm}[h]
+	\caption{Single timestep with Magnus propagator}
+	\label{alg:magnus}
+	\begin{algorithmic}
+	\Procedure{Magnus.Propagate}{$\Dt$}
+		\State
+		\State $h_1 = \frac{3-\sqrt{3}}{6} \Dt$, $h_2 = \frac{\sqrt{3}}{6} \Dt$
+		\Comment Gauss-Legendre coefficients on $[0,\Dt]$
+		\State $M_{k} = 1+\sqrt{h_{k} \eps^{-3/8}}, \quad k=1,2$
+		\State
+		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
+		\State $\bmat{A}_1 = - \im \frac{\Dt}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
+		\State \Call{intSplit}{$h_2, M_2, \{w_T, w_U\}$}
+		\State $\bmat{A}_2 = - \im \frac{\Dt}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
+		\State $\bmat{\Sigma} = \frac{1}{2} (\bmat{A}_1 + \bmat{A}_2) + \frac{\sqrt{3}}{12} (\bmat{A}_1 \cdot \bmat{A}_1 - \bmat{A}_2 \cdot \bmat{A}_1)$
+		\State $\bvec{c} = \exp{ \left( \bmat{\Sigma} \right) } \bvec{c}$
+		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
+		\State
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 \subsection{Pre764 Propagator}
+\label{sub:pre764_propagator}
+%
+TODO: add comments to algorithm
+\begin{algorithm}[h]
+	\caption{Single timestep with Pre764 propagator}
+	\label{alg:pre764}
+	\begin{algorithmic}
+	\Procedure{Pre764.PrePropagate}{$\Dt$}
+		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\For{$j=0,...,v-1$} \Comment $v=6$ for Pre(7,6,4)
+		\State \Call{intSplit}{$-Z_j \Dt, M, \{w_T, w_U\}$}
+			\State \Call{stepW}{$\upic, -Y_j \Dt$}
+		\EndFor
+	\EndProcedure
+		\\\hrulefill
+	\Procedure{Pre764.Propagate}{$\Dt$}
+		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\For{$j=0,...,k-1$} \Comment $k=4$ for Pre(7,6,4)
+			\State \Call{stepW}{$\alpha_j \Dt$}
+			\State \Call{intSplit}{$\beta_j \Dt, M, \{w_T, w_U\}$}
+		\EndFor
+	\EndProcedure
+		\\\hrulefill
+	\Procedure{Pre764.PostPropagate}{$\Dt$}
+		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\For{$j=v-1,...,0$} \Comment $v=6$ for Pre(7,6,4)
+		\State \Call{stepW}{$Y_j \Dt$}
+			\State \Call{intSplit}{$Z_j \Dt, M, \{w_T, w_U\}$}
+		\EndFor
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 
 \subsection{McL Propagators}
-
+\label{sub:mcl_propagator}
+%
+TODO: add comments to algorithm
+TODO: Add 84 algorithm
+TODO: compute M, compute dt
+\begin{algorithm}[h]
+	\caption{Single timestep with McL propagators}
+	\label{alg:mcl}
+	\begin{algorithmic}
+		\Procedure{McL42.Propagate}{$\Dt$}
+			\State \Call{intSplit}{$A_0 \dt, M, \{w_T, w_U\}$}
+			\State \Call{stepW}{$B_0 \dt$}
+			\State \Call{intSplit}{$A_1 \dt, M, \{w_T, w_U\}$}
+			\State \Call{stepW}{$B_1 \dt$}
+			\State \Call{intSplit}{$A_2 \dt, M, \{w_T, w_U\}$}
+		\EndProcedure
+		\\\hrulefill
+		\Procedure{McL84.Propagate}{$\Dt$}
+			\State \Call{intSplit}{$A_0 \dt, M, \{w_T, w_U\}$}
+			\State \Call{stepW}{$B_0 \dt$}
+			\State \Call{intSplit}{$A_1 \dt, M, \{w_T, w_U\}$}
+			\State \Call{stepW}{$B_1 \dt$}
+			\State \Call{intSplit}{$A_2 \dt, M, \{w_T, w_U\}$}
+			\State \Call{stepW}{$B_2 \dt$}
+			\State \Call{intSplit}{$A_3 \dt, M, \{w_T, w_U\}$}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 
 \clearpage
