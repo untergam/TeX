@@ -39,14 +39,58 @@
 \clearpage
 \section{Introduction}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cite{GH_convsemiclassical}
+Semiclassical time-dependent Schrödinger equation
+%
+\begin{align}
+	\im \eps^2 \; \del_t \psi (\bvec{x},t) = \op{H} (\eps) \; \psi (\bvec{x},t)
+\end{align}
+%
+with wave function $\psi(\bvec{x},t)$ depending on the spatial variables $\bvec{x} = (x_1,\dots,x_D) \in \R^D$ and the time variable $t \in \R$.
+
+Hamiltonian
+\begin{align}
+	\op{H} = \op{T} + \op{V} = \op{T} + \op{U} + \op{W}
+\end{align}
+\begin{align}
+	\op{T} &= - \frac{\eps^2}{2} \Delta_x \\
+	\op{V} &= V(x)
+\end{align}
+
+Small semiclassical parameter $\eps$ plays an important role in the stability of numerical schemes
+
+Classical dynamics in the limit $\eps \rightarrow 0$, quantum mechanics for $\eps = 1$.
+
+In particular, as underlined in \cite{GH_convsemiclassical}, a small parameter $\eps$ can often impose severe constraints on the step size of splitting methods and significantly increase the error. For example, the error was shown to be proportional to $\sim \eps^{-2})$ for Lie-Trotter splitting, Strang splitting and other related methods.
+
 Motivation - why is time propagation important?
 Background
 
+Describe what is going to happen in the rest of the paper
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Quantum Time Propagation and Operator Splitting}
+
 
 how does one analytically propagate?
 operators don't commute
 operator splitting to the rescue
+
+
+The Hamiltonian is split into three parts
+where $\op{U}(\bvec{q}(t),\bvec{x})$ is the second order Taylor approximation of the potential $\op{V}$ around $\bvec{q}(t)$ and $\op{W}(\bvec{q}(t),\bvec{x})$ is the corresponding remainder.
+
+$\op{V} = V(\bvec{x}) = U(\bvec{q},\bvec{x}) + W(\bvec{q},\bvec{x})$
+
+\begin{align}
+	U(\bvec{q},\bvec{x}) &:= V(\bvec{q}) + \nabla V(\bvec{q}) (\bvec{x}-\bvec{q})
+	+ \frac{1}{2} (\bvec{x}-\bvec{q})^T \nabla^2 V(\bvec{q}) (\bvec{x}-\bvec{q}) \\
+	W(\bvec{q},\bvec{x}) &:= V(\bvec{x}) - U(\bvec{q},\bvec{x})
+\end{align}
+
+The kinetic part $\op{T}$ and the quadratic part of the potential $\op{U}$ can be integrated exactly (see \cite{FGL_semiclassical_dynamics}).
+
 
 The search for accurate time propagation schemes has become an area of research by itself, see papers of A and B
 
@@ -57,10 +101,80 @@ The search for accurate time propagation schemes has become an area of research 
 present a selection of propagators
 
 \subsection{Common building blocks for Quantum Time Propagators}
+
+
 \subsection{Hagedorn Propagator}
+%
+\begin{algorithm}[h]
+	\caption{Single timestep with Hagedorn propagator}
+	\label{alg:hagedorn}
+	\begin{algorithmic}
+		\Procedure{Hagedorn.propagate}{$\Dt$}
+			\State \Call{stepT}{$\frac{\Dt}{2}$}
+			\State \Call{stepU}{$\Dt$}
+			\State \Call{stepW}{$\Dt$}
+			\State \Call{stepT}{$\frac{\Dt}{2}$}
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
 \subsection{Semiclassical Propagator}
+\label{sub:semiclassical_propagator}
+%
+The central idea of the semiclassical splitting, as introduced in \cite{GH_convsemiclassical},
+is to reduce the errors in $\Pi$ and $S$ by splitting the propagation with operators
+$\op{T}$ and $\op{U}$ into many smaller, alternating steps.
+Not only does this reduce the dominating error\footnote{for small $\eps$,
+the main source of error lies in the updating of $\Pi$ and $S$},
+but it also does not require any additional, expensive evaluations of the operator $\op{W}$.
+The extra computational cost caused by a higher order splitting for updating $\Pi$ and $S$
+is negligible compared to the propagation with $\op{W}$ which requires numerical integration. 
+\par\medskip
+%
+In addition, due to the numerical properties of the semiclassical splitting, 
+it even allows to take larger timesteps $\Dt$ than conventional
+splitting methods like the YL-splitting, while maintaining the same error.
+\par\medskip
+%
+Finally and most importantly, the error is no longer proportional to $1/\eps^2$ but instead
+scales linearly in the semiclassical parameter $\eps$,
+meaning that a smaller $\eps$ will now reduce the error instead of increasing it.
+The error scales with $\eps (\Delta t)^2$ for the semiclassical splitting using the Y-splitting,
+but the dependency on the timestep $\Delta t$ can be improved even further by using different
+splittings which effectively corresponds to higher order coefficient pairs $w_T$ and $w_U$.
+\par\medskip
+%
+The pseudo-algorithm for the semiclassical propagator is given in \ref{alg:semiclassical} and 
+further details can be found in the original paper \cite{GH_convsemiclassical}.
+%
+\begin{algorithm}[h]
+	\caption{Single timestep with Semiclassical propagator}
+	\label{alg:semiclassical}
+	\begin{algorithmic}
+	\Procedure{Semiclassical.propagate}{$\Dt$}
+		\State
+		\State $M := \lceil 1 + \frac{\sqrt{\Dt}}{\eps^{3/4}} \rceil$
+		\Comment{Divide $\Dt$ into smaller steps}
+		\State
+		\State \Call{intSplit}{$\frac{\Dt}{2}, \frac{M}{2}, \{ w_T, w_U \}$}
+		\Comment{$M/2$ split steps with $T+U$}
+		\State \Call{stepW}{$\Dt$}
+		\Comment{Single step with $W$}
+		\State \Call{intSplit}{$\frac{\Dt}{2}, \frac{M}{2}, \{ w_T, w_U \}$}
+		\Comment{$M/2$ split steps with $T+U$}
+		\State
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
 \subsection{Magnus Propagator}
+
+
 \subsection{Pre764 Propagator}
+
+
 \subsection{McL Propagators}
 
 
@@ -68,6 +182,7 @@ present a selection of propagators
 \clearpage
 \section{Implementation in C++}
 
+\cite{libwaveblocks}
 What was the main challenge? What was controllable (which code could be changed), what not? 
 Quick alternating o
 
@@ -85,11 +200,11 @@ Tell how each of these challenges were overcome
 Motivation of software design choices
 
 	- Why class structure/inheritance (explain hierarchy)
-	- CRTP / static polymorphism
+	- CRTP / static polymorphism \cite{C_CRTP}
 	- recognizing IP
 	- callback function
 	- implementation of intSplit (TU,UT, partial specialization)
-	- polymorphism through enable_if
+	- polymorphism through enable-if
 
 
 
@@ -161,6 +276,6 @@ suggestions for future work
 \clearemptydoublepage
 
 \bibliographystyle{plain}
-% \bibliography{mt,bt,chem,wp,own}
+\bibliography{references,mt,bt,chem,wp,own}
 
 \end{document}
