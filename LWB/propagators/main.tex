@@ -39,6 +39,7 @@
 \clearpage
 \section{Introduction}
 
+Summary of the structure of the remaining report
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cite{GH_convsemiclassical}
 Semiclassical time-dependent Schrödinger equation
@@ -257,24 +258,54 @@ further details can be found in the original paper \cite{GH_convsemiclassical}.
 \subsection{Magnus Propagator}
 \label{sub:magnus_propagator}
 %
-TODO: add comments to algorithm
+As was noted by Magnus in \cite{Magnus1954}, the solution to a differential equation of the form
+%
+\begin{align}
+	y'(t) = a(t) y(t) \qquad t \ge 0
+\end{align}
+%
+can be written as
+%
+\begin{align}
+	y(t) = e^{\sigma (t)} y_0
+\end{align}
+%
+where $\sigma (t)$ is an infinite sum of iterated integrals and commutators, also known as the Magnus series.
+\par\medskip
+%
+In order to approximate this solution, one can take only a finite number of terms from this series whereby a truncation error is committed
+(additional error sources in this method are the discretization of integrals and the approximation of matrix exponentials).
+%
+This method has several beneficial numerical properties that are described in \cite{Iserles1999}.
+In particular, for solutions that evolve within a Lie group, the same holds for the approximate numerical solution calculated through a truncated Magnus series. 
+It was also shown in the same paper that the Magnus series can compete with - and in fact may even outplay - classical schemes like Runge-Kutta or Gauss-Legendre.
+Moreover, the numerical stability and good performance of the Magnus propagator are not limited to problems where the solution evolves within a Lie Group, but also apply to various problems when this is not the case.
+
 \begin{algorithm}[h]
 	\caption{Single timestep with Magnus propagator}
 	\label{alg:magnus}
 	\begin{algorithmic}
 	\Procedure{Magnus.Propagate}{$\Dt$}
 		\State
-		\State $h_1 = \frac{3-\sqrt{3}}{6} \Dt$, $h_2 = \frac{\sqrt{3}}{6} \Dt$
+		\State $h_1 = \frac{3-\sqrt{3}}{6} \Dt$, $h_2 = \frac{2\sqrt{3}}{6} \Dt$
 		\Comment Gauss-Legendre coefficients on $[0,\Dt]$
 		\State $M_{k} = 1+\sqrt{h_{k} \eps^{-3/8}}, \quad k=1,2$
+		\Comment number of timesteps for splitting
 		\State
 		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
+		\Comment advance till $\frac{3-\sqrt{3}}{6} \Dt$
 		\State $\bmat{A}_1 = - \im \frac{\Dt}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
+		\Comment temporarily store interaction matrix
 		\State \Call{intSplit}{$h_2, M_2, \{w_T, w_U\}$}
+		\Comment advance till $\frac{3+\sqrt{3}}{6} \Dt$
 		\State $\bmat{A}_2 = - \im \frac{\Dt}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
+		\Comment temporarily store interaction matrix
 		\State $\bmat{\Sigma} = \frac{1}{2} (\bmat{A}_1 + \bmat{A}_2) + \frac{\sqrt{3}}{12} (\bmat{A}_1 \cdot \bmat{A}_1 - \bmat{A}_2 \cdot \bmat{A}_1)$
+		\Comment compute $\sigma (t)$
 		\State $\bvec{c} = \exp{ \left( \bmat{\Sigma} \right) } \bvec{c}$
+		\Comment update coefficients with Magnus approximation
 		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
+		\Comment advance till $\frac{6}{6} \Dt$
 		\State
 	\EndProcedure
 	\end{algorithmic}
@@ -443,6 +474,6 @@ suggestions for future work
 \clearemptydoublepage
 
 \bibliographystyle{plain}
-\bibliography{references,mt,bt,chem,wp,own}
+\bibliography{references,mt,bt,chem,wp,own,propagators}
 
 \end{document}
