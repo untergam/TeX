@@ -39,6 +39,13 @@
 \clearpage
 \section{Introduction}
 
+All based on composition methods
+
+methods that compose elementary flows/operators to build an approximation of high order
+
+In general / in the practical implementation, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators
+
+
 Summary of the structure of the remaining report
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \cite{GH_convsemiclassical}
@@ -93,7 +100,7 @@ As the idea behind the splitting the Hamiltonian operator is so central to the t
 \end{itemize}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Quantum Time Propagation, Operator Splitting and Hagedorn Propagator}
+\subsection{Quantum Time Propagation, Operator Splitting}
 
 check propositions in hagedorn paper.
 
@@ -395,29 +402,49 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method which is
 \subsection{McL Propagators}
 \label{sub:mcl_propagator}
 %
-TODO: add comments to algorithm
-TODO: Add 84 algorithm
-TODO: compute M, compute dt
+McLachlan (see \cite{McLachlan1995}) has investigated various ?symplectic? schemes for computing the effect of operators of the form $\opX = \opA + \epsilon \opB$ where $\opA$ describes an exactly solvable system and $\opB$ is a perturbation.
+The factor $\epsilon$ is a small parameter that indicates the limited influence of $\opB$, not to be confused with the semiclassical parameter $\eps$.
+\par\medskip
+The \emph{McL} integration schemes are characterised by pairs of weighing coefficients $a_i$ and $b_i$ that allow to represent the exponential $e^{\opX}$ as a product
+%
+\begin{align}
+	e^\opX = \prod_i e^{b_i t \epsilon \opB} e^{a_i t \opA}
+\end{align}
+%
+McLachlan also goes through the process of deriving the coefficients for the following schemes
+\begin{align*}
+	&\text{\emph{McL(2s,2)}} &&\text{with error of order } \epsilon (\Dt)^{2s} + \epsilon^2 (\Dt)^2 \\
+	&\text{\emph{McL(6,4)}} &&\text{with error of order } \epsilon (\Dt)^{6} + \epsilon^2 (\Dt)^4 \\
+	&\text{\emph{McL(8,4)}} &&\text{with error of order } \epsilon (\Dt)^{8} + \epsilon^2 (\Dt)^4
+\end{align*}
+%
+Note that the error depends on two small parameters, the timestep $\Dt$ and the parameter $\epsilon$ that quantifies the influence of $\opB$.
+\par\medskip
+%
+In our case, $\opX = \opH = \opT + \opV + \opW$, the computationally expensive operator $\opW$ takes the role of $\epsilon \opB$, while the remaining Hamiltonian $\opT + \opU$ corresponds to $\opA$. 
+Our preferred method will therefore be of the form $ABA$ because this minimizes the number of steps with $\opB = \opW$.
+\par\medskip
+%
+The source code of this project contains the C++ implementation of the propagators \emph{McL(4,2)} (asymmetric) and \emph{McL(8,4)} (symmetric) that require only two respectively three evaluations of $\opW$ per step.
+
 \begin{algorithm}[h]
 	\caption{Single timestep with McL propagators}
 	\label{alg:mcl}
 	\begin{algorithmic}
+		\State
 		\Procedure{McL42.Propagate}{$\Dt$}
-			\State \Call{intSplit}{$A_0 \dt, M, \{w_T, w_U\}$}
-			\State \Call{stepW}{$B_0 \dt$}
-			\State \Call{intSplit}{$A_1 \dt, M, \{w_T, w_U\}$}
-			\State \Call{stepW}{$B_1 \dt$}
-			\State \Call{intSplit}{$A_2 \dt, M, \{w_T, w_U\}$}
-		\EndProcedure
-		\\\hrulefill
-		\Procedure{McL84.Propagate}{$\Dt$}
-			\State \Call{intSplit}{$A_0 \dt, M, \{w_T, w_U\}$}
-			\State \Call{stepW}{$B_0 \dt$}
-			\State \Call{intSplit}{$A_1 \dt, M, \{w_T, w_U\}$}
-			\State \Call{stepW}{$B_1 \dt$}
-			\State \Call{intSplit}{$A_2 \dt, M, \{w_T, w_U\}$}
-			\State \Call{stepW}{$B_2 \dt$}
-			\State \Call{intSplit}{$A_3 \dt, M, \{w_T, w_U\}$}
+		\State
+			\State \Call{intSplit}{$A_0 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_0 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_1 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_1 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_2 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+		\State
 		\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
