@@ -17,49 +17,14 @@
 \listoffigures
 \listofalgorithms
 
-\clearemptydoublepage
-
-% \input{./introduction.tex}
-% \input{./wavefunction_propagation.tex}
-% \input{./wavepackets.tex}
-% \input{./observables.tex}
-% \input{./wavepacket_propagation.tex}
-% \input{./results.tex}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% TODO: move to separate file when done
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{comment}
+\clearemptydoublepage \input{sections/introduction.tex}
 \clearpage
-\end{comment}
+\section{Time Propagation of Quantum Wave Packets}
+\label{sec:timeprop}
+%
 
-\section{Introduction}
-
-\begin{comment}
 All based on composition methods
-
 methods that compose elementary flows/operators to build an approximation of high order
-
-Summary of the structure of the remaining report
-Describe what is going to happen in the rest of the paper
-
-
-%%% Mathematical properties
-Semiclassical time-dependent Schrödinger equation
-%
-\begin{align}
-	\label{math:tdse}
-	\im \eps \; \del_t \psi (\bvec{x},t) = \opH (\eps) \; \psi (\bvec{x},t)
-\end{align}
-%
-with wave function $\psi(\bvec{x},t)$ depending on the spatial variables $\bvec{x} = (x_1,\dots,x_D) \in \R^D$ and the time variable $t \in \R$.
 
 how does one analytically propagate?
 operators don't commute
@@ -140,7 +105,6 @@ $q^n, p^n \in V_N, \; Q^n, P^n \in M_{N \times N}, \; S^n \in \mathbb{R}, \bm{c}
 
 TODO: hom/inhom for all algorithms!!!
 
-\end{comment}
 
 
 
@@ -148,8 +112,8 @@ TODO: hom/inhom for all algorithms!!!
 
 
 
-\input{sections/buildingblocks.tex}
-\input{sections/propagators.tex}
+% \clearpage \input{sections/buildingblocks.tex}
+% \clearpage \input{sections/propagators.tex}
 
 
 
