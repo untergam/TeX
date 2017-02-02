@@ -132,7 +132,7 @@ General notes: what variables are accessible?
 
 The time stepping with operators $\opT$ and $\opV = U(\op{x})$ follows directly from the propositions in \cite{FGL_semiclassical_dynamics} and is outlined in the algorithms \ref{alg:stepT} and \ref{alg:stepU} respectively.
 
-As pointed out in the introduction, the time propagation for non-quadratic potentials $W(\vec{x})$ can be achieved by updating the coefficients $\{ c_k \}_{k \in \K}$.
+As pointed out in the introduction, the time propagation for non-quadratic potentials $W(\bvec{x})$ can be achieved by updating the coefficients $\{ c_k \}_{k \in \K}$.
 The update rule is
 %
 \begin{align}
@@ -151,6 +151,7 @@ where the matrix $\bmat{F} = \{ f_{k,l} \}_{k,l \in \K}$ has entries
 	\caption{Propagate with Kinetic Energy Operator $\opT$}
 	\label{alg:stepT}
 	\begin{algorithmic}
+	\State
 	\Procedure{stepT}{$\eta$}
 		\State $q = q + \eta M^{-1} p$
 		\State $Q = Q + \eta M^{-1} P$
@@ -163,6 +164,7 @@ where the matrix $\bmat{F} = \{ f_{k,l} \}_{k,l \in \K}$ has entries
 	\caption{Propagate with (Quadratic) Potential Energy Operator}
 	\label{alg:stepU}
 	\begin{algorithmic}
+	\State
 	\Procedure{stepU}{$\eta$}
 		\State $p = p - \eta \nabla V (q)$
 		\State $P = P - \eta \nabla^2 V (q) Q$
@@ -193,6 +195,7 @@ Also, in the limit of $\K$ approaching the full basis set, the variational appro
 	\caption{Single timestep with Hagedorn propagator}
 	\label{alg:hagedorn}
 	\begin{algorithmic}
+	\State
 		\Procedure{Hagedorn.Propagate}{$\Dt$}
 		\State
 			\State \Call{stepT}{$\frac{\Dt}{2}$}
@@ -231,13 +234,14 @@ but the dependency on the timestep $\Delta t$ can be improved even further by us
 splittings which effectively corresponds to higher order coefficient pairs $w_T$ and $w_U$.
 \par\medskip
 %
-The pseudo-algorithm for the semiclassical propagator is given in \ref{alg:semiclassical} and 
+The steps for the semiclassical propagator are shown in algorithm \ref{alg:semiclassical} and 
 further details can be found in the original paper \cite{GH_convsemiclassical}.
 %
 \begin{algorithm}[h]
 	\caption{Single timestep with Semiclassical propagator}
 	\label{alg:semiclassical}
 	\begin{algorithmic}
+	\State
 	\Procedure{Semiclassical.Propagate}{$\Dt$}
 		\State
 		\State $M := \lceil 1 + \frac{\sqrt{\Dt}}{\eps^{3/4}} \rceil$
@@ -267,24 +271,30 @@ As was noted by Magnus in \cite{Magnus1954}, the solution to a differential equa
 can be written as
 %
 \begin{align}
+	\label{math:magnussolution}
 	y(t) = e^{\sigma (t)} y_0
 \end{align}
 %
 where $\sigma (t)$ is an infinite sum of iterated integrals and commutators, also known as the Magnus series.
+The idea behind the Magnus approximation was extensively studied using the Baker-Campbell-Hausdorff (BCH) formula and rooted trees techniques, more details can be found in \cite{Blanes2006}, \cite{Blanes2000}, \cite{Iserles1999}.
 \par\medskip
 %
-In order to approximate this solution, one can take only a finite number of terms from this series whereby a truncation error is committed
+In order to approximate the solution from equation \ref{math:magnussolution}, one can take only a finite number of terms from this series whereby a truncation error is committed
 (additional error sources in this method are the discretization of integrals and the approximation of matrix exponentials).
 %
-This method has several beneficial numerical properties that are described in \cite{Iserles1999}.
+This method of the Magnus Propagator has several beneficial numerical properties that are described in \cite{Iserles1999}.
 In particular, for solutions that evolve within a Lie group, the same holds for the approximate numerical solution calculated through a truncated Magnus series. 
 It was also shown in the same paper that the Magnus series can compete with - and in fact may even outplay - classical schemes like Runge-Kutta or Gauss-Legendre.
+Although the method is not a symplectic scheme in the usual sense, \cite{Iserles1999} has shown that in practical applications it conserves the Hamiltonian energy just as well as symplectic integrators.
+\par\medskip
 Moreover, the numerical stability and good performance of the Magnus propagator are not limited to problems where the solution evolves within a Lie Group, but also apply to various problems when this is not the case.
+Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Iserles1999} and implemented in C++ in the scope of this work.
 
 \begin{algorithm}[h]
 	\caption{Single timestep with Magnus propagator}
 	\label{alg:magnus}
 	\begin{algorithmic}
+	\State
 	\Procedure{Magnus.Propagate}{$\Dt$}
 		\State
 		\State $h_1 = \frac{3-\sqrt{3}}{6} \Dt$, $h_2 = \frac{2\sqrt{3}}{6} \Dt$
@@ -294,16 +304,16 @@ Moreover, the numerical stability and good performance of the Magnus propagator 
 		\State
 		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
 		\Comment advance till $\frac{3-\sqrt{3}}{6} \Dt$
-		\State $\bmat{A}_1 = - \im \frac{\Dt}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
+		\State $\bmat{A}_1 = - \frac{\im}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
 		\Comment temporarily store interaction matrix
 		\State \Call{intSplit}{$h_2, M_2, \{w_T, w_U\}$}
 		\Comment advance till $\frac{3+\sqrt{3}}{6} \Dt$
-		\State $\bmat{A}_2 = - \im \frac{\Dt}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
+		\State $\bmat{A}_2 = - \frac{\im}{\eps^2} \cdot$ \Call{buildF}{\mbox{}}
 		\Comment temporarily store interaction matrix
-		\State $\bmat{\Sigma} = \frac{1}{2} (\bmat{A}_1 + \bmat{A}_2) + \frac{\sqrt{3}}{12} (\bmat{A}_1 \cdot \bmat{A}_1 - \bmat{A}_2 \cdot \bmat{A}_1)$
+		\State $\bmat{\Sigma} = \frac{1}{2} \Dt (\bmat{A}_1 + \bmat{A}_2) + \frac{\sqrt{3}}{12} (\Dt)^2 (\bmat{A}_2 \cdot \bmat{A}_1 - \bmat{A}_1 \cdot \bmat{A}_2)$
 		\Comment compute $\sigma (t)$
-		\State $\bvec{c} = \exp{ \left( \bmat{\Sigma} \right) } \bvec{c}$
-		\Comment update coefficients with Magnus approximation
+		\State $\bvec{c} = \exp \left( \bmat{\Sigma} \right) \bvec{c}$
+		\Comment update coefficients
 		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
 		\Comment advance till $\frac{6}{6} \Dt$
 		\State
@@ -311,36 +321,72 @@ Moreover, the numerical stability and good performance of the Magnus propagator 
 	\end{algorithmic}
 \end{algorithm}
 
-\subsection{Pre764 Propagator}
+\subsection{Processing Propagators}
 \label{sub:pre764_propagator}
 %
-TODO: add comments to algorithm
+The idea of processing propagators is to carry out the time evolution with a Hamiltonian that is slightly perturbed from the initial one.
+To achieve this, a pre and post processing step is applied. \\
+More formally, it holds that
+%
+\begin{align}
+	e^{- \Dt \opH (\Dt)} = e^P e^{- \Dt K} e^{-P}
+\end{align}
+%
+where the pre and post processing steps are applied via the multiplication with matrices $e^P$ and $e^{-P}$ (also referred to as \emph{processors}).
+While the processors only need to be applied once at the very beginning and end of the propagation (in order to return to the original Hamiltonian), the multiplication with the \emph{kernel} $e^{-\Dt K}$ is repeated $M$ times, once for every timestep. \\
+As a consequence, one wants to choose the processor $e^P$ in such a way that the evaluation of the kernel $e^{-\Dt K}$ is as simple as possible, requiring a minimum of expensive function evaluations.
+\par\medskip
+%
+Unlike most commonly used integration schemes, the family of processing propagators are symplectic integrators.
+They are not suited for every kind of Hamiltonian, and the work of Blanes, Casas and Ros in \cite{Blanes1999} gives a method for finding the  neccessary conditions that need to be satisfied in order for processing methods to be applicable.
+\par\medskip
+%
+Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method which is a ?sixth? order processing method that was derived in \cite{Blanes1999}.
+%
 \begin{algorithm}[h]
 	\caption{Single timestep with Pre764 propagator}
 	\label{alg:pre764}
 	\begin{algorithmic}
+	\State
 	\Procedure{Pre764.PrePropagate}{$\Dt$}
+		\State
 		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\Comment compute number of time steps
 		\For{$j=0,...,v-1$} \Comment $v=6$ for Pre(7,6,4)
-		\State \Call{intSplit}{$-Z_j \Dt, M, \{w_T, w_U\}$}
+			\State \Call{intSplit}{$-Z_j \Dt, M, \{w_T, w_U\}$}
+			\Comment $M$ alternating steps with $\opT$ and $\opU$
 			\State \Call{stepW}{$\upic, -Y_j \Dt$}
+			\Comment single step with $\opW$
 		\EndFor
+		\State
 	\EndProcedure
 		\\\hrulefill
+		\State
 	\Procedure{Pre764.Propagate}{$\Dt$}
+		\State
 		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\Comment compute number of time steps
 		\For{$j=0,...,k-1$} \Comment $k=4$ for Pre(7,6,4)
 			\State \Call{stepW}{$\alpha_j \Dt$}
+			\Comment single step with $\opW$
 			\State \Call{intSplit}{$\beta_j \Dt, M, \{w_T, w_U\}$}
+			\Comment $M$ alternating steps with $\opT$ and $\opU$
 		\EndFor
+		\State
 	\EndProcedure
 		\\\hrulefill
+		\State
 	\Procedure{Pre764.PostPropagate}{$\Dt$}
+		\State
 		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\Comment compute number of time steps
 		\For{$j=v-1,...,0$} \Comment $v=6$ for Pre(7,6,4)
-		\State \Call{stepW}{$Y_j \Dt$}
+			\State \Call{stepW}{$Y_j \Dt$}
+			\Comment single step with $\opW$
 			\State \Call{intSplit}{$Z_j \Dt, M, \{w_T, w_U\}$}
+			\Comment $M$ alternating steps with $\opT$ and $\opU$
 		\EndFor
+		\State
 	\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
