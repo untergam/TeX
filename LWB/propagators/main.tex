@@ -18,107 +18,18 @@
 \listofalgorithms
 
 \clearemptydoublepage \input{sections/introduction.tex}
-\clearpage
-\section{Time Propagation of Quantum Wave Packets}
-\label{sec:timeprop}
-%
-
-All based on composition methods
-methods that compose elementary flows/operators to build an approximation of high order
-
-how does one analytically propagate?
-operators don't commute
-operator splitting to the rescue
-Hamiltonian
-
-\begin{align}
-	\opH = \opT + \opV = \opT + \opU + \opW
-\end{align}
-\begin{align}
-	\opT &= - \sum_{j=1}^D \frac{\eps^2}{2m_j} \frac{\del^2}{\del x_j^2} \\
-	\opV &= V(x)
-\end{align}
-
-For the rest of this report, it will be used that $\opU = U(\bvec{x})$ and $\opW = W(\bvec{x})$ and they will denote the quadratic and non-quadratic splitting of $\opV$ respectively.
-\par\medskip
-%
-
-Hagedorn wavepackets explained in \cite{FGL_semiclassical_dynamics}
-
-The solution to the Schrödinger equation can be approximated as a finite linear combination if Hagedorn function \cite{FGL_semiclassical_dynamics}
-\begin{align}
-	\label{math:hagedornwp}
-	\psi(x,t) \approx u(x,t)
-	= e^{\im S(t)/\eps} \sum_{k \in \K} c_k(t) \varphi_k^\eps [ q(t),p(t),Q(t),P(t) ] (x)
-\end{align}
-
-$\K$ finite multi index set
-
-As the idea behind the splitting the Hamiltonian operator is so central to the time propagation approach used here, we repeat the most important findings from  \cite{FGL_semiclassical_dynamics}:
-\begin{itemize}
-	\item The free linear Schrödinger equation ($\opV=0$) can be solved exactly and the wavepacket remains in Hagedorn wavepacket form~\ref{math:hagedornwp}.
-		For time propagation, only the parameters $\bvec{\Pi},S$ need to be updated, the coefficients $\{c_k\}_{k \in \K}$ remain unchanged.
-	\item The Schrödinger equation~\ref{math:tdse} can be solved exactly in a pure quadratic potential, i.e. in a potential $\opV=U(\bvec{x})$ with $\opT=0$.
-		Again, time propagation only affects the parameters $\bvec{\Pi},S$, not the coefficients $\{c_k\}_{k \in \K}$.
-	\item In the case of an arbitrary potential $\opV = W(\bvec{x})$ that is not quadratic, a set of Galerkin functions can be propagated by adapting the coefficients $\{c_k\}_{k \in \K}$ without changing the parameters $\bvec{\Pi},S$.
-\end{itemize}
-
-	
-Small semiclassical parameter $\eps$ plays an important role in the stability of numerical schemes
-
-Classical dynamics in the limit $\eps \rightarrow 0$, quantum mechanics for $\eps = 1$.
-
-In particular, as underlined in \cite{GH_convsemiclassical}, a small parameter $\eps$ can often impose severe constraints on the step size of splitting methods and significantly increase the error. For example, the error was shown to be proportional to $\sim \eps^{-2})$ for Lie-Trotter splitting, Strang splitting and other related methods.
-
-Motivation - why is time propagation important?
-Background
-
-
-The Hamiltonian is split into three parts
-where $\opU(\bvec{q}(t),\bvec{x})$ is the second order Taylor approximation of the potential $\opV$ around $\bvec{q}(t)$ and $\opW(\bvec{q}(t),\bvec{x})$ is the corresponding remainder.
-
-$\opV = V(\bvec{x}) = U(\bvec{q},\bvec{x}) + W(\bvec{q},\bvec{x})$
-
-\begin{align}
-	U(\bvec{q},\bvec{x}) &:= V(\bvec{q}) + \nabla V(\bvec{q}) (\bvec{x}-\bvec{q})
-	+ \frac{1}{2} (\bvec{x}-\bvec{q})^T \nabla^2 V(\bvec{q}) (\bvec{x}-\bvec{q}) \\
-	W(\bvec{q},\bvec{x}) &:= V(\bvec{x}) - U(\bvec{q},\bvec{x})
-\end{align}
-
-The kinetic part $\opT$ and the quadratic part of the potential $\opU$ can be integrated exactly (see \cite{FGL_semiclassical_dynamics}).
-
-
-The search for accurate time propagation schemes has become an area of research by itself, see papers of A and B
-
-General notes about Operator Splitting?
-
-Notation and Conventions
-%
-In this short section, some 
-Consistent with previous work on libwaveblocks and existing code
-$N$ number of levels
-$D$ dimension
-$M$ number of timesteps steps
-
-TODO: check: are q and p vectors? $\bm{q,p}$ \\
-$q^n, p^n \in V_N, \; Q^n, P^n \in M_{N \times N}, \; S^n \in \mathbb{R}, \bm{c}^n \in (c_k^n)_{k \in \K}$
-
-TODO: hom/inhom for all algorithms!!!
-
-
-
-
-
-
-
-
-% \clearpage \input{sections/buildingblocks.tex}
-% \clearpage \input{sections/propagators.tex}
+\clearpage \input{sections/operatorsplitting.tex}
+\clearpage \input{sections/buildingblocks.tex}
+\clearpage \input{sections/propagators.tex}
 
 
 
 \clearpage
 \section{Implementation in C++}
+
+\subsection{Callback function}
+\subsection{IntSplit using alternating templates}
+\subsection{Static Polymorphism through CRTP and enable\_if}
 
 \begin{comment}
 \cite{libwaveblocks}
@@ -159,8 +70,8 @@ Motivation of software design choices
 \section{Conclusion}
 \begin{comment}
 
-final observations
-suggestions for future work
+% TODO: final observations
+% TODO: suggestions for future work
 
 
 \end{comment}
