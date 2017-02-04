@@ -46,6 +46,17 @@ Therefore, the C++11 \proc{enable\_if} keyword was used.
 \proc{enable\_if} allows to define multiple versions of a function and (de)activate them based on a compile-time boolean value.
 If the boolean is true, the function is enabled. Otherwise it is omitted.
 This handy metafunction from the C++ \proc{type\_traits} header was used in order to conditionally enable functions based on whether the number of levels $N$ was equal or greater to one or to distinguish between functions for homogeneous or inhomogeneous wave functions, which effectively provides a form of compile time polymorphism.
+%
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[height=10cm]{figures/uml.png}
+	\end{center}
+	\label{fig:uml}
+	\caption{Simplified UML diagram for the propagator implementation.
+		The derived propagator provides implementations for \proc{PrePropagate}, \proc{Propagate} and \proc{PostPropagate} which are called from the public \proc{Evolve} function.
+		Some functions and function parameters are omitted for better readability of the graph.}
+\end{figure}
+
 
 
 \subsection{Evolve and callback function}
@@ -113,7 +124,7 @@ In order to prevent the inappropriate use of the \proc{IntSplit} function throug
 Also, as seen in section \ref{sec:blub}, a splitting of the Hamiltonian into three operators $\opT + \opU + \opW$ was used, but $\opW$ is significantly more costly to compute.
 This justifies the approach of using templates that are hard-coded to call functions \proc{StepT} and \proc{StepU}.
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{minipage}[c]{\textwidth}
 		\begin{minipage}[l][10cm][t]{.4\textwidth}
 			\begin{minipage}[t]{\textwidth}

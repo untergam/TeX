@@ -78,7 +78,7 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 \end{algorithm}
 %
 \begin{algorithm}[h]
-	\caption{Propagate with (Quadratic) Potential Energy Operator}
+	\caption{Propagate with (Quadratic) Potential Energy Operator $\opU$}
 	\label{alg:StepU}
 	\begin{algorithmic}
 	\State
@@ -117,7 +117,7 @@ This function splits the timestep $\Dt$ into $M$ smaller timesteps of size $\dt$
 More detailed information on the individual parameters to this function and the practical implementation can be found in section \ref{subsec:intsplit}
 %
 \begin{algorithm}[h]
-	\caption{Split a given time interval into $M$ sub-intervals and alternatingly apply weighted steps with $\opT$ and $\opU$ on each of them}
+	\caption{Split a time interval and alternatingly apply $\opT$ and $\opU$}
 	\label{alg:intsplit}
 	\begin{algorithmic}
 		\State
@@ -159,7 +159,7 @@ The calculation of such interaction matrices $\bmat{F}$ makes heavy use of the w
 For the further treatment in this report, it is assumed that an efficient implementation of \proc{BuildF} is readily available.
 %
 \begin{algorithm}[h]
-	\caption{Propagate with (Non-Quadratic) Potential Energy Operator}
+	\caption{Propagate with (Non-Quadratic) Potential Energy Operator $\opW$}
 	\label{alg:StepW}
 	\begin{algorithmic}
 		\State
