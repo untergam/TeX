@@ -1,7 +1,8 @@
 \section{Common building blocks for time evolution schemes}
 \label{sec:buildingblocks}
 %
-This section will briefly introduce the most important, generic building blocks that are needed for building the propagators in section~\ref{sec:propagators}.
+In order to be able to create an efficient, still flexible, implementation of various time propagators, it is helpful to break them down in common, optimized building blocks in terms of which all (or most) propagators can be expressed.
+This section will briefly introduce the most important, generic building blocks that were found neccessary in order to build the propagators in section~\ref{sec:propagators}.
 For each of them, it will be assumed that the following wave packet variables are implicitly accessible, without passing them as an argument to the procedure: the parameter pack $\bvec{\Pi} = (\bvec{q},\bvec{p},\bvec{Q},\bvec{P})$, the phase factor $S$, the coefficients $\{ c_k \}_{k \in \K}$, the potential function $V(\bvec{q})$ (including Jacobian and Hessian thereof) and the potential remainder $W(\bvec{q})$.
 \par\medskip
 %
@@ -112,7 +113,8 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 %%% IntSplit
 In the practical implementations used here, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
 In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced.
-This function splits the timestep $\Dt$ into $M$ smaller timesteps of size $\dt$ and uses the pair of weight arrays $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
+This function splits the timestep $\Dt$ into $M$ smaller timesteps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
+More detailed information on the individual parameters to this function and the practical implementation can be found in section \ref{subsec:intsplit}
 %
 \begin{algorithm}[h]
 	\caption{Split a given time interval into $M$ sub-intervals and alternatingly apply weighted steps with $\opT$ and $\opU$ on each of them}

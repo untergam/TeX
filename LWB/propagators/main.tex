@@ -1,5 +1,17 @@
 \input{./header.tex}
 
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
+
+
+
+
+
+
+
 \begin{document}
 
 \input{sections/title.tex}
@@ -24,61 +36,46 @@
 
 
 
-\clearpage
-\section{Implementation in C++}
+
+
+
+
+\clearpage \input{sections/implementation.tex}
 
 \subsection{Callback function}
-\subsection{IntSplit using alternating templates}
+\label{subsec:callback}
+encapsulate all the repetitive 
+and provide a
+mention printing
+prettyprint for clean printing
+
+
 \subsection{Static Polymorphism through CRTP and enable\_if}
+\label{subsec:poly}
+inheritance: ugly implementational details are hidden in base class Propagators.
+This was achieved by introducing a class hierarchy for the propagators, meaning that all 
+\cite{C_CRTP}
 
-\begin{comment}
-The main achievement is that the algorithms can be implemented in a stunningly simple way
-
-and that they are stunningly similar to the pseudo-algorithms of section \ref{sec:propagators}
-even though they rely on highly optimized C++ code
-\cite{libwaveblocks}
-What was the main challenge? What was controllable (which code could be changed), what not? 
-Quick alternating o
-
-The challenges were twofold: 
-First, identifying of all the common basic building blocks and expressing all algorithms in terms of these components
-Second, implementing all basic building blocks in a generic but efficient manner
-Third, minimize the overhead for switching between function calls
-
- - encapsulate the functionality in a clean interface without loosing flexibility and 
- - write efficient/fast code
-
-Tell how each of these challenges were overcome
+Allows to implement the basic building blocks in a generic but efficient manner.
 
 
-Motivation of software design choices
 
-	- Why class structure/inheritance (explain hierarchy)
-	- CRTP / static polymorphism \cite{C_CRTP}
-	- recognizing IP
-	- callback function
-	- implementation of IntSplit (TU,UT, partial specialization)
-	- polymorphism through enable-if
 
 
 
 
 \clearpage
-\end{comment}
 \section{Benchmark / Case Study / Example}
 
-\begin{comment}
+IDEA: express cost of every propagator as a ratio to the hagedorn propagator
 
 \clearpage
-\end{comment}
 \section{Conclusion}
-\begin{comment}
 
 % TODO: final observations
 % TODO: suggestions for future work
 
 
-\end{comment}
 
 
 
