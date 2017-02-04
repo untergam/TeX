@@ -1,27 +1,12 @@
 \input{./header.tex}
 
-
-
-
-\usepackage{tikz}
-\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
-
-
-
-
-
-
-
 \begin{document}
 
 \input{sections/title.tex}
 
 \clearemptydoublepage
 
-\mbox{}
-\vfill
-\input{sections/abstract.tex}
-\vfill
+\mbox{} \vfill \input{sections/abstract.tex} \vfill
 \tableofcontents
 
 \clearpage
@@ -33,90 +18,12 @@
 \clearpage \input{sections/operatorsplitting.tex}
 \clearpage \input{sections/buildingblocks.tex}
 \clearpage \input{sections/propagators.tex}
-
-
-
-
-
-
-
 \clearpage \input{sections/implementation.tex}
+\clearpage \input{sections/benchmark.tex}
+\clearpage \input{sections/conclusion.tex}
 
-\subsection{Static Polymorphism through CRTP and enable\_if}
-\label{subsec:poly}
-inheritance: ugly implementational details are hidden in base class Propagators.
-This was achieved by introducing a class hierarchy for the propagators, meaning that all 
-\cite{C_CRTP}
+% \clearemptydoublepage \appendix
 
-Allows to implement the basic building blocks in a generic but efficient manner.
-
-
-
-
-\clearpage
-\section{Benchmark / Case Study / Example}
-
-IDEA: express cost of every propagator as a ratio to the hagedorn propagator
-
-\clearpage
-\section{Conclusion}
-
-% TODO: final observations
-% TODO: suggestions for future work
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\clearemptydoublepage
-
-\appendix
-% \input{./deriv_ew.tex}
-% \input{./color_code.tex}
-% \input{./ack.tex}
 
 \clearemptydoublepage
 

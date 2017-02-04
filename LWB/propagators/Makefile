@@ -4,6 +4,7 @@ SECTIONS = $(wildcard sections/*.tex)
 
 all: main.pdf
 
+.PHONY: main.pdf
 main.pdf: main.tex header.tex $(SECTIONS) # figs
 	$(PDFLATEX) main.tex
 	$(BIBTEX) main.aux

@@ -22,6 +22,30 @@ Finally, subsection \ref{subsec:intsplit} dives into the technical details of ac
 %
 Some details about the code were not found worthy to be mentioned here,
 but more information may be found in the Doxygen code documentation.
+\par\medskip
+%
+The Hagedorn Propagator was already implemented in C++ as part of another project on the waveblocks library \cite{libwaveblocks}.
+Many components of that code were re-used for the present implementation, but they were fundamentally re-organized into a new structure that has better support for many, diverse propagators.
+
+
+\subsection{Static Polymorphism through CRTP and enable\_if}
+\label{subsec:poly}
+%
+In the current software design, all propagators from section \ref{sec:propagators} inherit from a common base class \proc{Propagator}, see the UML diagram \ref{fig:uml}.
+The strategy for the implementation was the following:
+Provide an efficient and generic implementation of all the building blocks from section \ref{sec:buildingblocks} in a common base class (\proc{Propagator}) and then let the derived class decide which combination of building blocks to use for its own, specific implementation of the propagation methods.
+This idea is essentially an application of the Strategy Pattern as introduced by Gamma et al. in \cite{Gamma1995}, one of the most important references for software design patterns.
+\par\medskip
+%
+A popular C++ design pattern for achieving static polymorphism is the \emph{Curiously Recurring Template Pattern}, \emph{CRTP} for short, which is described in more detail in \cite{C_CRTP} and in earlier work on the WaveBlocks project \cite{libwaveblocks}.
+\par\medskip
+%
+While CRTP is an excellent candidate for providing static polymorphism for derived classes, there was also the need for some polymorphism in the Propagator base class itself, since some of the building blocks need to have different implementations based on the dimensionality or homogeneity of the wave packet. 
+Providing a partially specialized class for every possible combination of parameters is often tedious and unneccessarily bloats the code.
+Therefore, the C++11 \proc{enable\_if} keyword was used.
+\proc{enable\_if} allows to define multiple versions of a function and (de)activate them based on a compile-time boolean value.
+If the boolean is true, the function is enabled. Otherwise it is omitted.
+This handy metafunction from the C++ \proc{type\_traits} header was used in order to conditionally enable functions based on whether the number of levels $N$ was equal or greater to one or to distinguish between functions for homogeneous or inhomogeneous wave functions, which effectively provides a form of compile time polymorphism.
 
 
 \subsection{Evolve and callback function}
