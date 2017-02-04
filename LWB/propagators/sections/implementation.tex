@@ -24,6 +24,30 @@ Some details about the code were not found worthy to be mentioned here,
 but more information may be found in the Doxygen code documentation.
 
 
+\subsection{Evolve and callback function}
+\label{subsec:callback}
+%
+The simple \proc{Evolve} method as described in algorithm \ref{alg:evolve} in the section about propagator building blocks provides a handy wrapper for calling the \proc{PreProcessing}, \proc{Processing} and \proc{PostProcessing} methods in sequence and dividing the propagation time into smaller steps. \\
+%
+However, one may still want to interact with the wave packet during the simulation, for example for writing the wave packet norm to file every 100 steps, throwing errors when energy conservation is violated or to carry out any other task that requires intermediate simulation results.
+In order not to loose any flexibility in this regard, an optional callback-function argument was added to the \proc{Evolve} function.
+The callback function is passed as a lambda function taking two arguments, the current simulation time \proc{t} and the index of the current timestep \proc{m}.
+If no callback function is passed, it defaults to an empty function.
+\par\medskip
+%
+Furthermore, since the wave packet is passed to the \proc{Propagator} class \emph{by reference}, it is of course available in the callback function as well and does not need to be passed as an argument explicitly (provided that it is captured in the angular brackets \proc{[]} of the lambda function). \\
+\emph{Disclaimer} if the value of the wave packet is (intentionally or unintentionally) changed in the callback function, this will of course also affect the further results of the simulation.
+Also, care must be taken when measuring energies of packets that are being propagated with propagators such as \emph{Pre764} which apply a pre-processor to the packet before starting the simulation.
+In order to get the ``physically correct'' wave packet, the corresponding post-processor needs to be applied before making any meaningful measurement.
+\par\medskip
+%
+The callback function is called once prior to simulation start and then in every time step until termination.
+\par\medskip
+%
+Finally, a few helper functions were introduced in order to facilitate pretty printing of console output and some information about the currently propagated wave packet is printed at the beginning of the \proc{Evolve} function.
+These console outputs can (and should) of course be removed for optimal performance, but in most cases it was found that some feedback about the current status of the simulation is highly valuable.
+
+
 \subsection{IntSplit using alternating templates}
 \label{subsec:instplit}
 %
