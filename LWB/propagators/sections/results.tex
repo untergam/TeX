@@ -23,9 +23,7 @@ As is clearly shown by the graphs, the propagators conserve the total energy (ap
 Another interesting fact is that the \emph{McL84} operator seems to have a much longer oscillation period than all other propagators.
 %
 \begin{figure}
-	\centered
 	\begin{minipage}[c]{\textwidth}
-		\centered
 		\begin{center}
 			\large Semiclassical Propagator \\[1mm]
 			\normalsize Energy Evolution and Drift
@@ -55,14 +53,14 @@ The runtime analysis was carried out on a Linux (Kernel 4.8.7, Fedora 24 Worksta
 A quick comparison of timings for the different propagators is shown in table \ref{tab:comparison}.
 The same setup as for the energy analysis was used (2D wave packet, $\tau = 10$, step size $\Dt = 0.001$, \emph{Y4} time splitting coefficients).
 It comes as quite a surprise, that the Semiclassical propagator is faster at computing the result than the Hagedorn propagator, which at first glance seems to have  a simpler structure and involve fewer steps.
-Also, the Magnus Propagator \emph{MG4} is cheaper than expected, as it involves two evaluations of $\matrixel{\varphi_i|W|\varphi_j}$ per time step but is only slightly slower than the Semiclassical operator with one evaluation of the inner product.
+Also, the Magnus Propagator \emph{MG4} is cheaper than expected, as it involves two evaluations of $\matrixel{\varphi_i}{W}{\varphi_j}$ per time step but is only slightly slower than the Semiclassical operator with one evaluation of the inner product.
 %
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|l | r |} 
 		\hline
-		\multicolumn{1}{|C}{\textbf{Propagator}} &
-		\multicolumn{1}{|C|}{\textbf{Timing [s]}} \\
+		\multicolumn{1}{|c}{\textbf{Propagator}} &
+		\multicolumn{1}{|c|}{\textbf{Timing [s]}} \\
 		\hline
 		Hagedorn & 12.54 \\
 		Semiclassical & 12.51 \\
@@ -103,11 +101,11 @@ This is a very encouraging result as it means that high order splitting coeffici
 	\centering
 	\begin{tabular}{|l | r | r | r | r |} 
 		\hline
-		\multicolumn{1}{|C}{\textbf{Splitting}} &
-		\multicolumn{1}{|C}{\textbf{No. of coefs}} &
-		\multicolumn{1}{|C}{\textbf{Python timing [s]}} &
-		\multicolumn{1}{|C}{\textbf{C++ timing [s]}} &
-		\multicolumn{1}{|C|}{\textbf{Speedup}} \\
+		\multicolumn{1}{|c}{\textbf{Splitting}} &
+		\multicolumn{1}{|c}{\textbf{No. of coefs}} &
+		\multicolumn{1}{|c}{\textbf{Python timing [s]}} &
+		\multicolumn{1}{|c}{\textbf{C++ timing [s]}} &
+		\multicolumn{1}{|c|}{\textbf{Speedup}} \\
 		\hline
 		LT & 1 & 174.6 & 5.706 &\textbf{30.3} \\ 
 		S2 & 2 & 202.9 & 5.766 &\textbf{35.6} \\

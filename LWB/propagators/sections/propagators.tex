@@ -250,6 +250,8 @@ The source code of this project contains the C++ implementation of the propagato
 		\State
 		\Procedure{McL42.Propagate}{$\Dt$}
 		\State
+			\State $M = \lceil \left( \Dt^4 / \eps^3 \right)^{\frac{1}{8}} \rceil$
+			\Comment compute number of substeps
 			\State \Call{intSplit}{$A_0 \Dt, M, \{w_T, w_U\}$}
 			\Comment $\opT + \opU = A$
 			\State \Call{stepW}{$B_0 \Dt$}
