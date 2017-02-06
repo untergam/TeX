@@ -12,7 +12,7 @@ The semiclassical time-dependent Schrödinger equation is of the form
 with wave function $\psi(\bvec{x},t)$ depending on the spatial variables $\bvec{x} = (x_1,\dots,x_D) \in \R^D$ and the time variable $t \in \R$.
 The parameter $\eps$, also known as the semiclassical parameter, determines the degree of influence of quantum dynamics, approaching classical dynamics in the limit $\eps \rightarrow 0$ and full quantum mechanics for $\eps = 1$. \\
 Moreover, $\eps$ plays an important role in the stability of numerical schemes.
-As underlined in \cite{GH_convsemiclassical}, a small parameter $\eps$ can often impose severe constraints on the step size of splitting methods and significantly increase the error. For example, the error was shown to be proportional to $\sim \eps^{-2})$ for Lie-Trotter splitting, Strang splitting and other related methods, meaning that smaller $\eps$ would lead to a larger error.
+As underlined in \cite{GH_convsemiclassical}, a small parameter $\eps$ can often impose severe constraints on the step size of splitting methods and significantly increase the error. For example, the error was shown to be proportional to $\sim \eps^{-2}$ for Lie-Trotter splitting, Strang splitting and other related methods, meaning that smaller $\eps$ would lead to a larger error.
 \par\medskip
 %
 The solution to the above Schrödinger equation \ref{math:tdse} can be approximated as a finite linear combination of Hagedorn functions 
@@ -22,7 +22,7 @@ The solution to the above Schrödinger equation \ref{math:tdse} can be approxima
 	= e^{\im S(t)/\eps} \sum_{k \in \K} c_k(t) \varphi_k^\eps [ \bvec{\Pi} ] (\bvec{x})
 \end{align}
 where $\K$ represents a finite multi-index set and the notation for the parameter pack $\bvec{\Pi} = (\bvec{q}(t),\bvec{p}(t),\bvec{Q}(t),\bvec{P}(t))$ is introduced for convenience.
-A more detailed analysis of Hagedorn functions is given in \cite{FGL_semiclassical_dynamics}.
+A more detailed analysis of Hagedorn functions is given in \cite{FGL_semiclassical_dynamics} and a comprehensive overview over the relevant mathematical details can be found in \cite{B_master_thesis}.
 \par\medskip
 %
 For the rest of this report, $\opU$ and $\opW$ will denote the quadratic and non-quadratic component of $\opV$ respectively and it will be used that

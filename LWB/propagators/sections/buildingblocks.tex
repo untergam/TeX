@@ -29,8 +29,8 @@ but will generally be a combination of the basic building blocks that follow in 
 			\State \Call{Propagate}{$\Dt$}
 		\EndFor
 		\State \Call{PostPropagate}{$\Dt$}
+		\State
 	\EndProcedure
-	\State
 	\end{algorithmic}
 \end{algorithm}
 
@@ -111,10 +111,10 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 \end{algorithm}
 %
 %%% IntSplit
-In the practical implementations used here, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
+In the practical implementations of the propagators that will be presented in the next section, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
 In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced.
 This function splits the timestep $\Dt$ into $M$ smaller timesteps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
-More detailed information on the individual parameters to this function and the practical implementation can be found in section \ref{subsec:intsplit}
+More detailed information on the individual parameters to this function and the practical implementation can be found in section \ref{sec:implementation}
 %
 \begin{algorithm}[h]
 	\caption{Split a time interval and alternatingly apply $\opT$ and $\opU$}
@@ -141,7 +141,7 @@ More detailed information on the individual parameters to this function and the 
 
 \subsection{StepW and building of the interaction matrix}
 %
-As pointed out in the introduction, the time propagation for non-quadratic potentials $W(\bvec{x})$ (see algorithm~\ref{alg:StepW}) can be achieved by updating only the coefficients $\{ c_k \}_{k \in \K}$.
+As pointed out in the previous section, the time propagation for non-quadratic potentials $W(\bvec{x})$ (see algorithm~\ref{alg:StepW}) can be achieved by updating only the coefficients $\{ c_k \}_{k \in \K}$.
 The update rule is
 %
 \begin{align}

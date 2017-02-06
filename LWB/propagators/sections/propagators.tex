@@ -4,14 +4,14 @@
 This section gives a short overview of the numerical properties of the propagators that were implemented in the context of this project.
 Where appropriate, references are given to find a more detailed mathematical analysis of the propagators.
 \par\medskip
-The methods are called in the sequence determined by the \proc{Evolve} function (\ref{alg:evolve}) and generally are expressed in terms of the basic building blocks that were presented in the previous section.
+The methods are called in the sequence determined by the \proc{Evolve} function (\ref{alg:Evolve}) and generally are expressed in terms of the basic building blocks that were presented in the previous section.
 If the methods \proc{PrePropagate} and \proc{PostPropagate} are omitted, it means that they are empty. \\
 Whenever convenient, the direct succession of functions \proc{StepT} and \proc{StepU} was replaced by a call to \proc{IntSplit} (see explanation in \ref{subsec:tuintsplit}) for better accuracy.
 
 \subsection{Hagedorn Propagator}
 \label{sub:hagedorn_propagator}
 %
-The Hagedorn propagator, shown in algorithm \ref{alg:hagedorn}, is one of the simplest propagators that can be built by exploiting the numerical aspects discussed above.
+The Hagedorn propagator, shown in algorithm \ref{alg:hagedorn}, is one of the simplest propagators that can be built by exploiting the numerical properties of the Hamiltonian splitting $\opH = \opT + \opU + \opW$ discussed earlier.
 As pointed out in \cite{FGL_semiclassical_dynamics}, this simple time stepping scheme has many beneficial properties like the preservation of the $L^2$ norm of the wavepacket, time reversibility and stability in the classical limit $\eps \rightarrow 0$.
 Also, in the limit of $\K$ approaching the full basis set, the variational approximation used for the propagation with the non-quadratic part $\opW$ becomes exact.
 \begin{algorithm}[h]
@@ -40,7 +40,7 @@ Also, in the limit of $\K$ approaching the full basis set, the variational appro
 %
 The central idea of the semiclassical splitting, as introduced in \cite{GH_convsemiclassical},
 is to split the propagation with operators $\opT$ and $\opU$ into many smaller, alternating steps, thereby reducing the dominating error\footnote{for small $\eps$,
-the main source of error lies in the updating of $\Pi$ and $S$} in the update of $\bvec{\Pi}$ and $S$.
+the main source of error lies in the updating of $\bvec{\Pi}$ and $S$} in the update of $\bvec{\Pi}$ and $S$.
 While there is some additional computational cost caused by a higher number of updates for the parameters $\bvec{\Pi}$ and $S$, the extra effort is usually negligible compared to the propagation with $\opW$ which requires numerical evaluation of multi-dimensional integrals. 
 \par\medskip
 %
@@ -111,7 +111,7 @@ It was also shown in the same paper that the Magnus series can compete with - an
 Although the method is not a symplectic scheme in the usual sense, \cite{Iserles1999} has shown that in practical applications it conserves the Hamiltonian energy just as well as symplectic integrators.
 \par\medskip
 Moreover, the numerical stability and good performance of the Magnus propagator are not limited to problems where the solution evolves within a Lie Group, but also apply to various problems when this is not the case.
-Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Iserles1999} and implemented in C++ in the scope of this work.
+Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Iserles1999} and implemented in C++ in the scope of this project.
 
 \begin{algorithm}[h]
 	\caption{Single timestep with Magnus propagator}
@@ -147,7 +147,7 @@ Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Ise
 \subsection{Processing Propagators}
 \label{sub:pre764_propagator}
 %
-The idea of processing propagators is to carry out the time evolution with a Hamiltonian that is slightly perturbed from the initial one.
+The idea of processing propagators is to carry out the time evolution with a Hamiltonian that is slightly perturbed from the original one.
 To achieve this, a pre and post processing step is applied. \\
 More formally, it holds that
 %
@@ -157,14 +157,14 @@ More formally, it holds that
 %
 where the pre and post processing steps are applied via the multiplication with matrices $e^P$ and $e^{-P}$ (also referred to as \emph{processors}).
 While the processors only need to be applied once at the very beginning and end of the propagation (in order to return to the original Hamiltonian), the multiplication with the \emph{kernel} $e^{-\Dt K}$ is repeated $M$ times, once for every timestep. \\
-As a consequence, one wants to choose the processor $e^P$ in such a way that the evaluation of the kernel $e^{-\Dt K}$ is as simple as possible, requiring a minimum of expensive function evaluations.
+As a consequence, one wants to choose the processor $e^P$ in such a way that the evaluation of the kernel $e^{-\Dt K}$ is as simple as possible in order to minimize the work associated with the computation of the kernel.
 \par\medskip
 %
 Unlike most commonly used integration schemes, the family of processing propagators are symplectic integrators.
 They are not suited for every kind of Hamiltonian, and the work of Blanes, Casas and Ros in \cite{Blanes1999} gives a method for finding the  neccessary conditions that need to be satisfied in order for processing methods to be applicable.
 \par\medskip
 %
-Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method which is a ?sixth? order processing method that was derived in \cite{Blanes1999}.
+Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as derived in \cite{Blanes1999}.
 %
 \begin{algorithm}[h]
 	\caption{Single timestep with Pre764 propagator}
@@ -218,7 +218,7 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method which is
 \subsection{McLachlan Propagators}
 \label{sub:mcl_propagator}
 %
-McLachlan (see \cite{McLachlan1995}) has investigated various ?symplectic? schemes for computing the effect of operators of the form $\opX = \opA + \epsilon \opB$ where $\opA$ describes an exactly solvable system and $\opB$ is a perturbation.
+McLachlan (see \cite{McLachlan1995}) has investigated various symplectic schemes for computing the effect of operators of the form $\opX = \opA + \epsilon \opB$ where $\opA$ describes an exactly solvable system and $\opB$ is a perturbation.
 The factor $\epsilon$ is a small parameter that indicates the limited influence of $\opB$, not to be confused with the semiclassical parameter $\eps$.
 \par\medskip
 The \emph{McL} integration schemes are characterised by pairs of weighing coefficients $a_i$ and $b_i$ that allow to represent the exponential $e^{\opX}$ as a product
