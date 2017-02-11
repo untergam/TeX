@@ -26,6 +26,48 @@
 \clearemptydoublepage \input{sections/appendix.tex}
 
 
+\begin{comment}
+\subsection{Henon-Heiles Potential}
+%
+\begin{align}
+	V(\bvec{x}) =
+	\frac{1}{2} \sum_{j=1}^N \sigma_j x_j^2
+	+ \sigma_* \sum_{j=1}^{N-1} \left( x_j x_{j+1}^2 - \frac{1}{3} x_j^3 + \frac{\sigma_*}{16} \left( x_j^2 + x_{j+1}^2 \right)^2 \right)
+\end{align}
+%
+with harmonic part coefficients $\sigma_j = 1$ and mixing coefficient $\sigma_* = 0.2$.
+Initial conditions for 2D: (GENERALIZE)
+?Normed gaussian wave packet?
+with $\bvec{q}=(1.8,0)^T$, $\bvec{p}=(0,1.2)^T$, $\bmat{Q} = \sqrt{2} \cdot \text{diag}(\sqrt{0.56},\sqrt{0.24})$, $\bmat{P} = \im \bmat{Q}^{-1}$
+
+\paragraph{Jacobian}
+\begin{align}
+	\del_k V(\bvec{x})
+	= \; &\delta_{k,j} \sigma_j x_j \\
+	+ \; &\delta_{k,j} \sigma_* \left( x_{j+1}^2 - x_j^2 + \frac{\sigma_*}{4} x_j \left( x_j^2 + x_{j+1}^2 \right) \right) \\
+	+ \; &\delta_{k,j+1} \sigma_* \left( 2 x_j x_{j+1} + \frac{\sigma_*}{4} x_{j+1} \left( x_j^2 + x_{j+1}^2 \right) \right) \\
+	= \; &\delta_{k,j} \left( \sigma_j x_j + \sigma_* \left( x_{j+1}^2 - x_j^2 + \frac{\sigma_*}{4} x_j \left( x_j^2 + x_{j+1}^2 \right) \right) \right) \\
+	+ \; &\delta_{k,j+1} \sigma_* \left( 2 x_j x_{j+1} + \frac{\sigma_*}{4} x_{j+1} \left( x_j^2 + x_{j+1}^2 \right) \right)
+\end{align}
+
+\paragraph{Hessian}
+\begin{align}
+	\del_k \del_l V(\bvec{x})
+	= \; &\delta_{l,j} \left[ \delta_{k,j} \left( \sigma_j + \sigma_* \left( - 2 x_j + \frac{\sigma_*}{4} \left( x_j^2 + x_{j+1}^2 \right) + \frac{\sigma_*}{2} x_j^2 \right) \right)
+	+ \; \delta_{k,j+1} \sigma_* \left( 2 x_{j+1} + \frac{\sigma_*}{2} x_{j+1} x_j \right) \right] \\
+	+ \; &\delta_{l,j+1} \left[ \delta_{k,j} \left( \sigma_* \left( 2 x_{j+1} + \frac{\sigma_*}{2} x_j x_{j+1} \right) \right)
+	+ \; \delta_{k,j+1} \sigma_* \left( 2 x_j + \frac{\sigma_*}{4} \left( x_j^2 + x_{j+1}^2 \right) + \frac{\sigma_*}{2} x_{j+1}^2 \right) \right] \\
+	= \; &\delta_{l,j} \left[ \delta_{k,j} \left( \sigma_j + \sigma_* \left( - 2 x_j + \frac{\sigma_*}{4} \left( 3 x_j^2 + x_{j+1}^2 \right) \right) \right)
+	+ \; \delta_{k,j+1} \sigma_* \left( 2 x_{j+1} + \frac{\sigma_*}{2} x_{j+1} x_j \right) \right] \\
+	\; % TODO:
+	+ \; &\delta_{l,j+1} \left[ \delta_{k,j} \left( \sigma_* \left( 2 x_{j+1} + \frac{\sigma_*}{2} x_j x_{j+1} \right) \right)
+	+ \; \delta_{k,j+1} \sigma_* \left( 2 x_j + \frac{\sigma_*}{4} \left( x_j^2 + x_{j+1}^2 \right) + \frac{\sigma_*}{2} x_{j+1}^2 \right) \right]
+\end{align}
+\end{comment}
+
+
+
+
 \clearemptydoublepage
 
 \bibliographystyle{plain}

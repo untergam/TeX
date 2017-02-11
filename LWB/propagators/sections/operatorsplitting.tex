@@ -9,23 +9,32 @@ The semiclassical time-dependent Schrödinger equation is of the form
 	\im \eps \; \del_t \psi (\bvec{x},t) = \opH (\eps) \; \psi (\bvec{x},t)
 \end{align}
 %
-with wave function $\psi(\bvec{x},t)$ depending on the spatial variables $\bvec{x} = (x_1,\dots,x_D) \in \R^D$ and the time variable $t \in \R$.
+with Hamiltonian operator $\opH$, wave function $\psi(\bvec{x},t)$ depending on the spatial variables $\bvec{x} = (x_1,\dots,x_D) \in \R^D$ and the time variable $t \in \R$.
 The parameter $\eps$, also known as the semiclassical parameter, determines the degree of influence of quantum dynamics, approaching classical dynamics in the limit $\eps \rightarrow 0$ and full quantum mechanics for $\eps = 1$. \\
 Moreover, $\eps$ plays an important role in the stability of numerical schemes.
-As underlined in \cite{GH_convsemiclassical}, a small parameter $\eps$ can often impose severe constraints on the step size of splitting methods and significantly increase the error. For example, the error was shown to be proportional to $\sim \eps^{-2}$ for Lie-Trotter splitting, Strang splitting and other related methods, meaning that smaller $\eps$ would lead to a larger error.
+As underlined in \cite{GH_convsemiclassical}, a small parameter $\eps$ can often impose severe constraints on the step size of splitting methods and significantly increase the error. For example, the error was shown to be proportional to $\eps^{-2}$ for Lie-Trotter splitting, Strang splitting and other related methods, meaning that smaller $\eps$ would lead to a larger error.
 \par\medskip
 %
 The solution to the above Schrödinger equation \ref{math:tdse} can be approximated as a finite linear combination of Hagedorn functions 
 \begin{align}
 	\label{math:hagedornwp}
 	\psi(\bvec{x},t) \approx u(\bvec{x},t)
-	= e^{\im S(t)/\eps} \sum_{k \in \K} c_k(t) \varphi_k^\eps [ \bvec{\Pi} ] (\bvec{x})
+	= e^{\im S(t)/\eps^2} \sum_{k \in \K} c_k(t) \varphi_k^\eps [ \bvec{\Pi} (t) ] (\bvec{x})
 \end{align}
-where $\K$ represents a finite multi-index set and the notation for the parameter pack $\bvec{\Pi} = (\bvec{q}(t),\bvec{p}(t),\bvec{Q}(t),\bvec{P}(t))$ is introduced for convenience.
+where $\K$ represents a finite multi-index set, $c_k \in \C$ are coefficients that depend on time only, $S(t)$ is a phase factor and $\bvec{q},\bvec{p} \in \R^D$ and $\bmat{Q},\bmat{P} \in \C^{D \times D}$ are some parameters.
+For convenience, the notation for the parameter pack $\bvec{\Pi} (t) = (\bvec{q}(t),\bvec{p}(t),\bvec{Q}(t),\bvec{P}(t))$ is introduced.
+It is worth noting that $\varphi_k^\eps [ \bvec{\Pi} (t) ]$ depends on time $t$ only implicitly through the time dependency of $\bvec{q}(t),\bvec{p}(t),\bvec{Q}(t),\bvec{P}(t)$.
 A more detailed analysis of Hagedorn functions is given in \cite{FGL_semiclassical_dynamics} and a comprehensive overview over the relevant mathematical details can be found in \cite{B_master_thesis}.
 \par\medskip
 %
-For the rest of this report, $\opU$ and $\opW$ will denote the quadratic and non-quadratic component of $\opV$ respectively and it will be used that
+The Schrödinger equation \ref{math:tdse} can be solved using the ansatz
+\begin{align}
+	\psi (\bvec{x},t+dt) = \exp \left( - \frac{\im}{\eps^2} \opH t \right) \; \psi (\bvec{x},t) \; .
+\end{align}
+%
+This matrix exponential is very expensive to compute.
+Instead, in the search for a numerical solution, one can exploit the structure of the Hamiltonian operator $\opH$, by splitting it into its kinetic part $\opT$ and potential part $\opV$.
+Furthermore, for the rest of this report we will denote by $\opU$ and $\opW$ the quadratic and non-quadratic component of $\opV$ respectively and it will be used that
 %
 \begin{align}
 	\opV &= V(\bvec{x}) \\ 
@@ -37,9 +46,9 @@ For the rest of this report, $\opU$ and $\opW$ will denote the quadratic and non
 In other words, $\opU = U(\bvec{q},\bvec{x})$ is the second order Taylor expansion of the potential energy $\opV = V(\bvec{x})$ around $\bvec{q}$ (the coordinate $\bvec{q}$ will be omitted for simplicity of notation) and $\opW = W(\bvec{q},\bvec{x})$ is the corresponding remainder.
 \par\medskip
 %
-By further recalling the form of the kinetic operator $\opT$
+By further recalling the form of the kinetic operator $\opT$ (for a particle of mass $m=1$)
 \begin{align}
-	\opT &= - \sum_{j=1}^D \frac{\eps^2}{2m_j} \frac{\del^2}{\del x_j^2}
+	\opT &= - \sum_{j=1}^D \frac{\eps^4}{2} \frac{\del^2}{\del x_j^2}
 \end{align}
 %
 one can then split the Hamiltonian operator $\opH$ into the components
@@ -48,20 +57,14 @@ one can then split the Hamiltonian operator $\opH$ into the components
 	\opH = \opT + \opV = \opT + \opU + \opW
 \end{align}
 %
-This splitting is so central to the construction of the time propagators in the following sections that it is worthwile repeating the most important findings from \cite{FGL_semiclassical_dynamics}:
+This splitting is so central to the construction of the time propagators in the following sections that it is worthwhile repeating the most important findings from \cite{FGL_semiclassical_dynamics}:
 \begin{itemize}
-	\item The free linear Schrödinger equation ($\opV=0$) can be solved exactly and the wavepacket remains in Hagedorn wavepacket form (equation~\ref{math:hagedornwp}).
+	\item The free particle Schrödinger equation ($\opV=0$) can be solved exactly and the wave packet remains in Hagedorn wave packet form (equation~\ref{math:hagedornwp}).
 		For time propagation, only the parameters $\bvec{\Pi},S$ need to be updated, the coefficients $\{c_k\}_{k \in \K}$ remain unchanged.
 	\item The Schrödinger equation~\ref{math:tdse} can be solved exactly in a pure quadratic potential, i.e. in a potential $\opV=U(\bvec{x})$ with $\opT=0$.
 		Again, time propagation only affects the parameters $\bvec{\Pi},S$, not the coefficients $\{c_k\}_{k \in \K}$.
-	\item In the case of an arbitrary potential $\opV = W(\bvec{x})$ that is not quadratic, a set of Galerkin functions can be propagated by adapting the coefficients $\{c_k\}_{k \in \K}$ without changing the parameters $\bvec{\Pi},S$.
+	\item In the case of an arbitrary potential $\opV = W(\bvec{x})$ that is not quadratic, a variational approach can be used.
+		A set of Galerkin functions can be propagated by adapting the coefficients $\{c_k\}_{k \in \K}$ without changing the parameters $\bvec{\Pi},S$.
 \end{itemize}
 %
 The following sections will heavily make use of these properties in order to build composition methods for time integration of quantum wave packets.
-
-% TODO: describe how exact propagation works
-% TODO: describe idea of operator splitting in a nutshell
-% All based on composition methods
-% methods that compose elementary flows/operators to build an approximation of high order
-% TODO: operators don't commute
-% TODO?: $q^n, p^n \in V_N, \; Q^n, P^n \in M_{N \times N}, \; S^n \in \mathbb{R}, \bm{c}^n \in (c_k^n)_{k \in \K}$

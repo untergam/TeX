@@ -2,17 +2,18 @@
 \label{sec:propagators}
 
 This section gives a short overview of the numerical properties of the propagators that were implemented in the context of this project.
-Where appropriate, references are given to find a more detailed mathematical analysis of the propagators.
+Where appropriate, references are given to a more detailed mathematical analysis of the propagators.
 \par\medskip
 The methods are called in the sequence determined by the \proc{Evolve} function (\ref{alg:Evolve}) and generally are expressed in terms of the basic building blocks that were presented in the previous section.
+In order to specify to which propagator each of the implementations belongs, the C++ inspired notation \proc{PropagatorName.Propagate} is used for the pseudo algorithms in this section.
 If the methods \proc{PrePropagate} and \proc{PostPropagate} are omitted, it means that they are empty. \\
-Whenever convenient, the direct succession of functions \proc{StepT} and \proc{StepU} was replaced by a call to \proc{IntSplit} (see explanation in \ref{subsec:tuintsplit}) for better accuracy.
+Whenever convenient, the direct succession of functions \proc{StepT} and \proc{StepU} was replaced by a call to \proc{IntSplit} which effectively corresponds to a series of $M_{split}$ alternating calls to \proc{StepT} and \proc{StepU} (see explanation in \ref{subsec:tuintsplit}) for better accuracy.
 
 \subsection{Hagedorn Propagator}
 \label{sub:hagedorn_propagator}
 %
 The Hagedorn propagator, shown in algorithm \ref{alg:hagedorn}, is one of the simplest propagators that can be built by exploiting the numerical properties of the Hamiltonian splitting $\opH = \opT + \opU + \opW$ discussed earlier.
-As pointed out in \cite{FGL_semiclassical_dynamics}, this simple time stepping scheme has many beneficial properties like the preservation of the $L^2$ norm of the wavepacket, time reversibility and stability in the classical limit $\eps \rightarrow 0$.
+As pointed out in \cite{FGL_semiclassical_dynamics}, this simple time stepping scheme has many beneficial properties like the preservation of the $L^2$ norm of the wave packet, time reversibility and stability in the classical limit $\eps \rightarrow 0$.
 Also, in the limit of $\K$ approaching the full basis set, the variational approximation used for the propagation with the non-quadratic part $\opW$ becomes exact.
 \begin{algorithm}[h]
 	\caption{Single timestep with Hagedorn propagator}
@@ -67,15 +68,15 @@ further details can be found in the original paper \cite{GH_convsemiclassical}.
 	\State
 	\Procedure{Semiclassical.Propagate}{$\Dt$}
 		\State
-		\State $M := \lceil 1 + \frac{\sqrt{\Dt}}{\eps^{3/4}} \rceil$
+		\State $M_{split} := \lceil 1 + \frac{\sqrt{\Dt}}{\eps^{3/4}} \rceil$
 		\Comment{Divide $\Dt$ into smaller steps}
 		\State
-		\State \Call{intSplit}{$\frac{\Dt}{2}, \frac{M}{2}, \{ w_T, w_U \}$}
-		\Comment{$M/2$ split steps with $T+U$}
+		\State \Call{intSplit}{$\frac{\Dt}{2}, M_{split}, \{ w_T, w_U \}$}
+		\Comment{$M_{split}$ split steps with $\opT+\opU$}
 		\State \Call{stepW}{$\Dt$}
-		\Comment{Single step with $W$}
-		\State \Call{intSplit}{$\frac{\Dt}{2}, \frac{M}{2}, \{ w_T, w_U \}$}
-		\Comment{$M/2$ split steps with $T+U$}
+		\Comment{Single step with $\opW$}
+		\State \Call{intSplit}{$\frac{\Dt}{2}, M_{split}, \{ w_T, w_U \}$}
+		\Comment{$M_{split}$ split steps with $\opT+\opU$}
 		\State
 	\EndProcedure
 	\end{algorithmic}
@@ -156,12 +157,12 @@ More formally, it holds that
 \end{align}
 %
 where the pre and post processing steps are applied via the multiplication with matrices $e^P$ and $e^{-P}$ (also referred to as \emph{processors}).
-While the processors only need to be applied once at the very beginning and end of the propagation (in order to return to the original Hamiltonian), the multiplication with the \emph{kernel} $e^{-\Dt K}$ is repeated $M$ times, once for every timestep. \\
+While the processors only need to be applied once at the very beginning and end of the propagation (in order to return to the original Hamiltonian), the multiplication with the \emph{kernel} $e^{-\Dt K}$ is repeated $M_{tot}$ times, once for every timestep. \\
 As a consequence, one wants to choose the processor $e^P$ in such a way that the evaluation of the kernel $e^{-\Dt K}$ is as simple as possible in order to minimize the work associated with the computation of the kernel.
 \par\medskip
 %
 Unlike most commonly used integration schemes, the family of processing propagators are symplectic integrators.
-They are not suited for every kind of Hamiltonian, and the work of Blanes, Casas and Ros in \cite{Blanes1999} gives a method for finding the  neccessary conditions that need to be satisfied in order for processing methods to be applicable.
+They are not suited for every kind of Hamiltonian, and the work of Blanes, Casas and Ros in \cite{Blanes1999} gives a method for finding the  necessary conditions that need to be satisfied in order for processing methods to be applicable.
 \par\medskip
 %
 Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as derived in \cite{Blanes1999}.
@@ -173,11 +174,11 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as deriv
 	\State
 	\Procedure{Pre764.PrePropagate}{$\Dt$}
 		\State
-		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\State $M_{pre} = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
 		\Comment compute number of time steps
 		\For{$j=0,...,v-1$} \Comment $v=6$ for Pre(7,6,4)
-			\State \Call{intSplit}{$-Z_j \Dt, M, \{w_T, w_U\}$}
-			\Comment $M$ alternating steps with $\opT$ and $\opU$
+			\State \Call{intSplit}{$-Z_j \Dt, M_{pre}, \{w_T, w_U\}$}
+			\Comment $M_{pre}$ alternating steps with $\opT$ and $\opU$
 			\State \Call{stepW}{$\upic, -Y_j \Dt$}
 			\Comment single step with $\opW$
 		\EndFor
@@ -201,13 +202,13 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as deriv
 		\State
 	\Procedure{Pre764.PostPropagate}{$\Dt$}
 		\State
-		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
+		\State $M_{post} = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
 		\Comment compute number of time steps
 		\For{$j=v-1,...,0$} \Comment $v=6$ for Pre(7,6,4)
 			\State \Call{stepW}{$Y_j \Dt$}
 			\Comment single step with $\opW$
-			\State \Call{intSplit}{$Z_j \Dt, M, \{w_T, w_U\}$}
-			\Comment $M$ alternating steps with $\opT$ and $\opU$
+			\State \Call{intSplit}{$Z_j \Dt, M_{post}, \{w_T, w_U\}$}
+			\Comment $M_{post}$ alternating steps with $\opT$ and $\opU$
 		\EndFor
 		\State
 	\EndProcedure

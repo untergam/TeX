@@ -42,7 +42,7 @@ A popular C++ design pattern for achieving static polymorphism is the \emph{Curi
 \par\medskip
 %
 While CRTP is an excellent candidate for providing static polymorphism for derived classes, there was also the need for some polymorphism in the Propagator base class itself, since some of the building blocks need to have different implementations based on the dimensionality or homogeneity of the wave packet. 
-Providing a partially specialized class for every possible combination of parameters is often tedious and unneccessarily bloats the code.
+Providing a partially specialized class for every possible combination of parameters is often tedious and unnecessarily bloats the code.
 Therefore, the C++11 \proc{enable\_if} keyword was used.
 \proc{enable\_if} allows to define multiple versions of a function and (de)activate them based on a compile-time boolean value.
 If the boolean is true, the function is enabled. Otherwise it is omitted.
@@ -93,7 +93,7 @@ Consequently, it is desirable to have a generic and efficient implementation ava
 \par\medskip
 %
 The current \proc{IntSplit} algorithm described in \ref{alg:intsplit} takes three arguments:
-the size of the time interval to be covered $\Dt$, the number $M$ of subintervals of size $\dt = \Dt/M$ in which the initial interval should be divided, and a pair of coefficient lists $\{ w_T, w_U \}$ denoting the weights with which the single steps of size $\dt$ should be scaled.
+the size of the time interval to be covered $\Dt$, the number $M_{split}$ of subintervals of size $\dt = \Dt/M_{split}$ in which the initial interval should be divided, and a pair of coefficient lists $\{ w_T, w_U \}$ denoting the weights with which the single steps of size $\dt$ should be scaled.
 In the simplest case, the lists $w_T$ and $w_U$ are both only of length one (Lie-Trotter), but higher order splitting strategies can have much larger coefficient sets.
 In general, it must hold that $\text{length}(w_T) = \text{length}(w_U)$ (for TU..TU schemes) or $\text{length}(w_T) = \text{length}(w_U)$ (for TU..UT schemes).
 \par\medskip

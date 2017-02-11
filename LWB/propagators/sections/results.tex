@@ -8,7 +8,7 @@ Aspects that need to be checked are the correctness of the propagators from a qu
 \label{subsec:physical}
 %
 This short subsection analyzes the physical correctness of the implemented propagators.
-To do this, a two dimensional wave packet was propagated with each of the presented propagators for a time $\tau = 10$ with timestep $\Dt = 0.01$.
+To do this, a two dimensional wave packet was propagated with each of the presented propagators for a time $T = 10$ with timestep $\Dt = 0.01$.
 All propagators used the \emph{Y4} splitting coefficients for the \proc{IntSplit} method.
 \par\medskip
 %
@@ -37,7 +37,7 @@ Another interesting fact is that the \emph{McL84} operator seems to have a much 
 	\end{minipage}
 	\includegraphics[width=.45\textwidth]{figures/energy_Semiclassical.png}
 	\includegraphics[width=.45\textwidth]{figures/drift_Semiclassical.png}
-	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $\tau = 10$ with step $\Dt = 0.001$ in a harmonic potential using the Semiclassical Propagator with \emph{Y4} splitting}
+	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $T = 10$ with step $\Dt = 0.001$ in a harmonic potential using the Semiclassical Propagator with \emph{Y4} splitting}
 	\label{fig:energy_Semiclassical}
 \end{figure}
 
@@ -46,7 +46,7 @@ Another interesting fact is that the \emph{McL84} operator seems to have a much 
 \label{subsec:convergence}
 %
 A convergence analysis was carried out in which the error of each propagator was recorded while reducing the stepsize.
-A Semiclassical propagator with \emph{KL10} splitting coefficients and step size 0.001 was used to propagate the wave packet to a final time $\tau = 10$ and create a reference solution.
+A Semiclassical propagator with \emph{KL10} splitting coefficients and step size 0.001 was used to propagate the wave packet to a final time $T = 10$ and create a reference solution.
 \par\medskip
 %
 The error between two wave packets was computed by evaluating them on a grid with 1000 grid points and taking the $L_2$ norm of the differences.
@@ -78,7 +78,7 @@ The runtime analysis was carried out on a Linux (Kernel 4.8.7, Fedora 24 Worksta
 \subsubsection{Comparison of propagators}
 %
 A quick comparison of timings for the different propagators is shown in table \ref{tab:speedup}.
-The same setup as for the energy analysis was used (2D wave packet, $\tau = 10$, step size $\Dt = 0.001$, \emph{Y4} time splitting coefficients).
+The same setup as for the energy analysis was used (2D wave packet, $T = 10$, step size $\Dt = 0.001$, \emph{Y4} time splitting coefficients).
 It comes as quite a surprise, that the Semiclassical propagator is faster at computing the result than the Hagedorn propagator, which at first glance seems to have  a simpler structure and involve fewer steps.
 Also, the Magnus Propagator \emph{MG4} is cheaper than expected, as it involves two evaluations of $\matrixel{\varphi_k}{W}{\varphi_l}$ per time step but is only slightly slower than the Semiclassical operator with one evaluation of the inner product.
 %
@@ -97,7 +97,7 @@ Also, the Magnus Propagator \emph{MG4} is cheaper than expected, as it involves 
 		McL84 & 23.52 \\
 		\hline
 	\end{tabular}
-	\caption{Runtimes for propagating a 2D wave packet to a time $\tau = 10$ with timestep $\Dt = 0.001$ with different propagators. All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$ for the Python timings and below $0.1\%$ for the C++ timings.}
+	\caption{Runtimes for propagating a 2D wave packet to a time $T = 10$ with timestep $\Dt = 0.001$ with different propagators. All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$ for the Python timings and below $0.1\%$ for the C++ timings.}
 	\label{tab:speedup}
 \end{table}
 
@@ -109,7 +109,7 @@ Higher order schemes are usually preferred in terms of accuracy, but they come a
 \par\medskip
 %
 Therefore, a numerical experiment was carried out in order to analyze how much computational time is consumed for coefficient pairs of different sizes.
-To do this, the Semiclassical Propagator was used to propagate a two dimensional wave packet in a harmonic potential over a time of $\tau = 400$ and with stepsize $\Dt = 0.01$.
+To do this, the Semiclassical Propagator was used to propagate a two dimensional wave packet in a harmonic potential over a time of $T = 400$ and with stepsize $\Dt = 0.01$.
 The same simulation was carried out for coefficient pairs of various different sizes and were run in Python as well as C++.
 The results are listed in table \ref{tab:benchmarksplit_t} and plotted in figure \ref{fig:benchmarksplit_f}.
 \par\medskip
