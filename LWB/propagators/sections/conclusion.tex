@@ -4,4 +4,4 @@ In this project, a series of time propagators for Hagedorn wave packets was stud
 The C++ code, which is the main outcome of the conduced work, is based on a clean software design that makes it very easy to add new Propagators and integrate them into the existing framework.
 At the same time, as shown by the benchmarking results, the performance of the resulting code is by orders of magnitude better than that of the corresponding Python code.
 In particular, the additional cost for using higher-order splitting coefficients is very contained thanks to a templated implementation of the \proc{IntSplit} method which is resolved at compile time and avoids the usage of any loops.
-Given these performance improvements, more complex quantum mechanical simulations are now possible with this new framework.
+Given these performance improvements, more complex quantum mechanical simulations are now possible with the WaveBlocks framework.

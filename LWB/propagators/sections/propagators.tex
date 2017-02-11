@@ -1,11 +1,11 @@
 \section{Propagators}
 \label{sec:propagators}
 
-This section gives a short overview of the numerical properties of the propagators that were implemented in the context of this project.
+This section gives a short overview of the numerical properties of the propagators that were implemented in the context of time propagation.
 Where appropriate, references are given to a more detailed mathematical analysis of the propagators.
 \par\medskip
 The methods are called in the sequence determined by the \proc{Evolve} function (\ref{alg:Evolve}) and generally are expressed in terms of the basic building blocks that were presented in the previous section.
-In order to specify to which propagator each of the implementations belongs, the C++ inspired notation \proc{PropagatorName.Propagate} is used for the pseudo algorithms in this section.
+In order to specify to which propagator each of the implementations belongs, the C++ inspired notation \proc{PropagatorName.Propagate} is adapted also for pseudo algorithms.
 If the methods \proc{PrePropagate} and \proc{PostPropagate} are omitted, it means that they are empty. \\
 Whenever convenient, the direct succession of functions \proc{StepT} and \proc{StepU} was replaced by a call to \proc{IntSplit} which effectively corresponds to a series of $M_{split}$ alternating calls to \proc{StepT} and \proc{StepU} (see explanation in \ref{subsec:tuintsplit}) for better accuracy.
 
@@ -15,7 +15,7 @@ Whenever convenient, the direct succession of functions \proc{StepT} and \proc{S
 The Hagedorn propagator, shown in algorithm \ref{alg:hagedorn}, is one of the simplest propagators that can be built by exploiting the numerical properties of the Hamiltonian splitting $\opH = \opT + \opU + \opW$ discussed earlier.
 As pointed out in \cite{FGL_semiclassical_dynamics}, this simple time stepping scheme has many beneficial properties like the preservation of the $L^2$ norm of the wave packet, time reversibility and stability in the classical limit $\eps \rightarrow 0$.
 Also, in the limit of $\K$ approaching the full basis set, the variational approximation used for the propagation with the non-quadratic part $\opW$ becomes exact.
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Single timestep with Hagedorn propagator}
 	\label{alg:hagedorn}
 	\begin{algorithmic}
@@ -61,7 +61,7 @@ splittings which effectively corresponds to higher order coefficient pairs $w_T$
 The steps for the semiclassical propagator are shown in algorithm \ref{alg:semiclassical} and 
 further details can be found in the original paper \cite{GH_convsemiclassical}.
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Single timestep with Semiclassical propagator}
 	\label{alg:semiclassical}
 	\begin{algorithmic}
@@ -103,18 +103,18 @@ where $\sigma (t)$ is an infinite sum of iterated integrals and commutators, als
 The idea behind the Magnus approximation was extensively studied using the Baker-Campbell-Hausdorff (BCH) formula and rooted trees techniques, more details can be found in \cite{Blanes2006}, \cite{Blanes2000}, \cite{Iserles1999}.
 \par\medskip
 %
-In order to approximate the solution from equation \ref{math:magnussolution}, one can take only a finite number of terms from this series whereby a truncation error is committed
-(additional error sources in this method are the discretization of integrals and the approximation of matrix exponentials).
+In order to approximate the solution from equation \ref{math:magnussolution}, one can take only a finite number of terms from the infinite series whereby a truncation error is committed
+(additional error sources in the Magnus method are the discretization of integrals and the approximation of matrix exponentials).
 %
-This method of the Magnus Propagator has several beneficial numerical properties that are described in \cite{Iserles1999}.
+The Magnus Propagator has several beneficial numerical properties that are described in \cite{Iserles1999}.
 In particular, for solutions that evolve within a Lie group, the same holds for the approximate numerical solution calculated through a truncated Magnus series. 
 It was also shown in the same paper that the Magnus series can compete with - and in fact may even outplay - classical schemes like Runge-Kutta or Gauss-Legendre.
 Although the method is not a symplectic scheme in the usual sense, \cite{Iserles1999} has shown that in practical applications it conserves the Hamiltonian energy just as well as symplectic integrators.
 \par\medskip
-Moreover, the numerical stability and good performance of the Magnus propagator are not limited to problems where the solution evolves within a Lie Group, but also apply to various problems when this is not the case.
+Moreover, the numerical stability and good performance of the Magnus propagator are not limited to problems where the solution evolves within a Lie Group, but also apply to various problems where this is not the case.
 Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Iserles1999} and implemented in C++ in the scope of this project.
 
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Single timestep with Magnus propagator}
 	\label{alg:magnus}
 	\begin{algorithmic}
@@ -168,12 +168,12 @@ Note that the error depends on two small parameters, the timestep $\Dt$ and the 
 \par\medskip
 %
 In our case, $\opX = \opH = \opT + \opU + \opW$, the computationally expensive operator $\opW$ takes the role of $\epsilon \opB$, while the remaining Hamiltonian $\opT + \opU$ corresponds to $\opA$. 
-Our preferred method will therefore be of the form $\opA \opB \opA$ because this minimizes the number of steps with $\opB = \opW$.
+Our preferred method will therefore be of the form $\opA \opB \opA$ because such a scheme minimizes the number of steps with $\opB = \opW$.
 \par\medskip
 %
-The source code of this project contains the C++ implementation of the propagators \emph{McL(4,2)} and \emph{McL(8,4)} that require only two respectively five evaluations of $\opW$ per step.
+The source code of the project contains the C++ implementation of the propagators \emph{McL(4,2)} and \emph{McL(8,4)} that require only two respectively five evaluations of $\opW$ per step.
 
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Single timestep with McL42 propagator}
 	\label{alg:mcl}
 	\begin{algorithmic}
@@ -231,9 +231,8 @@ The source code of this project contains the C++ implementation of the propagato
 \subsection{Processing Propagators}
 \label{sub:pre764_propagator}
 %
-The idea of processing propagators is to carry out the time evolution with a Hamiltonian that is slightly perturbed from the original one.
-To achieve this, a pre and post processing step is applied.
-More formally, it holds that
+The idea of processing propagators is to carry out the time evolution with a Hamiltonian that is slightly perturbed from the original one, which can be achieved by applying a pre and post processing step.
+The exponential of the Hamiltonian can be re-formulated as
 %
 \begin{align}
 	e^{- \Dt \opH (\Dt)} = e^P e^{- \Dt K} e^{-P}
@@ -249,8 +248,9 @@ They are not suited for every kind of Hamiltonian, and the work of Blanes, Casas
 \par\medskip
 %
 Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as derived in \cite{Blanes1999}.
+The coefficient arrays $\alpha$ and $\beta$ (both of length $k=4$) are used for propagating the wave packet with \proc{StepW} and \proc{IntSplit} in the \proc{Propagate} method, while the coefficient arrays $Y$ and $Z$ (both of length $v=6$) are used in \proc{PrePropagate} and \proc{PostPropagate} to transform the wave packet with the processor.
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Single timestep with Pre764 propagator}
 	\label{alg:pre764}
 	\begin{algorithmic}
@@ -259,7 +259,7 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as deriv
 		\State
 		\State $M_{pre} = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
 		\Comment compute number of time steps
-		\For{$j=0,...,v-1$} \Comment $v=6$ for Pre(7,6,4)
+		\For{$j=1,...,v$} \Comment $v=6$ for Pre(7,6,4)
 			\State \Call{intSplit}{$-Z_j \Dt, M_{pre}, \{w_T, w_U\}$}
 			\Comment $M_{pre}$ alternating steps with $\opT$ and $\opU$
 			\State \Call{stepW}{$\upic, -Y_j \Dt$}
@@ -273,7 +273,7 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as deriv
 		\State
 		\State $M = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
 		\Comment compute number of time steps
-		\For{$j=0,...,k-1$} \Comment $k=4$ for Pre(7,6,4)
+		\For{$j=1,...,k$} \Comment $k=4$ for Pre(7,6,4)
 			\State \Call{stepW}{$\alpha_j \Dt$}
 			\Comment single step with $\opW$
 			\State \Call{intSplit}{$\beta_j \Dt, M, \{w_T, w_U\}$}
@@ -287,7 +287,7 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as deriv
 		\State
 		\State $M_{post} = 1+ \left\lfloor \sqrt{\Dt \eps^{-\frac{3}{4}}} \right\rfloor$
 		\Comment compute number of time steps
-		\For{$j=v-1,...,0$} \Comment $v=6$ for Pre(7,6,4)
+		\For{$j=v,...,1$} \Comment $v=6$ for Pre(7,6,4)
 			\State \Call{stepW}{$Y_j \Dt$}
 			\Comment single step with $\opW$
 			\State \Call{intSplit}{$Z_j \Dt, M_{post}, \{w_T, w_U\}$}

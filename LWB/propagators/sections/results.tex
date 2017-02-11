@@ -1,19 +1,18 @@
 \section{Results}
 \label{sec:results}
 %
-This section discusses the outcomes of some numerical experiments that were carried out with the newly developed code.
+The newly developed code was used to carry out some numerical experiments which are presented in this section.
 Aspects that need to be checked are the correctness of the propagators from a quantum mechanical point of view (subsection~\ref{subsec:physical}), convergence of the methods (subsection~\ref{subsec:convergence}) and benchmarking of the compute time (subsection~\ref{subsec:benchmark}).
 
 \subsection{Physical Correctness}
 \label{subsec:physical}
 {\Huge TODO: Review this part}
 %
-This short subsection analyzes the physical correctness of the implemented propagators.
-To do this, a two dimensional wave packet was propagated with each of the presented propagators for a time $T = 10$ with timestep $\Dt = 0.01$.
+In order to analyze the physical correctness of the implemented propagators, a two dimensional wave packet was propagated with each of the presented propagators for a time $T = 10$ with timestep $\Dt = 0.01$.
 All propagators used the \emph{Y4} splitting coefficients for the \proc{IntSplit} method.
 \par\medskip
 %
-The harmonic potential was used as an example potential as this is easy to verify.
+The harmonic potential was used as an example potential as it is easy to verify.
 The generalized harmonic potential for $D$ dimensions is
 \begin{align}
 	V(\bvec{x}) = 
@@ -23,7 +22,7 @@ The generalized harmonic potential for $D$ dimensions is
 where $x_i, \; 1 \le i \le D$ denote the single entries of the vector $\bvec{x}$.
 \par\medskip
 %
-Figure \ref{fig:energy_Semiclassical} shows the time evolution of energy and the energy drift for the semiclassical propagator. The corresponding energy plots for the remaining propagators can be found in the appendix to this report. \\
+Figure \ref{fig:energy_Semiclassical} shows the time evolution of energy and the energy drift for the semiclassical propagator. The corresponding energy plots for the remaining propagators can be found in the appendix to the report. \\
 As is clearly shown by the graphs, the propagators conserve the total energy (apart from very small oscillations of the order $10^{-7}$ for the Hagedorn propagator and $10^{-12}$ for the remaining propagators that use \proc{IntSplit}).
 Another interesting fact is that the \emph{McL84} operator seems to have a much longer oscillation period than all other propagators.
 %
@@ -55,7 +54,9 @@ The error between two wave packets was computed by evaluating them on a grid wit
 Figure \ref{fig:error_analysis} shows the error for different step sizes $\Dt$.
 It is quite surprising how the Hagedorn Propagator seems to have even better convergence order than all the more sophisticated contestants.
 Also, the \emph{McL84} propagator does not seem to converge. This is consistent with the observation made earlier in this section that - although satisfying energy conservation - the \emph{McL84} propagator seemed to have a vastly different period of oscillation.
-
+%
+{\Huge TODO: Review this part}
+%
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{figures/error_analysis.png}
@@ -84,7 +85,7 @@ The same setup as for the energy analysis was used (2D wave packet, $T = 10$, st
 It comes as quite a surprise, that the Semiclassical propagator is faster at computing the result than the Hagedorn propagator, which at first glance seems to have  a simpler structure and involve fewer steps.
 Also, the Magnus Propagator \emph{MG4} is cheaper than expected, as it involves two evaluations of $\matrixel{\varphi_k}{W}{\varphi_l}$ per time step but is only slightly slower than the Semiclassical operator with one evaluation of the inner product.
 %
-\begin{table}[h]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|l | r |} 
 		\hline
@@ -111,7 +112,7 @@ Higher order schemes are usually preferred in terms of accuracy, but they come a
 \par\medskip
 %
 Therefore, a numerical experiment was carried out in order to analyze how much computational time is consumed for coefficient pairs of different sizes.
-To do this, the Semiclassical Propagator was used to propagate a two dimensional wave packet in a harmonic potential over a time of $T = 400$ and with stepsize $\Dt = 0.01$.
+In order to create a reference solution, the Semiclassical Propagator was used to propagate a two dimensional wave packet in a harmonic potential over a time of $T = 400$ and with stepsize $\Dt = 0.01$.
 The same simulation was carried out for coefficient pairs of various different sizes and were run in Python as well as C++.
 The results are listed in table \ref{tab:benchmarksplit_t} and plotted in figure \ref{fig:benchmarksplit_f}.
 \par\medskip
@@ -126,7 +127,7 @@ The same comparison on C++ code shows that the code takes only 30\% longer for t
 This is a very encouraging result as it means that high order splitting coefficients come at almost no extra cost.
 \par\medskip
 %
-\begin{table}[h]
+\begin{table}[ht]
 	\centering
 	\begin{tabular}{|l | r | r | r | r |} 
 		\hline

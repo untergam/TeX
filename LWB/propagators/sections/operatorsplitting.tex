@@ -32,15 +32,15 @@ The Schrödinger equation \ref{math:tdse} can be solved using the ansatz
 	\psi (\bvec{x},t+dt) = \exp \left( - \frac{\im}{\eps^2} \opH t \right) \; \psi (\bvec{x},t) \; .
 \end{align}
 %
-This matrix exponential is very expensive to compute.
+However, the matrix exponential is very expensive to compute.
 Instead, in the search for a numerical solution, one can exploit the structure of the Hamiltonian operator $\opH$, by splitting it into its kinetic part $\opT$ and potential part $\opV$.
-Furthermore, for the rest of this report we will denote by $\opU$ and $\opW$ the quadratic and non-quadratic component of $\opV$ respectively and it will be used that
+Furthermore, for the rest of the report we will denote by $\opU$ and $\opW$ the quadratic and non-quadratic component of $\opV$ respectively and it will be used that
 %
 \begin{align}
 	\opV &= V(\bvec{x}) \\ 
 	\opU &= U(\bvec{q},\bvec{x}) := V(\bvec{q}) + \nabla V(\bvec{q}) (\bvec{x}-\bvec{q})
 	+ \frac{1}{2} (\bvec{x}-\bvec{q})^T \nabla^2 V(\bvec{q}) (\bvec{x}-\bvec{q}) \\
-	\opW &= W(\bvec{q},\bvec{x}) := V(\bvec{x}) - U(\bvec{q},\bvec{x})
+	\opW &= W(\bvec{q},\bvec{x}) := V(\bvec{x}) - U(\bvec{q},\bvec{x}) \; .
 \end{align}
 %
 In other words, $\opU = U(\bvec{q},\bvec{x})$ is the second order Taylor expansion of the potential energy $\opV = V(\bvec{x})$ around $\bvec{q}$ (the coordinate $\bvec{q}$ will be omitted for simplicity of notation) and $\opW = W(\bvec{q},\bvec{x})$ is the corresponding remainder.
@@ -54,7 +54,7 @@ By further recalling the form of the kinetic operator $\opT$ (for a particle of 
 one can then split the Hamiltonian operator $\opH$ into the components
 %
 \begin{align}
-	\opH = \opT + \opV = \opT + \opU + \opW
+	\opH = \opT + \opV = \opT + \opU + \opW \; .
 \end{align}
 %
 This splitting is so central to the construction of the time propagators in the following sections that it is worthwhile repeating the most important findings from \cite{FGL_semiclassical_dynamics}:
@@ -68,3 +68,4 @@ This splitting is so central to the construction of the time propagators in the 
 \end{itemize}
 %
 The following sections will heavily make use of these properties in order to build composition methods for time integration of quantum wave packets.
+A more in depth analysis of composition methods can be found in \cite{GeoNumInt}.

@@ -12,7 +12,7 @@ Also, it should be mentioned here that some of the most important bottlenecks of
 In fact, the current implementation of the \proc{build\_matrix} routine for computing the inner product requires to always compute a full $N \times N$ sub-matrix, even if just one single entry is needed, which is a very severe inefficiency if the number of levels $N>1$.
 \par\medskip
 %
-However, the aim of this project was to provide a fast implementation of the propagators by re-using existing functions, therefore possible performance enhancements through changing of the existing code was out of the scope of this project and could be targeted in future work.
+However, the aim of the work presented here was to provide a fast implementation of the propagators by re-using existing functions, therefore possible performance enhancements through changing of the existing code was out of the scope of this project and could be targeted in future work.
 Consequently, providing an efficient implementation for time propagation mainly translates into finding an efficient way for calling existing functions with minimal overhead and by making use of compiler optimizations where possible.
 \par\medskip
 %
@@ -38,15 +38,16 @@ Provide an efficient and generic implementation of all the building blocks from 
 This idea is essentially an application of the Strategy Pattern as introduced by Gamma et al. in \cite{Gamma1995}, one of the most important references for software design patterns.
 \par\medskip
 %
-A popular C++ design pattern for achieving static polymorphism is the \emph{Curiously Recurring Template Pattern}, \emph{CRTP} for short, which is described in more detail in \cite{C_CRTP} and in earlier work on the WaveBlocks project \cite{libwaveblocks}.
+A popular C++ design pattern for achieving static polymorphism is the \emph{Curiously Recurring Template Pattern}, \emph{CRTP} for short, which is described in more detail in \cite{C_CRTP} and in earlier work on the WaveBlocks project \cite{LWB_wavepackets}.
 \par\medskip
 %
 While CRTP is an excellent candidate for providing static polymorphism for derived classes, there was also the need for some polymorphism in the Propagator base class itself, since some of the building blocks need to have different implementations based on the dimensionality or homogeneity of the wave packet. 
 Providing a partially specialized class for every possible combination of parameters is often tedious and unnecessarily bloats the code.
-Therefore, the C++11 \proc{enable\_if} keyword was used.
-\proc{enable\_if} allows to define multiple versions of a function and (de)activate them based on a compile-time boolean value.
+Therefore, the C++11 \proc{enable\_if} keyword was used, which is a handy C++ metafunction from the \proc{type\_traits} header.
+It allows to define multiple versions of a function and conditionally (de)activate them based on a compile-time boolean value.
 If the boolean is true, the function is enabled. Otherwise it is omitted.
-This handy metafunction from the C++ \proc{type\_traits} header was used in order to conditionally enable functions based on whether the number of levels $N$ was equal or greater to one or to distinguish between functions for homogeneous or inhomogeneous wave functions, which effectively provides a form of compile time polymorphism.
+In the code, such boolean values are indicating whether the number of levels $N$ is equal or greater to one or to distinguish between functions for homogeneous or inhomogeneous wave functions.
+The presented use of \proc{enable\_if} effectively provides a form of compile time polymorphism.
 %
 \begin{figure}[ht]
 	\centering
@@ -71,7 +72,7 @@ If no callback function is passed, it defaults to an empty function.
 \par\medskip
 %
 Furthermore, since the wave packet is passed to the \proc{Propagator} class \emph{by reference}, it is of course available in the callback function as well and does not need to be passed as an argument explicitly (provided that it is captured in the angular brackets \proc{[]} of the lambda function). \\
-\emph{Disclaimer} if the value of the wave packet is (intentionally or unintentionally) changed in the callback function, this will of course also affect the further results of the simulation.
+\emph{Disclaimer} if the value of the wave packet is (intentionally or unintentionally) changed in the callback function, the further results of the simulation will of course also be affected.
 Also, care must be taken when measuring energies of packets that are being propagated with propagators such as \emph{Pre764} which apply a pre-processor to the packet before starting the simulation.
 In order to get the ``physically correct'' wave packet, the corresponding post-processor needs to be applied before making any meaningful measurement.
 \par\medskip
@@ -109,7 +110,7 @@ For convenience, a new struct \proc{SplitCoefs} was introduced that holds a pair
 Secondly, and with the information about container size readily available at compile time, one can then implement two sets of templates \proc{TU} and \proc{UT} that execute a step with operator $\opT$ or $\opU$ respectively and then mutually invoke each other, until both arrays of coefficients are used up.
 As a termination condition, when all coefficients have been used, a partially specialized instance of the templates will be called and interrupt the mutual invocation. \\
 %
-One technical subtlety of this approach is, that the C++ language does not allow partially specialized function templates. This can, however, be overcome quite easily by declaring \proc{TU} and \proc{UT} as classes with a static function.
+One technical subtlety of the presented approach is, that the C++ language does not allow partially specialized function templates. This can, however, be overcome quite easily by declaring \proc{TU} and \proc{UT} as classes with a static function.
 In contrast to function templates, class templates can be partially specialized.
 By using static member functions, the actual class objects do not need to be created and all the function calls will be resolved at compile time\footnote{One limitation is the maximal template recursion depth. The default value on gcc compiler is 900 and can be increased if required. Typical template nesting depths for coefficient pairs should lie significantly below 100.}.
 All templates, no loops, and the resulting sequential code can then be further optimized by the compiler.

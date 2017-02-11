@@ -2,7 +2,7 @@
 \label{sec:buildingblocks}
 %
 In order to be able to create an efficient, still flexible, implementation of various time propagators, it is helpful to break them down in common, optimized building blocks in terms of which all (or most) propagators can be expressed.
-This section will briefly introduce the most important, generic building blocks that were found necessary in order to build the propagators in section~\ref{sec:propagators}.
+The present section will briefly introduce the most important, generic building blocks that were found necessary in order to build the propagators in section~\ref{sec:propagators}.
 For each of them, it will be assumed that the following wave packet variables are implicitly accessible, without passing them as an argument to the procedure: the parameter pack $\bvec{\Pi} = (\bvec{q},\bvec{p},\bvec{Q},\bvec{P})$, the phase factor $S$, the coefficients $\{ c_k \}_{k \in \K}$, the potential function $V(\bvec{q})$ (including Jacobian and Hessian thereof) and the potential remainder $W(\bvec{q})$.
 \par\medskip
 %
@@ -16,7 +16,7 @@ The convenience function \proc{Evolve} (algorithm~\ref{alg:Evolve}) is a wrapper
 The concrete implementation of the methods \proc{PrePropagate}, \proc{Propagate} and \proc{PostPropagate} is delegated to the derived classes (see section~\ref{sec:implementation} for more details),
 but will generally be a combination of the basic building blocks that follow in this section.
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Evolve the wave packet for a time period $T$}
 	\label{alg:Evolve}
 	\begin{algorithmic}
@@ -44,7 +44,7 @@ Both functions take a variable $\xi$ as an argument which describes the size of 
 In the inhomogeneous implementation of the algorithms, the subscript $n$ is used to denote the relative parameters at energy level $n$.
 \par\medskip
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Propagate with Kinetic Energy Operator $\opT$}
 	\label{alg:StepT}
 	\begin{algorithmic}
@@ -77,7 +77,7 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 	\end{algorithmic}
 \end{algorithm}
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Propagate with (Quadratic) Potential Energy Operator $\opU$}
 	\label{alg:StepU}
 	\begin{algorithmic}
@@ -112,11 +112,11 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 %
 %%% IntSplit
 In the practical implementations of the propagators that will be presented in the next section, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
-In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced.
-This function splits the timestep $\Dt$ into $M_{split}$ smaller timesteps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
-More detailed information on the individual parameters to this function and the practical implementation can be found in section \ref{sec:implementation}
+In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced:
+it splits the timestep $\Dt$ into $M_{split}$ smaller timesteps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
+More detailed information on the individual parameters to the \proc{IntSplit} function and the practical implementation can be found in section \ref{sec:implementation}
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Split a time interval and alternatingly apply $\opT$ and $\opU$}
 	\label{alg:intsplit}
 	\begin{algorithmic}
@@ -155,10 +155,10 @@ where the matrix $\bmat{F} = \left[ f_{k,l} \right]_{k,l \in \K}$ has entries
 	= \int_{\R^D} \conj{\varphi_k(\bvec{x})} W(\bvec{x}) \varphi_l(\bvec{x}) \; \dif \bvec{x} \; .
 \end{align}
 %
-The calculation of such interaction matrices $\bmat{F}$ makes heavy use of the work on inner products that has been done in previous student projects for the libwaveblocks library \cite{libwaveblocks}.
+The calculation of such interaction matrices $\bmat{F}$ makes heavy use of the work on inner products that has been presented in \cite{LWB_innerproducts}, another student project in the WaveBlocks framework.
 For the further treatment in this report, it is assumed that an efficient implementation of \proc{BuildF} is readily available.
 %
-\begin{algorithm}[h]
+\begin{algorithm}[ht]
 	\caption{Propagate with (Non-Quadratic) Potential Energy Operator $\opW$}
 	\label{alg:StepW}
 	\begin{algorithmic}
