@@ -47,13 +47,13 @@ While there is some additional computational cost caused by a higher number of u
 %
 In addition, due to the numerical properties of the semiclassical splitting, 
 it even allows to take larger timesteps $\Dt$ than conventional
-splitting methods like the YL-splitting, while maintaining the same error.
+splitting methods like the YL-splitting (see \cite{GH_convsemiclassical}), while maintaining the same error.
 \par\medskip
 %
 Finally and most importantly, the error is no longer proportional to $1/\eps^2$ but instead
 scales linearly in the semiclassical parameter $\eps$,
 meaning that a smaller $\eps$ will now reduce the error instead of increasing it.
-The error scales with $\eps (\Delta t)^2$ for the semiclassical splitting using the Y-splitting,
+The error scales with $\eps (\Delta t)^2$ for the semiclassical splitting using the Y-splitting (see \cite{GH_convsemiclassical}),
 but the dependency on the timestep $\Delta t$ can be improved even further by using different
 splittings which effectively corresponds to higher order coefficient pairs $w_T$ and $w_U$.
 \par\medskip
@@ -86,13 +86,13 @@ further details can be found in the original paper \cite{GH_convsemiclassical}.
 \subsection{Magnus Propagator}
 \label{sub:magnus_propagator}
 %
-As was noted by Magnus in \cite{Magnus1954}, the solution to a differential equation of the form
+As was noted by Magnus in \cite{Magnus1954}, the solution to a differential equation of the form 
 %
 \begin{align}
 	y'(t) = a(t) y(t) \qquad t \ge 0
 \end{align}
 %
-can be written as
+with initial value $y(0) = y_0$ can be written as
 %
 \begin{align}
 	\label{math:magnussolution}
@@ -121,9 +121,9 @@ Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Ise
 	\State
 	\Procedure{Magnus.Propagate}{$\Dt$}
 		\State
-		\State $h_1 = \frac{3-\sqrt{3}}{6} \Dt$, $h_2 = \frac{2\sqrt{3}}{6} \Dt$
+		\State $h_1 = \frac{3-\sqrt{3}}{6} \Dt$ $h_2 = \frac{2\sqrt{3}}{6} \Dt$
 		\Comment Gauss-Legendre coefficients on $[0,\Dt]$
-		\State $M_{k} = 1+\sqrt{h_{k} \eps^{-3/8}}, \quad k=1,2$
+		\State $M_{k} = 1 + \lfloor \sqrt{h_{k} \eps^{-3/8}} \rfloor, \quad k=1,2$
 		\Comment number of timesteps for splitting
 		\State
 		\State \Call{intSplit}{$h_1, M_1, \{w_T, w_U\}$}
@@ -145,11 +145,94 @@ Algorithm \ref{alg:magnus} shows the \emph{MG4} method as presented in \cite{Ise
 	\end{algorithmic}
 \end{algorithm}
 
+\subsection{McLachlan Propagators}
+\label{sub:mcl_propagator}
+%
+McLachlan (see \cite{McLachlan1995}) has investigated various symplectic schemes for computing the effect of operators of the form $\opX = \opA + \epsilon \opB$ where $\opA$ describes an exactly solvable system and $\opB$ is a perturbation.
+The factor $\epsilon$ is a small parameter that indicates the limited influence of $\opB$, not to be confused with the semiclassical parameter $\eps$.
+\par\medskip
+The \emph{McL} integration schemes are characterised by pairs of weighing coefficients $a_i$ and $b_i$ that allow to represent the exponential $e^{\opX}$ as a product
+%
+\begin{align}
+	e^\opX = \prod_i e^{b_i t \epsilon \opB} e^{a_i t \opA} \; .
+\end{align}
+%
+McLachlan also goes through the process of deriving the coefficients for the following schemes
+\begin{align*}
+	&\text{\emph{McL(2s,2)}} &&\text{with error of order } \epsilon (\Dt)^{2s} + \epsilon^2 (\Dt)^2 \\
+	&\text{\emph{McL(6,4)}} &&\text{with error of order } \epsilon (\Dt)^{6} + \epsilon^2 (\Dt)^4 \\
+	&\text{\emph{McL(8,4)}} &&\text{with error of order } \epsilon (\Dt)^{8} + \epsilon^2 (\Dt)^4 \; .
+\end{align*}
+%
+Note that the error depends on two small parameters, the timestep $\Dt$ and the parameter $\epsilon$ that quantifies the influence of $\opB$.
+\par\medskip
+%
+In our case, $\opX = \opH = \opT + \opU + \opW$, the computationally expensive operator $\opW$ takes the role of $\epsilon \opB$, while the remaining Hamiltonian $\opT + \opU$ corresponds to $\opA$. 
+Our preferred method will therefore be of the form $\opA \opB \opA$ because this minimizes the number of steps with $\opB = \opW$.
+\par\medskip
+%
+The source code of this project contains the C++ implementation of the propagators \emph{McL(4,2)} and \emph{McL(8,4)} that require only two respectively five evaluations of $\opW$ per step.
+
+\begin{algorithm}[h]
+	\caption{Single timestep with McL42 propagator}
+	\label{alg:mcl}
+	\begin{algorithmic}
+		\State
+		\Procedure{McL42.Propagate}{$\Dt$}
+		\State
+			\State $M = \lceil \left( \Dt^4 / \eps^3 \right)^{\frac{1}{8}} \rceil$
+			\Comment compute number of substeps
+			\State \Call{intSplit}{$A_0 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_0 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_1 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_1 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_2 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+		\State
+		\EndProcedure
+			\\\hrulefill
+		\State
+		\Procedure{McL84.Propagate}{$\Dt$}
+		\State
+			\State $M = \lceil \left( \Dt^4 / \eps^3 \right)^{\frac{1}{8}} \rceil$
+			\Comment compute number of substeps
+			\State \Call{intSplit}{$A_0 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_0 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_1 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_1 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_2 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_2 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_3 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_3 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_4 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+			\State \Call{stepW}{$B_4 \Dt$}
+			\Comment $\opW = B$
+			\State \Call{intSplit}{$A_5 \Dt, M, \{w_T, w_U\}$}
+			\Comment $\opT + \opU = A$
+		\State
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
 \subsection{Processing Propagators}
 \label{sub:pre764_propagator}
 %
 The idea of processing propagators is to carry out the time evolution with a Hamiltonian that is slightly perturbed from the original one.
-To achieve this, a pre and post processing step is applied. \\
+To achieve this, a pre and post processing step is applied.
 More formally, it holds that
 %
 \begin{align}
@@ -216,54 +299,3 @@ Algorithm \ref{alg:pre764} presents the \emph{Pre764} processing method as deriv
 \end{algorithm}
 
 
-\subsection{McLachlan Propagators}
-\label{sub:mcl_propagator}
-%
-McLachlan (see \cite{McLachlan1995}) has investigated various symplectic schemes for computing the effect of operators of the form $\opX = \opA + \epsilon \opB$ where $\opA$ describes an exactly solvable system and $\opB$ is a perturbation.
-The factor $\epsilon$ is a small parameter that indicates the limited influence of $\opB$, not to be confused with the semiclassical parameter $\eps$.
-\par\medskip
-The \emph{McL} integration schemes are characterised by pairs of weighing coefficients $a_i$ and $b_i$ that allow to represent the exponential $e^{\opX}$ as a product
-%
-\begin{align}
-	e^\opX = \prod_i e^{b_i t \epsilon \opB} e^{a_i t \opA}
-\end{align}
-%
-McLachlan also goes through the process of deriving the coefficients for the following schemes
-\begin{align*}
-	&\text{\emph{McL(2s,2)}} &&\text{with error of order } \epsilon (\Dt)^{2s} + \epsilon^2 (\Dt)^2 \\
-	&\text{\emph{McL(6,4)}} &&\text{with error of order } \epsilon (\Dt)^{6} + \epsilon^2 (\Dt)^4 \\
-	&\text{\emph{McL(8,4)}} &&\text{with error of order } \epsilon (\Dt)^{8} + \epsilon^2 (\Dt)^4
-\end{align*}
-%
-Note that the error depends on two small parameters, the timestep $\Dt$ and the parameter $\epsilon$ that quantifies the influence of $\opB$.
-\par\medskip
-%
-In our case, $\opX = \opH = \opT + \opV + \opW$, the computationally expensive operator $\opW$ takes the role of $\epsilon \opB$, while the remaining Hamiltonian $\opT + \opU$ corresponds to $\opA$. 
-Our preferred method will therefore be of the form $ABA$ because this minimizes the number of steps with $\opB = \opW$.
-\par\medskip
-%
-The source code of this project contains the C++ implementation of the propagators \emph{McL(4,2)} (asymmetric) and \emph{McL(8,4)} (symmetric) that require only two respectively three evaluations of $\opW$ per step.
-
-\begin{algorithm}[h]
-	\caption{Single timestep with McL42 propagator}
-	\label{alg:mcl}
-	\begin{algorithmic}
-		\State
-		\Procedure{McL42.Propagate}{$\Dt$}
-		\State
-			\State $M = \lceil \left( \Dt^4 / \eps^3 \right)^{\frac{1}{8}} \rceil$
-			\Comment compute number of substeps
-			\State \Call{intSplit}{$A_0 \Dt, M, \{w_T, w_U\}$}
-			\Comment $\opT + \opU = A$
-			\State \Call{stepW}{$B_0 \Dt$}
-			\Comment $\opW = B$
-			\State \Call{intSplit}{$A_1 \Dt, M, \{w_T, w_U\}$}
-			\Comment $\opT + \opU = A$
-			\State \Call{stepW}{$B_1 \Dt$}
-			\Comment $\opW = B$
-			\State \Call{intSplit}{$A_2 \Dt, M, \{w_T, w_U\}$}
-			\Comment $\opT + \opU = A$
-		\State
-		\EndProcedure
-	\end{algorithmic}
-\end{algorithm}

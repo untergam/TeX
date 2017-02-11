@@ -2,10 +2,11 @@
 \label{sec:results}
 %
 This section discusses the outcomes of some numerical experiments that were carried out with the newly developed code.
-Aspects that need to be checked are the correctness of the propagators from a quantum mechanical point of view (subsection~\ref{subsec::physical}), convergence of the methods (subsection~\ref{subsec:convergence}) and benchmarking of the compute time (subsection~\ref{subsec:benchmark}).
+Aspects that need to be checked are the correctness of the propagators from a quantum mechanical point of view (subsection~\ref{subsec:physical}), convergence of the methods (subsection~\ref{subsec:convergence}) and benchmarking of the compute time (subsection~\ref{subsec:benchmark}).
 
 \subsection{Physical Correctness}
 \label{subsec:physical}
+{\Huge TODO: Review this part}
 %
 This short subsection analyzes the physical correctness of the implemented propagators.
 To do this, a two dimensional wave packet was propagated with each of the presented propagators for a time $T = 10$ with timestep $\Dt = 0.01$.
@@ -44,6 +45,7 @@ Another interesting fact is that the \emph{McL84} operator seems to have a much 
 
 \subsection{Effect of Stepsize}
 \label{subsec:convergence}
+{\Huge TODO: Review this part}
 %
 A convergence analysis was carried out in which the error of each propagator was recorded while reducing the stepsize.
 A Semiclassical propagator with \emph{KL10} splitting coefficients and step size 0.001 was used to propagate the wave packet to a final time $T = 10$ and create a reference solution.
@@ -57,7 +59,7 @@ Also, the \emph{McL84} propagator does not seem to converge. This is consistent 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{figures/error_analysis.png}
-	\caption{Convergence of the wavefunctions towards the "correct" solution. The $L_2$ norm was measured by projecting the wave function on a grid with 1000 nodes in the range $[-1,1]$ and taking the differences of these values. According to this experiment, the Hagedorn propagator seems to have higher convergence order than its contestants, despite its simplicity.
+	\caption{Convergence of the wavefunctions towards the reference solution. The $L_2$ norm was measured by projecting the wave function on a grid with 1000 nodes in the range $[-1,1]$ and taking the differences of these values. According to this experiment, the Hagedorn propagator seems to have higher convergence order than its contestants, despite its simplicity.
 	This observation could be an interesting starting point for further experiments.}
 	\label{fig:error_analysis}
 \end{figure}
@@ -97,7 +99,7 @@ Also, the Magnus Propagator \emph{MG4} is cheaper than expected, as it involves 
 		McL84 & 23.52 \\
 		\hline
 	\end{tabular}
-	\caption{Runtimes for propagating a 2D wave packet to a time $T = 10$ with timestep $\Dt = 0.001$ with different propagators. All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$ for the Python timings and below $0.1\%$ for the C++ timings.}
+	\caption{Runtimes for propagating a 2D wave packet to a time $T = 10$ with timestep $\Dt = 0.001$ with different propagators in C++. All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $0.1\%$.}
 	\label{tab:speedup}
 \end{table}
 
@@ -168,6 +170,6 @@ With a computation time of under 20 minutes for 100 time steps with the Semiclas
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{figures/dimension_analysis.png}
-	\caption{Scaling of the computation time with wave pack dimension $D$. Measurements done for a wave packet in a generalized harmonic potential, propagated for 100 steps with the Semiclassical Propagator.}
+	\caption{Scaling of the computation time with wave packet dimension $D$. Measurements done for a wave packet in a generalized harmonic potential, propagated for 100 steps with the Semiclassical Propagator.}
 	\label{fig:dimension_analysis}
 \end{figure}

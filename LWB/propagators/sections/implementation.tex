@@ -95,7 +95,7 @@ Consequently, it is desirable to have a generic and efficient implementation ava
 The current \proc{IntSplit} algorithm described in \ref{alg:intsplit} takes three arguments:
 the size of the time interval to be covered $\Dt$, the number $M_{split}$ of subintervals of size $\dt = \Dt/M_{split}$ in which the initial interval should be divided, and a pair of coefficient lists $\{ w_T, w_U \}$ denoting the weights with which the single steps of size $\dt$ should be scaled.
 In the simplest case, the lists $w_T$ and $w_U$ are both only of length one (Lie-Trotter), but higher order splitting strategies can have much larger coefficient sets.
-In general, it must hold that $\text{length}(w_T) = \text{length}(w_U)$ (for TU..TU schemes) or $\text{length}(w_T) = \text{length}(w_U)$ (for TU..UT schemes).
+In general, it must hold that $\text{length}(w_T) = \text{length}(w_U)$ (for TU..TU schemes) or $\text{length}(w_T) = \text{length}(w_U)+1$ (for TU..UT schemes).
 \par\medskip
 %
 The obvious implementation of using a dynamic container (like a C++ vector) for the coefficients and a simple \emph{for loop} over all its entries brings a two (minimal) drawbacks: First, the overhead of the loop itself and second, the fact that the number of coefficients is not known at compile time and thus no optimizations can be done.
@@ -111,12 +111,11 @@ As a termination condition, when all coefficients have been used, a partially sp
 %
 One technical subtlety of this approach is, that the C++ language does not allow partially specialized function templates. This can, however, be overcome quite easily by declaring \proc{TU} and \proc{UT} as classes with a static function.
 In contrast to function templates, class templates can be partially specialized.
-By using static member functions, the actual class objects do not need to be created and all the function calls will be resolved at compile time.
-\footnote{One limitation is the maximal template recursion depth. The default value on gcc compiler is 900 and can be increased if required. Typical template nesting depths for coefficient pairs should lie significantly below 100.}
+By using static member functions, the actual class objects do not need to be created and all the function calls will be resolved at compile time\footnote{One limitation is the maximal template recursion depth. The default value on gcc compiler is 900 and can be increased if required. Typical template nesting depths for coefficient pairs should lie significantly below 100.}.
 All templates, no loops, and the resulting sequential code can then be further optimized by the compiler.
 \par\medskip
 %
-Some minimal code snippets explaining the working principle of \proc{IntSplit} are shown in figure~\ref{fig:intsplit}
+Some minimal code snippets explaining the working principle of \proc{IntSplit} are shown in Figure~\ref{fig:intsplit}.
 %
 In order to prevent the inappropriate use of the \proc{IntSplit} function through incompatible coefficient lists $w_T$ and $w_U$, their sizes are checked in the code at compile time via static assertions.
 \par\medskip
