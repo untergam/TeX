@@ -2,7 +2,9 @@
 
 \section{Energy Evolution and Drift Plots}
 
+
 \begin{figure}[ht]
+	\centering
 	\begin{minipage}[c]{\textwidth}
 		\begin{center}
 			\large Hagedorn Propagator \\[1mm]
@@ -10,13 +12,17 @@
 			\vspace{4mm}
 		\end{center}
 	\end{minipage}
-	\includegraphics[width=.45\textwidth]{figures/energy_Hagedorn.png}
-	\includegraphics[width=.45\textwidth]{figures/drift_Hagedorn.png}
-	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $T = 10$ with step $\Dt = 0.001$ in a harmonic potential using the Hagedorn Propagator with \emph{Y4} splitting}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_energies_Hagedorn.png}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_drift_Hagedorn.png} \\
+	\includegraphics[width=.45\textwidth]{figures/henon_energies_Hagedorn.png}
+	\includegraphics[width=.45\textwidth]{figures/henon_drift_Hagedorn.png}
+	\caption{Energy evolution and drift for a 2D wave packet propagated with the Hagedorn propagator in a harmonic potential (top) and a Henon-Heiles potential (bottom).
+	($T = 10$, $\Dt = 0.01$, $| \K | = 4$, \emph{LT} splitting)}
 	\label{fig:energy_Hagedorn}
 \end{figure}
 
 \begin{figure}[ht]
+	\centering
 	\begin{minipage}[c]{\textwidth}
 		\begin{center}
 			\large MG4 Propagator \\[1mm]
@@ -24,27 +30,17 @@
 			\vspace{4mm}
 		\end{center}
 	\end{minipage}
-	\includegraphics[width=.45\textwidth]{figures/energy_MG4.png}
-	\includegraphics[width=.45\textwidth]{figures/drift_MG4.png}
-	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $T = 10$ with step $\Dt = 0.001$ in a harmonic potential using the MG4 Propagator with \emph{Y4} splitting}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_energies_MG4.png}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_drift_MG4.png} \\
+	\includegraphics[width=.45\textwidth]{figures/henon_energies_MG4.png}
+	\includegraphics[width=.45\textwidth]{figures/henon_drift_MG4.png}
+	\caption{Energy evolution and drift for a 2D wave packet propagated with the MG4 propagator in a harmonic potential (top) and a Henon-Heiles potential (bottom).
+	($T = 10$, $\Dt = 0.01$, $| \K | = 4$, \emph{LT} splitting)}
 	\label{fig:energy_MG4}
 \end{figure}
 
 \begin{figure}[ht]
-	\begin{minipage}[c]{\textwidth}
-		\begin{center}
-			\large Pre764 Propagator \\[1mm]
-			\normalsize Energy Evolution and Drift
-			\vspace{4mm}
-		\end{center}
-	\end{minipage}
-	\includegraphics[width=.45\textwidth]{figures/energy_Pre764.png}
-	\includegraphics[width=.45\textwidth]{figures/drift_Pre764.png}
-	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $T = 10$ with step $\Dt = 0.001$ in a harmonic potential using the Pre764 Propagator with \emph{Y4} splitting}
-	\label{fig:energy_Pre764}
-\end{figure}
-
-\begin{figure}[ht]
+	\centering
 	\begin{minipage}[c]{\textwidth}
 		\begin{center}
 			\large McL42 Propagator \\[1mm]
@@ -52,13 +48,17 @@
 			\vspace{4mm}
 		\end{center}
 	\end{minipage}
-	\includegraphics[width=.45\textwidth]{figures/energy_McL42.png}
-	\includegraphics[width=.45\textwidth]{figures/drift_McL42.png}
-	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $T = 10$ with step $\Dt = 0.001$ in a harmonic potential using the McL42 Propagator with \emph{Y4} splitting}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_energies_McL42.png}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_drift_McL42.png} \\
+	\includegraphics[width=.45\textwidth]{figures/henon_energies_McL42.png}
+	\includegraphics[width=.45\textwidth]{figures/henon_drift_McL42.png}
+	\caption{Energy evolution and drift for a 2D wave packet propagated with the McL42 propagator in a harmonic potential (top) and a Henon-Heiles potential (bottom).
+	($T = 10$, $\Dt = 0.01$, $| \K | = 4$, \emph{LT} splitting)}
 	\label{fig:energy_McL42}
 \end{figure}
 
 \begin{figure}[ht]
+	\centering
 	\begin{minipage}[c]{\textwidth}
 		\begin{center}
 			\large McL84 Propagator \\[1mm]
@@ -66,8 +66,29 @@
 			\vspace{4mm}
 		\end{center}
 	\end{minipage}
-	\includegraphics[width=.45\textwidth]{figures/energy_McL84.png}
-	\includegraphics[width=.45\textwidth]{figures/drift_McL84.png}
-	\caption{Energy Evolution and Drift for a 2D Wave Packet evolved for $T = 10$ with step $\Dt = 0.001$ in a harmonic potential using the McL84 Propagator with \emph{Y4} splitting}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_energies_McL84.png}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_drift_McL84.png} \\
+	\includegraphics[width=.45\textwidth]{figures/henon_energies_McL84.png}
+	\includegraphics[width=.45\textwidth]{figures/henon_drift_McL84.png}
+	\caption{Energy evolution and drift for a 2D wave packet propagated with the McL84 propagator in a harmonic potential (top) and a Henon-Heiles potential (bottom).
+	($T = 10$, $\Dt = 0.01$, $| \K | = 4$, \emph{LT} splitting)}
 	\label{fig:energy_McL84}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\begin{minipage}[c]{\textwidth}
+		\begin{center}
+			\large Pre764 Propagator \\[1mm]
+			\normalsize Energy Evolution and Drift
+			\vspace{4mm}
+		\end{center}
+	\end{minipage}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_energies_Pre764.png}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_drift_Pre764.png} \\
+	\includegraphics[width=.45\textwidth]{figures/henon_energies_Pre764.png}
+	\includegraphics[width=.45\textwidth]{figures/henon_drift_Pre764.png}
+	\caption{Energy evolution and drift for a 2D wave packet propagated with the Pre764 propagator in a harmonic potential (top) and a Henon-Heiles potential (bottom).
+	($T = 10$, $\Dt = 0.01$, $| \K | = 4$, \emph{LT} splitting)}
+	\label{fig:energy_Pre764}
 \end{figure}
