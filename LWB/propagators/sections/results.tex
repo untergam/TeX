@@ -5,29 +5,43 @@ The newly developed code was used to carry out some numerical experiments which 
 Aspects that need to be checked are the correctness of the propagators from a quantum mechanical point of view (subsection~\ref{subsec:physical}), convergence of the methods (subsection~\ref{subsec:convergence}) and benchmarking of the compute time (subsection~\ref{subsec:benchmark}).
 \par\medskip
 %
-The potentials used for the numerical experiments were the simple harmonic potential and the Henon-Heiles potential.
-In both cases, the basis size $| \K | = 4$ was used.
-\par\medskip
-%
+The potentials used for these numerical experiments are the harmonic, torsional and Morse potential that are now briefly introduced.
+The value $\eps = 0.01$ was used if not specified otherwise.
+
+
+\paragraph{Harmonic Potential}
 The generalized harmonic potential
 \begin{align}
 	\label{math:harmonic}
 	V(\bvec{x}) = \frac{1}{2} \sum_{i=1}^D x_i^2
 \end{align}
 %
-was used with initial values $\bvec{q} = (1,\dots,1)^T$ and $\bvec{q} = (1,\dots,1,-1,\dots,-1)$ that were normalized to a $L_2$ norm of $0.5$ and $0.8$ respectively.
-$\bmat{Q}$ was the identity matrix and $\bmat{P} = \im \bmat{Q}^{-1}$. \\
+was used with initial values $\bvec{q} = (1,\dots,1)^T$, $\bvec{q} = (1,\dots,1,-1,\dots,-1)$, $\bmat{Q}$ and $\bmat{P} = \im \bmat{Q}^{-1}$. \\
 \par\medskip
-%
-The two dimensional Henon-Heiles potential is given by
+
+
+\paragraph{Torsional Potential}
+The torsional potential
 %
 \begin{align}
-	\label{math:henonheiles}
-	V(\bvec{x}) = \frac{1}{2} \left( x_1^2 + x_2^2 \right) + \sigma_* \left( x_1^2 x_2 - \frac{1}{3} x_2^3 \right)
+	\label{math:torsional}
+	V(\bvec{x}) = \sum_{i=1}^D \left( 1 - \cos x_i \right)
 \end{align}
 %
-where $\sigma_*$ is a mixing coefficient that was chosen to be equal to $0.2$.
-The initial values for this potential were $\bvec{q}=(1.8,0)^T$, $ \bvec{p}=(0,1.2)^T$, $\bmat{Q} = \sqrt{2} \cdot \text{diag}( \sqrt{0.56}, \sqrt{0.24} )$ and $\bmat{P} = \im \bmat{Q}^{-1}$)
+was used with initial values $\bmat{Q} = \bmat{I}_N$, $\bmat{P} = \im \bmat{I}_N$, $\bvec{q} = (1,0,\dots,0)$ and $\bvec{p} = (0,\dots,0)$ as suggested in \cite{FGL_semiclassical_dynamics}.
+
+\paragraph{Morse Potential}
+%
+The Morse potential was also used for numerical experiments in \cite{Unpublished} and looks as follows:
+%
+\begin{align}
+	\label{math:morse}
+	V(\bvec{x}) = C e^{-2a(x-x_0)} - 2 e^{-a(x-x_0)} \; .
+\end{align}
+%
+Where $C = 0.004164$, $a=0.896696$, $x_0 = 5.542567$ are constants.
+For this 1D potential, the physically correct parameters $q_0 = 6.0426$, $p_0 = -0.1100$, $Q_0 = 3.4957$, $P_0 = 0.2861 \im$ with $\eps = 0.0484$ was used for all simulations.
+
 
 
 \subsection{Physical Correctness}
@@ -37,8 +51,8 @@ In order to analyze the physical correctness of the implemented propagators, a t
 All propagators used the \emph{LT} splitting coefficients for the \proc{IntSplit} method.
 \par\medskip
 %
-%
-Figure \ref{fig:energy_Semiclassical} shows the time evolution of energy and the energy drift for the semiclassical propagator. The corresponding energy plots for the remaining propagators can be found in the appendix to the report. \\
+Figure \ref{fig:energy_Semiclassical} shows the time evolution of energy and the energy drift for the semiclassical propagator. The corresponding energy plots for the remaining propagators can be found in the appendix to the report.
+The equivalent conservation plot for the two dimensional case is shown in figure \ref{fig:energy_Semiclassical_2D}. \\
 As is clearly shown by the graphs, the propagators conserve the total energy (apart from very small oscillations).
 %
 \begin{figure}[ht]
@@ -50,13 +64,24 @@ As is clearly shown by the graphs, the propagators conserve the total energy (ap
 			\vspace{4mm}
 		\end{center}
 	\end{minipage}
-	\includegraphics[width=.45\textwidth]{figures/harmonic_energies_Semiclassical.png}
-	\includegraphics[width=.45\textwidth]{figures/harmonic_drift_Semiclassical.png} \\
-	\includegraphics[width=.45\textwidth]{figures/henon_energies_Semiclassical.png}
-	\includegraphics[width=.45\textwidth]{figures/henon_drift_Semiclassical.png}
-	\caption{Energy evolution and drift for a 2D wave packet propagated with the Semiclassical propagator in a harmonic potential (top) and a Henon-Heiles potential (bottom).
-	($T = 10$, $\Dt = 0.01$, $| \K | = 4$, \emph{LT} splitting)}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_1D_Semiclassical_energies.png}
+	\includegraphics[width=.45\textwidth]{figures/harmonic_1D_Semiclassical_drift.png} \\
+	\includegraphics[width=.45\textwidth]{figures/torsional_1D_Semiclassical_energies.png}
+	\includegraphics[width=.45\textwidth]{figures/torsional_1D_Semiclassical_drift.png} \\
+	\includegraphics[width=.45\textwidth]{figures/morse_1D_Semiclassical_energies.png}
+	\includegraphics[width=.45\textwidth]{figures/morse_1D_Semiclassical_drift.png}
+	\caption{Energy evolution and drift for a 1D wave packet propagated with the Semiclassical propagator in a harmonic potential (top), a torsional potential (middle) and a Morse potential (bottom).
+	(Parameters: $N=1$, $D=1$ $|\K|=16$ $\eps=0.01$ (Morse $0.0484$), $T=10$ (Morse $T=50$), $\Dt=0.001$ (Morse $\Dt=0.005$), Semiclassical propagator with \emph{Y4} splitting for \proc{IntSplit})}
 	\label{fig:energy_Semiclassical}
+\end{figure}
+%
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=.8\textwidth]{figures/torsional_2D_Semiclassical_energies.png}
+	\includegraphics[width=.8\textwidth]{figures/torsional_2D_Semiclassical_drift.png}
+	\caption{Energy evolution and drift for a wave packet propagated with the Semiclassical propagator in a 2D torsional potential.
+	(Parameters: $N=1$, $D=2$ $|\K|=16$ $\eps=0.01$, $T=4$, $\Dt=0.005$, Semiclassical propagator with \emph{KL10} splitting for \proc{IntSplit})}
+	\label{fig:energy_Semiclassical_2D}
 \end{figure}
 
 
@@ -64,7 +89,7 @@ As is clearly shown by the graphs, the propagators conserve the total energy (ap
 \label{subsec:convergence}
 %
 A convergence analysis was carried out in which the error of each propagator was recorded while reducing the stepsize $\Dt$.
-A Semiclassical propagator with \emph{KL10} splitting coefficients and step size $0.001$ was used to propagate the wave packet to a final time $T = 10$ and create a reference solution.
+A Semiclassical propagator with \emph{KL10} splitting coefficients and step size $\Dt = 0.0001$ was used to propagate the wave packet to a final time $T = 10$ and create a reference solution.
 \par\medskip
 %
 The error between two wave packets was computed by evaluating them on a grid with 1000 grid points and taking the $L_2$ norm of the differences.
@@ -74,9 +99,14 @@ Only for higher order splitting coefficients like \emph{Y4} the advantages of \p
 %
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=.8\textwidth]{figures/error_analysis_lt.png} \\
-	\includegraphics[width=.8\textwidth]{figures/error_analysis_y4.png}
-	\caption{Convergence of the various propagators towards the reference solution for \emph{LT} splitting (top) and \emph{Y4} splitting (bottom). The $L_2$ norm was measured by projecting the wave function on a grid with $1000$ nodes in the range $[-1,1]$ and taking the differences of these values.}
+	\includegraphics[width=.2\textwidth]{figures/convergence_legend.png} \\
+	\includegraphics[width=.45\textwidth]{figures/convergence_harmonic_1D_lt.png}
+	\includegraphics[width=.45\textwidth]{figures/convergence_harmonic_1D_y4.png} \\
+	\includegraphics[width=.45\textwidth]{figures/convergence_torsional_1D_lt.png}
+	\includegraphics[width=.45\textwidth]{figures/convergence_torsional_1D_y4.png} \\
+	\includegraphics[width=.45\textwidth]{figures/convergence_morse_1D_lt.png}
+	\includegraphics[width=.45\textwidth]{figures/convergence_morse_1D_y4.png}
+	\caption{Convergence of the various propagators towards the reference solution for \emph{LT} splitting (left) and \emph{Y4} splitting (right). The potentials are the harmonic potential (top), the torsional potential (middlt) and the morse potential (bottom). The $L_2$ norm was measured by projecting the wave function on a grid with $1000$ nodes in the range $[-5,5]$ (Morse $[0,10]$) and taking the differences of the current solution and the reference solution at $T=10$ (Morse $T=50$).}
 	\label{fig:error_analysis}
 \end{figure}
 
@@ -92,10 +122,10 @@ The runtime analysis was carried out on a Linux (Kernel 4.8.7, Fedora 24 Worksta
 
 
 
-
 \subsubsection{Comparison of propagators}
 %
-A quick comparison of timings for the different propagators is shown in table \ref{tab:speedup}, the same setup as for the energy analysis was used (2D wave packet, $T = 10$, step size $\Dt = 0.01$, \emph{LT} time splitting coefficients).
+A quick comparison of timings for propagating a wave packet in a 2D Henon-Heiles potential is given in Table~\ref{tab:speedup}.
+Surprisingly, the Semiclassical propagator seems to take less time to do the propagation of the wave packet than the Hagedorn propagator, despite its more complex structure.
 The Magnus Propagator \emph{MG4} is cheaper than expected, as it involves two evaluations of $\matrixel{\varphi_k}{W}{\varphi_l}$ per time step but is only slightly slower than the Semiclassical operator with one evaluation of the inner product.
 The slowest propagator is \emph{McL84} which involves five propagations with $\opW$ per step.
 %
@@ -106,15 +136,15 @@ The slowest propagator is \emph{McL84} which involves five propagations with $\o
 		\multicolumn{1}{|c}{\textbf{Propagator}} &
 		\multicolumn{1}{|c|}{\textbf{Timing [s]}} \\
 		\hline
-		Hagedorn & 1.06 \\
-		Semiclassical & 1.14 \\
-		MG4 & 1.23 \\
-		McL42 & 1.39 \\
-		McL84 & 2.08 \\
-		Pre764 & 1.63 \\
+		Hagedorn & 27.83 \\
+		Semiclassical & 27.66 \\
+		MG4 & 37.85 \\
+		McL42 & 49.20 \\
+		McL84 & 107.62 \\
+		Pre764 & 70.93 \\
 		\hline
 	\end{tabular}
-	\caption{Runtimes for propagating a 2D wave packet to a time $T = 10$ with timestep $\Dt = 0.01$ with different propagators in C++. All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$.}
+	\caption{Runtimes for propagating a wave packet ($| \K | = 4$) to the final time $T = 10$ with timestep $\Dt = 0.0001$ in a 2D Henon-Heiles potential using C++ propagators (\emph{LT} for \proc{IntSplit}). All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$.}
 	\label{tab:speedup}
 \end{table}
 
@@ -125,10 +155,11 @@ As mentioned previously, the splitting coefficients $\{ w_T, w_U \}$ that are us
 Higher order schemes are usually preferred in terms of accuracy, but they come at the price of longer computation time.
 \par\medskip
 %
+\Huge{TODO: ???}
 Therefore, a numerical experiment was carried out in order to analyze how much computational time is consumed for coefficient pairs of different sizes.
 In order to create a reference solution, the Semiclassical Propagator was used to propagate a two dimensional wave packet in a harmonic potential over a time of $T = 400$ and with stepsize $\Dt = 0.01$.
 The same simulation was carried out for coefficient pairs of various different sizes and were run in Python as well as C++.
-The results are listed in table \ref{tab:benchmarksplit_t} and plotted in figure \ref{fig:benchmarksplit_f}.
+The results are shown in figure \ref{fig:benchmarksplit}.
 \par\medskip
 %
 Looking at the Python timings only, the measurements suggest that in the case of the \emph{KL10} coefficient set, at least 80\% of the total runtime is spend in the \proc{IntSplit} function (since larger coefficient sets $\{ w_T, w_U \}$ only affect the number of steps with operators $\opT$ and $\opU$, but not with operator $\opW$).
@@ -141,7 +172,7 @@ The same comparison on C++ code shows that the code takes only 30\% longer for t
 This is a very encouraging result as it means that high order splitting coefficients come at almost no extra cost.
 \par\medskip
 %
-\begin{table}[ht]
+\begin{figure}[ht]
 	\centering
 	\begin{tabular}{|l | r | r | r | r |} 
 		\hline
@@ -151,28 +182,23 @@ This is a very encouraging result as it means that high order splitting coeffici
 		\multicolumn{1}{|c}{\textbf{C++ timing [s]}} &
 		\multicolumn{1}{|c|}{\textbf{Speedup}} \\
 		\hline
-		LT & 1 & 174.6 & 5.766 &\textbf{30.3} \\ 
-		S2 & 2 & 202.9 & 5.706 &\textbf{35.6} \\
-		Y4 & 4 & 258.6 & 5.861 &\textbf{44.1} \\
-		PRKS6 & 7 & 341.0 & 5.995 &\textbf{56.9} \\ 
-		Y61 & 8 & 366.0 & 6.004 &\textbf{61.0} \\
-		KL6 & 10 & 421.4 & 6.124 &\textbf{68.8} \\
-		BM63 & 15 & 557.1 & 6.467 &\textbf{86.2} \\ 
-		KL8 & 18 & 634.8 & 6.637 &\textbf{95.6} \\
-		KL10 & 34 & 1067.2 & 7.457 &\textbf{143.1} \\
+		LT &1 &47.155 &1.3905 &\textbf{33.91} \\
+		S2 &2 &52.934 &1.3817 &\textbf{38.31} \\
+		Y4 &4 &65.351 &1.4386 &\textbf{45.42} \\
+		PRKS6 &7 &84.075 &1.5122 &\textbf{55.59} \\
+		Y61 &8 &90.260 &1.4568 &\textbf{61.96} \\
+		KL6 &10 &102.531 &1.6049 &\textbf{63.89} \\
+		BM63 &15 &133.415 &1.7763 &\textbf{75.11} \\
+		KL8 &18 &151.438 &1.8147 &\textbf{83.45} \\
+		KL10 &34 &249.749 &2.2168 &\textbf{112.66} \\
 		\hline
 	\end{tabular}
-	\caption{Table comparing the computation time of Python code vs. C++ code for different sizes of the splitting coefficients $\{ w_T, w_U \}$. All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$ for the Python timings and below $0.1\%$ for the C++ timings.}
-	\label{tab:benchmarksplit_t}
-\end{table}
-%
-\begin{figure}[ht]
-	\centering
 	\begin{center}
-	\includegraphics[width=.8\textwidth]{figures/coefficient_analysis.png}
+	\includegraphics[width=.8\textwidth]{figures/coefs.png}
 	\end{center}
-	\caption{Comparison of computation times for different splitting coefficients $\{ w_T, w_U \}$. The absolute timings are shown in the top graph, the speedup on the bottom. It is remarkable that the initial speedup factor is about 30, but grows for larger coefficient sets. The speedup factor for the largest tested coefficient pair \emph{KL10} is over 140.}
-	\label{fig:benchmarksplit_f}
+	\caption{Comparison of computation times for different splitting coefficients $\{ w_T, w_U \}$ for Python code vs. C++ code. The absolute timings are shown in the top graph, the speedup on the bottom. It is remarkable that the initial speedup factor is about 30, but grows for larger coefficient sets. The speedup factor for the largest tested coefficient pair \emph{KL10} is over 110.
+	All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$ for the Python timings and below $0.1\%$ for the C++ timings. (Parameters: $1D$ torsional potential, $N=1$, $|\K|=16$ $\eps=0.01$, $T=10$, $\Dt=0.001$, Semiclassical propagator)}
+	\label{fig:benchmarksplit}
 \end{figure}
 
 
@@ -184,7 +210,8 @@ With a computation time of under 20 minutes for 100 time steps with the Semiclas
 %
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=.8\textwidth]{figures/dimension_analysis.png}
-	\caption{Scaling of the computation time with wave packet dimension $D$. Measurements done for a wave packet in a generalized harmonic potential, propagated for 100 steps with the Semiclassical Propagator.}
+	\includegraphics[width=.8\textwidth]{figures/dim.png}
+	\caption{Scaling of the computation time with wave packet dimension $D$.
+	(Parameters: $D$-dimensional torsional potential, $N=1$, $|\K|=4$ $\eps=0.01$, $T=1$, $\Dt=0.01$, Semiclassical propagator with \emph{LT} splitting for \proc{IntSplit})}
 	\label{fig:dimension_analysis}
 \end{figure}
