@@ -5,55 +5,55 @@ The newly developed code was used to carry out some numerical experiments which 
 Aspects that need to be checked are the correctness of the propagators from a quantum mechanical point of view (subsection~\ref{subsec:physical}), convergence of the methods (subsection~\ref{subsec:convergence}) and benchmarking of the compute time (subsection~\ref{subsec:benchmark}).
 \par\medskip
 %
+The number of steps $M_{split}$ for the \proc{IntSplit} method can be calculated based on an analysis of the numerical properties of the methods, such that the stability of the propagators is guaranteed.
+However, it was found that such an adaptive number of splitting intervals (usually depending on $\Dt$ itself) made the numerical experiments hardly comparable (both in terms of runtime and precision).
+Therefore, for all the presented results, $M_{split}=4$ was used for every call to \proc{IntSplit} in order to create fair conditions for comparing the different propagators.
+\par\medskip
+%
 The potentials used for these numerical experiments are the harmonic, torsional and Morse potential that are now briefly introduced.
-The value $\eps = 0.01$ was used if not specified otherwise.
+The semiclassical parameter $\eps = 0.01$ was used if not specified otherwise.
 
 
-\paragraph{Harmonic Potential}
-The generalized harmonic potential
+\paragraph{Harmonic Potential} in $D$ dimensions
 \begin{align}
 	\label{math:harmonic}
 	V(\bvec{x}) = \frac{1}{2} \sum_{i=1}^D x_i^2
 \end{align}
 %
-was used with initial values $\bvec{q} = (1,\dots,1)^T$, $\bvec{q} = (1,\dots,1,-1,\dots,-1)$, $\bmat{Q}$ and $\bmat{P} = \im \bmat{Q}^{-1}$. \\
+Initial values: $\bvec{q} = (1,\dots,1)^T$, $\bvec{q} = (1,\dots,1,-1,\dots,-1)$, $\bmat{Q}$ and $\bmat{P} = \im \bmat{Q}^{-1}$. \\
 \par\medskip
 
 
 \paragraph{Torsional Potential}
-The torsional potential
 %
 \begin{align}
 	\label{math:torsional}
 	V(\bvec{x}) = \sum_{i=1}^D \left( 1 - \cos x_i \right)
 \end{align}
 %
-was used with initial values $\bmat{Q} = \bmat{I}_N$, $\bmat{P} = \im \bmat{I}_N$, $\bvec{q} = (1,0,\dots,0)$ and $\bvec{p} = (0,\dots,0)$ as suggested in \cite{FGL_semiclassical_dynamics}.
+Initial values: $\bmat{Q} = \bmat{I}_N$, $\bmat{P} = \im \bmat{I}_N$, $\bvec{q} = (1,0,\dots,0)$, $\bvec{p} = (0,\dots,0)$ (see \cite{FGL_semiclassical_dynamics}).
 
 \paragraph{Morse Potential}
-%
-The Morse potential was also used for numerical experiments in \cite{Unpublished} and looks as follows:
 %
 \begin{align}
 	\label{math:morse}
 	V(\bvec{x}) = C e^{-2a(x-x_0)} - 2 e^{-a(x-x_0)} \; .
 \end{align}
 %
-Where $C = 0.004164$, $a=0.896696$, $x_0 = 5.542567$ are constants.
-For this 1D potential, the physically correct parameters $q_0 = 6.0426$, $p_0 = -0.1100$, $Q_0 = 3.4957$, $P_0 = 0.2861 \im$ with $\eps = 0.0484$ was used for all simulations.
-
+Constants (see \cite{Unpublished}): $C = 0.004164$, $a=0.896696$, $x_0 = 5.542567$. \\
+Initial values: $q_0 = 6.0426$, $p_0 = -0.1100$, $Q_0 = 3.4957$, $P_0 = 0.2861 \im$.
+The Morse potential was used with $\eps = 0.0484$ for all simulations.
 
 
 \subsection{Physical Correctness}
 \label{subsec:physical}
 %
-In order to analyze the physical correctness of the implemented propagators, a two dimensional wave packet was propagated in the Harmonic potential and in the Henon-Heiles potential presented above with each of the presented propagators for a time $T = 10$ with timestep $\Dt = 0.01$.
-All propagators used the \emph{LT} splitting coefficients for the \proc{IntSplit} method.
+In order to analyze the physical correctness of the implemented propagators, a wave packet was propagated in the various potentials introduced above and teh energy conservation was observed.
 \par\medskip
 %
 Figure \ref{fig:energy_Semiclassical} shows the time evolution of energy and the energy drift for the semiclassical propagator. The corresponding energy plots for the remaining propagators can be found in the appendix to the report.
-The equivalent conservation plot for the two dimensional case is shown in figure \ref{fig:energy_Semiclassical_2D}. \\
-As is clearly shown by the graphs, the propagators conserve the total energy (apart from very small oscillations).
+The equivalent conservation plot for the two dimensional case is shown in figure \ref{fig:energy_Semiclassical_2D}.
+As is clearly shown by the graphs, the propagators conserve the total energy (except for very small oscillations).
 %
 \begin{figure}[ht]
 	\centering
@@ -89,13 +89,15 @@ As is clearly shown by the graphs, the propagators conserve the total energy (ap
 \label{subsec:convergence}
 %
 A convergence analysis was carried out in which the error of each propagator was recorded while reducing the stepsize $\Dt$.
-A Semiclassical propagator with \emph{KL10} splitting coefficients and step size $\Dt = 0.0001$ was used to propagate the wave packet to a final time $T = 10$ and create a reference solution.
+A \emph{McL84} propagator with \emph{KL10} splitting coefficients and step size $\Dt = 0.0001$ (Morse: $\Dt = 0.0005$) was used to propagate the wave packet to a final time $T = 10$ (Morse: $T=50$) and create a reference solution.
 \par\medskip
 %
-The error between two wave packets was computed by evaluating them on a grid with 1000 grid points and taking the $L_2$ norm of the differences.
-Figure \ref{fig:error_analysis} shows the error for different step sizes $\Dt$.
-It is quite surprising how the Hagedorn Propagator has higher precision than the other schemes in the case of \emph{LT} splitting.
-Only for higher order splitting coefficients like \emph{Y4} the advantages of \proc{IntSplit} start paying off and the other propagators show their advantages over the simplistic Hagedorn Propagator.
+The error between two wave packets was computed by evaluating them on a grid on $[-5,5]$ (Morse: $[0,10]$) with 1000 grid points and taking the $L_2$ norm of the differences.
+Figure \ref{fig:error_analysis} shows how the error changes for different step sizes $\Dt$.
+All propagators converge towards the reference solution, quickly reaching the limit imposed by the machine precision.
+The simplistic Hagedorn propagator shows the largest error and a convergence order of two, similarly to the \emph{Semiclassical} and \emph{McL42} propagators.
+The more advanced propagators \emph{MG4}, \emph{McL84} and \emph{Pre764} even show a convergence order of four.
+Interestingly enough, if only a \emph{LT} splitting is used in the \proc{IntSplit} method, then the simplistic \emph{Hagedorn} propagator outperforms all the others. However, changing the splitting scheme to \emph{Y4} again gives the expected behaviour.
 %
 \begin{figure}[ht]
 	\centering
@@ -114,7 +116,7 @@ Only for higher order splitting coefficients like \emph{Y4} the advantages of \p
 \label{subsec:benchmark}
 %
 In order to benchmark the code, three timing experiments were carried out: a simple comparison of runtimes for different propagators, an investigation of the computational cost associated with the usage of high order splitting schemes, and an analysis of the compute time as a function of the dimension $D$.
-In all cases, the harmonic potential introduced at the beginning of this section was used.
+In all cases, the $1D$ torsional potential introduced at the beginning of this section was used.
 \par\medskip
 %
 The runtime analysis was carried out on a Linux (Kernel 4.8.7, Fedora 24 Workstation) Quad-Core machine with an Intel Core i5-3210M Processor and
@@ -124,8 +126,8 @@ The runtime analysis was carried out on a Linux (Kernel 4.8.7, Fedora 24 Worksta
 
 \subsubsection{Comparison of propagators}
 %
-A quick comparison of timings for propagating a wave packet in a 2D Henon-Heiles potential is given in Table~\ref{tab:speedup}.
-Surprisingly, the Semiclassical propagator seems to take less time to do the propagation of the wave packet than the Hagedorn propagator, despite its more complex structure.
+A quick comparison of timings for propagating a wave packet in a 1D torsional potential with different propagators is given in Table~\ref{tab:comparison}.
+Surprisingly, the Semiclassical propagator seems to take the same time as the Hagedorn propagator, despite its more complex structure.
 The Magnus Propagator \emph{MG4} is cheaper than expected, as it involves two evaluations of $\matrixel{\varphi_k}{W}{\varphi_l}$ per time step but is only slightly slower than the Semiclassical operator with one evaluation of the inner product.
 The slowest propagator is \emph{McL84} which involves five propagations with $\opW$ per step.
 %
@@ -144,8 +146,9 @@ The slowest propagator is \emph{McL84} which involves five propagations with $\o
 		Pre764 & 70.93 \\
 		\hline
 	\end{tabular}
-	\caption{Runtimes for propagating a wave packet ($| \K | = 4$) to the final time $T = 10$ with timestep $\Dt = 0.0001$ in a 2D Henon-Heiles potential using C++ propagators (\emph{LT} for \proc{IntSplit}). All the timings in the table were measured by taking the average of 10 independent runs. The standard deviation of these measurements was below $1\%$.}
-	\label{tab:speedup}
+	\caption{Runtimes for different propagators. The standard deviation of these measurements was below $1\%$.
+	(Parameters: torsional potential, $N=1$, $D=1$, $|\K|=16$ $\eps=0.01$, $T=10$, $\Dt=0.0001$, Semiclassical propagator with \emph{Y4} splitting for \proc{IntSplit}) }
+	\label{tab:comparison}
 \end{table}
 
 
@@ -155,11 +158,14 @@ As mentioned previously, the splitting coefficients $\{ w_T, w_U \}$ that are us
 Higher order schemes are usually preferred in terms of accuracy, but they come at the price of longer computation time.
 \par\medskip
 %
-\Huge{TODO: ???}
-Therefore, a numerical experiment was carried out in order to analyze how much computational time is consumed for coefficient pairs of different sizes.
-In order to create a reference solution, the Semiclassical Propagator was used to propagate a two dimensional wave packet in a harmonic potential over a time of $T = 400$ and with stepsize $\Dt = 0.01$.
-The same simulation was carried out for coefficient pairs of various different sizes and were run in Python as well as C++.
+Therefore, a numerical experiment was carried out in order to analyze how much computational time is required for using different sizes of coefficient pairs $\{ w_T, w_U \}$ in the \proc{IntSplit} method.
+The same simulations were carried out for Python and C++ code.
 The results are shown in figure \ref{fig:benchmarksplit}.
+\par\medskip
+%
+The Python simulations were run using the Pade matrix exponential, Gauss-Hermite Quadrature, and a \proc{HyperbolicCutShape} as basis shape, while
+C++ used the more expensive \proc{HyperCubicShape} as in all other benchmarks.
+More information about the different basis shapes can be found in \cite{B_master_thesis}
 \par\medskip
 %
 Looking at the Python timings only, the measurements suggest that in the case of the \emph{KL10} coefficient set, at least 80\% of the total runtime is spend in the \proc{IntSplit} function (since larger coefficient sets $\{ w_T, w_U \}$ only affect the number of steps with operators $\opT$ and $\opU$, but not with operator $\opW$).
@@ -167,9 +173,9 @@ Looking at the Python timings only, the measurements suggest that in the case of
 %
 When bringing the timings in context with the C++ code, a comparison of absolute runtimes is of course not fair since C++ is intrinsically faster than a scripting language like Python and the C++ version has been optimized for speed in many different ways.
 However, a very significant result in the context of the work on Propagators is how the speedup increases for larger coefficient pairs.
-Using the \emph{KL10} coefficient set instead of a simple \emph{LT} set, the Python code takes more than six times longer.
-The same comparison on C++ code shows that the code takes only 30\% longer for the large coefficient set than it takes for the minimal coefficient set.
-This is a very encouraging result as it means that high order splitting coefficients come at almost no extra cost.
+Using the \emph{KL10} coefficient set instead of a simple \emph{LT} set, the Python code takes more than five times longer.
+The same comparison on C++ code shows that in the case of the largest coefficient set \emph{KL10} it doesn't even take twice as long as for the basic \emph{LT} version.
+This is a very encouraging result as it means that high order splitting coefficients come at almost no extra cost and the \proc{IntSplit} method was implemented efficiently.
 \par\medskip
 %
 \begin{figure}[ht]
@@ -206,7 +212,7 @@ This is a very encouraging result as it means that high order splitting coeffici
 %
 The question that was addressed in this benchmark is how the compute time of the code scales with increasing dimension $D$ of the wave packet.
 Figure \ref{fig:dimension_analysis} shows a clear exponential scaling with the dimension $D$.
-With a computation time of under 20 minutes for 100 time steps with the Semiclassical Propagator, dimension $D=5$ is still quite feasible.
+With a run time of just about 35 minutes for 100 time steps with the Semiclassical Propagator, basis size of four and \emph{LT} splitting in $D=5$ dimensions, the computation is still quite feasible.
 %
 \begin{figure}[ht]
 	\centering

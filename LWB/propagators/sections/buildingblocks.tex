@@ -114,7 +114,9 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 In the practical implementations of the propagators that will be presented in the next section, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
 In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced:
 it splits the timestep $\Dt$ into $M_{split}$ smaller timesteps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
-More detailed information on the individual parameters to the \proc{IntSplit} function and the practical implementation can be found in section \ref{sec:implementation}
+More detailed information on the individual parameters to the \proc{IntSplit} function and the practical implementation can be found in section \ref{sec:implementation}.
+Information about the various coefficient sets $\{w_T, w_U\}$ can be found in the Python source code of the WaveBlocks project \cite{libwaveblocks}.
+In this report, the most used splittings are the \emph{LT} splitting (size 1), \emph{Y4} splitting (size 4) and \emph{KL10} splitting (size 34).
 %
 \begin{algorithm}[ht]
 	\caption{Split a time interval and alternatingly apply $\opT$ and $\opU$}
