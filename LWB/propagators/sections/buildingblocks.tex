@@ -113,7 +113,7 @@ In the inhomogeneous implementation of the algorithms, the subscript $n$ is used
 %%% IntSplit
 In the practical implementations of the propagators that will be presented in the next section, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
 In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced:
-it splits the timestep $\Dt$ into $M_{split}$ smaller timesteps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
+it splits the time step $\Dt$ into $M_{split}$ smaller time steps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
 More detailed information on the individual parameters to the \proc{IntSplit} function and the practical implementation can be found in section \ref{sec:implementation}.
 Information about the various coefficient sets $\{w_T, w_U\}$ can be found in the Python source code of the WaveBlocks project \cite{libwaveblocks}.
 In this report, the most used splittings are the \emph{LT} splitting (size 1), \emph{Y4} splitting (size 4) and \emph{KL10} splitting (size 34).
@@ -128,7 +128,7 @@ In this report, the most used splittings are the \emph{LT} splitting (size 1), \
 			\State $\dt = \Dt/M_{split}$
 			\Comment step size for splitting
 			\For{$n = 1,\dots,M_{split}$}
-			\Comment split interval in $M_{split}$ substeps
+			\Comment split interval in $M_{split}$ subset's
 				\For{$\alpha$ in $w_T$ and $\beta$ in $w_U$}
 				\Comment alternatingly apply $\opT$ and $\opU$
 					\State \Call{StepT}{$\alpha \cdot \dt$}
@@ -147,7 +147,7 @@ As pointed out in the previous section, the time propagation for non-quadratic p
 The update rule is
 %
 \begin{align}
-	\bvec{c}(t + dt) = \exp \left( - \frac{\im t}{\eps^2} \bmat{F} \right) \bvec{c}(t)
+	\bvec{c}(t + \dt) = \exp \left( - \frac{\im t}{\eps^2} \bmat{F} \right) \bvec{c}(t)
 \end{align}
 %
 where the matrix $\bmat{F} = \left[ f_{k,l} \right]_{k,l \in \K}$ has entries

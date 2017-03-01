@@ -16,7 +16,7 @@ However, the aim of the work presented here was to provide a fast implementation
 Consequently, providing an efficient implementation for time propagation mainly translates into finding an efficient way for calling existing functions with minimal overhead and by making use of compiler optimizations where possible.
 \par\medskip
 %
-First, subsection \ref{subsec:poly} outlines how C++ features were used in order to achieve class inheritance and polymorphism witout any additional runtime cost.
+First, subsection \ref{subsec:poly} outlines how C++ features were used in order to achieve class inheritance and polymorphism without any additional run-time cost.
 Secondly, in subsection \ref{subsec:callback}, it will be discussed how the \proc{Evolve} method (see algorithm \ref{alg:Evolve}) was implemented in order to provide a minimal working interface to the user while still preserving all the flexibility that may be required for intermediate measurements or other interaction.
 Finally, subsection \ref{subsec:intsplit} dives into the technical details of achieving inlined, highly optimized function calls for the \proc{IntSplit} method (see algorithm \ref{alg:intsplit}) that is used intensively in all the presented propagators.
 \par\medskip
@@ -25,7 +25,7 @@ Some details about the code were not found worthy to be mentioned here,
 but more information may be found in the Doxygen documentation.
 \par\medskip
 %
-The Hagedorn Propagator was already implemented in C++ as part of another project on the waveblocks library \cite{libwaveblocks}.
+The Hagedorn Propagator was already implemented in C++ as part of another project on the WaveBlocks library \cite{libwaveblocks}.
 Many components of that code were re-used for the present implementation, but they were fundamentally re-organized into a new structure.
 
 
@@ -43,7 +43,7 @@ A popular C++ design pattern for achieving static polymorphism is the \emph{Curi
 %
 While CRTP is an excellent candidate for providing static polymorphism for derived classes, there was also the need for some polymorphism in the Propagator base class itself, since some of the building blocks need to have different implementations based on the dimensionality or homogeneity of the wave packet. 
 Providing a partially specialized class for every possible combination of parameters is often tedious and unnecessarily bloats the code.
-Therefore, the C++11 \proc{enable\_if} keyword was used, which is a handy C++ metafunction from the \proc{type\_traits} header.
+Therefore, the C++11 \proc{enable\_if} keyword was used, which is a handy C++ meta function from the \proc{type\_traits} header.
 It allows to define multiple versions of a function and conditionally (de)activate them based on a compile-time boolean value.
 If the boolean is true, the function is enabled. Otherwise it is omitted.
 In the code, such boolean values are indicating whether the number of levels $N$ is equal or greater to one or to distinguish between functions for homogeneous or inhomogeneous wave functions.
@@ -67,7 +67,7 @@ The simple \proc{Evolve} method as described in algorithm \ref{alg:Evolve} in th
 %
 However, one may still want to interact with the wave packet during the simulation, for example for writing the wave packet norm to file every 100 steps, throwing errors when energy conservation is violated or to carry out any other task that requires intermediate simulation results.
 In order not to lose any flexibility in this regard, an optional callback-function argument was added to the \proc{Evolve} function.
-The callback function is passed as a lambda function taking two arguments, the current simulation time \proc{t} and the index of the current timestep \proc{m}.
+The callback function is passed as a lambda function taking two arguments, the current simulation time \proc{t} and the index of the current time step \proc{m}.
 If no callback function is passed, it defaults to an empty function.
 \par\medskip
 %
@@ -88,13 +88,13 @@ These console outputs can (and should) of course be removed for optimal performa
 \label{subsec:intsplit}
 %
 The \proc{IntSplit} function is merely a helper function that alternatingly applies \proc{StepT} and \proc{StepU}.
-Steps with the operators $\opT$ and $\opU$ are usually much cheaper than steps with $\opW$ (which requires numerical integration for approximating the inner product $\matrixel{\varphi_k}{W}{\varphi_l}$), but are in many cases found to be one of the main soures of error.
+Steps with the operators $\opT$ and $\opU$ are usually much cheaper than steps with $\opW$ (which requires numerical integration for approximating the inner product $\matrixel{\varphi_k}{W}{\varphi_l}$), but are in many cases found to be one of the main sources of error.
 Therefore the idea of sub-dividing the steps into many smaller intervals - an approach introduced in the semiclassical splitting \ref{sub:semiclassical_propagator} - is applied in many other propagators as well.
 Consequently, it is desirable to have a generic and efficient implementation available.
 \par\medskip
 %
 The current \proc{IntSplit} algorithm described in \ref{alg:intsplit} takes three arguments:
-the size of the time interval to be covered $\Dt$, the number $M_{split}$ of subintervals of size $\dt = \Dt/M_{split}$ in which the initial interval should be divided, and a pair of coefficient lists $\{ w_T, w_U \}$ denoting the weights with which the single steps of size $\dt$ should be scaled.
+the size of the time interval to be covered $\Dt$, the number $M_{split}$ of sub-intervals of size $\dt = \Dt/M_{split}$ in which the initial interval should be divided, and a pair of coefficient lists $\{ w_T, w_U \}$ denoting the weights with which the single steps of size $\dt$ should be scaled.
 In the simplest case, the lists $w_T$ and $w_U$ are both only of length one (Lie-Trotter), but higher order splitting strategies can have much larger coefficient sets.
 In general, it must hold that $\text{length}(w_T) = \text{length}(w_U)$ (for TU..TU schemes) or $\text{length}(w_T) = \text{length}(w_U)+1$ (for TU..UT schemes).
 \par\medskip
@@ -217,7 +217,7 @@ struct UT {
 			\end{minipage}
 	\end{minipage}
 	\end{minipage}
-	\caption{Simplified C++ snippets for outlining the template invocation sequence in the \proc{IntSplit} function. The template parameters \proc{S\_T} and \proc{S\_U} denote the total size of the coefficient arrays \proc{w\_T} and \proc{w\_U} while the \proc{N\_T} and \proc{N\_U} are the indices of the current coefficient to be applied. The \proc{TU::split} and \proc{UT::split} methods first apply their own step and then invoke each other by gradually incrementing the incices \proc{N\_T} and \proc{N\_U}. \\
+	\caption{Simplified C++ snippets for outlining the template invocation sequence in the \proc{IntSplit} function. The template parameters \proc{S\_T} and \proc{S\_U} denote the total size of the coefficient arrays \proc{w\_T} and \proc{w\_U} while the \proc{N\_T} and \proc{N\_U} are the indices of the current coefficient to be applied. The \proc{TU::split} and \proc{UT::split} methods first apply their own step and then invoke each other by gradually incrementing the indices \proc{N\_T} and \proc{N\_U}. \\
 	When the conditions \proc{N\_T == S\_T} and \proc{N\_U == S\_U} are satisfied, the partially specialized templates become active and the recursion is terminated.}
 	\label{fig:intsplit}
 \end{figure}
