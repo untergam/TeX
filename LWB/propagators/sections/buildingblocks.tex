@@ -1,0 +1,174 @@
+\section{Common building blocks for time evolution schemes}
+\label{sec:buildingblocks}
+%
+In order to be able to create an efficient, still flexible, implementation of various time propagators, it is helpful to break them down in common, optimized building blocks in terms of which all (or most) propagators can be expressed.
+The present section will briefly introduce the most important, generic building blocks that were found necessary in order to build the propagators in section~\ref{sec:propagators}.
+For each of them, it will be assumed that the following wave packet variables are implicitly accessible, without passing them as an argument to the procedure: the parameter pack $\bvec{\Pi} = (\bvec{q},\bvec{p},\bvec{Q},\bvec{P})$, the phase factor $S$, the coefficients $\{ c_k \}_{k \in \K}$, the potential function $V(\bvec{q})$ (including Jacobian and Hessian thereof) and the potential remainder $W(\bvec{q})$.
+\par\medskip
+%
+Many of the building blocks depend on the number of energy levels and on whether the wave packet is homogeneous or inhomogeneous.
+If any of these cases require a special implementation, it is denoted in the signature of the corresponding algorithm.
+
+
+\subsection{Evolve}
+\label{subsec:evolve}
+The convenience function \proc{Evolve} (algorithm~\ref{alg:Evolve}) is a wrapper that will carry out the \proc{PrePropagate}, \proc{Propagate} and \proc{PostPropagate} functions.
+The concrete implementation of the methods \proc{PrePropagate}, \proc{Propagate} and \proc{PostPropagate} is delegated to the derived classes (see section~\ref{sec:implementation} for more details),
+but will generally be a combination of the basic building blocks that follow in this section.
+%
+\begin{algorithm}[ht]
+	\caption{Evolve the wave packet for a time period $T$}
+	\label{alg:Evolve}
+	\begin{algorithmic}
+		\State
+		\Procedure{Evolve}{$T, \Dt$}
+		\State
+		\State $M_{tot} = T/\Dt$
+		\State \Call{PrePropagate}{$\Dt$}
+		\For{$m = 1, \dots, M_{tot}$}
+			\State \Call{Propagate}{$\Dt$}
+		\EndFor
+		\State \Call{PostPropagate}{$\Dt$}
+		\State
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{StepT, StepU and IntSplit}
+\label{subsec:tuintsplit}
+%
+%%% StepT & StepU
+The time stepping with operators $\opT$ and $\opU = U(\bvec{x})$ follows directly from the propositions in \cite{FGL_semiclassical_dynamics} and is outlined in the algorithms~\ref{alg:StepT} and~\ref{alg:StepU} respectively.
+Both functions take a variable $\xi$ as an argument which describes the size of the time step. \\
+In the inhomogeneous implementation of the algorithms, the subscript $n$ is used to denote the relative parameters at energy level $n$.
+\par\medskip
+%
+\begin{algorithm}[ht]
+	\caption{Propagate with Kinetic Energy Operator $\opT$}
+	\label{alg:StepT}
+	\begin{algorithmic}
+	\State
+	\Procedure{StepT[homogeneous]}{$\xi$}
+		\State
+		\State $\bvec{q} = \bvec{q} + \xi \bvec{p}$
+		\Comment update $\bvec{q}$
+		\State $\bmat{Q} = \bmat{Q} + \xi \bmat{P}$
+		\Comment update $\bmat{Q}$
+		\State $S = S + \frac{\xi}{2} \bvec{p}^T \bvec{p}$
+		\Comment update $S$
+		\State
+	\EndProcedure
+		\\\hrulefill
+	\State
+	\Procedure{StepT[inhomogeneous]}{$\xi$}
+		\State
+		\For{$n=1,...,N$}
+		\Comment loop over all energy levels
+			\State $\bvec{q}_n = \bvec{q}_n + \xi \bvec{p}_n$
+			\Comment update $\bvec{q}$ for level $n$
+			\State $\bmat{Q}_n = \bmat{Q}_n + \xi \bmat{P}_n$
+			\Comment update $\bmat{Q}$ for level $n$
+			\State $S_n = S_n + \frac{\xi}{2} \bvec{p}_n^T \bvec{p}_n$
+			\Comment update $S$ for level $n$
+		\EndFor
+		\State
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+%
+\begin{algorithm}[ht]
+	\caption{Propagate with (Quadratic) Potential Energy Operator $\opU$}
+	\label{alg:StepU}
+	\begin{algorithmic}
+	\State
+		\Procedure{StepU[homogeneous]}{$\xi$}
+		\State
+		\State $\bvec{p} = \bvec{p} - \xi \nabla V (\bvec{q})$
+		\Comment update $\bvec{p}$
+		\State $\bvec{P} = \bvec{P} - \xi \nabla^2 V (\bvec{q}) \bvec{Q}$
+		\Comment update $\bvec{P}$
+		\State $S = S - \xi V (\bvec{q})$
+		\Comment update $S$
+		\State
+	\EndProcedure
+		\\\hrulefill
+	\State
+		\Procedure{StepU[inhomogeneous]}{$\xi$}
+		\State
+		\For{$n=1,...,N$}
+		\Comment loop over all energy levels
+			\State $\bvec{p}_n = \bvec{p}_n - \xi \nabla V (\bvec{q}_n)$
+			\Comment update $\bvec{p}$ for level $n$
+			\State $\bvec{P}_n = \bvec{P}_n - \xi \nabla^2 V (\bvec{q}_n) \bvec{Q}_n$
+			\Comment update $\bvec{P}$ for level $n$
+			\State $S_n = S_n - \xi V (\bvec{q}_n)$
+			\Comment update $S$ for level $n$
+		\EndFor
+		\State
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+%
+%%% IntSplit
+In the practical implementations of the propagators that will be presented in the next section, propagation with $\opT$ and $\opU$ is usually replaced by a series of smaller, alternating steps with the two operators.
+In order to facilitate the use of such an alternating pattern, the helper function \proc{IntSplit} (algorithm~\ref{alg:intsplit}) is introduced:
+it splits the time step $\Dt$ into $M_{split}$ smaller time steps of size $\dt$ and uses the pair of weight lists $\{ w_T, w_U \}$ to alternatingly apply operators $\opT$ and $\opU$ on each of the sub-intervals.
+More detailed information on the individual parameters to the \proc{IntSplit} function and the practical implementation can be found in section \ref{sec:implementation}.
+Information about the various coefficient sets $\{w_T, w_U\}$ can be found in the Python source code of the WaveBlocks project \cite{libwaveblocks}.
+In this report, the most used splittings are the \emph{LT} splitting (size 1), \emph{Y4} splitting (size 4) and \emph{KL10} splitting (size 34).
+%
+\begin{algorithm}[ht]
+	\caption{Split a time interval and alternatingly apply $\opT$ and $\opU$}
+	\label{alg:intsplit}
+	\begin{algorithmic}
+		\State
+		\Procedure{IntSplit}{$\Dt, M_{split}, \{w_T,w_U\}$}
+			\State
+			\State $\dt = \Dt/M_{split}$
+			\Comment step size for splitting
+			\For{$n = 1,\dots,M_{split}$}
+			\Comment split interval in $M_{split}$ sub-steps
+				\For{$\alpha$ in $w_T$ and $\beta$ in $w_U$}
+				\Comment alternatingly apply $\opT$ and $\opU$
+					\State \Call{StepT}{$\alpha \cdot \dt$}
+					\State \Call{StepU}{$\beta \cdot \dt$}
+				\EndFor
+			\EndFor
+		\State
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{StepW and building of the interaction matrix}
+%
+As pointed out in the previous section, the time propagation for non-quadratic potentials $W(\bvec{x})$ (see algorithm~\ref{alg:StepW}) can be achieved by updating only the coefficients $\{ c_k \}_{k \in \K}$.
+The update rule is
+%
+\begin{align}
+	\bvec{c}(t + \dt) = \exp \left( - \frac{\im t}{\eps^2} \bmat{F} \right) \bvec{c}(t)
+\end{align}
+%
+where the matrix $\bmat{F} = \left[ f_{k,l} \right]_{k,l \in \K}$ has entries
+%
+\begin{align}
+	f_{k,l} = \matrixel{\varphi_k}{W}{\varphi_l}
+	= \int_{\R^D} \conj{\varphi_k(\bvec{x})} W(\bvec{x}) \varphi_l(\bvec{x}) \; \dif \bvec{x} \; .
+\end{align}
+%
+The calculation of such interaction matrices $\bmat{F}$ makes heavy use of the work on inner products that has been presented in \cite{LWB_innerproducts}, another student project in the WaveBlocks framework.
+For the further treatment in this report, it is assumed that an efficient implementation of \proc{BuildF} is readily available.
+%
+\begin{algorithm}[ht]
+	\caption{Propagate with (Non-Quadratic) Potential Energy Operator $\opW$}
+	\label{alg:StepW}
+	\begin{algorithmic}
+		\State
+		\Procedure{StepW}{$\xi$}
+			\State $\bm{\Sigma} = - \im \frac{\xi}{\eps^2} \cdot$ \Call{BuildF}{$\Pi$}
+			\State $\bm{c} = \exp{\bm{\Sigma}} \bm{c}$
+		\EndProcedure
+		\State
+	\end{algorithmic}
+\end{algorithm}

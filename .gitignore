@@ -30,3 +30,9 @@
 *.vrb
 *.xdy
 *.tdo
+*.loa
+
+*.bak
+*.brf
+*.pre
+LWB/propagators/*.pdf

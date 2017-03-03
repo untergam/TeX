@@ -1,0 +1,33 @@
+\input{./header.tex}
+
+\begin{document}
+
+\input{sections/title.tex}
+
+\clearemptydoublepage
+
+\mbox{} \vfill \input{sections/abstract.tex} \vfill
+\tableofcontents
+
+\clearpage
+
+% \listoffigures
+\listofalgorithms
+
+
+\clearemptydoublepage \input{sections/introduction.tex}
+\clearpage \input{sections/operatorsplitting.tex}
+\clearpage \input{sections/buildingblocks.tex}
+\clearpage \input{sections/propagators.tex}
+\clearpage \input{sections/implementation.tex}
+\clearpage \input{sections/results.tex}
+\clearpage \input{sections/conclusion.tex}
+
+\clearemptydoublepage \input{sections/appendix.tex}
+
+\clearemptydoublepage
+
+\bibliographystyle{plain}
+\bibliography{references,mt,bt,chem,wp,own,propagators}
+
+\end{document}

@@ -1,0 +1,209 @@
+\documentclass[a4paper,10pt]{scrartcl}
+
+\usepackage{standalone}
+
+% Load ``float'' before ``hyperref`` before ''algorithm``
+% Note: ''algorithm`` would load ''float`` by itself
+\usepackage{float}
+\usepackage[pagebackref,hyperindex=true]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsopn}
+\usepackage{braket}
+\usepackage{bbm}
+\usepackage{dsfont}
+% \usepackage{mathabx}
+
+
+% Various new commands that ease typesetting math even further
+% \newcommand{\assign}{\ensuremath{\coloneq}}
+% \newcommand{\rassign}{\ensuremath{\eqcolon}}
+% TODO: remove
+% \newcommand{\assign}{\ensuremath{:=}}
+% \newcommand{\rassign}{\ensuremath{=:}}
+% \newcommand{\seteq}{\ensuremath{\overset{!}{=}}}
+% \newcommand{\of}[1]{\ensuremath{\left( #1 \right)}}
+% \newcommand{\ofs}[1]{\ensuremath{\left( #1 \right)}}
+% \newcommand{\norm}[1]{\ensuremath{\| #1 \|}}
+% \newcommand{\tmop}[1]{\ensuremath{\operatorname{#1}}}
+% \newcommand{\id}{\ensuremath{\mathds{1}}}
+% % \newcommand{\id}{\ensuremath{I}}
+% \newcommand{\kron}[1]{\ensuremath{\delta_{#1}}}
+% \newcommand{\conj}[1]{\ensuremath{\overline{#1}}}
+% \renewcommand{\vec}[1]{\ensuremath{\underline{#1}}}
+% \newcommand{\mat}[1]{\ensuremath{\mathbf{#1}}}
+% \newcommand{\inv}{\ensuremath{{}^{-1}}}
+% \newcommand{\T}{\ensuremath{{}^{\textnormal{T}}}}
+% \renewcommand{\H}{\ensuremath{{}^{\textnormal{H}}}}
+% \newcommand{\Tinv}{\ensuremath{{}^{\textnormal{-T}}}}
+% \newcommand{\Hinv}{\ensuremath{{}^{\textnormal{-H}}}}
+% \newcommand{\tr}{\ensuremath{\textnormal{Tr}}}
+% \newcommand{\ft}[1]{\ensuremath{\mathcal{F}\left(#1\right)}}
+% \newcommand{\ift}[1]{\ensuremath{\mathcal{F}^{-1}\left(#1\right)}}
+% \newcommand{\fft}[1]{\ensuremath{\mathtt{FFT}\left(#1\right)}}
+% \newcommand{\ifft}[1]{\ensuremath{\mathtt{IFFT}\left(#1\right)}}
+% \newcommand{\dotp}[2]{\ensuremath{\left\langle #1 , #2 \right\rangle}}
+% \newcommand{\bigO}[1]{\ensuremath{\mathcal{O}\left( #1 \right)}}
+% \newcommand{\laplace}{\ensuremath{\operatorname{\Delta}}}
+% \newcommand{\diff}[3][]{\frac{\mathrm{d}^{#1}#2}{\mathrm{d}#3^{#1}}}
+% \newcommand{\pdiff}[3][]{\frac{\partial^{#1}#2}{\partial #3^{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Graphics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{asymptote}
+\usepackage{tikz}
+\usetikzlibrary{topaths,calc}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows,shapes,backgrounds}
+\definecolor{gray}{gray}{0.55}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{algorithm}
+% \usepackage{algorithmic}
+\usepackage{color}
+\usepackage{relsize}
+\usepackage[scaled=0.8]{beramono}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Code
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+% C++ Code macro
+\newcommand{\cpp}[1] {
+  \lstset{language=c++,
+          basicstyle=\smaller,
+          basewidth=0.58em,
+          columns=fixed,
+          tabsize=2,
+          fontadjust=true,
+          frame=l,
+          xleftmargin=4.2pt,
+          numbers=left,
+          stepnumber=2,
+          breaklines=true,
+          breakindent=0pt,
+          prebreak=\mbox{\tiny$\searrow$},
+          postbreak=\mbox{{\color{gray}$\cdots$}},
+          numberstyle=\color{gray},
+          commentstyle=\color{gray},
+          stringstyle=\textit,
+          showstringspaces=false,
+        }
+  \lstinputlisting{#1}
+}
+  
+  \lstset{language=c++,
+          basicstyle=\smaller,
+          basewidth=0.58em,
+          columns=fixed,
+          tabsize=2,
+          fontadjust=true,
+          breaklines=true,
+          breakindent=0pt,
+          prebreak=\mbox{\tiny$\searrow$},
+          postbreak=\mbox{{\color{gray}$\cdots$}},
+          numberstyle=\color{gray},
+          commentstyle=\color{gray},
+          stringstyle=\textit,
+          showstringspaces=false,
+          basicstyle=\footnotesize
+        }
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% More Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[utf8x]{inputenc}
+\usepackage{cancel}
+\usepackage{url}
+\usepackage{placeins}
+\usepackage{microtype}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+% Links in pdf
+\usepackage{color}
+\newcommand{\blue}{ \color{blue} }
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+\hypersetup
+{
+colorlinks=true,
+linkcolor=linkcol,
+citecolor=citecol,
+urlcolor=linkcol
+}
+
+% nicer backref links
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+\ifcase #1 %
+(Not cited.)%
+\or
+(Cited on page~#2.)%
+\else
+(Cited on pages~#2.)%
+\fi}
+\renewcommand*{\backrefsep}{, }
+\renewcommand*{\backreftwosep}{ and~}
+\renewcommand*{\backreflastsep}{ and~}
+
+% TODO: set some indent
+% \parindent 0cm
+
+\newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
+
+% Mycommands
+
+\usepackage{bm}
+
+% \newcommand*{\op}[1]{\hat{\mathcal{#1}}}
+\newcommand*{\C}{\ensuremath{\mathbb{C}}}
+\newcommand*{\Dt}{\ensuremath{\Delta t}}
+\newcommand*{\K}{\ensuremath{\mathfrak{K}}}
+\newcommand*{\R}{\ensuremath{\mathbb{R}}}
+\newcommand*{\bmat}[1]{\bm{#1}}
+\newcommand*{\bvec}[1]{\bm{#1}}
+\newcommand*{\conj}[1]{\overline{#1}}
+\newcommand*{\del}{\ensuremath{\partial}}
+\newcommand*{\dif}{\ensuremath{d}}
+\newcommand*{\dt}{\ensuremath{\delta t}}
+\newcommand*{\eps}{\ensuremath{\varepsilon}}
+\newcommand*{\im}{\ensuremath{\imath}}
+\newcommand*{\opH}{\mathcal{H}}
+\newcommand*{\opT}{\mathcal{T}}
+\newcommand*{\opU}{\mathcal{U}}
+\newcommand*{\opV}{\mathcal{V}}
+\newcommand*{\opW}{\mathcal{W}}
+\newcommand*{\opA}{\mathcal{A}}
+\newcommand*{\opB}{\mathcal{B}}
+\newcommand*{\opX}{\mathcal{X}}
+\newcommand*{\upic}{\ensuremath{u[\Pi,\bm{c}]}}
+\newcommand*{\proc}[1]{\textsc{#1}}
+
+\usepackage{algorithm}
+\usepackage{verbatim}
+\usepackage{physics}
+\usepackage{amssymb}
+\usepackage{bm}
+% \usepackage[noend]{algpseudocode}
+\usepackage{algpseudocode}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
+\usepackage{multicol}
