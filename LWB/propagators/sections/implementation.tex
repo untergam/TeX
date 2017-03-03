@@ -16,7 +16,7 @@ However, the aim of the work presented here was to provide a fast implementation
 Consequently, providing an efficient implementation for time propagation mainly translates into finding an efficient way for calling existing functions with minimal overhead and by making use of compiler optimizations where possible.
 \par\medskip
 %
-First, subsection \ref{subsec:poly} outlines how C++ features were used in order to achieve class inheritance and polymorphism without any additional run-time cost.
+First, subsection \ref{subsec:poly} outlines how C++ features were used in order to achieve class inheritance and polymorphism without any additional runtime cost.
 Secondly, in subsection \ref{subsec:callback}, it will be discussed how the \proc{Evolve} method (see algorithm \ref{alg:Evolve}) was implemented in order to provide a minimal working interface to the user while still preserving all the flexibility that may be required for intermediate measurements or other interaction.
 Finally, subsection \ref{subsec:intsplit} dives into the technical details of achieving inlined, highly optimized function calls for the \proc{IntSplit} method (see algorithm \ref{alg:intsplit}) that is used intensively in all the presented propagators.
 \par\medskip
@@ -43,7 +43,7 @@ A popular C++ design pattern for achieving static polymorphism is the \emph{Curi
 %
 While CRTP is an excellent candidate for providing static polymorphism for derived classes, there was also the need for some polymorphism in the Propagator base class itself, since some of the building blocks need to have different implementations based on the dimensionality or homogeneity of the wave packet. 
 Providing a partially specialized class for every possible combination of parameters is often tedious and unnecessarily bloats the code.
-Therefore, the C++11 \proc{enable\_if} keyword was used, which is a handy C++ meta function from the \proc{type\_traits} header.
+Therefore, the C++11 \proc{enable\_if} keyword was used, which is a handy C++ meta-function from the \proc{type\_traits} header.
 It allows to define multiple versions of a function and conditionally (de)activate them based on a compile-time boolean value.
 If the boolean is true, the function is enabled. Otherwise it is omitted.
 In the code, such boolean values are indicating whether the number of levels $N$ is equal or greater to one or to distinguish between functions for homogeneous or inhomogeneous wave functions.

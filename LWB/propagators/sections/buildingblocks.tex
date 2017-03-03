@@ -128,7 +128,7 @@ In this report, the most used splittings are the \emph{LT} splitting (size 1), \
 			\State $\dt = \Dt/M_{split}$
 			\Comment step size for splitting
 			\For{$n = 1,\dots,M_{split}$}
-			\Comment split interval in $M_{split}$ subset's
+			\Comment split interval in $M_{split}$ sub-steps
 				\For{$\alpha$ in $w_T$ and $\beta$ in $w_U$}
 				\Comment alternatingly apply $\opT$ and $\opU$
 					\State \Call{StepT}{$\alpha \cdot \dt$}
