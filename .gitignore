@@ -33,3 +33,6 @@
 *.loa
 
 *.bak
+*.brf
+*.pre
+LWB/propagators/*.pdf
